@@ -15,4 +15,4 @@ Representing an industry-wide commitment to breaking down the technical barriers
 
 Programs that will empower citizens to assert their unique ID, facilitate the innovative delivery of public services, and usher in a new era of robust governance arrangements for all stakeholders.
 
-See also https://securityidentityalliance.github.io/
+See also https://secureidentityalliance.github.io/
