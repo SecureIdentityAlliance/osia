@@ -18,3 +18,23 @@ Representing an industry-wide commitment to breaking down the technical barriers
 Programs that will empower citizens to assert their unique ID, facilitate the innovative delivery of public services, and usher in a new era of robust governance arrangements for all stakeholders.
 
 See also https://secureidentityalliance.github.io/
+
+## Building documentation
+
+API documentation is written in reStruturedText and built with Sphinx.
+
+You can read the latest version on https://open-source-api.readthedocs.io/en/latest/
+
+To build it yourself, prepare your environment:
+```
+pip install "Sphinx<2.0"
+pip install sphinxcontrib-httpdomain sphinxcontrib-plantuml
+pip install sphinx_rtd_theme
+```
+
+UML diagrams are built with PlantUML and Java 8. They must be installed separately.
+
+Build:
+```
+sphinx-build -b html src/doc target/html
+```
