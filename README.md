@@ -2,6 +2,8 @@
 
 _Accelerating the development of national identity schemes across the world_
 
+[![Documentation Status](https://readthedocs.org/projects/open-source-api/badge/?version=latest)](https://open-source-api.readthedocs.io/en/latest/?badge=latest)
+
 ## Presentation
 
 Official identification (ID) is more than a convenience; it is a fundamental human right that gives people access to education, financial services, employment, health and social welfare – and more. 
