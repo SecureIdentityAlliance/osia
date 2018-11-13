@@ -76,7 +76,7 @@ Definitions
 :todo:`To be completed`
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     functional-specifications
     technical-specifications

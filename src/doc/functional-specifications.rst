@@ -35,14 +35,14 @@ Functions/Sevices
 This chapter describes in pseudo code the services defined between CR and CI.
 There three categories of services:
 
-- UIN creation. This service can be implemented by CI, by CR or by another system. We will consider it is provided
+- UIN management. This service can be implemented by CI, by CR or by another system. We will consider it is provided
   by a system called *UIN Generator*.
-- Events notification. When data is changed, a notification can be sent and received by systems that registered for
+- Notifications. When data is changed, a notification is sent and received by systems that registered for
   this type of events. For instance, CI can register for the events *birth* emitted by CR.
-- Data access. A set of services to exchange data.
+- Data access. A set of services to access data.
 
-UIN Creation
-~~~~~~~~~~~~~
+UIN Management
+~~~~~~~~~~~~~~
 
 .. py:function:: createUIN(attributes)
 
@@ -100,11 +100,10 @@ This service is asynchronous.
 
 .. note::
 
-    Notifications are possible after the receiver has subscribed to an event. This subscription is dependent on
-    the middleware used and not described in this document.
+    Notifications are possible after the receiver has subscribed to an event.
     
-Data Access Services
-~~~~~~~~~~~~~~~~~~~~
+Data Access
+~~~~~~~~~~~
 
 .. py:function:: getPersonAttributes(UIN, names)
 
@@ -218,18 +217,19 @@ This service is synchronous. It can be used to get the UIN of a person.
 
 -------
 
-.. py:function:: getScannedDocument(UIN,type)
+.. py:function:: getDocument(UINs,documentType,format)
 
-    Retrieve in an unstructured format (PDF, image) a document such as a marriage certificate.
+    Retrieve in a selected format (PDF, image, ...) a document such as a marriage certificate.
 
-    :param list[str] UIN: The list of UIN for the persons concerned by the document
-    :parent str type: The type of document
-    :return: a list of buffers for the requested document
+    :param list[str] UIN: The list of UINs for the persons concerned by the document
+    :param str documentType: The type of document (birth certificate, etc.)
+    :param str format: The format of the returned/requested document
+    :return: The list of the requested documents
     
 This service is synchronous. It can be used to get the documents for a person.
 
 .. uml::
-    :caption: getScannedDocument
+    :caption: getDocument
 
     !include "skin.iwsd"
     hide footbox
@@ -237,12 +237,12 @@ This service is synchronous. It can be used to get the documents for a person.
     participant "CI" as CI
 
     note over CR,CI: CR can get a document from CI
-    CR -> CI: getScannedDocument([UIN],type)
-    CI -->> CR: [buffers]
+    CR -> CI: getDocument([UIN],documentType,format)
+    CI -->> CR: [documents]
 
     note over CR,CI: CI can get a document from CR
-    CI -> CR: getScannedDocument([UIN],type)
-    CR -->> CI: [buffers]
+    CI -> CR: getDocument([UIN],documentType,format)
+    CR -->> CI: [documents]
 
 Dictionaries
 ''''''''''''
