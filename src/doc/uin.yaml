@@ -1,0 +1,69 @@
+openapi: 3.0.0
+info:
+  title: Open Source API, UIN services
+  version: 1.0.0
+servers:
+  - url: http://server.com/
+paths:
+  /v1/uin:
+    post:
+      description: |
+        Request the generation of a new UIN.
+        The request body should contain a list of attributes and their value, formatted as a json dictionary.
+      operationId: createUIN
+      requestBody:
+        description: A set of attributes for the person
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attributes'
+            example:
+              firstName: John
+              lastName: Doo
+              dateOfBirth: "1984-11-19"
+      responses:
+        200:
+          description: UIN is generated
+          content:
+            application/json:
+              schema:
+                type: string
+              example:
+                1235567890
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+#      crci_auth:
+#        - generate:uin
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Attributes:
+      type: object
+      additionalProperties:
+        oneOf:
+        - type: string
+        - type: integer
+        - type: number
+        - type: boolean
+      # Or ?:
+      #additionalProperties:
+      #  type: string
