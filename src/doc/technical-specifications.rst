@@ -96,6 +96,7 @@ and received by zero, one, or many receivers that have subscribed to the type of
 .. list-table:: Event Type & Message
     :header-rows: 1
     :widths: 30 70
+    :class: longtable
     
     * - Event Type
       - Message

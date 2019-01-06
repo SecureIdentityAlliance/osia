@@ -54,7 +54,8 @@ UIN Management
 This service is synchronous.
 
 .. uml::
-    :caption: createUIN
+    :caption: ``createUIN`` Sequence Diagram
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
@@ -85,7 +86,8 @@ Notifications
 This service is asynchronous.
 
 .. uml::
-    :caption: notify
+    :caption: ``notify`` Sequence Diagram
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
@@ -116,7 +118,8 @@ Data Access
 This service is synchronous. It can be used to retrieve attributes from CR or from CI.
 
 .. uml::
-    :caption: getPersonAttributes
+    :caption: ``getPersonAttributes`` Sequence Diagram
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
@@ -144,7 +147,8 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
 This service is synchronous. It can be used to match attributes in CR or in CI.
 
 .. uml::
-    :caption: matchPersonAttributes
+    :caption: ``matchPersonAttributes`` Sequence Diagram
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
@@ -173,7 +177,8 @@ This service is synchronous. It can be used to match attributes in CR or in CI.
 This service is synchronous. It can be used to verify attributes in CR or in CI.
 
 .. uml::
-    :caption: verifyPersonAttributes
+    :caption: ``verifyPersonAttributes`` Sequence Diagram
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
@@ -200,7 +205,8 @@ This service is synchronous. It can be used to verify attributes in CR or in CI.
 This service is synchronous. It can be used to get the UIN of a person.
 
 .. uml::
-    :caption: getPersonUIN
+    :caption: ``getPersonUIN`` Sequence Diagram
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
@@ -229,7 +235,8 @@ This service is synchronous. It can be used to get the UIN of a person.
 This service is synchronous. It can be used to get the documents for a person.
 
 .. uml::
-    :caption: getDocument
+    :caption: ``getDocument`` Sequence Diagram
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
@@ -455,6 +462,7 @@ Birth Use Case
 
 .. uml::
     :caption: Birth Use Case
+    :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
