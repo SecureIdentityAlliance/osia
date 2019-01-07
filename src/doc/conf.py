@@ -15,6 +15,7 @@ html_logo = 'logo-secure-identity-alliance3.png'
 extensions = ['sphinxcontrib.httpdomain','sphinxcontrib.plantuml']
 
 plantuml_output_format = 'svg'
+plantuml = r'java -jar c:\ohe\bin\plantuml.jar'
 
 rst_prolog = '''
 
