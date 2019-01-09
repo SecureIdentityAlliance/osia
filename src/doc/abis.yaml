@@ -1,0 +1,654 @@
+openapi: 3.0.0
+info:
+  description: SIA ABIS Interface
+  version: "1.0"
+  title: SIA ABIS Interface
+tags:
+  - name: CRUD
+  - name: Search
+paths:
+  /v1/subjects/{subjectId}/{encounterId}:
+    post:
+      tags:
+        - CRUD
+      summary: Insert
+      operationId: insert
+      parameters:
+        - name: subjectId
+          in: path
+          description: the id of the subject
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - filters
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BiometricData'
+                filters:
+                  $ref: '#/components/schemas/BiographicData'
+      responses:
+        '201':
+          description: Insertion successful
+        '400':
+          description: Bad request
+        '403':
+          description: Insertion not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - CRUD
+      summary: Read
+      operationId: read
+      parameters:
+        - name: subjectId
+          in: path
+          description: the id of the subject
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                  - filters
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BiometricData'
+                  filters:
+                    $ref: '#/components/schemas/BiographicData'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - CRUD
+      summary: Update
+      operationId: update
+      parameters:
+        - name: subjectId
+          in: path
+          description: the id of the subject
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+                - filters
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BiometricData'
+                filters:
+                  $ref: '#/components/schemas/BiographicData'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - CRUD
+      summary: Delete one encounter
+      operationId: delete
+      parameters:
+        - name: subjectId
+          in: path
+          description: the id of the subject
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Delete successful
+        '400':
+          description: Bad request
+        '403':
+          description: Delete not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/subjects/{subjectId}:
+    delete:
+      tags:
+        - CRUD
+      summary: Delete all encounter
+      operationId: delete
+      parameters:
+        - name: subjectId
+          in: path
+          description: the id of the subject
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Delete successful
+        '400':
+          description: Bad request
+        '403':
+          description: Delete not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/identify/{galleryId}:
+    post:
+      tags:
+        - Search
+      summary: Identification based on biometric data from one gallery
+      operationId: identify
+      parameters:
+        - name: galleryId
+          in: path
+          description: the id of the gallery
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the identification result will be sent when available
+          required: true
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+        - name: maxNbCand
+          in: query
+          description: the maximum number of candidates
+          required: false
+          schema:
+            type: integer
+        - name: threshold
+          in: query
+          description: the algorithm threshold
+          required: false
+          schema:
+            type: number
+        - name: algorithm
+          in: query
+          description: the algorithm to use for this request
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BiometricData'
+      responses:
+        '202':
+          description: Identification request received successfully and correct
+        '400':
+          description: Bad request
+        '403':
+          description: Identification not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        identifyResponse:
+          '${request.query.callback}':
+            post:
+              summary: Identification response callback
+              operationId: identifyCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+
+              requestBody:
+                required: true
+                description: Result of the identification (list of candidate)
+                content:
+                  application/json:
+                    schema:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Candidate'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+
+  /v1/verify/{subjectId}:
+    post:
+      tags:
+        - Search
+      summary: Verification of one set of biometric data and a record in the system
+      operationId: verify1
+      parameters:
+        - name: subjectId
+          in: path
+          description: the id of the subject
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+        - name: threshold
+          in: query
+          description: the algorithm threshold
+          required: false
+          schema:
+            type: number
+        - name: algorithm
+          in: query
+          description: the algorithm to use for this request
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BiometricData'
+      responses:
+        '200':
+          description: Verification execution successful
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '400':
+          description: Bad request
+        '404':
+          description: Unknown record
+        '403':
+          description: Verification not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/verify:
+    post:
+      tags:
+        - Search
+      summary: Verification of two sets of biometric data
+      operationId: verify2
+      parameters:
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+        - name: threshold
+          in: query
+          description: the algorithm threshold
+          required: false
+          schema:
+            type: number
+        - name: algorithm
+          in: query
+          description: the algorithm to use for this request
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - data1
+                - data2
+              properties:
+                data1:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BiometricData'
+                data2:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/BiometricData'
+      responses:
+        '200':
+          description: Verification execution successful
+          content:
+            application/json:
+              schema:
+                type: boolean
+        '400':
+          description: Bad request
+        '403':
+          description: Verification not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+          
+    BiographicData:
+      type: object
+      required:
+        - galleries
+      properties:
+        galleries:
+          type: array
+          items:
+            type: string
+            example: "001"
+        lastName:
+          type: string
+          description: the last name of a person
+          example: "Doo"
+        firstName:
+          type: string
+          description: the first name of a person
+          example: "John"
+        dateOfBirth:
+          type: string
+          format: date
+          example: "1985-11-30"
+    BiometricData:
+      type: object
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        image:
+          type: string
+          format: byte
+        imageRef:
+          type: string
+          format: uri
+          example: "http://imageserver.com/image?id=00003"
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - IRIS
+        - UNKNOWN
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        - PORTRAIT
+    Candidate:
+      type: object
+      properties:
+        subjectId:
+          type: string
+          description: the identifier of the subject
+        rank:
+          type: integer
+          format: int32
+          description: >-
+            the rank of the candidate in relation to other candidates for the
+            same biometric identification operation
+        score:
+          type: number
+          format: float
+          description: >-
+            the score of the candidate in relation to other candidates for
+            the same biometric identification operation
+        scoreList:
+          type: array
+          description: >-
+            a list of comparison score(s) and optionally the type and subtype of
+            the relating biometric
+          items:
+            $ref: '#/components/schemas/Score'
+    Score:
+      type: object
+      properties:
+        score:
+          type: number
+          format: float
+          description: the score
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+
+

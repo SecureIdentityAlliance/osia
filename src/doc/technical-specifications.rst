@@ -390,3 +390,16 @@ Error
       - String
       - Error message
       - Yes
+
+Biometrics
+""""""""""
+
+Services
+''''''''
+
+.. include:: _abis.rst
+
+Data Model
+''''''''''
+
+:todo:`To be completed`

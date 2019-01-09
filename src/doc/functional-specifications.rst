@@ -454,6 +454,7 @@ Biometrics
     - Do not expose templates (only images) for CRUD services
     - Focus on simple essential services (CRUD, identify, verify)
     - Images can be passed by value or reference
+    - Image format: ISO-19794
 
 Services
 ''''''''
@@ -510,7 +511,7 @@ Services
         ``maxNbCand``, ``threshold``, ``algorithm``.
     :return: a status indicating success or error. The list of candidates will be returned using the callback.
 
-.. py:function:: authenticate(subjectID, data, options)
+.. py:function:: verify1(subjectID, data, options)
 
     Verify an identity using biometrics data. This service is synchronous.
 
@@ -521,7 +522,7 @@ Services
     :return: a status indicating success or error. In case of success the result of the authentication
         is returned as boolean.
 
-.. py:function:: verify(data1, data2, options)
+.. py:function:: verify2(data1, data2, options)
 
     Verify that two sets of biometrics data correspond to the same subject. This service is synchronous.
 
@@ -589,6 +590,10 @@ Data Model
     * - Biometric Data
       - Digital representation of biometric characteristics.
         As an example, a record containing the image of a finger is a biometric data.
+        All images can be passed by value (image buffer is in the request) or by reference (the address of the
+        image is in the request).
+        All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
+        metadata specific to fingerprint, palmprint, portrait or iris.
 
     * - Candidate
       - Information about a candidate found during an identification

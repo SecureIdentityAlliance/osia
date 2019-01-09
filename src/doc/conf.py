@@ -29,6 +29,18 @@ rst_prolog = '''
 
     <style>
         .todo {background-color: #f3f375;font-style: italic;}
+
+        /* override table width restrictions */
+        .wy-table-responsive table td, .wy-table-responsive table th {
+            /* !important prevents the common CSS stylesheets from
+            overriding this as on RTD they are loaded after this stylesheet */
+            white-space: normal !important;
+        }
+
+        .wy-table-responsive {
+            overflow: visible !important;
+        }
+        
     </style>
 
 '''
