@@ -444,3 +444,238 @@ Dictionaries
     * - marriage certificate
       - :todo:`To be completed`
 
+Biometrics
+""""""""""
+
+..  admonition:: Principles (to be reviewed)
+
+    - Implement as much as possible synchronous services
+    - Support only multi-encounter model
+    - Do not expose templates (only images) for CRUD services
+    - Focus on simple essential services (CRUD, identify, verify)
+    - Images can be passed by value or reference
+
+Services
+''''''''
+
+.. py:function:: insert(subjectID, encounterID, data, options)
+
+   Insert a new encounter. No identify is performed. This service is synchronous.
+
+   :param str subjectID: The subject ID
+   :param str encounterID: The encounter ID
+   :param data: The input data (filters and biometric data)
+   :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+   :return: a status indicating success or error
+
+.. py:function:: read(subjectID, encounterID, options)
+
+   Retrieve the data of an encounter. This service is synchronous.
+
+   :param str subjectID: The subject ID
+   :param str encounterID: The encounter ID
+   :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+   :return: a status indicating success or error and in case of success the encounter data (filters and biometric data)
+
+.. py:function:: update(subjectID, encounterID, data, options)
+
+   Update an encounter. This service is synchronous.
+
+   :param str subjectID: The subject ID
+   :param str encounterID: The encounter ID
+   :param data: The input data (filters and biometric data)
+   :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+   :return: a status indicating success or error
+
+.. py:function:: delete(subjectID, encounterID, options)
+
+    Delete an encounter. This service is synchronous.
+
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success or error
+
+----------
+
+.. py:function:: identify(galleryID, data, callback, options)
+
+    Identify a subject using biometrics data and filters on biographic data. This may include multiple
+    operations, including manual operations. This service is **asynchronous**.
+
+    :param str galleryID: Search only in this gallery.
+    :param data: The input data (filters and biometric data)
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+        ``maxNbCand``, ``threshold``, ``algorithm``.
+    :return: a status indicating success or error. The list of candidates will be returned using the callback.
+
+.. py:function:: authenticate(subjectID, data, options)
+
+    Verify an identity using biometrics data. This service is synchronous.
+
+    :param str subjectID: The subject ID
+    :param data: The input data (biometric data)
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+        ``threshold``, ``algorithm``.
+    :return: a status indicating success or error. In case of success the result of the authentication
+        is returned as boolean.
+
+.. py:function:: verify(data1, data2, options)
+
+    Verify that two sets of biometrics data correspond to the same subject. This service is synchronous.
+
+    :param str subjectID: The subject ID
+    :param data1: The first set of biometric data
+    :param data2: The second set of biometric data
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+        ``threshold``, ``algorithm``.
+    :return: a status indicating success or error. In case of success the result of the verification
+        is returned as boolean.
+
+Options
+'''''''
+
+.. list-table:: Biometric Services Options
+    :header-rows: 1
+    :widths: 25 75
+
+    * - Name
+      - Description
+
+    * - ``transactionID``
+      - A string provided by the client application to identity the request being submitted.
+        It is optional in most cases. When provided, it can be used for tracing and debugging.
+        It is mandatory for asynchronous services and is included in the response pushed asynchronously.
+    * - ``priority``
+      - Priority of the request. Values range from 0 to 9
+    * - ``maxNbCand``
+      - The maximum number of candidates to return.
+    * - ``threshold``
+      - The threshold to apply on the score to filter the candidates during an identification,
+        authentication or verification.
+    * - ``algorithm``
+      - Specify the type of algorithm to be used. Some matching engine may include multiple algorithms
+        to support different use cases (response time, accuracy, consolidation/fusion, etc.).
+
+Data Model
+''''''''''
+
+.. list-table:: Biometric Data Model
+    :header-rows: 1
+    :widths: 25 75
+
+    * - Type
+      - Description
+
+    * - Gallery
+      - A group of subjects related by a common purpose, designation, or status.
+        A subject can belong to multiple galleries.
+
+    * - Subject
+      - Person who is known to an identity assurance system.
+
+    * - Encounter
+      - Event in which the client application interacts with a subject resulting in data being
+        collected during or about the encounter.
+
+    * - Filters
+      - a dictionary (list of names and values) of the biographic data of interest for the biometric services.
+
+    * - Search Filters
+      - a dictionary (list of names and range of values) of the biographic data used during a search. This differs from a
+        filter because it may include ranges instead of a single value.
+
+    * - Biometric Data
+      - Digital representation of biometric characteristics.
+        As an example, a record containing the image of a finger is a biometric data.
+
+    * - Candidate
+      - Information about a candidate found during an identification
+
+    * - CandidateScore
+      - Detailed information about a candidate found during an identification. It includes
+        the score for the biometrics used.
+      
+.. uml::
+    :caption: Biometric Data Model
+
+    !include "skin.iwsd"
+
+    class Gallery {
+        string galleryID;
+    }
+
+    class Subject {
+        string subjectID;
+    }
+
+    Subject "*" - "*" Gallery
+
+    class Encounter {
+        string encounterID;
+    }
+
+    Subject o-- "*" Encounter
+
+    class Filters {
+        string filter1;
+        int filter2;
+        date filter3;
+        ...
+    }
+
+    class SearchFilters {
+        string filter1;
+        int filter2Min;
+        int filter2Max;
+        date filter3Min;
+        date filter3Max;
+        ...
+    }
+
+    Encounter o- Filters
+
+    class BiometricData {
+    }
+
+    Encounter o-- "*" BiometricData
+
+    class Finger {
+        byte[] fingerImage;
+        URL fingerImageRef;
+    }
+    BiometricData <|-- Finger
+
+    class Palm {
+        byte[] palmImage;
+        URL palmImageRef;
+    }
+    BiometricData <|-- Palm
+
+    class Portrait {
+        byte[] portraitImage;
+        URL portraitImageRef;
+    }
+    BiometricData <|-- Portrait
+    
+    class Iris {
+        byte[] irisImage;
+        URL irisImageRef;
+    }
+    BiometricData <|-- Iris
+    
+    class Candidate {
+      int rank;
+      int score;
+    }
+    Candidate . Subject
+
+    class CandidateScore {
+      int score;
+      enum biometricType;
+      enum biometricSubType;
+    }
+    Candidate -- "*" CandidateScore
+
+    
