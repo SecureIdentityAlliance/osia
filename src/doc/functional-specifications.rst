@@ -604,6 +604,7 @@ Data Model
       
 .. uml::
     :caption: Biometric Data Model
+    :scale: 50%
 
     !include "skin.iwsd"
 
