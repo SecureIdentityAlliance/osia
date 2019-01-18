@@ -447,9 +447,23 @@ Dictionaries
 Biometrics
 """"""""""
 
-..  admonition:: Principles (to be reviewed)
+.. note:: Synchronous and Asynchronous Processing
 
-    - Implement as much as possible synchronous services
+    Some services can be very slow depending on the algorithm used, the system workload, etc.
+    Services are described so that:
+
+    - If possible, the answer is provided synchronously in the response of the service.
+    - If not possible for some reason, a status *PENDING* is returned and the answer, when available, is
+      pushed to a callback provided by the client.
+
+    If no callback is provided, this indicates that the client wants a synchronous answer, whatever the time it takes.
+
+    If a callback is provided, the server will decide if the processing is done synchronously or asynchronously.
+
+  :todo:`add sequence diagrams`
+
+..  admonition:: Principles
+
     - Support only multi-encounter model
     - Do not expose templates (only images) for CRUD services
     - Focus on simple essential services (CRUD, identify, verify)
@@ -459,80 +473,110 @@ Biometrics
 Services
 ''''''''
 
-.. py:function:: insert(subjectID, encounterID, data, options)
+.. py:function:: insert(subjectID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, options)
 
-   Insert a new encounter. No identify is performed. This service is synchronous.
+    Insert a new encounter. No identify is performed. This service is synchronous.
 
-   :param str subjectID: The subject ID
-   :param str encounterID: The encounter ID
-   :param data: The input data (filters and biometric data)
-   :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-   :return: a status indicating success or error
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID. This is optional
+    :param list(str) galleryID: the gallery ID to which this encounter belongs
+    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
+    :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
+    :param list biometricData: the biometric data (images)
+    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
+        when encounter data is requested.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``, ``algorithm``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, the subject ID and the encounter ID are returned.
+        In case of pending operation, the result will be sent later.
 
-.. py:function:: read(subjectID, encounterID, options)
+.. py:function:: read(subjectID, encounterID, callback, options)
 
-   Retrieve the data of an encounter. This service is synchronous.
+    Retrieve the data of an encounter.
 
-   :param str subjectID: The subject ID
-   :param str encounterID: The encounter ID
-   :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-   :return: a status indicating success or error and in case of success the encounter data (filters and biometric data)
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID. This is optional. If not provided, all the
+        encounters of the subject are returned.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, the encounter data is returned.
+        In case of pending operation, the result will be sent later.
 
-.. py:function:: update(subjectID, encounterID, data, options)
+.. py:function:: update(subjectID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, options)
 
-   Update an encounter. This service is synchronous.
-
-   :param str subjectID: The subject ID
-   :param str encounterID: The encounter ID
-   :param data: The input data (filters and biometric data)
-   :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-   :return: a status indicating success or error
-
-.. py:function:: delete(subjectID, encounterID, options)
-
-    Delete an encounter. This service is synchronous.
+    Update an encounter.
 
     :param str subjectID: The subject ID
     :param str encounterID: The encounter ID
+    :param list(str) galleryID: the gallery ID to which this encounter belongs
+    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
+    :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
+    :param list biometricData: the biometric data (images)
+    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
+        when encounter data is requested.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``, ``algorithm``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, the subject ID and the encounter ID are returned.
+        In case of pending operation, the result will be sent later.
+
+.. py:function:: delete(subjectID, encounterID, callback, options)
+
+    Delete an encounter.
+
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID. This is optional. If not provided, all the
+        encounters of the subject are deleted.
+    :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-    :return: a status indicating success or error
+    :return: a status indicating success, error, or pending operation.
+        In case of pending operation, the operation status will be sent later.
 
 ----------
 
-.. py:function:: identify(galleryID, data, callback, options)
+.. py:function:: identify(galleryID, filter, biometricData, callback, options)
 
-    Identify a subject using biometrics data and filters on biographic data. This may include multiple
-    operations, including manual operations. This service is **asynchronous**.
+    Identify a subject using biometrics data and filters on biographic or contextual data. This may include multiple
+    operations, including manual operations.
 
     :param str galleryID: Search only in this gallery.
-    :param data: The input data (filters and biometric data)
+    :param dict filter: The input data (filters and biometric data)
+    :param biometricData: the  biometric data.
     :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
-        ``maxNbCand``, ``threshold``, ``algorithm``.
-    :return: a status indicating success or error. The list of candidates will be returned using the callback.
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A list of candidates is returned, either synchronously or using the callback.
 
-.. py:function:: verify1(subjectID, data, options)
+.. py:function:: verify(galleryID, subjectID, biometricData, callback, options)
 
-    Verify an identity using biometrics data. This service is synchronous.
+    Verify an identity using biometrics data.
 
+    :param str galleryID: Search only in this gallery. If the subject does not belong to this gallery,
+        an error is returned.
     :param str subjectID: The subject ID
-    :param data: The input data (biometric data)
+    :param biometricData: The biometric data
+    :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
-        ``threshold``, ``algorithm``.
-    :return: a status indicating success or error. In case of success the result of the authentication
-        is returned as boolean.
+        ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A status (boolean) is returned, either synchronously or using the callback. Optionally, details
+        about the matching result can be provided like the score per biometric and per encounter.
 
-.. py:function:: verify2(data1, data2, options)
+.. py:function:: verify(biometricData1, biometricData2, callback, options)
 
-    Verify that two sets of biometrics data correspond to the same subject. This service is synchronous.
+    Verify that two sets of biometrics data correspond to the same subject.
 
-    :param str subjectID: The subject ID
-    :param data1: The first set of biometric data
-    :param data2: The second set of biometric data
+    :param biometricData1: The first set of biometric data
+    :param biometricData2: The second set of biometric data
+    :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
-        ``threshold``, ``algorithm``.
-    :return: a status indicating success or error. In case of success the result of the verification
-        is returned as boolean.
+        ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A status (boolean) is returned, either synchronously or using the callback. Optionally, details
+        about the matching result can be provided like the score per the biometric.
 
 Options
 '''''''
@@ -556,36 +600,45 @@ Options
       - The threshold to apply on the score to filter the candidates during an identification,
         authentication or verification.
     * - ``algorithm``
-      - Specify the type of algorithm to be used. Some matching engine may include multiple algorithms
-        to support different use cases (response time, accuracy, consolidation/fusion, etc.).
+      - Specify the type of algorithm to be used.
+    * - ``accuracyLevel``
+      - Specify the accuracy expected of the request. This is to support different use cases, when
+        different behavior of the ABIS is expected (response time, accuracy, consolidation/fusion, etc.).
 
 Data Model
 ''''''''''
 
 .. list-table:: Biometric Data Model
     :header-rows: 1
-    :widths: 25 75
+    :widths: 25 50 25
 
     * - Type
       - Description
+      - Example
 
     * - Gallery
       - A group of subjects related by a common purpose, designation, or status.
         A subject can belong to multiple galleries.
+      - :todo:`TBD`
 
     * - Subject
       - Person who is known to an identity assurance system.
+      - :todo:`TBD`
 
     * - Encounter
       - Event in which the client application interacts with a subject resulting in data being
-        collected during or about the encounter.
+        collected during or about the encounter. An encounter is characterized by an *identifier* and a *type*
+        (also called *purpose* in some context).
+      - :todo:`TBD`
+
+    * - Biographic Data
+      - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.
+      - :todo:`TBD`
 
     * - Filters
-      - a dictionary (list of names and values) of the biographic data of interest for the biometric services.
-
-    * - Search Filters
-      - a dictionary (list of names and range of values) of the biographic data used during a search. This differs from a
-        filter because it may include ranges instead of a single value.
+      - a dictionary (list of names and values or *range* of values) describing the filters during a search.
+        Filters can apply on biographic data, contextual data or encounter type.
+      - :todo:`TBD`
 
     * - Biometric Data
       - Digital representation of biometric characteristics.
@@ -594,13 +647,16 @@ Data Model
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait or iris.
+      - :todo:`TBD`
 
     * - Candidate
       - Information about a candidate found during an identification
+      - :todo:`TBD`
 
     * - CandidateScore
       - Detailed information about a candidate found during an identification. It includes
         the score for the biometrics used.
+      - :todo:`TBD`
       
 .. uml::
     :caption: Biometric Data Model
@@ -620,18 +676,29 @@ Data Model
 
     class Encounter {
         string encounterID;
+        string encounterType;
+        byte[] clientData;
     }
 
     Subject o-- "*" Encounter
 
-    class Filters {
-        string filter1;
-        int filter2;
-        date filter3;
+    class BiographicData {
+        string field1;
+        int field2;
+        date field3;
         ...
     }
+    Encounter o- BiographicData
 
-    class SearchFilters {
+    class ContextualData {
+        string field1;
+        int field2;
+        date field3;
+        ...
+    }
+    ContextualData -o Encounter
+    
+    class Filters {
         string filter1;
         int filter2Min;
         int filter2Max;
@@ -640,7 +707,6 @@ Data Model
         ...
     }
 
-    Encounter o- Filters
 
     class BiometricData {
     }
@@ -679,6 +745,7 @@ Data Model
 
     class CandidateScore {
       int score;
+      string encounterID;
       enum biometricType;
       enum biometricSubType;
     }
