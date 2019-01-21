@@ -11,7 +11,7 @@ paths:
     post:
       tags:
         - CRUD
-      summary: Insert
+      summary: Insert one encounter
       operationId: insert
       parameters:
         - name: subjectId
@@ -29,33 +29,51 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
           required: false
           schema:
             type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
           required: false
           schema:
             type: integer
+        - name: algorithm
+          in: query
+          description: Hint about the algorithm to be used
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               type: object
               required:
-                - data
-                - filters
+                - galleries
+                - encounter
               properties:
-                data:
+                galleries:
                   type: array
                   items:
-                    $ref: '#/components/schemas/BiometricData'
-                filters:
-                  $ref: '#/components/schemas/BiographicData'
+                    type: string
+                encounter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Encounter'
       responses:
         '201':
           description: Insertion successful
+        '202':
+          description: Request received successfully, result will be returned through the callback
         '400':
           description: Bad request
         '403':
@@ -66,10 +84,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      callbacks:
+        insertResponse:
+          '${request.query.callback}':
+            post:
+              summary: Response callback
+              operationId: insertCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+
+              requestBody:
+                required: true
+                description: Result of the insertion
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - status
+                      properties:
+                        status:
+                          type: string
+                          enum: [OK, ERROR]
+                        subjectId:
+                          type: string
+                        encounterId:
+                          type: string
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
     get:
       tags:
         - CRUD
-      summary: Read
+      summary: Read one encounter
       operationId: read
       parameters:
         - name: subjectId
@@ -87,9 +148,17 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
           required: false
           schema:
             type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
@@ -104,15 +173,17 @@ paths:
               schema:
                 type: object
                 required:
-                  - data
-                  - filters
+                  - galleries
+                  - encounter
                 properties:
-                  data:
+                  galleries:
                     type: array
                     items:
-                      $ref: '#/components/schemas/BiometricData'
-                  filters:
-                    $ref: '#/components/schemas/BiographicData'
+                      type: string
+                  encounter:
+                    $ref: '#/components/schemas/Encounter'
+        '202':
+          description: Request received successfully, result will be returned through the callback
         '400':
           description: Bad request
         '403':
@@ -125,10 +196,53 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      callbacks:
+        insertResponse:
+          '${request.query.callback}':
+            post:
+              summary: Response callback
+              operationId: readCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+
+              requestBody:
+                required: true
+                description: Encounter data
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - galleries
+                        - encounter
+                      properties:
+                        galleries:
+                          type: array
+                          items:
+                            type: string
+                        encounter:
+                          $ref: '#/components/schemas/Encounter'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
     put:
       tags:
         - CRUD
-      summary: Update
+      summary: Update one encounter
       operationId: update
       parameters:
         - name: subjectId
@@ -146,31 +260,49 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
           required: false
           schema:
             type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
           required: false
           schema:
             type: integer
+        - name: algorithm
+          in: query
+          description: Hint about the algorithm to be used
+          required: false
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
               type: object
               required:
-                - data
-                - filters
+                - galleries
+                - encounter
               properties:
-                data:
+                galleries:
                   type: array
                   items:
-                    $ref: '#/components/schemas/BiometricData'
-                filters:
-                  $ref: '#/components/schemas/BiographicData'
+                    type: string
+                encounter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Encounter'
       responses:
+        '202':
+          description: Request received successfully, result will be returned through the callback
         '204':
           description: Update successful
         '400':
@@ -185,6 +317,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      callbacks:
+        updateResponse:
+          '${request.query.callback}':
+            post:
+              summary: Response callback
+              operationId: updateCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+
+              requestBody:
+                required: true
+                description: Result of the update
+                content:
+                  application/json:
+                    schema:
+                      type: string
+                      enum: [OK, ERROR]
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
     delete:
       tags:
         - CRUD
@@ -206,9 +372,17 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
           required: false
           schema:
             type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
@@ -216,6 +390,8 @@ paths:
           schema:
             type: integer
       responses:
+        '202':
+          description: Request received successfully, result will be returned through the callback
         '204':
           description: Delete successful
         '400':
@@ -230,13 +406,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      callbacks:
+        deleteResponse:
+          '${request.query.callback}':
+            post:
+              summary: Response callback
+              operationId: deleteCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+
+              requestBody:
+                required: true
+                description: Result of the deletion
+                content:
+                  application/json:
+                    schema:
+                      type: string
+                      enum: [OK, ERROR]
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
 
   /v1/subjects/{subjectId}:
-    delete:
+    post:
       tags:
         - CRUD
-      summary: Delete all encounter
-      operationId: delete
+      summary: Insert one encounter and generate its ID
+      operationId: insertNoId
       parameters:
         - name: subjectId
           in: path
@@ -247,9 +457,146 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
           required: false
           schema:
             type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+        - name: algorithm
+          in: query
+          description: Hint about the algorithm to be used
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - galleries
+                - encounter
+              properties:
+                galleries:
+                  type: array
+                  items:
+                    type: string
+                encounter:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Encounter'
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - status
+                  - encounterId
+                properties:
+                  status:
+                    type: string
+                    enum: [OK, ERROR]
+                  subjectId:
+                    type: string
+                  encounterId:
+                    type: string
+        '202':
+          description: Request received successfully, result will be returned through the callback
+        '400':
+          description: Bad request
+        '403':
+          description: Insertion not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        insertResponse:
+          '${request.query.callback}':
+            post:
+              summary: Response callback
+              operationId: insertNoIdCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+
+              requestBody:
+                required: true
+                description: Result of the insertion
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - status
+                        - encounterId
+                      properties:
+                        status:
+                          type: string
+                          enum: [OK, ERROR]
+                        subjectId:
+                          type: string
+                        encounterId:
+                          type: string
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - CRUD
+      summary: Delete all encounters
+      operationId: deleteAll
+      parameters:
+        - name: subjectId
+          in: path
+          description: the id of the subject
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
@@ -257,6 +604,8 @@ paths:
           schema:
             type: integer
       responses:
+        '202':
+          description: Request received successfully, result will be returned through the callback
         '204':
           description: Delete successful
         '400':
@@ -271,12 +620,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      callbacks:
+        deleteResponse:
+          '${request.query.callback}':
+            post:
+              summary: Response callback
+              operationId: deleteAllCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+
+              requestBody:
+                required: true
+                description: Result of the deletion
+                content:
+                  application/json:
+                    schema:
+                      type: string
+                      enum: [OK, ERROR]
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
 
   /v1/identify/{galleryId}:
     post:
       tags:
         - Search
-      summary: Identification based on biometric data from one gallery
+      summary: Biometric identification
+      description: Identification based on biometric data from one gallery
       operationId: identify
       parameters:
         - name: galleryId
@@ -285,20 +669,20 @@ paths:
           required: true
           schema:
             type: string
-        - name: callback
-          in: query
-          description: the callback address, where the identification result will be sent when available
-          required: true
-          schema:
-            type: string
-            format: uri
-            example: "http://client.com/callback"
         - name: transactionId
           in: query
           description: The id of the transaction
           required: true
           schema:
             type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
@@ -317,9 +701,9 @@ paths:
           required: false
           schema:
             type: number
-        - name: algorithm
+        - name: accuracyLevel
           in: query
-          description: the algorithm to use for this request
+          description: the accuracy level expected for this request
           required: false
           schema:
             type: string
@@ -329,13 +713,24 @@ paths:
             schema:
               type: object
               required:
-                - data
+                - filter
+                - biometricData
               properties:
-                data:
+                filter:
+                  $ref:  '#/components/schemas/Filter'
+                biometricData:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
       responses:
+        '200':
+          description: Request executed. Identification result is returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Candidate'
         '202':
           description: Identification request received successfully and correct
         '400':
@@ -384,13 +779,20 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /v1/verify/{subjectId}:
+  /v1/verify/{galleryId}/{subjectId}:
     post:
       tags:
         - Search
-      summary: Verification of one set of biometric data and a record in the system
-      operationId: verify1
+      summary: Biometric verification
+      description: Verification of one set of biometric data and a record in the system
+      operationId: verifyFromId
       parameters:
+        - name: galleryId
+          in: path
+          description: the id of the gallery
+          required: true
+          schema:
+            type: string
         - name: subjectId
           in: path
           description: the id of the subject
@@ -400,9 +802,17 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
           required: false
           schema:
             type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
@@ -415,9 +825,9 @@ paths:
           required: false
           schema:
             type: number
-        - name: algorithm
+        - name: accuracyLevel
           in: query
-          description: the algorithm to use for this request
+          description: the accuracy level expected for this request
           required: false
           schema:
             type: string
@@ -427,9 +837,9 @@ paths:
             schema:
               type: object
               required:
-                - data
+                - biometricData
               properties:
-                data:
+                biometricData:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
@@ -439,7 +849,18 @@ paths:
           content:
             application/json:
               schema:
-                type: boolean
+                type: object
+                required:
+                  - decision
+                properties:
+                  decision:
+                    type: boolean
+                  scores:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScoreDetail'
+        '202':
+          description: Request received successfully, result will be returned through the callback
         '400':
           description: Bad request
         '404':
@@ -452,20 +873,70 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      callbacks:
+        verifyResponse:
+          '${request.query.callback}':
+            post:
+              summary: Verification response callback
+              operationId: verifyFromIdCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the verification
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - decision
+                      properties:
+                        decision:
+                          type: boolean
+                        scores:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/ScoreDetail'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
 
   /v1/verify:
     post:
       tags:
         - Search
-      summary: Verification of two sets of biometric data
-      operationId: verify2
+      summary: Biometric verification
+      description: Verification of two sets of biometric data
+      operationId: verifyFromBio
       parameters:
         - name: transactionId
           in: query
           description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
           required: false
           schema:
             type: string
+            format: uri
+            example: "http://client.com/callback"
         - name: priority
           in: query
           description: the request priority
@@ -478,9 +949,9 @@ paths:
           required: false
           schema:
             type: number
-        - name: algorithm
+        - name: accuracyLevel
           in: query
-          description: the algorithm to use for this request
+          description: the accuracy level expected for this request
           required: false
           schema:
             type: string
@@ -490,14 +961,14 @@ paths:
             schema:
               type: object
               required:
-                - data1
-                - data2
+                - biometricData1
+                - biometricData2
               properties:
-                data1:
+                biometricData1:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
-                data2:
+                biometricData2:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
@@ -507,7 +978,18 @@ paths:
           content:
             application/json:
               schema:
-                type: boolean
+                type: object
+                required:
+                  - decision
+                properties:
+                  decision:
+                    type: boolean
+                  scores:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ScoreDetail'
+        '202':
+          description: Request received successfully, result will be returned through the callback
         '400':
           description: Bad request
         '403':
@@ -518,10 +1000,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      callbacks:
+        verifyResponse:
+          '${request.query.callback}':
+            post:
+              summary: Verification response callback
+              operationId: verifyFromIdCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the verification
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - decision
+                      properties:
+                        decision:
+                          type: boolean
+                        scores:
+                          type: array
+                          items:
+                            $ref: '#/components/schemas/ScoreDetail'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
 
 components:
   schemas:
     Error:
+      type: object
       required:
         - code
         - message
@@ -533,17 +1057,36 @@ components:
         message:
           description: Error message
           type: string
-          
-    BiographicData:
+    Encounter:
       type: object
       required:
-        - galleries
+        - encounterType
+        - biometricData
       properties:
-        galleries:
+        encounterType:
+          type: string
+          description: Type of the encounter
+        clientData:
+          type: string
+          format: byte
+        contextualData:
+          $ref: '#/components/schemas/ContextualData'
+        biographicData:
+          $ref: '#/components/schemas/BiographicData'
+        biometricData:
           type: array
           items:
-            type: string
-            example: "001"
+            $ref: '#/components/schemas/BiometricData'
+    ContextualData:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          example: "2019-01-11"
+    BiographicData:
+      type: object
+      properties:
         lastName:
           type: string
           description: the last name of a person
@@ -558,6 +1101,8 @@ components:
           example: "1985-11-30"
     BiometricData:
       type: object
+      required:
+        - biometricType
       properties:
         biometricType:
           $ref: '#/components/schemas/BiometricType'
@@ -614,8 +1159,23 @@ components:
         - EYE_RIGHT
         - EYE_LEFT
         - PORTRAIT
+    Filter:
+      type: object
+      properties:
+        dateOfBirthMin:
+          type: string
+          format: date
+          example: "1980-01-01"
+        dateOfBirthMax:
+          type: string
+          format: date
+          example: "2019-12-31"
     Candidate:
       type: object
+      required:
+        - subjectId
+        - rank
+        - score
       properties:
         subjectId:
           type: string
@@ -638,17 +1198,20 @@ components:
             a list of comparison score(s) and optionally the type and subtype of
             the relating biometric
           items:
-            $ref: '#/components/schemas/Score'
-    Score:
+            $ref: '#/components/schemas/ScoreDetail'
+    ScoreDetail:
       type: object
+      required:
+        - score
       properties:
         score:
           type: number
           format: float
           description: the score
+        encounterId:
+          type: string
         biometricType:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
-
 

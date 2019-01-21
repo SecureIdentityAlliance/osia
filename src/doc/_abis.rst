@@ -1,7 +1,7 @@
 .. http:post:: /v1/subjects/{subjectId}/{encounterId}
-    :synopsis: Insert
+    :synopsis: Insert one encounter
 
-    **Insert**
+    **Insert one encounter**
 
     :param string subjectId:
         the id of the subject
@@ -9,11 +9,17 @@
         the id of the encounter
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
-
+    :query string algorithm:
+        Hint about the algorithm to be used
     :status 201:
         Insertion successful
+    :status 202:
+        Request received successfully, result will be returned through the callback
     :status 400:
         Bad request
     :status 403:
@@ -25,27 +31,36 @@
 
     .. sourcecode:: http
 
-        POST /v1/subjects/00001/22 HTTP/1.1
+        POST /v1/subjects/{subjectId}/{encounterId}?transactionId=string HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
         {
-            "data": [
-                {
-                    "biometricType": "FACE",
-                    "biometricSubType": "UNKNOWN",
-                    "image": "byte",
-                    "imageRef": "https://example.com"
-                }
+            "galleries": [
+                "string"
             ],
-            "filters": {
-                "galleries": [
-                    "string"
-                ],
-                "lastName": "string",
-                "firstName": "string",
-                "dateOfBirth": "2019-01-09"
-            }
+            "encounter": [
+                {
+                    "encounterType": "string",
+                    "clientData": "c3RyaW5n",
+                    "contextualData": {
+                        "date": "2019-01-21"
+                    },
+                    "biographicData": {
+                        "lastName": "string",
+                        "firstName": "string",
+                        "dateOfBirth": "2019-01-21"
+                    },
+                    "biometricData": [
+                        {
+                            "biometricType": "FACE",
+                            "biometricSubType": "UNKNOWN",
+                            "image": "c3RyaW5n",
+                            "imageRef": "https://example.com"
+                        }
+                    ]
+                }
+            ]
         }
 
 
@@ -62,10 +77,56 @@
         }
 
 
-.. http:get:: /v1/subjects/{subjectId}/{encounterId}
-    :synopsis: Read
+.. admonition:: Callback: insertResponse
 
-    **Read**
+    .. http:post:: ${request.query.callback}
+        :synopsis: Response callback
+    
+        **Response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            {
+                "status": "OK",
+                "subjectId": "string",
+                "encounterId": "string"
+            }
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
+
+.. http:get:: /v1/subjects/{subjectId}/{encounterId}
+    :synopsis: Read one encounter
+
+    **Read one encounter**
 
     :param string subjectId:
         the id of the subject
@@ -73,12 +134,15 @@
         the id of the encounter
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
     :status 200:
         Read successful
-
-
+    :status 202:
+        Request received successfully, result will be returned through the callback
     :status 400:
         Bad request
     :status 403:
@@ -92,8 +156,10 @@
 
     .. sourcecode:: http
 
-        GET /v1/subjects/00001/22?transactionId=tid01&priority=2 HTTP/1.1
+        GET /v1/subjects/{subjectId}/{encounterId}?transactionId=string HTTP/1.1
         Host: example.com
+
+
 
     **Example response:**
 
@@ -103,23 +169,31 @@
         Content-Type: application/json
 
         {
-            "data": [
-                {
-                    "biometricType": "FACE",
-                    "biometricSubType": "UNKNOWN",
-                    "image": "byte",
-                    "imageRef": "https://example.com"
-                }
+            "galleries": [
+                "string"
             ],
-            "filters": {
-                "galleries": [
-                    "string"
-                ],
-                "lastName": "string",
-                "firstName": "string",
-                "dateOfBirth": "2019-01-09"
+            "encounter": {
+                "encounterType": "string",
+                "clientData": "c3RyaW5n",
+                "contextualData": {
+                    "date": "2019-01-21"
+                },
+                "biographicData": {
+                    "lastName": "string",
+                    "firstName": "string",
+                    "dateOfBirth": "2019-01-21"
+                },
+                "biometricData": [
+                    {
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN",
+                        "image": "c3RyaW5n",
+                        "imageRef": "https://example.com"
+                    }
+                ]
             }
         }
+
 
     **Example response:**
 
@@ -134,10 +208,76 @@
         }
 
 
-.. http:put:: /v1/subjects/{subjectId}/{encounterId}
-    :synopsis: Update
+.. admonition:: Callback: insertResponse
 
-    **Update**
+    .. http:post:: ${request.query.callback}
+        :synopsis: Response callback
+    
+        **Response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            {
+                "galleries": [
+                    "string"
+                ],
+                "encounter": {
+                    "encounterType": "string",
+                    "clientData": "c3RyaW5n",
+                    "contextualData": {
+                        "date": "2019-01-21"
+                    },
+                    "biographicData": {
+                        "lastName": "string",
+                        "firstName": "string",
+                        "dateOfBirth": "2019-01-21"
+                    },
+                    "biometricData": [
+                        {
+                            "biometricType": "FACE",
+                            "biometricSubType": "UNKNOWN",
+                            "image": "c3RyaW5n",
+                            "imageRef": "https://example.com"
+                        }
+                    ]
+                }
+            }
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
+
+.. http:put:: /v1/subjects/{subjectId}/{encounterId}
+    :synopsis: Update one encounter
+
+    **Update one encounter**
 
     :param string subjectId:
         the id of the subject
@@ -145,9 +285,15 @@
         the id of the encounter
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
-
+    :query string algorithm:
+        Hint about the algorithm to be used
+    :status 202:
+        Request received successfully, result will be returned through the callback
     :status 204:
         Update successful
     :status 400:
@@ -163,28 +309,38 @@
 
     .. sourcecode:: http
 
-        PUT /v1/subjects/{subjectId}/{encounterId} HTTP/1.1
+        PUT /v1/subjects/{subjectId}/{encounterId}?transactionId=string HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
         {
-            "data": [
-                {
-                    "biometricType": "FACE",
-                    "biometricSubType": "UNKNOWN",
-                    "image": "byte",
-                    "imageRef": "https://example.com"
-                }
+            "galleries": [
+                "string"
             ],
-            "filters": {
-                "galleries": [
-                    "string"
-                ],
-                "lastName": "string",
-                "firstName": "string",
-                "dateOfBirth": "2019-01-09"
-            }
+            "encounter": [
+                {
+                    "encounterType": "string",
+                    "clientData": "c3RyaW5n",
+                    "contextualData": {
+                        "date": "2019-01-21"
+                    },
+                    "biographicData": {
+                        "lastName": "string",
+                        "firstName": "string",
+                        "dateOfBirth": "2019-01-21"
+                    },
+                    "biometricData": [
+                        {
+                            "biometricType": "FACE",
+                            "biometricSubType": "UNKNOWN",
+                            "image": "c3RyaW5n",
+                            "imageRef": "https://example.com"
+                        }
+                    ]
+                }
+            ]
         }
+
 
     **Example response:**
 
@@ -198,6 +354,48 @@
             "message": "string"
         }
 
+
+.. admonition:: Callback: updateResponse
+
+    .. http:post:: ${request.query.callback}
+        :synopsis: Response callback
+    
+        **Response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            "OK"
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
 
 .. http:delete:: /v1/subjects/{subjectId}/{encounterId}
     :synopsis: Delete one encounter
@@ -210,8 +408,13 @@
         the id of the encounter
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
+    :status 202:
+        Request received successfully, result will be returned through the callback
     :status 204:
         Delete successful
     :status 400:
@@ -222,13 +425,6 @@
         Unknown record
     :status 500:
         Unexpected error
-
-    **Example request:**
-
-    .. sourcecode:: http
-
-        DELETE /v1/subjects/00001/22?transactionId=tid01&priority=4 HTTP/1.1
-        Host: example.com
 
     **Example response:**
 
@@ -243,25 +439,72 @@
         }
 
 
-.. http:delete:: /v1/subjects/{subjectId}
-    :synopsis: Delete all encounter
+.. admonition:: Callback: deleteResponse
 
-    **Delete all encounter**
+    .. http:post:: ${request.query.callback}
+        :synopsis: Response callback
+    
+        **Response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            "OK"
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
+
+.. http:post:: /v1/subjects/{subjectId}
+    :synopsis: Insert one encounter and generate its ID
+
+    **Insert one encounter and generate its ID**
 
     :param string subjectId:
         the id of the subject
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
-    :status 204:
-        Delete successful
+    :query string algorithm:
+        Hint about the algorithm to be used
+    :status 200:
+        Insertion successful
+    :status 202:
+        Request received successfully, result will be returned through the callback
     :status 400:
         Bad request
     :status 403:
-        Delete not allowed
-    :status 404:
-        Unknown record
+        Insertion not allowed
     :status 500:
         Unexpected error
 
@@ -269,8 +512,52 @@
 
     .. sourcecode:: http
 
-        DELETE /v1/subjects/00001?transactionId=tid01&priority=4 HTTP/1.1
+        POST /v1/subjects/{subjectId}?transactionId=string HTTP/1.1
         Host: example.com
+        Content-Type: application/json
+
+        {
+            "galleries": [
+                "string"
+            ],
+            "encounter": [
+                {
+                    "encounterType": "string",
+                    "clientData": "c3RyaW5n",
+                    "contextualData": {
+                        "date": "2019-01-21"
+                    },
+                    "biographicData": {
+                        "lastName": "string",
+                        "firstName": "string",
+                        "dateOfBirth": "2019-01-21"
+                    },
+                    "biometricData": [
+                        {
+                            "biometricType": "FACE",
+                            "biometricSubType": "UNKNOWN",
+                            "image": "c3RyaW5n",
+                            "imageRef": "https://example.com"
+                        }
+                    ]
+                }
+            ]
+        }
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        {
+            "status": "OK",
+            "subjectId": "string",
+            "encounterId": "string"
+        }
+
 
     **Example response:**
 
@@ -285,25 +572,158 @@
         }
 
 
-.. http:post:: /v1/identify/{galleryId}
-    :synopsis: Identification based on biometric data from one gallery
+.. admonition:: Callback: insertResponse
 
-    **Identification based on biometric data from one gallery**
+    .. http:post:: ${request.query.callback}
+        :synopsis: Response callback
+    
+        **Response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            {
+                "status": "OK",
+                "subjectId": "string",
+                "encounterId": "string"
+            }
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
+
+.. http:delete:: /v1/subjects/{subjectId}
+    :synopsis: Delete all encounters
+
+    **Delete all encounters**
+
+    :param string subjectId:
+        the id of the subject
+    :query string transactionId:
+        The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
+    :query integer priority:
+        the request priority
+    :status 202:
+        Request received successfully, result will be returned through the callback
+    :status 204:
+        Delete successful
+    :status 400:
+        Bad request
+    :status 403:
+        Delete not allowed
+    :status 404:
+        Unknown record
+    :status 500:
+        Unexpected error
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. admonition:: Callback: deleteResponse
+
+    .. http:post:: ${request.query.callback}
+        :synopsis: Response callback
+    
+        **Response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            "OK"
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
+
+.. http:post:: /v1/identify/{galleryId}
+    :synopsis: Biometric identification
+
+    **Biometric identification**
+
+    Identification based on biometric data from one gallery
 
     :param string galleryId:
         the id of the gallery
-    :query string callback:
-        the callback address, where the identification result will be sent when available
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
     :query integer maxNbCand:
         the maximum number of candidates
     :query number threshold:
         the algorithm threshold
-    :query string algorithm:
-        the algorithm to use for this request
+    :query string accuracyLevel:
+        the accuracy level expected for this request
+    :status 200:
+        Request executed. Identification result is returned.
     :status 202:
         Identification request received successfully and correct
     :status 400:
@@ -317,20 +737,49 @@
 
     .. sourcecode:: http
 
-        POST /v1/identify/G01?callback=http%3A%2F%2Fclient.com%2Fcallback&transactionId=tid01&maxNbCand=10 HTTP/1.1
+        POST /v1/identify/{galleryId}?transactionId=string HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
         {
-            "data": [
+            "filter": {
+                "dateOfBirthMin": "2019-01-21",
+                "dateOfBirthMax": "2019-01-21"
+            },
+            "biometricData": [
                 {
                     "biometricType": "FACE",
                     "biometricSubType": "UNKNOWN",
-                    "image": "byte",
+                    "image": "c3RyaW5n",
                     "imageRef": "https://example.com"
                 }
             ]
         }
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        [
+            {
+                "subjectId": "string",
+                "rank": 1,
+                "score": 1.0,
+                "scoreList": [
+                    {
+                        "score": 1.0,
+                        "encounterId": "string",
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN"
+                    }
+                ]
+            }
+        ]
+
 
     **Example response:**
 
@@ -344,76 +793,89 @@
             "message": "string"
         }
 
-.. admonition:: Callback
 
-    .. http:post:: /callback
-        :synopsis: null
+.. admonition:: Callback: identifyResponse
 
-        Callback called when the result of the identification is available.
-
-        The request body will contain the list of candidates.
-
+    .. http:post:: ${request.query.callback}
+        :synopsis: Identification response callback
+    
+        **Identification response callback**
+    
         :query string transactionId:
             The id of the transaction
-        :status 204: Response is received and accepted.
-        :status 403: Forbidden access to the service
-        :status 500: Unexpected error
-
-    **Example request:**
-
-    .. sourcecode:: http
-
-        POST http://client.com/callback?transactionId=tid01 HTTP/1.1
-        Host: client.com
-        Content-Type: application/json
-
-        [
-        {
-            "subjectId": "00001",
-            "rank": 1,
-            "score": 1234,
-            "scoreList": [
-            {
-                "score": 1234,
-                "biometricType": "FACE",
-                "biometricSubType": "PORTRAIT"
-            }
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            [
+                {
+                    "subjectId": "string",
+                    "rank": 1,
+                    "score": 1.0,
+                    "scoreList": [
+                        {
+                            "score": 1.0,
+                            "encounterId": "string",
+                            "biometricType": "FACE",
+                            "biometricSubType": "UNKNOWN"
+                        }
+                    ]
+                }
             ]
-        },
-        {
-            "subjectId": "30107",
-            "rank": 2,
-            "score": 234,
-            "scoreList": [
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
             {
-                "score": 234,
-                "biometricType": "FACE",
-                "biometricSubType": "PORTRAIT"
+                "code": 1,
+                "message": "string"
             }
-            ]
-        }
-        ]
+    
+    
 
+.. http:post:: /v1/verify/{galleryId}/{subjectId}
+    :synopsis: Biometric verification
 
-.. http:post:: /v1/verify/{subjectId}
-    :synopsis: Verification of one set of biometric data and a record in the system
+    **Biometric verification**
 
-    **Verification of one set of biometric data and a record in the system**
+    Verification of one set of biometric data and a record in the system
 
+    :param string galleryId:
+        the id of the gallery
     :param string subjectId:
         the id of the subject
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
     :query number threshold:
         the algorithm threshold
-    :query string algorithm:
-        the algorithm to use for this request
-
+    :query string accuracyLevel:
+        the accuracy level expected for this request
     :status 200:
         Verification execution successful
-
+    :status 202:
+        Request received successfully, result will be returned through the callback
     :status 400:
         Bad request
     :status 404:
@@ -427,20 +889,21 @@
 
     .. sourcecode:: http
 
-        POST /v1/verify/{subjectId} HTTP/1.1
+        POST /v1/verify/{galleryId}/{subjectId}?transactionId=string HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
         {
-            "data": [
+            "biometricData": [
                 {
                     "biometricType": "FACE",
                     "biometricSubType": "UNKNOWN",
-                    "image": "byte",
+                    "image": "c3RyaW5n",
                     "imageRef": "https://example.com"
                 }
             ]
         }
+
 
     **Example response:**
 
@@ -449,7 +912,18 @@
         HTTP/1.1 200 OK
         Content-Type: application/json
 
-        true
+        {
+            "decision": true,
+            "scores": [
+                {
+                    "score": 1.0,
+                    "encounterId": "string",
+                    "biometricType": "FACE",
+                    "biometricSubType": "UNKNOWN"
+                }
+            ]
+        }
+
 
     **Example response:**
 
@@ -464,21 +938,80 @@
         }
 
 
-.. http:post:: /v1/verify
-    :synopsis: Verification of two sets of biometric data
+.. admonition:: Callback: verifyResponse
 
-    **Verification of two sets of biometric data**
+    .. http:post:: ${request.query.callback}
+        :synopsis: Verification response callback
+    
+        **Verification response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            {
+                "decision": true,
+                "scores": [
+                    {
+                        "score": 1.0,
+                        "encounterId": "string",
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN"
+                    }
+                ]
+            }
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
+
+.. http:post:: /v1/verify
+    :synopsis: Biometric verification
+
+    **Biometric verification**
+
+    Verification of two sets of biometric data
 
     :query string transactionId:
         The id of the transaction
+        (Required)
+    :query string callback:
+        the callback address, where the result will be sent when available
     :query integer priority:
         the request priority
     :query number threshold:
         the algorithm threshold
-    :query string algorithm:
-        the algorithm to use for this request
+    :query string accuracyLevel:
+        the accuracy level expected for this request
     :status 200:
         Verification execution successful
+    :status 202:
+        Request received successfully, result will be returned through the callback
     :status 400:
         Bad request
     :status 403:
@@ -490,28 +1023,29 @@
 
     .. sourcecode:: http
 
-        POST /v1/verify HTTP/1.1
+        POST /v1/verify?transactionId=string HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
         {
-            "data1": [
+            "biometricData1": [
                 {
                     "biometricType": "FACE",
                     "biometricSubType": "UNKNOWN",
-                    "image": "byte",
+                    "image": "c3RyaW5n",
                     "imageRef": "https://example.com"
                 }
             ],
-            "data2": [
+            "biometricData2": [
                 {
                     "biometricType": "FACE",
                     "biometricSubType": "UNKNOWN",
-                    "image": "byte",
+                    "image": "c3RyaW5n",
                     "imageRef": "https://example.com"
                 }
             ]
         }
+
 
     **Example response:**
 
@@ -520,7 +1054,18 @@
         HTTP/1.1 200 OK
         Content-Type: application/json
 
-        true
+        {
+            "decision": true,
+            "scores": [
+                {
+                    "score": 1.0,
+                    "encounterId": "string",
+                    "biometricType": "FACE",
+                    "biometricSubType": "UNKNOWN"
+                }
+            ]
+        }
+
 
     **Example response:**
 
@@ -534,4 +1079,56 @@
             "message": "string"
         }
 
+
+.. admonition:: Callback: verifyResponse
+
+    .. http:post:: ${request.query.callback}
+        :synopsis: Verification response callback
+    
+        **Verification response callback**
+    
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+    
+        **Example request:**
+    
+        .. sourcecode:: http
+    
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+    
+            {
+                "decision": true,
+                "scores": [
+                    {
+                        "score": 1.0,
+                        "encounterId": "string",
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN"
+                    }
+                ]
+            }
+    
+    
+        **Example response:**
+    
+        .. sourcecode:: http
+    
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+    
+            {
+                "code": 1,
+                "message": "string"
+            }
+    
+    
 
