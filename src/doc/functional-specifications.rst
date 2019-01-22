@@ -402,6 +402,9 @@ Events
     * - Death
       - |tick|
       -
+    * - Birth cancellation
+      - |tick|
+      -
     * - Fœtal Death
       - |tick|
       -
@@ -432,7 +435,13 @@ Events
     * - Change of gender
       - |tick|
       -
+    * - Person update
+      - |tick|
+      - |tick|
     * - New person
+      -
+      - |tick|
+    * - Duplicate person
       -
       - |tick|
 
@@ -595,3 +604,36 @@ Change of Nationality Use Case
 
 (To be confirmed)
 
+Deduplication
+'''''''''''''
+
+During the lifetime of a registry, it is possible that duplicates are detected. This can happen for instance
+after the addition of biometrics in the system. When a registry considers that two records are actually the same
+and decides to merge them, a notification must be sent.
+
+.. uml::
+    :caption: Deduplication Use Case
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+    participant "CI" as CI
+    participant "CR" as CR
+
+    CI -> CI: deduplicate()
+    activate CI
+
+    CI ->> CR: notify(duplicate,[UIN])
+    deactivate CI
+
+    ...
+
+    CR -> CI: getPersonAttributes(UIN)
+    activate CR
+    activate CI
+    CR -> CR: merge()
+    deactivate CI
+    note right: merge/register duplicate
+    deactivate CR
+  
+How the target of the notification should react is specific to each subsystem.
