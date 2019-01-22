@@ -29,11 +29,12 @@ paths:
                         
       responses:
         200:
-          description: All UIN found, at least one
+          description: All UIN found (a list of at least one UIN)
           content:
             application/json:
               schema:
                 type: array
+                minimum: 1
                 items:
                   type: string
               example:
@@ -78,22 +79,7 @@ paths:
               - dob
       responses:
         200:
-          description: All the attributes requested are returned.
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties:
-                  oneOf:
-                  - type: string
-                  - type: integer
-                  - type: number
-                  - type: boolean
-              example:
-                firstName: John
-                lastName: Doo
-        206:
-          description: Not all attributes were found. Value for attributes with error is replaced with an error object.
+          description: Requested attributes values. Value for attributes with error is replaced with an error object.
           content:
             application/json:
               schema:
@@ -153,9 +139,7 @@ paths:
               dateOfBirth: "1984-11-19"
       responses:
         200:
-          description: All the attributes match
-        206:
-          description: Information about non matching attributes
+          description: Information about non matching attributes. An empty list indicates all attributes were matching.
           content:
             application/json:
               schema:

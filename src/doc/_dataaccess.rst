@@ -6,7 +6,7 @@
    The request body should contain a list of attributes and their value, formatted as a json dictionary.
 
    :query object attributes: The attributes used to retrieve the UIN
-   :status 200: All UIN found, at least one, formatted as a json list.
+   :status 200: All UIN found (a json formatted list of at least one UIN)
    :status 401: Client must be authenticated
    :status 403: Service forbidden
    :status 404: No UIN found
@@ -50,8 +50,7 @@
 
    :param string uin: Unique Identity Number
    :query array attributeNames: The names of the attributes requested for this person
-   :status 200: All the attributes requested are returned.
-   :status 206: Not all attributes were found. Value for attributes with error is replaced with an :ref:`error`.
+   :status 200: Requested attributes values or :ref:`error` description.
    :status 401: Client must be authenticated
    :status 403: Service forbidden
    :status 404: Unknown uin
@@ -69,18 +68,6 @@
 .. sourcecode:: http
 
    HTTP/1.1 200 OK
-   Content-Type: application/json
-
-   {
-         "firstName": "John",
-         "lastName": "Doo"
-   }
-
-**Example response:**
-
-.. sourcecode:: http
-
-   HTTP/1.1 206 Partial Content
    Content-Type: application/json
 
    {
@@ -113,8 +100,8 @@
    The request body should contain a list of attributes and their value, formatted as a json dictionary.
 
    :param string uin: Unique Identity Number
-   :status 200: All the attributes match
-   :status 206: Information about non matching attributes. Returns a list of matching result (See :ref:`matching-error`)
+   :status 200: Information about non matching attributes. Returns a list of matching result (See :ref:`matching-error`)
+      An empty list indicates all attributes were matching.
    :status 401: Client must be authenticated
    :status 403: Service forbidden
    :status 404: Unknown uin
@@ -139,12 +126,6 @@
 .. sourcecode:: http
 
    HTTP/1.1 200 OK
-
-**Example response:**
-
-.. sourcecode:: http
-
-   HTTP/1.1 206 Partial Content
    Content-Type: application/json
 
    [

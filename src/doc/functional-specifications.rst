@@ -402,6 +402,9 @@ Events
     * - Death
       - |tick|
       -
+    * - Birth cancellation
+      - |tick|
+      -
     * - Fœtal Death
       - |tick|
       -
@@ -432,11 +435,14 @@ Events
     * - Change of gender
       - |tick|
       -
+    * - Person update
+      - |tick|
+      - |tick|
     * - New person
       -
       - |tick|
     * - Duplicate person
-      - |tick|
+      -
       - |tick|
 
 Documents

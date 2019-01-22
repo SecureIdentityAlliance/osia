@@ -131,6 +131,19 @@ and received by zero, one, or many receivers that have subscribed to the type of
                 "uin": "123456789"
             }
             
+    * - ``birthCancellation``
+      - - ``source``: identification of the system emitting the event
+        - ``uin`` of the person whose birth declaration is being cancelled
+
+        Example:
+
+        .. code-block:: json
+
+            {
+                "source": "systemX",
+                "uin": "123456789",
+            }
+
     * - ``foetalDeath``
       - - ``source``: identification of the system emitting the event
         - ``uin`` of the new born
@@ -279,6 +292,19 @@ and received by zero, one, or many receivers that have subscribed to the type of
                 "uin": "123456789"
             }
             
+    * - ``updatePerson``
+      - - ``source``: identification of the system emitting the event
+        - ``uin`` of the person
+
+        Example:
+
+        .. code-block:: json
+
+            {
+                "source": "systemX",
+                "uin": "123456789"
+            }
+            
     * - ``newPerson``
       - - ``source``: identification of the system emitting the event
         - ``uin`` of the person
@@ -290,6 +316,24 @@ and received by zero, one, or many receivers that have subscribed to the type of
             {
                 "source": "systemX",
                 "uin": "123456789"
+            }
+
+    * - ``duplicatePerson``
+      - - ``source``: identification of the system emitting the event
+        - ``uin`` of the person to be kept
+        - ``duplicates``: list of uin for records identified as duplicates
+
+        Example:
+
+        .. code-block:: json
+
+            {
+                "source": "systemX",
+                "uin": "123456789",
+                "duplicates": [
+                    "234567890",
+                    "345678901"
+                ]
             }
             
 .. note::
