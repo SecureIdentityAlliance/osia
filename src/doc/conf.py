@@ -61,6 +61,7 @@ latex_elements = {
 \\usepackage{bbding,pifont} %% two dingbat fonts
 
 \\DeclareUnicodeCharacter{2714}{\\Checkmark}
+\\newcommand{\\DUroletodo}[1]{\\colorbox{yellow}{#1} }
 ''',
 
   'atendofbody':u'''
