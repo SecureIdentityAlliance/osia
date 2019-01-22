@@ -2,47 +2,36 @@
 Functional Specifications
 -------------------------
 
-Hypothesis
-""""""""""
 
-The design of this interface is based on the following assumptions:
+This chapter describes in pseudo code the following group of services.
+
+- UIN management. This service can be implemented by PR, by CR or by another system. We will consider it is provided
+  by a system called *UIN Generator*.
+- Notifications. When data is changed, a notification is sent and received by systems that registered for
+  this type of events. For instance, PR can register for the events *birth* emitted by CR.
+- Data access. A set of services to access data.
+
+The design is based on the following assumptions:
 
 #. All persons recorded in CR have a :term:`UIN`. The UIN can be used as a key to access person data for all records.
-#. All persons recorded in CI have a UIN. The UIN can be used as a key to access person data for all records.
-#. The CR and CI are both considered as centralized systems that are connected. If CR is architectured in a
+#. All persons recorded in PR have a UIN. The UIN can be used as a key to access person data for all records.
+#. The CR and PR are both considered as centralized systems that are connected. If CR is architectured in a
    decentralized way, and it is often the case, one of its component must be centralized, connected to the network,
-   and in charge of the exchanges with CI.
-#. Since all instances of CR and CI are customized for each business needs, dictionaries must be explicitly
-   defined to describe the attributes, the event types, and the document types. See `Dictionaries`_ for
-   the mandatory elements of those dictionaries.
-#. The relationship parent/child is not mandatory in CI. A CI implementation may manage this relationship
+   and in charge of the exchanges with PR.
+#. Since all instances of CR and PR are customized for each business needs, dictionaries must be explicitly
+   defined to describe the attributes, the event types, and the document types. See :ref:`technical-specifications`
+   for the mandatory elements of those dictionaries.
+#. The relationship parent/child is not mandatory in PR. A PR implementation may manage this relationship
    or may ignore it and rely on CR to manage it.
-#. All persons are stored in CI. There is no record in CR that is not also in CI.
+#. All persons are stored in PR. There is no record in CR that is not also in PR.
 #. The interface does not expose biometric services. Usage of biometrics is optional and is described in other
    standards already defined.
 
-Concepts
-""""""""
-
-:todo:`To be completed`
-
-Interface
-"""""""""
-
-Functions/Sevices
-'''''''''''''''''
-
-This chapter describes in pseudo code the services defined between CR and CI.
-There three categories of services:
-
-- UIN management. This service can be implemented by CI, by CR or by another system. We will consider it is provided
-  by a system called *UIN Generator*.
-- Notifications. When data is changed, a notification is sent and received by systems that registered for
-  this type of events. For instance, CI can register for the events *birth* emitted by CR.
-- Data access. A set of services to access data.
-
 UIN Management
-~~~~~~~~~~~~~~
+""""""""""""""
+
+Services
+''''''''
 
 .. py:function:: createUIN(attributes)
 
@@ -60,20 +49,23 @@ This service is synchronous.
     !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
-    participant "CI" as CI
+    participant "PR" as PR
     participant "UIN Generator" as UIN
 
     note over CR,UIN: CR can request a new UIN
     CR -> UIN: createUIN([attributes])
     UIN -->> CR: UIN
 
-    note over CI,UIN: CI can request a new UIN
-    CI -> UIN: createUIN([attributes])
-    UIN -->> CI: UIN
+    note over PR,UIN: PR can request a new UIN
+    PR -> UIN: createUIN([attributes])
+    UIN -->> PR: UIN
 
 
 Notifications
-~~~~~~~~~~~~~
+"""""""""""""
+
+Services
+''''''''
 
 .. py:function:: notify(type,UIN)
 
@@ -92,20 +84,76 @@ This service is asynchronous.
     !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
-    participant "CI" as CI
+    participant "PR" as PR
 
-    note over CR,CI: CR can notify CI of new events
-    CR ->> CI: notify(type,[UIN])
+    note over CR,PR: CR can notify PR of new events
+    CR ->> PR: notify(type,[UIN])
 
-    note over CR,CI: CI can notify CR of new events
-    CI ->> CR: notify(type,[UIN])
+    note over CR,PR: PR can notify CR of new events
+    PR ->> CR: notify(type,[UIN])
 
 .. note::
 
     Notifications are possible after the receiver has subscribed to an event.
+
+Dictionaries
+''''''''''''
+
+.. list-table:: Event Type
+    :header-rows: 1
     
+    * - Event Type
+      - Emitted by CR
+      - Emitted by PR
+      
+    * - Live birth
+      - |tick|
+      -
+    * - Death
+      - |tick|
+      -
+    * - Fœtal Death
+      - |tick|
+      -
+    * - Marriage
+      - |tick|
+      -
+    * - Divorce
+      - |tick|
+      -
+    * - Annulment
+      - |tick|
+      -
+    * - Separation, judicial
+      - |tick|
+      -
+    * - Adoption
+      - |tick|
+      -
+    * - Legitimation
+      - |tick|
+      -
+    * - Recognition
+      - |tick|
+      -
+    * - Change of name
+      - |tick|
+      -
+    * - Change of gender
+      - |tick|
+      -
+    * - New person
+      -
+      - |tick|
+    * - Duplicate person
+      - |tick|
+      - |tick|
+
 Data Access
-~~~~~~~~~~~
+"""""""""""
+
+Services
+''''''''
 
 .. py:function:: getPersonAttributes(UIN, names)
 
@@ -115,7 +163,7 @@ Data Access
    :param list[str] names: The names of the attributes requested
    :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
 
-This service is synchronous. It can be used to retrieve attributes from CR or from CI.
+This service is synchronous. It can be used to retrieve attributes from CR or from PR.
 
 .. uml::
     :caption: ``getPersonAttributes`` Sequence Diagram
@@ -124,15 +172,15 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
-    participant "CI" as CI
+    participant "PR" as PR
 
-    note over CR,CI: CR can request person's attributes from CI
-    CR -> CI: getPersonAttributes(UIN,[names])
-    CI -->> CR: attributes
+    note over CR,PR: CR can request person's attributes from PR
+    CR -> PR: getPersonAttributes(UIN,[names])
+    PR -->> CR: attributes
 
-    note over CR,CI: CI can request person's attributes from CR
-    CI -> CR: getPersonAttributes(UIN,[names])
-    CR -->> CI: attributes
+    note over CR,PR: PR can request person's attributes from CR
+    PR -> CR: getPersonAttributes(UIN,[names])
+    CR -->> PR: attributes
 
 -------
 
@@ -144,7 +192,7 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     :param list[(str,str)] attributes: The attributes to match. Each attribute is described with its name and the expected value
     :return: If all attributes match, a *Yes* is returned. If one attribute does not match, a *No* is returned along with a list of (name,reason) for each non-matching attribute.
     
-This service is synchronous. It can be used to match attributes in CR or in CI.
+This service is synchronous. It can be used to match attributes in CR or in PR.
 
 .. uml::
     :caption: ``matchPersonAttributes`` Sequence Diagram
@@ -153,15 +201,15 @@ This service is synchronous. It can be used to match attributes in CR or in CI.
     !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
-    participant "CI" as CI
+    participant "PR" as PR
 
-    note over CR,CI: CR can match person's attributes in CI
-    CR -> CI: matchPersonAttributes(UIN,[attributes])
-    CI -->> CR: Y/N+reasons
+    note over CR,PR: CR can match person's attributes in PR
+    CR -> PR: matchPersonAttributes(UIN,[attributes])
+    PR -->> CR: Y/N+reasons
 
-    note over CR,CI: CI can match person's attributes in CR
-    CI -> CR: matchPersonAttributes(UIN,[attributes])
-    CR -->> CI: Y/N+reasons
+    note over CR,PR: PR can match person's attributes in CR
+    PR -> CR: matchPersonAttributes(UIN,[attributes])
+    CR -->> PR: Y/N+reasons
 
 -------
 
@@ -174,7 +222,7 @@ This service is synchronous. It can be used to match attributes in CR or in CI.
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
     :return: A *Yes* if all expressions are true, a *No* if one expression is false, a *Unknown* if :todo:`To be defined`
     
-This service is synchronous. It can be used to verify attributes in CR or in CI.
+This service is synchronous. It can be used to verify attributes in CR or in PR.
 
 .. uml::
     :caption: ``verifyPersonAttributes`` Sequence Diagram
@@ -183,15 +231,15 @@ This service is synchronous. It can be used to verify attributes in CR or in CI.
     !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
-    participant "CI" as CI
+    participant "PR" as PR
 
-    note over CR,CI: CR can verify person's attributes in CI
-    CR -> CI: verifyPersonAttributes(UIN,[expressions])
-    CI -->> CR: Y/N/U
+    note over CR,PR: CR can verify person's attributes in PR
+    CR -> PR: verifyPersonAttributes(UIN,[expressions])
+    PR -->> CR: Y/N/U
 
-    note over CR,CI: CI can verify person's attributes in CR
-    CI -> CR: verifyPersonAttributes(UIN,[expressions])
-    CR -->> CI: Y/N/U
+    note over CR,PR: PR can verify person's attributes in CR
+    PR -> CR: verifyPersonAttributes(UIN,[expressions])
+    CR -->> PR: Y/N/U
 
 -------
 
@@ -211,15 +259,15 @@ This service is synchronous. It can be used to get the UIN of a person.
     !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
-    participant "CI" as CI
+    participant "PR" as PR
 
-    note over CR,CI: CR can get UIN from CI
-    CR -> CI: getPersonUIN([attributes])
-    CI -->> CR: [UIN]
+    note over CR,PR: CR can get UIN from PR
+    CR -> PR: getPersonUIN([attributes])
+    PR -->> CR: [UIN]
 
-    note over CR,CI: CI can get UIN from CR
-    CI -> CR: getPersonUIN([attributes])
-    CR -->> CI: [UIN]
+    note over CR,PR: PR can get UIN from CR
+    PR -> CR: getPersonUIN([attributes])
+    CR -->> PR: [UIN]
 
 -------
 
@@ -241,28 +289,25 @@ This service is synchronous. It can be used to get the documents for a person.
     !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
-    participant "CI" as CI
+    participant "PR" as PR
 
-    note over CR,CI: CR can get a document from CI
-    CR -> CI: getDocument([UIN],documentType,format)
-    CI -->> CR: [documents]
+    note over CR,PR: CR can get a document from PR
+    CR -> PR: getDocument([UIN],documentType,format)
+    PR -->> CR: [documents]
 
-    note over CR,CI: CI can get a document from CR
-    CI -> CR: getDocument([UIN],documentType,format)
-    CR -->> CI: [documents]
+    note over CR,PR: PR can get a document from CR
+    PR -> CR: getDocument([UIN],documentType,format)
+    CR -->> PR: [documents]
 
 Dictionaries
 ''''''''''''
-
-Attributes
-~~~~~~~~~~
 
 .. list-table:: Person Attributes
     :header-rows: 1
     
     * - Attribute Name
       - In CR
-      - In CI
+      - In PR
       - Description
       
     * - UIN
@@ -315,7 +360,7 @@ Attributes
     
     * - Attribute Name
       - In CR
-      - In CI
+      - In PR
       - Description
 
     * - officer name
@@ -344,7 +389,7 @@ Attributes
     
     * - Attribute Name
       - In CR
-      - In CI
+      - In PR
       - Description
 
     * - date of union
@@ -373,7 +418,7 @@ Attributes
     
     * - Attribute Name
       - In CR
-      - In CI
+      - In PR
       - Description
 
     * - parent1 UIN
@@ -462,178 +507,311 @@ Documents
     * - marriage certificate
       - :todo:`To be completed`
 
+Biometrics
+""""""""""
 
-Use Cases
-"""""""""
+.. note:: Synchronous and Asynchronous Processing
 
-Birth Use Case
-''''''''''''''
+    Some services can be very slow depending on the algorithm used, the system workload, etc.
+    Services are described so that:
 
+    - If possible, the answer is provided synchronously in the response of the service.
+    - If not possible for some reason, a status *PENDING* is returned and the answer, when available, is
+      pushed to a callback provided by the client.
+
+    If no callback is provided, this indicates that the client wants a synchronous answer, whatever the time it takes.
+
+    If a callback is provided, the server will decide if the processing is done synchronously or asynchronously.
+
+  :todo:`add sequence diagrams`
+
+..  admonition:: Principles
+
+    - Support only multi-encounter model
+    - Do not expose templates (only images) for CRUD services
+    - Focus on simple essential services (CRUD, identify, verify)
+    - Images can be passed by value or reference
+    - Image format: ISO-19794
+
+Services
+''''''''
+
+.. py:function:: insert(subjectID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, options)
+
+    Insert a new encounter. No identify is performed. This service is synchronous.
+
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID. This is optional
+    :param list(str) galleryID: the gallery ID to which this encounter belongs
+    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
+    :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
+    :param list biometricData: the biometric data (images)
+    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
+        when encounter data is requested.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``, ``algorithm``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, the subject ID and the encounter ID are returned.
+        In case of pending operation, the result will be sent later.
+
+.. py:function:: read(subjectID, encounterID, callback, options)
+
+    Retrieve the data of an encounter.
+
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID. This is optional. If not provided, all the
+        encounters of the subject are returned.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, the encounter data is returned.
+        In case of pending operation, the result will be sent later.
+
+.. py:function:: update(subjectID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, options)
+
+    Update an encounter.
+
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID
+    :param list(str) galleryID: the gallery ID to which this encounter belongs
+    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
+    :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
+    :param list biometricData: the biometric data (images)
+    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
+        when encounter data is requested.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``, ``algorithm``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, the subject ID and the encounter ID are returned.
+        In case of pending operation, the result will be sent later.
+
+.. py:function:: delete(subjectID, encounterID, callback, options)
+
+    Delete an encounter.
+
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID. This is optional. If not provided, all the
+        encounters of the subject are deleted.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        In case of pending operation, the operation status will be sent later.
+
+----------
+
+.. py:function:: identify(galleryID, filter, biometricData, callback, options)
+
+    Identify a subject using biometrics data and filters on biographic or contextual data. This may include multiple
+    operations, including manual operations.
+
+    :param str galleryID: Search only in this gallery.
+    :param dict filter: The input data (filters and biometric data)
+    :param biometricData: the  biometric data.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A list of candidates is returned, either synchronously or using the callback.
+
+.. py:function:: verify(galleryID, subjectID, biometricData, callback, options)
+
+    Verify an identity using biometrics data.
+
+    :param str galleryID: Search only in this gallery. If the subject does not belong to this gallery,
+        an error is returned.
+    :param str subjectID: The subject ID
+    :param biometricData: The biometric data
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+        ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A status (boolean) is returned, either synchronously or using the callback. Optionally, details
+        about the matching result can be provided like the score per biometric and per encounter.
+
+.. py:function:: verify(biometricData1, biometricData2, callback, options)
+
+    Verify that two sets of biometrics data correspond to the same subject.
+
+    :param biometricData1: The first set of biometric data
+    :param biometricData2: The second set of biometric data
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+        ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A status (boolean) is returned, either synchronously or using the callback. Optionally, details
+        about the matching result can be provided like the score per the biometric.
+
+Options
+'''''''
+
+.. list-table:: Biometric Services Options
+    :header-rows: 1
+    :widths: 25 75
+
+    * - Name
+      - Description
+
+    * - ``transactionID``
+      - A string provided by the client application to identity the request being submitted.
+        It is optional in most cases. When provided, it can be used for tracing and debugging.
+        It is mandatory for asynchronous services and is included in the response pushed asynchronously.
+    * - ``priority``
+      - Priority of the request. Values range from 0 to 9
+    * - ``maxNbCand``
+      - The maximum number of candidates to return.
+    * - ``threshold``
+      - The threshold to apply on the score to filter the candidates during an identification,
+        authentication or verification.
+    * - ``algorithm``
+      - Specify the type of algorithm to be used.
+    * - ``accuracyLevel``
+      - Specify the accuracy expected of the request. This is to support different use cases, when
+        different behavior of the ABIS is expected (response time, accuracy, consolidation/fusion, etc.).
+
+Data Model
+''''''''''
+
+.. list-table:: Biometric Data Model
+    :header-rows: 1
+    :widths: 25 50 25
+
+    * - Type
+      - Description
+      - Example
+
+    * - Gallery
+      - A group of subjects related by a common purpose, designation, or status.
+        A subject can belong to multiple galleries.
+      - :todo:`TBD`
+
+    * - Subject
+      - Person who is known to an identity assurance system.
+      - :todo:`TBD`
+
+    * - Encounter
+      - Event in which the client application interacts with a subject resulting in data being
+        collected during or about the encounter. An encounter is characterized by an *identifier* and a *type*
+        (also called *purpose* in some context).
+      - :todo:`TBD`
+
+    * - Biographic Data
+      - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.
+      - :todo:`TBD`
+
+    * - Filters
+      - a dictionary (list of names and values or *range* of values) describing the filters during a search.
+        Filters can apply on biographic data, contextual data or encounter type.
+      - :todo:`TBD`
+
+    * - Biometric Data
+      - Digital representation of biometric characteristics.
+        As an example, a record containing the image of a finger is a biometric data.
+        All images can be passed by value (image buffer is in the request) or by reference (the address of the
+        image is in the request).
+        All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
+        metadata specific to fingerprint, palmprint, portrait or iris.
+      - :todo:`TBD`
+
+    * - Candidate
+      - Information about a candidate found during an identification
+      - :todo:`TBD`
+
+    * - CandidateScore
+      - Detailed information about a candidate found during an identification. It includes
+        the score for the biometrics used.
+      - :todo:`TBD`
+      
 .. uml::
-    :caption: Birth Use Case
+    :caption: Biometric Data Model
     :scale: 50%
 
     !include "skin.iwsd"
-    hide footbox
-    actor "Mother or Father" as parent
-    participant "CR" as CR
-    participant "CI" as CI
-    participant "UIN Generator" as UINGen
-    
-    parent -> CR
-    activate parent
-    activate CR
-    
-    group 1. Checks
-        CR -> CI: matchPersonAttributes(mother attributes)
-        CR -> CI: matchPersonAttributes(father attributes)
-        CR -> CI: getPersonAttributes(mother)
-        CR -> CI: getPersonAttributes(father)
-        CR -> CI: getPersonUIN(new born attributes)
-        CR -> CR: Additional checks
-    end
-    
-    group 2. Creation
-        CR -> UINGen: createUIN()
-        CR -> CR
-        note right: register the birth
 
-        CR -->> parent: certificate
-        destroy parent
-    end
-    
-    group 3. Notification
-        CR ->> CI: notify(birth,UIN)
-        deactivate CR
+    class Gallery {
+        string galleryID;
+    }
 
+    class Subject {
+        string subjectID;
+    }
+
+    Subject "*" - "*" Gallery
+
+    class Encounter {
+        string encounterID;
+        string encounterType;
+        byte[] clientData;
+    }
+
+    Subject o-- "*" Encounter
+
+    class BiographicData {
+        string field1;
+        int field2;
+        date field3;
         ...
-        
-        CI -> CR: getPersonAttributes(new born)
-        activate CI
-        CI -> CR: getPersonAttributes(mother)
-        CI -> CR: getPersonAttributes(father)
-        CI -> CI
-        note right: create/update identities
-        deactivate CI
-    end
-  
-1. Checks
+    }
+    Encounter o- BiographicData
 
-   When a request is submitted, the CR may run checks against the data available in the CI using:
-
-   - ``matchPersonAttributes``: to check the exactitude of the parents' attributes as known in the CI
-   - ``getPersonAttributes``: to get missing data about the parents's identity
-   - ``getPersonUIN``: to check if the new born is already known to CI or not
-
-   How the CR will process the request in case of data discrepancy is specific to each CR implementation
-   and not in the scope of this document.
-
-2. Creation
-
-   The birth is registered in the CR. The first step after the checks is to generate a new UIN
-   a call to ``createUIN``.
+    class ContextualData {
+        string field1;
+        int field2;
+        date field3;
+        ...
+    }
+    ContextualData -o Encounter
     
-3. Notification
+    class Filters {
+        string filter1;
+        int filter2Min;
+        int filter2Max;
+        date filter3Min;
+        date filter3Max;
+        ...
+    }
 
-   As part of the birth registration, it is the responsibility of the CR to notify other systems, including the CI,
-   of this event using:
-   
-   - ``notify``: to send a *birth* along with the new ``UIN``.
-   
-   The CI, upon reception of the birth event, will update the identity registry with this new identity using:
+
+    class BiometricData {
+    }
+
+    Encounter o-- "*" BiometricData
+
+    class Finger {
+        byte[] fingerImage;
+        URL fingerImageRef;
+    }
+    BiometricData <|-- Finger
+
+    class Palm {
+        byte[] palmImage;
+        URL palmImageRef;
+    }
+    BiometricData <|-- Palm
+
+    class Portrait {
+        byte[] portraitImage;
+        URL portraitImageRef;
+    }
+    BiometricData <|-- Portrait
     
-   - ``getPersonAttributes``: to get the attributes of interest to the CI for the parents and the new child.
+    class Iris {
+        byte[] irisImage;
+        URL irisImageRef;
+    }
+    BiometricData <|-- Iris
+    
+    class Candidate {
+      int rank;
+      int score;
+    }
+    Candidate . Subject
 
-Death Use Case
-''''''''''''''
+    class CandidateScore {
+      int score;
+      string encounterID;
+      enum biometricType;
+      enum biometricSubType;
+    }
+    Candidate -- "*" CandidateScore
 
-:todo:`To be completed`
-
-Fœtal Death Use Case
-''''''''''''''''''''
-
-:todo:`To be completed`
-
-Marriage Use Case
-'''''''''''''''''
-
-:todo:`To be completed`
-
-Divorce Use Case
-''''''''''''''''
-
-:todo:`To be completed`
-
-Annulment Use Case
-''''''''''''''''''
-
-:todo:`To be completed`
-
-Separation Use Case
-'''''''''''''''''''
-
-:todo:`To be completed`
-
-Adoption Use Case
-'''''''''''''''''
-
-:todo:`To be completed`
-
-Legitimation Use Case
-'''''''''''''''''''''
-
-:todo:`To be completed`
-
-Recognition Use Case
-''''''''''''''''''''
-
-:todo:`To be completed`
-
-Change of Name/Gender Use Case
-''''''''''''''''''''''''''''''
-
-:todo:`To be completed`
-
-Transcription Use Case
-''''''''''''''''''''''
-
-:todo:`To be completed`
-
-Change of Nationality Use Case
-''''''''''''''''''''''''''''''
-
-(To be confirmed)
-
-Deduplication
-'''''''''''''
-
-During the lifetime of a registry, it is possible that duplicates are detected. This can happen for instance
-after the addition of biometrics in the system. When a registry considers that two records are actually the same
-and decides to merge them, a notification must be sent.
-
-.. uml::
-    :caption: Deduplication Use Case
-    :scale: 50%
-
-    !include "skin.iwsd"
-    hide footbox
-    participant "CI" as CI
-    participant "CR" as CR
-
-    CI -> CI: deduplicate()
-    activate CI
-
-    CI ->> CR: notify(duplicate,[UIN])
-    deactivate CI
-
-    ...
-
-    CR -> CI: getPersonAttributes(UIN)
-    activate CR
-    activate CI
-    CR -> CR: merge()
-    deactivate CI
-    note right: merge/register duplicate
-    deactivate CR
-  
-How the target of the notification should react is specific to each subsystem.
+    

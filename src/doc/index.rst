@@ -14,6 +14,8 @@ This specification is licensed under `The MIT License <https://opensource.org/li
     :maxdepth: 3
 
     intro
+    overview
+    use-cases
     functional-specifications
     technical-specifications
 

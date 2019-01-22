@@ -1,90 +1,39 @@
 
+.. _technical-specifications:
+
 Technical Specifications
 ------------------------
 
-Services
-""""""""
+:todo:`Introduction to be done`
 
 UIN Management
-''''''''''''''
+""""""""""""""
+
+Services
+''''''''
 
 .. include:: _uin.rst
 
-Data Access
-'''''''''''
-
-.. include:: _dataaccess.rst
-
 Notifications
-'''''''''''''
+"""""""""""""
+
+Services
+''''''''
 
 .. attention::
 
     The interface to subscribe, receive, and notify events is not described here.
     It has not been decided if it is worth defining a neutral interface abstracting
-    the broker and making the CR & CI provider independent from the broker selected
+    the broker and making the CR & PR provider independent from the broker selected
     by the integrator, or if it is better to use the native interface of the broker.
 
     The first solution means an abstraction of the broker must be implemented, adding
     possible source of bugs or failures.
 
-    The second solution means the CR or CI cannot be simply replaced by a CR or CI
+    The second solution means the CR or PR cannot be simply replaced by a CR or PR
     from another vendor without some adaptation to use the interface of the broker.
 
     To all reviewers: please comment and propose on this topic.
-
-Data Model
-""""""""""
-
-.. _person-attributes:
-
-Person Attributes
-'''''''''''''''''
-
-When exchanged in the services described in this document, the persons attributes
-will apply the following rules:
-
-.. list-table:: Person Attributes
-    :header-rows: 1
-    :widths: 20 30 50
-    
-    * - Attribute Name
-      - Description
-      - Format
-      
-    * - ``uin``
-      - Unique Identity Number
-      - Text
-    * - ``firstName``
-      - First name
-      - Text
-    * - ``lastName``
-      - Last name
-      - Text
-    * - ``spouseName``
-      - Spouse name
-      - Text
-    * - ``dateOfBirth``
-      - Date of birth
-      - Date (iso8601). Example: ``1987-11-17``
-    * - ``placeOfBirth``
-      - Place of birth
-      - Text
-    * - ``gender``
-      - Gender
-      - Number (iso5218). One of 0 (Not known), 1 (Male), 2 (Female), 9 (Not applicable)
-    * - ``dateOfDeath``
-      - Date of death
-      - Date (iso8601). Example: ``2018-11-17``
-    * - ``placeOfDeath``
-      - Place of death
-      - Text
-    * - ``reasonOfDeath``
-      - Reason of death
-      - Text
-    * - ``status``
-      - Status. Example: missing, wanted, dead, etc.
-      - Text
 
 Notification Message
 ''''''''''''''''''''
@@ -343,11 +292,74 @@ and received by zero, one, or many receivers that have subscribed to the type of
 .. attention::
 
     Should the UIN be mandatory? What happens when a person has no UIN?
+
+
+Data Access
+"""""""""""
+
+Services
+''''''''
+
+.. include:: _dataaccess.rst
+
+Data Model
+''''''''''
+
+.. _person-attributes:
+
+Person Attributes
+~~~~~~~~~~~~~~~~~
+
+When exchanged in the services described in this document, the persons attributes
+will apply the following rules:
+
+.. list-table:: Person Attributes
+    :header-rows: 1
+    :widths: 20 30 50
+    
+    * - Attribute Name
+      - Description
+      - Format
+      
+    * - ``uin``
+      - Unique Identity Number
+      - Text
+    * - ``firstName``
+      - First name
+      - Text
+    * - ``lastName``
+      - Last name
+      - Text
+    * - ``spouseName``
+      - Spouse name
+      - Text
+    * - ``dateOfBirth``
+      - Date of birth
+      - Date (iso8601). Example: ``1987-11-17``
+    * - ``placeOfBirth``
+      - Place of birth
+      - Text
+    * - ``gender``
+      - Gender
+      - Number (iso5218). One of 0 (Not known), 1 (Male), 2 (Female), 9 (Not applicable)
+    * - ``dateOfDeath``
+      - Date of death
+      - Date (iso8601). Example: ``2018-11-17``
+    * - ``placeOfDeath``
+      - Place of death
+      - Text
+    * - ``reasonOfDeath``
+      - Reason of death
+      - Text
+    * - ``status``
+      - Status. Example: missing, wanted, dead, etc.
+      - Text
+
     
 .. _matching-error:
 
 Matching Error
-''''''''''''''
+~~~~~~~~~~~~~~
 
 A list of:
 
@@ -373,7 +385,7 @@ A list of:
 .. _expression:
 
 Expression
-''''''''''
+~~~~~~~~~~
 
 .. list-table:: Expression Object
     :header-rows: 1
@@ -402,7 +414,7 @@ Expression
 .. _error:
 
 Error
-'''''
+~~~~~
 
 .. list-table:: Error Object
     :header-rows: 1
@@ -422,3 +434,16 @@ Error
       - String
       - Error message
       - Yes
+
+Biometrics
+""""""""""
+
+Services
+''''''''
+
+.. include:: _abis.rst
+
+Data Model
+''''''''''
+
+:todo:`To be completed`
