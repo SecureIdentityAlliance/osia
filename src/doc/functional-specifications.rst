@@ -641,6 +641,28 @@ Services
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per the biometric.
 
+----------
+
+.. py:function:: getGalleries(callback, options)
+
+    Get the ID of all the galleries.
+
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        A list of subjects/encounters is returned, either synchronously or using the callback.
+
+.. py:function:: getGalleryContent(galleryID, callback, options)
+
+    Get the content of one gallery, i.e. the IDs of all records linked to this gallery.
+
+    :param str galleryID: Gallery whose content will be returned.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        A list of subjects/encounters is returned, either synchronously or using the callback.
+
+
 Options
 '''''''
 
