@@ -10,6 +10,8 @@ This chapter describes in pseudo code the following group of services.
 - Notifications. When data is changed, a notification is sent and received by systems that registered for
   this type of events. For instance, PR can register for the events *birth* emitted by CR.
 - Data access. A set of services to access data.
+- Usage. Identity based services implemented on top of Identity system mainly *Identity Verification* and
+  *Identity Attribute* sharing.
 
 The design is based on the following assumptions:
 
@@ -66,6 +68,26 @@ Notifications
 
 Services
 ''''''''
+
+.. py:function:: subscribe(type,URL)
+
+   Subscribe a URL to receive notifications for one kind of event
+
+   :param str type: Event type
+   :param str URL: URL to be called when a notification is available
+   :return: bool
+
+This service is synchronous.
+
+.. py:function:: unsubscribe(type,URL)
+
+   Unsubscribe a URL from the list of receiver for one kind of event
+
+   :param str type: Event type
+   :param str URL: URL used during the subscription
+   :return: bool
+
+This service is synchronous.
 
 .. py:function:: notify(type,UIN)
 
@@ -430,69 +452,6 @@ Dictionaries
       -
       -
 
-
-Events
-~~~~~~
-
-.. list-table:: Event Type
-    :header-rows: 1
-    
-    * - Event Type
-      - Emitted by CR
-      - Emitted by CI
-      
-    * - Live birth
-      - |tick|
-      -
-    * - Death
-      - |tick|
-      -
-    * - Birth cancellation
-      - |tick|
-      -
-    * - Fœtal Death
-      - |tick|
-      -
-    * - Marriage
-      - |tick|
-      -
-    * - Divorce
-      - |tick|
-      -
-    * - Annulment
-      - |tick|
-      -
-    * - Separation, judicial
-      - |tick|
-      -
-    * - Adoption
-      - |tick|
-      -
-    * - Legitimation
-      - |tick|
-      -
-    * - Recognition
-      - |tick|
-      -
-    * - Change of name
-      - |tick|
-      -
-    * - Change of gender
-      - |tick|
-      -
-    * - Person update
-      - |tick|
-      - |tick|
-    * - New person
-      -
-      - |tick|
-    * - Duplicate person
-      -
-      - |tick|
-
-Documents
-~~~~~~~~~
-
 .. list-table:: Document Type
     :header-rows: 1
     
@@ -640,28 +599,6 @@ Services
     :return: a status indicating success, error, or pending operation.
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per the biometric.
-
-----------
-
-.. py:function:: getGalleries(callback, options)
-
-    Get the ID of all the galleries.
-
-    :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-    :return: a status indicating success, error, or pending operation.
-        A list of subjects/encounters is returned, either synchronously or using the callback.
-
-.. py:function:: getGalleryContent(galleryID, callback, options)
-
-    Get the content of one gallery, i.e. the IDs of all records linked to this gallery.
-
-    :param str galleryID: Gallery whose content will be returned.
-    :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-    :return: a status indicating success, error, or pending operation.
-        A list of subjects/encounters is returned, either synchronously or using the callback.
-
 
 Options
 '''''''
@@ -836,4 +773,52 @@ Data Model
     }
     Candidate -- "*" CandidateScore
 
+Usage
+"""""
+
+Services
+''''''''
+
+.. py:function:: verifyIdentity(UIN, [IDAttribute])
+
+    Verify Identity based on UIN and set of Identity Attributes.
+    Attributes can be Biometric data, Civil data or a credential.
+
+    :param str UIN: The person's UIN
+    :param list[str] IDAttribute: A list of list of pair (name,value) requested
+    :return: Y or N
     
+    In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
+
+.. py:function:: identify([inIDAttribute], [outIDAttribute])
+
+    Identify a person based on a set of inIDAttribute Identity Attributes.
+    Attributes can be Biometric data, Civil data or a credential.
+    Returns list of identities with attributes specified in outIDAttribute
+
+    :param list[str] inIDAttribute: A list of list of pair (name,value) requested
+    :param list[str] outIDAttribute: A list of list of attribute names requested
+    :return: Y or N
+    
+    In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
+
+.. py:function:: getAttributes(UIN, names)
+
+    Retrieve person attributes.
+
+    :param str UIN: The person's UIN
+    :param list[str] names: The names of the attributes requested
+    :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.)
+        the value is replaced with an error
+
+.. py:function:: getAttributeSet(UIN, setName)
+
+    Retrieve person attributes corresponding to a predefined set name.
+
+    :param str UIN: The person's UIN
+    :param str setName: The name of predefined attributes set name
+    :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.)
+        the value is replaced with an error
+
+   
+ 

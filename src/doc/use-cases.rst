@@ -175,3 +175,117 @@ and decides to merge them, a notification must be sent.
     deactivate CR
   
 How the target of the notification should react is specific to each subsystem.
+
+Bank account opening Use Case
+"""""""""""""""""""""""""""""
+
+.. uml::
+    :caption: Bank account opening Use Case
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+    actor "Citizen" as citizen
+    actor "Bank attendant" as bank
+    participant "USAGE" as Uuage
+    participant "PR" as PR
+    
+    citizen -> bank : Go to agency
+    activate citizen
+    activate bank
+    
+    group 1. Verify Identity
+        citizen -> bank : UIN + Biometrics
+        deactivate citizen
+        activate usage
+        bank -> usage : verifyIdentity(UIN, biometric or civil data or credential)
+        usage -> bank : Y/N
+        bank -> bank  : create account for UIN
+    end
+    group 2. Get certified Attributes
+        bank -> usage : getAttributeSet (UIN, attribute set name)
+        usage -> PR : getPersonAttributes(UIN)
+        usage -> bank : List of attributes values
+        note right: fill-in attributes in bank account
+    end
+    deactivate citizen
+    deactivate bank
+
+ 
+Police identity control Use Cases
+"""""""""""""""""""""""""""""""""
+
+.. uml::
+    :caption: Collaborative identity control
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+    actor "Citizen" as citizen
+    actor "Policeman" as police
+    participant "USAGE" as Uuage
+    participant "ABIS" as ABIS
+    participant "PR" as PR
+
+    citizen -> police : Show ID card
+    citizen -> police : Capture fingerprint
+    activate citizen
+    activate police
+
+    group 1. Verify Identity
+        citizen -> police : UIN + Biometrics
+        deactivate citizen
+        activate usage
+        police -> usage : verifyIdentity(UIN, biometric or civil data or credential)
+        usage -> police : Y/N
+    end
+    group 2. Show corresponding attributes
+        police -> usage : getAttributeSet (UIN1, attribute set name)
+        usage -> PR : getPersonAttributes(UIN1)
+        usage -> police : List of attributes values
+        police -> usage : getAttributeSet (UIN2, attribute set name)
+        usage -> PR : getPersonAttributes(UIN2)
+        usage -> police : List of attributes values
+        police -> usage : getAttributeSet (UIN3, attribute set name)
+        usage -> PR : getPersonAttributes(UIN3)
+        usage -> police : List of attributes values
+        note right: display attributes for each candidates
+    end
+
+.. uml::
+    :caption: Non collaborative identity control
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+    actor "Citizen" as citizen
+    actor "Policeman" as police
+    participant "USAGE" as Usage
+    participant "ABIS" as ABIS
+    participant "PR" as PR
+
+    citizen -> police : Show ID card
+    citizen -> police : Capture fingerprint
+    activate citizen
+    activate police
+
+    group 1. Verify Identity
+        citizen -> police : UIN + Biometrics
+        deactivate citizen
+        activate usage
+        police -> usage : verifyIdentity(UIN, biometric or civil data or credential)
+        usage -> police : Y/N
+    end
+    group 2. Show corresponding attributes
+        police -> usage : getAttributeSet (UIN1, attribute set name)
+        usage -> PR : getPersonAttributes(UIN1)
+        usage -> police : List of attributes values
+        police -> usage : getAttributeSet (UIN2, attribute set name)
+        usage -> PR : getPersonAttributes(UIN2)
+        usage -> police : List of attributes values
+        police -> usage : getAttributeSet (UIN3, attribute set name)
+        usage -> PR : getPersonAttributes(UIN3)
+        usage -> police : List of attributes values
+        note right: display attributes for each candidates
+    end
+
