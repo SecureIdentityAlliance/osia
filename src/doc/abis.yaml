@@ -1474,18 +1474,16 @@ components:
     BiographicData:
       type: object
       properties:
-        lastName:
-          type: string
-          description: the last name of a person
-          example: "Doo"
-        firstName:
-          type: string
-          description: the first name of a person
-          example: "John"
         dateOfBirth:
           type: string
           format: date
           example: "1985-11-30"
+        gender:
+          type: string
+          enum: [M, F, U]
+        nationality:
+          type: string
+          example: FRA
     BiometricData:
       type: object
       required:

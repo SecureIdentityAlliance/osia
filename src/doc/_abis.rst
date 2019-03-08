@@ -50,9 +50,9 @@ CRUD
                         "date": "2019-01-22"
                     },
                     "biographicData": {
-                        "lastName": "string",
-                        "firstName": "string",
-                        "dateOfBirth": "2019-01-22"
+                        "dateOfBirth": "2019-01-22",
+                        "gender": "M",
+                        "nationality": "string"
                     },
                     "biometricData": [
                         {
@@ -192,9 +192,9 @@ CRUD
                     "date": "2019-01-22"
                 },
                 "biographicData": {
-                    "lastName": "string",
-                    "firstName": "string",
-                    "dateOfBirth": "2019-01-22"
+                    "dateOfBirth": "2019-01-22",
+                    "gender": "M",
+                    "nationality": "string"
                 },
                 "biometricData": [
                     {
@@ -267,9 +267,9 @@ CRUD
                         "date": "2019-01-22"
                     },
                     "biographicData": {
-                        "lastName": "string",
-                        "firstName": "string",
-                        "dateOfBirth": "2019-01-22"
+                        "dateOfBirth": "2019-01-22",
+                        "gender": "M",
+                        "nationality": "string"
                     },
                     "biometricData": [
                         {
@@ -348,9 +348,9 @@ CRUD
                         "date": "2019-01-22"
                     },
                     "biographicData": {
-                        "lastName": "string",
-                        "firstName": "string",
-                        "dateOfBirth": "2019-01-22"
+                        "dateOfBirth": "2019-01-22",
+                        "gender": "M",
+                        "nationality": "string"
                     },
                     "biometricData": [
                         {
@@ -571,9 +571,9 @@ CRUD
                         "date": "2019-01-22"
                     },
                     "biographicData": {
-                        "lastName": "string",
-                        "firstName": "string",
-                        "dateOfBirth": "2019-01-22"
+                        "dateOfBirth": "2019-01-22",
+                        "gender": "M",
+                        "nationality": "string"
                     },
                     "biometricData": [
                         {
@@ -1610,7 +1610,6 @@ Gallery
                 "code": 1,
                 "message": "string"
             }
-
 
 
 
