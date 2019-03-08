@@ -187,7 +187,7 @@ Bank account opening Use Case
     hide footbox
     actor "Citizen" as citizen
     actor "Bank attendant" as bank
-    participant "USAGE" as Uuage
+    participant "USAGE" as usage
     participant "PR" as PR
     
     citizen -> bank : Go to agency
@@ -223,7 +223,7 @@ Police identity control Use Cases
     hide footbox
     actor "Citizen" as citizen
     actor "Policeman" as police
-    participant "USAGE" as Uuage
+    participant "USAGE" as usage
     participant "ABIS" as ABIS
     participant "PR" as PR
 
@@ -260,7 +260,7 @@ Police identity control Use Cases
     hide footbox
     actor "Citizen" as citizen
     actor "Policeman" as police
-    participant "USAGE" as Usage
+    participant "USAGE" as usage
     participant "ABIS" as ABIS
     participant "PR" as PR
 
