@@ -565,7 +565,21 @@ Services
 
     :param str galleryID: Search only in this gallery.
     :param dict filter: The input data (filters and biometric data)
-    :param biometricData: the  biometric data.
+    :param biometricData: the biometric data.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A list of candidates is returned, either synchronously or using the callback.
+
+.. py:function:: identify(galleryID, filter, subjectID, callback, options)
+
+    Identify a subject using biometrics data of a subject existing in the system and filters on biographic or
+    contextual data. This may include multiple operations, including manual operations.
+
+    :param str galleryID: Search only in this gallery.
+    :param dict filter: The input data (filters and biometric data)
+    :param subjectID: the subject ID
     :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
         ``maxNbCand``, ``threshold``, ``accuracyLevel``.
@@ -599,6 +613,28 @@ Services
     :return: a status indicating success, error, or pending operation.
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per the biometric.
+
+----------
+
+.. py:function:: getGalleries(callback, options)
+
+    Get the ID os all the galleries.
+
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        A list of gallery ID is returned, either synchronously or using the callback.
+
+.. py:function:: getGalleryContent(galleryID, callback, options)
+
+    Get the content of one gallery, i.e. the IDs of all the records linked to this gallery.
+
+    :param str galleryID: Gallery whose content will be returned.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        A list of subjects/encounters is returned, either synchronously or using the callback.
+
 
 Options
 '''''''

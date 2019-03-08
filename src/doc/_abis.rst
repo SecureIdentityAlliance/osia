@@ -94,9 +94,9 @@ CRUD
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -106,35 +106,35 @@ CRUD
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             {
                 "status": "OK",
                 "subjectId": "string",
                 "encounterId": "string"
             }
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 .. http:get:: /v1/subjects/{subjectId}/{encounterId}
     :synopsis: Read one encounter
@@ -235,9 +235,9 @@ CRUD
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -247,15 +247,15 @@ CRUD
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             {
                 "galleries": [
                     "string"
@@ -281,21 +281,21 @@ CRUD
                     ]
                 }
             }
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 .. http:put:: /v1/subjects/{subjectId}/{encounterId}
     :synopsis: Update one encounter
@@ -392,9 +392,9 @@ CRUD
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -404,31 +404,31 @@ CRUD
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             "OK"
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 .. http:delete:: /v1/subjects/{subjectId}/{encounterId}
     :synopsis: Delete one encounter
@@ -486,9 +486,9 @@ CRUD
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -498,31 +498,31 @@ CRUD
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             "OK"
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 .. http:post:: /v1/subjects/{subjectId}
     :synopsis: Insert one encounter and generate its ID
@@ -629,9 +629,9 @@ CRUD
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -641,35 +641,35 @@ CRUD
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             {
                 "status": "OK",
                 "subjectId": "string",
                 "encounterId": "string"
             }
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 .. http:delete:: /v1/subjects/{subjectId}
     :synopsis: Delete all encounters
@@ -725,9 +725,9 @@ CRUD
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -737,31 +737,31 @@ CRUD
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             "OK"
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 Search
 ~~~~~~
 
@@ -873,9 +873,9 @@ Search
 
     .. http:post:: ${request.query.callback}
         :synopsis: Identification response callback
-    
+
         **Identification response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -885,15 +885,15 @@ Search
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             [
                 {
                     "subjectId": "string",
@@ -909,21 +909,173 @@ Search
                     ]
                 }
             ]
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
+
+.. http:post:: /v1/identify/{galleryId}/{subjectId}
+    :synopsis: Biometric identification
+
+    **Biometric identification**
+
+    Identification based on existing data from one gallery
+
+    :param string galleryId:
+        the id of the gallery
+    :param string subjectId:
+        the id of the subject
+    :query string transactionId:
+        The id of the transaction
+    :query string callback:
+        the callback address, where the result will be sent when available
+    :query integer priority:
+        the request priority
+    :query integer maxNbCand:
+        the maximum number of candidates
+    :query number threshold:
+        the algorithm threshold
+    :query string accuracyLevel:
+        the accuracy level expected for this request
+    :status 200:
+        Request executed. Identification result is returned.
+    :status 202:
+        Request received successfully and correct, result will be returned through the callback.
+        The transaction ID is returned (if no transaction ID was provided, one is generated by the server)
+    :status 400:
+        Bad request
+    :status 403:
+        Identification not allowed
+    :status 500:
+        Unexpected error
+
+    **Example request:**
+
+    .. sourcecode:: http
+
+        POST /v1/identify/{galleryId}/{subjectId} HTTP/1.1
+        Host: example.com
+        Content-Type: application/json
+
+        {
+            "dateOfBirthMin": "2019-01-22",
+            "dateOfBirthMax": "2019-01-22"
+        }
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        [
+            {
+                "subjectId": "string",
+                "rank": 1,
+                "score": 1.0,
+                "scoreList": [
+                    {
+                        "score": 1.0,
+                        "encounterId": "string",
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN"
+                    }
+                ]
+            }
+        ]
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 202 Accepted
+        Content-Type: application/json
+
+        "123e4567-e89b-12d3-a456-426655440000"
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. admonition:: Callback: identifyResponse
+
+    .. http:post:: ${request.query.callback}
+        :synopsis: Identification response callback
+
+        **Identification response callback**
+
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+
+        **Example request:**
+
+        .. sourcecode:: http
+
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+
+            [
+                {
+                    "subjectId": "string",
+                    "rank": 1,
+                    "score": 1.0,
+                    "scoreList": [
+                        {
+                            "score": 1.0,
+                            "encounterId": "string",
+                            "biometricType": "FACE",
+                            "biometricSubType": "UNKNOWN"
+                        }
+                    ]
+                }
+            ]
+
+
+        **Example response:**
+
+        .. sourcecode:: http
+
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+
+            {
+                "code": 1,
+                "message": "string"
+            }
+
+
 
 .. http:post:: /v1/verify/{galleryId}/{subjectId}
     :synopsis: Biometric verification
@@ -1027,9 +1179,9 @@ Search
 
     .. http:post:: ${request.query.callback}
         :synopsis: Verification response callback
-    
+
         **Verification response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -1039,15 +1191,15 @@ Search
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             {
                 "decision": true,
                 "scores": [
@@ -1059,21 +1211,21 @@ Search
                     }
                 ]
             }
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 .. http:post:: /v1/verify
     :synopsis: Biometric verification
@@ -1179,9 +1331,9 @@ Search
 
     .. http:post:: ${request.query.callback}
         :synopsis: Verification response callback
-    
+
         **Verification response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -1191,15 +1343,15 @@ Search
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             {
                 "decision": true,
                 "scores": [
@@ -1211,20 +1363,21 @@ Search
                     }
                 ]
             }
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
+
+
 Gallery
 ~~~~~~~
 
@@ -1299,9 +1452,9 @@ Gallery
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -1311,33 +1464,33 @@ Gallery
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             [
                 "string"
             ]
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 .. http:get:: /v1/galleries/{galleryId}
     :synopsis: Get the content of one gallery
@@ -1370,7 +1523,7 @@ Gallery
 
     .. sourcecode:: http
 
-        GET /v1/galleries/{galleryId}? HTTP/1.1
+        GET /v1/galleries/{galleryId} HTTP/1.1
         Host: example.com
 
 
@@ -1417,9 +1570,9 @@ Gallery
 
     .. http:post:: ${request.query.callback}
         :synopsis: Response callback
-    
+
         **Response callback**
-    
+
         :query string transactionId:
             The id of the transaction
             (Required)
@@ -1429,35 +1582,35 @@ Gallery
             Forbidden access to the service
         :status 500:
             Unexpected error
-    
+
         **Example request:**
-    
+
         .. sourcecode:: http
-    
+
             POST ${request.query.callback}?transactionId=string HTTP/1.1
             Host: example.com
             Content-Type: application/json
-    
+
             [
                 {
                     "subjectId": "string",
                     "encounterId": "string"
                 }
             ]
-    
-    
+
+
         **Example response:**
-    
+
         .. sourcecode:: http
-    
+
             HTTP/1.1 500 Internal Server Error
             Content-Type: application/json
-    
+
             {
                 "code": 1,
                 "message": "string"
             }
-    
-    
+
+
 
 
