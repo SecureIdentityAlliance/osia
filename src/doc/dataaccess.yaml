@@ -4,6 +4,9 @@ info:
   version: 1.0.0
 servers:
   - url: http://server.com/
+tags:
+  - name: Person
+  - name: Document
 paths:
   /v1/persons:
     get:
@@ -26,6 +29,7 @@ paths:
           explode: true
           example:
             firstName: John
+            lastName: Do
                         
       responses:
         200:
@@ -39,6 +43,8 @@ paths:
                   type: string
               example:
                 - "1235567890"
+        400:
+          description: Invalid parameter
         401:
           description: Client must be authenticated
         403:
@@ -79,7 +85,7 @@ paths:
               - dob
       responses:
         200:
-          description: Requested attributes values. Value for attributes with error is replaced with an error object.
+          description: Requested attributes values or error description.
           content:
             application/json:
               schema:
@@ -139,7 +145,9 @@ paths:
               dateOfBirth: "1984-11-19"
       responses:
         200:
-          description: Information about non matching attributes. An empty list indicates all attributes were matching.
+          description: |
+            Information about non matching attributes. Returns a list of matching result.
+            An empty list indicates all attributes were matching.
           content:
             application/json:
               schema:

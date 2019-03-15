@@ -1,269 +1,300 @@
-
 .. http:get:: /v1/persons
+    :synopsis: null
 
-   Retrieve a UIN based on a set of attributes. This service is used when the UIN is unknown.
+    Retrieve a UIN based on a set of attributes.
+    This service is used when the UIN is unknown.
 
-   The request body should contain a list of attributes and their value, formatted as a json dictionary.
+    :query object attributes:
+        The attributes used to retrieve the UIN
+        (Required)
+    :status 200:
+        All UIN found (a list of at least one UIN)
+    :status 400:
+        Invalid parameter
+    :status 401:
+        Client must be authenticated
+    :status 403:
+        Service forbidden
+    :status 404:
+        No UIN found
+    :status 500:
+        Unexpected error (See :ref:`error`)
 
-   :query object attributes: The attributes used to retrieve the UIN
-   :status 200: All UIN found (a json formatted list of at least one UIN)
-   :status 401: Client must be authenticated
-   :status 403: Service forbidden
-   :status 404: No UIN found
-   :status 500: Unexpected error (See :ref:`error`)
+    **Example request:**
 
-**Example request:**
+    .. sourcecode:: http
 
-.. sourcecode:: http
+        GET /v1/persons?firstName=John&lastName=Do HTTP/1.1
+        Host: example.com
 
-   GET http://server.com/v1/persons?firstName=John&lastName=Doo HTTP/1.1
-   Host: server.com
 
-**Example response:**
 
-.. sourcecode:: http
+    **Example response:**
 
-   HTTP/1.1 200 OK
-   Content-Type: application/json
+    .. sourcecode:: http
 
-   [
-         "1235567890"
-   ]
+        HTTP/1.1 200 OK
+        Content-Type: application/json
 
-**Example response:**
+        [
+            "1235567890"
+        ]
 
-.. sourcecode:: http
 
-   HTTP/1.1 500 Internal Server Error
-   Content-Type: application/json
+    **Example response:**
 
-   {
-         "code": 1,
-         "message": "string"
-   }
+    .. sourcecode:: http
 
------
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
 
 .. http:get:: /v1/persons/{uin}
+    :synopsis: null
 
-   Retrieve attributes for a person.
+    Retrieve attributes for a person.
 
-   :param string uin: Unique Identity Number
-   :query array attributeNames: The names of the attributes requested for this person
-   :status 200: Requested attributes values or :ref:`error` description.
-   :status 401: Client must be authenticated
-   :status 403: Service forbidden
-   :status 404: Unknown uin
-   :status 500: Unexpected error (See :ref:`error`)
+    :param string uin:
+        Unique Identity Number
+    :query array attributeNames:
+        The names of the attributes requested for this person
+        (Required)
+    :status 200:
+        Requested attributes values or :ref:`error` description.
+    :status 401:
+        Client must be authenticated
+    :status 403:
+        Service forbidden
+    :status 404:
+        Unknown uin
+    :status 500:
+        Unexpected error (See :ref:`error`)
 
-**Example request:**
+    **Example request:**
 
-.. sourcecode:: http
+    .. sourcecode:: http
 
-   GET http://server.com/v1/persons/123456789?attributeNames=firstName&attributeNames=lastName HTTP/1.1
-   Host: server.com
+        GET /v1/persons/{uin}?attributeNames=firstName&attributeNames=lastName&attributeNames=dob HTTP/1.1
+        Host: example.com
 
-**Example response:**
 
-.. sourcecode:: http
 
-   HTTP/1.1 200 OK
-   Content-Type: application/json
+    **Example response:**
 
-   {
-         "firstName": "John",
-         "lastName": "Doo",
-         "dob": {
-            "code": 1023,
-            "message": "Unknown attribute name"
-         }
-   }
+    .. sourcecode:: http
 
-**Example response:**
+        HTTP/1.1 200 OK
+        Content-Type: application/json
 
-.. sourcecode:: http
+        {
+            "firstName": "John",
+            "lastName": "Doo",
+            "dob": {
+                "code": 1023,
+                "message": "Unknown attribute name"
+            }
+        }
 
-   HTTP/1.1 500 Internal Server Error
-   Content-Type: application/json
 
-   {
-         "code": 1,
-         "message": "string"
-   }
+    **Example response:**
 
-----
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
 
 .. http:post:: /v1/persons/{uin}/match
+    :synopsis: null
 
-   Match person attributes. This service is used to check the value of attributes without exposing private data.
+    Match person attributes.
+    This service is used to check the value of attributes without exposing private data.
+    
+    The request body should contain a list of attributes and their value, formatted as a json dictionary.
 
-   The request body should contain a list of attributes and their value, formatted as a json dictionary.
+    :param string uin:
+        Unique Identity Number
+    :status 200:
+        Information about non matching attributes. Returns a list of matching result (See :ref:`matching-error`)
+        An empty list indicates all attributes were matching.
+    :status 401:
+        Client must be authenticated
+    :status 403:
+        Service forbidden
+    :status 404:
+        Unknown uin
+    :status 500:
+        Unexpected error (See :ref:`error`)
 
-   :param string uin: Unique Identity Number
-   :status 200: Information about non matching attributes. Returns a list of matching result (See :ref:`matching-error`)
-      An empty list indicates all attributes were matching.
-   :status 401: Client must be authenticated
-   :status 403: Service forbidden
-   :status 404: Unknown uin
-   :status 500: Unexpected error (See :ref:`error`)
+    **Example request:**
 
-**Example request:**
+    .. sourcecode:: http
 
-.. sourcecode:: http
+        POST /v1/persons/{uin}/match HTTP/1.1
+        Host: example.com
+        Content-Type: application/json
 
-   POST http://server.com/v1/persons/123456789/match HTTP/1.1
-   Host: server.com
-   Content-Type: application/json
+        {
+            "firstName": "John",
+            "lastName": "Doo",
+            "dateOfBirth": "1984-11-19"
+        }
 
-   {
-         "firstName": "John",
-         "lastName": "Doo",
-         "dateOfBirth": "1984-11-19"
-   }
 
-**Example response:**
+    **Example response:**
 
-.. sourcecode:: http
+    .. sourcecode:: http
 
-   HTTP/1.1 200 OK
-   Content-Type: application/json
+        HTTP/1.1 200 OK
+        Content-Type: application/json
 
-   [
-         {
-            "attributeName": "firstName",
-            "errorCode": 1
-         }
-   ]
+        [
+            {
+                "attributeName": "firstName",
+                "errorCode": 1
+            }
+        ]
 
-**Example response:**
 
-.. sourcecode:: http
+    **Example response:**
 
-   HTTP/1.1 500 Internal Server Error
-   Content-Type: application/json
+    .. sourcecode:: http
 
-   {
-         "code": 1,
-         "message": "string"
-   }
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
 
-----
+        {
+            "code": 1,
+            "message": "string"
+        }
+
 
 .. http:post:: /v1/persons/{uin}/verify
+    :synopsis: null
 
-   Evaluate expressions (See :ref:`expression`) on person attributes.
-   This service is used to evaluate simple expressions on
-   person's attributes without exposing private data.
+    Evaluate expressions (See :ref:`expression`) on person attributes.
+    This service is used to evaluate simple expressions on
+    person's attributes without exposing private data
+    
+    The request body should contain a list of :ref:`expression`.
 
-   The request body should contain a list of :ref:`expression`.
+    :param string uin:
+        Unique Identity Number
+    :status 200:
+        The expressions are all true (true is returned) or one is false (false is returned)
+    :status 401:
+        Client must be authenticated
+    :status 403:
+        Forbidden access. The service is forbidden or one of the attributes is forbidden.
+    :status 404:
+        Unknown uin
+    :status 500:
+        Unexpected error (See :ref:`error`)
 
-   :param string uin: Unique Identity Number
-   :status 200: The expressions are all true (``true`` is returned) or one is false (``false`` is returned)
-   :status 401: Client must be authenticated
-   :status 403: Forbidden access. The service is forbidden or one of the attributes is forbidden.
-   :status 404: Unknown uin
-   :status 500: Unexpected error (See :ref:`error`)
+    **Example request:**
 
-**Example request:**
+    .. sourcecode:: http
 
-.. sourcecode:: http
+        POST /v1/persons/{uin}/verify HTTP/1.1
+        Host: example.com
+        Content-Type: application/json
 
-   POST http://server.com/v1/persons/123456789/verify HTTP/1.1
-   Host: server.com
-   Content-Type: application/json
+        [
+            {
+                "attributeName": "firstName",
+                "operator": "=",
+                "value": "John"
+            },
+            {
+                "attributeName": "dateOfBirth",
+                "operator": "<",
+                "value": "1990-12-31"
+            }
+        ]
 
-   [
-         {
-            "attributeName": "firstName",
-            "operator": "=",
-            "value": "John"
-         },
-         {
-            "attributeName": "dateOfBirth",
-            "operator": "<",
-            "value": "1990-12-31"
-         }
-   ]
 
-**Example response:**
+    **Example response:**
 
-.. sourcecode:: http
+    .. sourcecode:: http
 
-   HTTP/1.1 200 OK
-   Content-Type: application/json
+        HTTP/1.1 200 OK
+        Content-Type: application/json
 
-   true
+        true
 
-**Example response:**
 
-.. sourcecode:: http
+    **Example response:**
 
-   HTTP/1.1 500 Internal Server Error
-   Content-Type: application/json
+    .. sourcecode:: http
 
-   {
-         "code": 1,
-         "message": "string"
-   }
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
 
-----
+        {
+            "code": 1,
+            "message": "string"
+        }
+
 
 .. http:get:: /v1/persons/{uin}/document
+    :synopsis: null
 
-   Retrieve in an unstructured format (PDF, image) a document such as a marriage certificate.
+    Retrieve in an unstructured format (PDF, image) a document such as a marriage certificate.
 
-   :param string uin: Unique Identity Number
-   :query string secondaryUin: Unique Identity Number of a second person linked to the requested document.
-      Example: wife, husband
-   :query string doctype: The type of document
-   :query string format: The expected format of the document.
-      If the document is not available at this format, it must be converted.
-      TBD: one format for certificate data.
-   :status 200: The document(s) is/are found and returned, as binary data in a MIME multipart structure.
-   :status 401: Client must be authenticated
-   :status 403: Service forbidden
-   :status 404: Unknown uin
-   :status 415: Unsupported format
-   :status 500: Unexpected error (See :ref:`error`)
+    :param string uin:
+        Unique Identity Number
+    :query string secondaryUin:
+        Unique Identity Number of a second person linked to the requested document.
+        Example: wife, husband
+    :query string doctype:
+        The type of document
+        (Required)
+    :query string format:
+        The expected format of the document.
+        If the document is not available at this format, it must be converted.
+        TBD: one format for certificate data.
+        (Required)
+    :status 200:
+        The document(s) is/are found and returned, as binary data in a MIME multipart structure.
+    :status 401:
+        Client must be authenticated
+    :status 403:
+        Service forbidden
+    :status 404:
+        Unknown uin
+    :status 415:
+        Unsupported format
+    :status 500:
+        Unexpected error (See :ref:`error`)
 
-**Example request:**
+    **Example request:**
 
-.. sourcecode:: http
+    .. sourcecode:: http
 
-   GET http://server.com/v1/persons/123456789/document?doctype=marriage&secondaryUin=234567890&format=pdf HTTP/1.1
-   Host: server.com
+        GET /v1/persons/{uin}/document?doctype=marriage&secondaryUin=234567890&format=pdf HTTP/1.1
+        Host: example.com
 
-**Example response:**
 
-.. sourcecode:: http
 
-   HTTP/1.1 200 OK
-   Content-Length: 123456
-   Content-Type: multipart/mixed; boundary="===============7834231052327633153=="
+    **Example response:**
 
-   --===============7834231052327633153==
-   Content-Type: application/pdf
+    .. sourcecode:: http
 
-   %PDF-1.4...
-   --===============7834231052327633153==
-   Content-Type: image/png
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
 
-   %PNG...
-   --===============7834231052327633153==
-   Content-Type: image/jpeg
+        {
+            "code": 1,
+            "message": "string"
+        }
 
-   ÿØÿá...
-   --===============7834231052327633153==--
-
-**Example response:**
-
-.. sourcecode:: http
-
-   HTTP/1.1 500 Internal Server Error
-   Content-Type: application/json
-
-   {
-         "code": 1,
-         "message": "string"
-   }
 
