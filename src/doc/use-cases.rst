@@ -87,60 +87,10 @@ Death Use Case
 
 :todo:`To be completed`
 
-Fœtal Death Use Case
-""""""""""""""""""""
-
-:todo:`To be completed`
-
 Marriage Use Case
 """""""""""""""""
 
 :todo:`To be completed`
-
-Divorce Use Case
-""""""""""""""""
-
-:todo:`To be completed`
-
-Annulment Use Case
-""""""""""""""""""
-
-:todo:`To be completed`
-
-Separation Use Case
-"""""""""""""""""""
-
-:todo:`To be completed`
-
-Adoption Use Case
-"""""""""""""""""
-
-:todo:`To be completed`
-
-Legitimation Use Case
-"""""""""""""""""""""
-
-:todo:`To be completed`
-
-Recognition Use Case
-""""""""""""""""""""
-
-:todo:`To be completed`
-
-Change of Name/Gender Use Case
-""""""""""""""""""""""""""""""
-
-:todo:`To be completed`
-
-Transcription Use Case
-""""""""""""""""""""""
-
-:todo:`To be completed`
-
-Change of Nationality Use Case
-""""""""""""""""""""""""""""""
-
-(To be confirmed)
 
 Deduplication
 """""""""""""
@@ -175,6 +125,12 @@ and decides to merge them, a notification must be sent.
     deactivate CR
   
 How the target of the notification should react is specific to each subsystem.
+
+ID Card Request
+"""""""""""""""
+
+:todo:`To be completed`
+
 
 Bank account opening Use Case
 """""""""""""""""""""""""""""

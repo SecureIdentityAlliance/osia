@@ -6,14 +6,6 @@ Technical Specifications
 
 :todo:`Introduction to be done`
 
-UIN Management
-""""""""""""""
-
-Services
-''''''''
-
-.. include:: _uin.rst
-
 Notifications
 """""""""""""
 
@@ -294,6 +286,14 @@ and received by zero, one, or many receivers that have subscribed to the type of
     Should the UIN be mandatory? What happens when a person has no UIN?
 
 
+UIN Management
+""""""""""""""
+
+Services
+''''''''
+
+.. include:: _uin.rst
+
 Data Access
 """""""""""
 
@@ -445,5 +445,10 @@ Services
 
 Data Model
 ''''''''''
+
+:todo:`To be completed`
+
+Third Party Services
+""""""""""""""""""""
 
 :todo:`To be completed`

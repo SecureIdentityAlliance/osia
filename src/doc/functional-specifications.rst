@@ -3,7 +3,7 @@ Functional Specifications
 -------------------------
 
 
-This chapter describes in pseudo code the following group of services.
+This chapter describes the following group of services.
 
 - UIN management. This service can be implemented by PR, by CR or by another system. We will consider it is provided
   by a system called *UIN Generator*.
@@ -29,39 +29,55 @@ The design is based on the following assumptions:
 #. The interface does not expose biometric services. Usage of biometrics is optional and is described in other
    standards already defined.
 
-UIN Management
-""""""""""""""
+The services described in this chapter are summarized in the following table:
 
-Services
-''''''''
+======================= ======= ======= =========== ======= ======= =========== =========== =======
+ID ecosystem components
+---------------------------------------------------------------------------------------------------
+Services                Enroll  PR      UIN gen.    ABIS    CR      ID Card     Funct. Reg  Usage
+======================= ======= ======= =========== ======= ======= =========== =========== =======
+**Notification**
+---------------------------------------------------------------------------------------------------
+Notify event                    U                           U
+Subscribe                       U                   U       U       U           U
+Unsubscribe                     U                   U       U       U           U
+Event callback                  I                   I       I       I           I
+----------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+**UIN Management**
+---------------------------------------------------------------------------------------------------
+Generate UIN                    U       I                   U       U
+----------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+**Data Access**
+---------------------------------------------------------------------------------------------------
+Get Person Attributes   U       IU                  U       IU      U           U           U
+Match Person Attributes         IU                          IU      U           U           U
+Verify Person Attribute         IU                          IU      U           U           U
+Get Person UIN          U       IU                          IU      U           U
+Get document                    IU                          IU
+----------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+**Biometrics**
+---------------------------------------------------------------------------------------------------
+Verify                  U                           I               U           U           U
+Identify                U                           I               U           U           U
+Insert                          U                   I               U
+Read                            U                   I               U           U           U
+Update                          U                   I               U
+Delete                          U                   I               U
+Get Gallery                     U                   I               U           U
+Get Gallery content             U                   I               U           U
+----------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+**3rd parties services**
+---------------------------------------------------------------------------------------------------
+Verify ID                                                                                   I
+Identify ID                                                                                 I
+Get Attributes                                                                              I
+Get Attributes set                                                                          I
+======================= ======= ======= =========== ======= ======= =========== =========== =======
 
-.. py:function:: createUIN(attributes)
+where:
 
-   Generate a new UIN.
-
-   :param list[(str,str)] attributes: A list of pair (attribute name, value) that can be used to allocate a new UIN
-   :return: a new UIN or an error if the generation is not possible
-
-This service is synchronous.
-
-.. uml::
-    :caption: ``createUIN`` Sequence Diagram
-    :scale: 50%
-
-    !include "skin.iwsd"
-    hide footbox
-    participant "CR" as CR
-    participant "PR" as PR
-    participant "UIN Generator" as UIN
-
-    note over CR,UIN: CR can request a new UIN
-    CR -> UIN: createUIN([attributes])
-    UIN -->> CR: UIN
-
-    note over PR,UIN: PR can request a new UIN
-    PR -> UIN: createUIN([attributes])
-    UIN -->> PR: UIN
-
+- ``I`` is used when a service is implemented (provided) by a component
+- ``U`` is used when a service is used (consumed) by a component
 
 Notifications
 """""""""""""
@@ -170,6 +186,40 @@ Dictionaries
     * - Duplicate person
       - |tick|
       - |tick|
+
+UIN Management
+""""""""""""""
+
+Services
+''''''''
+
+.. py:function:: createUIN(attributes)
+
+   Generate a new UIN.
+
+   :param list[(str,str)] attributes: A list of pair (attribute name, value) that can be used to allocate a new UIN
+   :return: a new UIN or an error if the generation is not possible
+
+This service is synchronous.
+
+.. uml::
+    :caption: ``createUIN`` Sequence Diagram
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+    participant "CR" as CR
+    participant "PR" as PR
+    participant "UIN Generator" as UIN
+
+    note over CR,UIN: CR can request a new UIN
+    CR -> UIN: createUIN([attributes])
+    UIN -->> CR: UIN
+
+    note over PR,UIN: PR can request a new UIN
+    PR -> UIN: createUIN([attributes])
+    UIN -->> PR: UIN
+
 
 Data Access
 """""""""""
@@ -809,8 +859,8 @@ Data Model
     }
     Candidate -- "*" CandidateScore
 
-Usage
-"""""
+Third Party Services
+""""""""""""""""""""
 
 Services
 ''''''''
