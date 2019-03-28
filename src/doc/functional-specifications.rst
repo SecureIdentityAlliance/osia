@@ -31,53 +31,59 @@ The design is based on the following assumptions:
 
 The services described in this chapter are summarized in the following table:
 
-======================= ======= ======= =========== ======= ======= =========== =========== =======
-ID ecosystem components
----------------------------------------------------------------------------------------------------
-Services                Enroll  PR      UIN gen.    ABIS    CR      ID Card     Funct. Reg  Usage
-======================= ======= ======= =========== ======= ======= =========== =========== =======
-**Notification**
----------------------------------------------------------------------------------------------------
-Notify event                    U                           U
-Subscribe                       U                   U       U       U           U
-Unsubscribe                     U                   U       U       U           U
-Event callback                  I                   I       I       I           I
------------------------ ------- ------- ----------- ------- ------- ----------- ----------- -------
-**UIN Management**
----------------------------------------------------------------------------------------------------
-Generate UIN                    U       I                   U       U
------------------------ ------- ------- ----------- ------- ------- ----------- ----------- -------
-**Data Access**
----------------------------------------------------------------------------------------------------
-Get Person Attributes   U       IU                  U       IU      U           U           U
-Match Person Attributes         IU                          IU      U           U           U
-Verify Person Attribute         IU                          IU      U           U           U
-Get Person UIN          U       IU                          IU      U           U
-Get document                    IU                          IU
------------------------ ------- ------- ----------- ------- ------- ----------- ----------- -------
-**Biometrics**
----------------------------------------------------------------------------------------------------
-Verify                  U                           I               U           U           U
-Identify                U                           I               U           U           U
-Insert                          U                   I               U
-Read                            U                   I               U           U           U
-Update                          U                   I               U
-Delete                          U                   I               U
-Get Gallery                     U                   I               U           U
-Get Gallery content             U                   I               U           U
------------------------ ------- ------- ----------- ------- ------- ----------- ----------- -------
-**3rd parties services**
----------------------------------------------------------------------------------------------------
-Verify ID                                                                                   I
-Identify ID                                                                                 I
-Get Attributes                                                                              I
-Get Attributes set                                                                          I
-======================= ======= ======= =========== ======= ======= =========== =========== =======
+.. table:: Services Providers and Consumers
+    :class: longtable
+    :widths: 30 10 10 10 10 10 10 10 10
+    
+    =========================== ======= ======= =========== ======= ======= =========== =========== =======
+    ..                          **ID ecosystem components**
+    --------------------------- ---------------------------------------------------------------------------
+    **Services**                Enroll  PR      UIN gen.    ABIS    CR      ID Card     Funct. Reg  Usage
+    =========================== ======= ======= =========== ======= ======= =========== =========== =======
+    :ref:`func-notifications`
+    -------------------------------------------------------------------------------------------------------
+    Notify event                        U                           U
+    Subscribe                           U                   U       U       U           U
+    Unsubscribe                         U                   U       U       U           U
+    Event callback                      I                   I       I       I           I
+    --------------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+    :ref:`func-uin-management`
+    -------------------------------------------------------------------------------------------------------
+    Generate UIN                        U       I                   U       U
+    --------------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+    :ref:`func-data-access`
+    -------------------------------------------------------------------------------------------------------
+    Get Person Attributes       U       IU                  U       IU      U           U           U
+    Match Person Attributes             IU                          IU      U           U           U
+    Verify Person Attributes            IU                          IU      U           U           U
+    Get Person UIN              U       IU                          IU      U           U
+    Get document                        IU                          IU
+    --------------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+    :ref:`func-biometrics`
+    -------------------------------------------------------------------------------------------------------
+    Verify                      U                           I               U           U           U
+    Identify                    U                           I               U           U           U
+    Insert                              U                   I               U
+    Read                                U                   I               U           U           U
+    Update                              U                   I               U
+    Delete                              U                   I               U
+    Get Gallery                         U                   I               U           U
+    Get Gallery content                 U                   I               U           U
+    --------------------------- ------- ------- ----------- ------- ------- ----------- ----------- -------
+    :ref:`func-3rd-parties-services`
+    -------------------------------------------------------------------------------------------------------
+    Verify ID                                                                                       I
+    Identify ID                                                                                     I
+    Get Attributes                                                                                  I
+    Get Attributes set                                                                              I
+    =========================== ======= ======= =========== ======= ======= =========== =========== =======
 
 where:
 
 - ``I`` is used when a service is implemented (provided) by a component
 - ``U`` is used when a service is used (consumed) by a component
+
+.. _func-notifications:
 
 Notifications
 """""""""""""
@@ -187,6 +193,8 @@ Dictionaries
       - |tick|
       - |tick|
 
+.. _func-uin-management:
+
 UIN Management
 """"""""""""""
 
@@ -220,6 +228,7 @@ This service is synchronous.
     PR -> UIN: createUIN([attributes])
     UIN -->> PR: UIN
 
+.. _func-data-access:
 
 Data Access
 """""""""""
@@ -515,6 +524,8 @@ Dictionaries
 
     * - marriage certificate
       - :todo:`To be completed`
+
+.. _func-biometrics:
 
 Biometrics
 """"""""""
@@ -858,6 +869,8 @@ Data Model
       enum biometricSubType;
     }
     Candidate -- "*" CandidateScore
+
+.. _func-3rd-parties-services:
 
 Third Party Services
 """"""""""""""""""""

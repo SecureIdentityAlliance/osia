@@ -15,7 +15,7 @@ The components are:
 
 .. list-table::
     :header-rows: 1
-    :widths: 20 30 30
+    :widths: 30 30 30
     
 
     * - ID Ecosystem Component

@@ -18,9 +18,9 @@ Revision History
    * - Version
      - Date
      - Notes
-   * - 1.0
-     - 2018-12-xx
-     - Release of version 1.0
+   * - 1.0b
+     - 2019-06-30
+     - Second alpha version
    * - 1.0a0
      - 2018-07-31
      - First alpha version
