@@ -59,9 +59,14 @@ latex_elements = {
  # no raw string can contain '\u' (this is interpreted as unicode char)
  'preamble': u'''
 \\usepackage{bbding,pifont} %% two dingbat fonts
+\\usepackage{color}
+\\usepackage{colortbl}
+\\definecolor{tableheader}{rgb}{0.47,0.71,0.82}
 
 \\DeclareUnicodeCharacter{2714}{\\Checkmark}
 \\newcommand{\\DUroletodo}[1]{\\colorbox{yellow}{#1} }
+\\renewcommand*{\\sphinxstyletheadfamily}{\\cellcolor{tableheader}\\sffamily}
+
 ''',
 
   'atendofbody':u'''
