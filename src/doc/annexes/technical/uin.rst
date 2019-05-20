@@ -1,3 +1,14 @@
+
+.. _annex-interface-uin:
+
+UIN Management
+--------------
+
+Download the OpenAPI file for this interface :todo:`here`.
+
+Services
+""""""""
+
 .. http:post:: /v1/uin
 
    Request the generation of a new UIN.

@@ -1,5 +1,14 @@
+
+.. _annex-interface-abis:
+
+Biometrics
+----------
+
+Services
+""""""""
+
 CRUD
-~~~~
+''''
 
 .. http:post:: /v1/subjects/{subjectId}/{encounterId}
     :synopsis: Insert one encounter
@@ -763,7 +772,7 @@ CRUD
 
 
 Search
-~~~~~~
+''''''
 
 .. http:post:: /v1/identify/{galleryId}
     :synopsis: Biometric identification
@@ -1379,7 +1388,7 @@ Search
 
 
 Gallery
-~~~~~~~
+'''''''
 
 .. http:get:: /v1/galleries
     :synopsis: Get the ID of all the galleries
@@ -1611,5 +1620,8 @@ Gallery
                 "message": "string"
             }
 
+Data Model
+""""""""""
 
+:todo:`To be completed`
 

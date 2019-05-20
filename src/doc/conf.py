@@ -3,18 +3,20 @@ source_suffix = '.rst'
 master_doc = 'index'
 exclude_patterns = []
 pygments_style = 'colorful'
-project = 'Open Source API'
-release = '1.0a'
+project = 'OSIA'
+release = '2.0a'
 author = 'SIA'
-html_context = {'project':'Open Source API', 'version':"1.0a0", 'copyright':'SIA'}
+html_context = {'project':'OSIA', 'version':"2.0a0", 'copyright':'SIA'}
 html_show_sphinx = False
 
 html_theme = "sphinx_rtd_theme"
-html_logo = 'logo-secure-identity-alliance3.png'
+html_logo = 'logo.png'
 
 extensions = ['sphinxcontrib.httpdomain','sphinxcontrib.plantuml']
 
 plantuml_output_format = 'svg'
+
+exclude_patterns = ['_*.rst', '*/_*.rst']
 
 rst_prolog = '''
 
@@ -22,6 +24,7 @@ rst_prolog = '''
   :http-equiv=X-UA-Compatible: IE=9    
 
 .. |tick|   unicode:: U+2714 .. HEAVY CHECK MARK
+.. |project| replace:: OSIA
 
 .. role:: todo
 
