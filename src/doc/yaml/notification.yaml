@@ -1,0 +1,381 @@
+openapi: 3.0.0
+info:
+  title: SIA Notification Interface
+  version: 1.0.0
+  description: >
+    Notification service.
+    
+    Notifications are guaranteed to be delivered at least once. In some situation,
+    it is possible they are delivered twice.
+servers:
+  - url: http://notification.com/
+  - url: https://notification.com/
+paths:
+  /v1/subscriptions:
+    post:
+      summary: Subscribe to a topic
+      description: |
+        Subscribes a client to receive event notification.
+        
+        Subscriptions are idempotent. Subscribing twice for the same topic and
+        endpoint (protocol, address) will return the same subscription ID and the
+        subscriber will receive only once the notifications.
+      operationId: subscribe
+      tags:
+        - Subscriber
+      parameters:
+        - name: topic
+          in: query
+          required: true
+          description: The name of the topic for which notifications will be sent
+          schema:
+            type: string
+        - name: protocol
+          in: query
+          required: false
+          description: The protocol used to send the notification
+          schema:
+            type: string
+            enum: [http, email]
+        - name: address
+          in: query
+          required: true
+          description: the endpoint address, where the notifications will be sent.
+          schema:
+            type: string
+            example: https://tonys-server.com
+        - name: policy
+          in: query
+          required: false
+          description: |
+            The delivery policy, expressing what happens when the message cannot be delivered.
+            
+            If not specified, retry will be done every hour for 7 days.
+            
+            The value is a set of integer separated by comma:
+            
+            - countdown: the number of seconds to wait before retrying. Default: 3600.
+            - max: the maximum max number of retry. -1 indicates infinite retry. Default: 168
+          schema:
+            type: string
+            example: "3600,-1"
+      responses:
+        200:
+          description: Subscription successfully created. Waiting for confirmation message.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Subscription'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+      callbacks:
+        onEvent:
+          # when event is sent, it will be sent to the `address` provided
+          # when making the subscription
+          '{$request.query.address}':
+            post:
+              operationId: notificationCB
+              parameters:
+                - name: message-type
+                  in: header
+                  required: true
+                  description: the type of the message
+                  schema:
+                    type: string
+                    enum: [SubscriptionConfirmation,Notification]
+                - name: subscription-id
+                  in: header
+                  required: false
+                  description: the unique ID of the subscription
+                  schema:
+                    type: string
+                - name: message-id
+                  in: header
+                  required: true
+                  description: the unique ID of the message
+                  schema:
+                    type: string
+                - name: topic-id
+                  in: header
+                  required: true
+                  description: the unique ID of the topic
+                  schema:
+                    type: string
+              requestBody:
+                description: The message
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Message'
+              responses:
+                200:
+                  description: Message received and processed.
+                500:
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+
+    get:
+      summary: Get all subscriptions
+      operationId: list_subscription
+      tags:
+        - Subscriber
+      responses:
+        200:
+          description: Get all subscriptions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscription'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+            
+  /v1/subscriptions/{uuid}:
+    delete:
+      summary: Unsubscribe from a topic
+      description: Unsubscribes a client from receiving notifications for a topic
+      operationId: unsubscribe
+      tags:
+        - Subscriber
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: the unique ID returned when the subscription was done
+          schema:
+            type: string
+      responses:
+        204:
+          description: Subscription successfully removed
+        404:
+          description: Subscription not found
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/subscriptions/confirm:
+    get:
+      summary: Confirm the subscription
+      description: |
+        Confirm a subscription
+      operationId: confirm
+      tags:
+        - Subscriber
+      parameters:
+        - name: token
+          in: query
+          required: true
+          description: the token sent to the endpoint
+          schema:
+            type: string
+      responses:
+        200:
+          description: Subscription successfully confirmed
+        400:
+          description: Invalid token
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  
+  /v1/topics:
+    post:
+      summary: Create a topic
+      description: Create a new topic. This service is idempotent.
+      operationId: create_topic
+      tags:
+        - Publisher
+      parameters:
+        - name: name
+          in: query
+          required: true
+          description: The topic name
+          schema:
+            type: string
+      responses:
+        200:
+          description: Topic was created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Topic'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      summary: Get all topics
+      operationId: list_topics
+      tags:
+        - Publisher
+      responses:
+        200:
+          description: Get all topics
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Topic'
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/topics/{uuid}:
+    delete:
+      summary: Delete a topic
+      description: Delete a topic
+      operationId: delete_topic
+      tags:
+        - Publisher
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: the unique ID returned when the topic was created
+          schema:
+            type: string
+      responses:
+        204:
+          description: Topic successfully removed
+        404:
+          description: Topic not found
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/topics/{uuid}/publish:
+    post:
+      summary: Post a notification to a topic.
+      operationId: publish
+      tags:
+        - Publisher
+      parameters:
+        - name: uuid
+          in: path
+          required: true
+          description: the unique ID of the topic
+          schema:
+            type: string
+        - name: subject
+          in: query
+          required: false
+          description: the subject of the message.
+          schema:
+            type: string
+      requestBody:
+        description: Message posted
+        required: true
+        content:
+          plain/text:
+            schema:
+              type: string
+      responses:
+        200:
+          description: Notification published
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+    Message:
+      type: object
+      required:
+        - type
+        - message
+      properties:
+        type:
+          type: string
+          enum: [SubscriptionConfirmation, Notification]
+        token:
+          type: string
+          description: Confirmation token, also available in subscribeURL
+        topic:
+          type: string
+        message:
+          type: string
+        messageId:
+          type: string
+        subject:
+          type: string
+        subscribeURL:
+          type: string
+          format: uri
+          description: URL to visit to confirm the subscription to a topic
+        timestamp:
+          type: string
+          format: datetime
+          
+    Topic:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The unique ID of the topic
+        name:
+          type: string
+    
+    Subscription:
+      type: object
+      properties:
+        uuid:
+          type: string
+          description: The unique ID of the subscription
+        topic:
+          type: string
+          description: Topic unique ID
+        protocol:
+          type: string
+          enum: [http, email]
+        address:
+          type: string
+        policy:
+          type: string
+        active:
+          type: boolean
+          description: Status indicating if the subscription was confirmed or not.

@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: SIA ABIS Interface
-  version: "1.0"
+  version: 1.0.0
   title: SIA ABIS Interface
 tags:
   - name: CRUD

@@ -4,63 +4,122 @@ Notification
 
 See :ref:`annex-interface-notification` for the technical details of this interface.
 
-Services
-""""""""
-
-.. py:function:: subscribe(type,URL)
-    :noindex:
-
-    Subscribe a URL to receive notifications for one kind of event
-
-    :param str type: Event type
-    :param str URL: URL to be called when a notification is available
-    :return: bool
-
-This service is synchronous.
-
-.. py:function:: unsubscribe(type,URL)
-    :noindex:
-
-    Unsubscribe a URL from the list of receiver for one kind of event
-
-    :param str type: Event type
-    :param str URL: URL used during the subscription
-    :return: bool
-
-This service is synchronous.
-
-.. py:function:: notify(type,UIN)
-    :noindex:
-
-    Notify of a new event all systems that subscribed to this event
-
-    :param str type: Event type
-    :param list[str] UIN: Records affected by the event
-    :return: N/A
-
-This service is asynchronous.
+The subscription & notification process is managed by a middleware and is described
+in the following diagram:
 
 .. uml::
-    :caption: ``notify`` Sequence Diagram
+    :caption: Subscription & Notification Process
     :scale: 50%
 
     !include "skin.iwsd"
     hide footbox
-    participant "CR" as CR
-    participant "PR" as PR
+    participant "Emitter" as PR
+    participant "Notification\nEngine" as N
+    participant "Subscriber" as CR
 
-    note over CR,PR: CR can notify PR of new events
-    CR ->> PR: notify(type,[UIN])
+    note over PR,N: First step is to create the topic
+    PR -> N: create_topic(name)
+    activate PR
+    activate N
+    N --> PR: uuid
+    deactivate N
+    deactivate PR
 
-    note over CR,PR: PR can notify CR of new events
-    PR ->> CR: notify(type,[UIN])
+    note over N,CR: Then a system can subscribe for events published on that topic
 
-.. note::
+    CR -> N: subscribe(topic,URL)
+    activate CR
+    activate N
+    N --> CR: id
+    deactivate CR
+    deactivate N
 
-    Notifications are possible after the receiver has subscribed to an event.
+    ... later ...
+
+    note over N,CR: confirm the address before the subscription is active
+
+    N -> CR: notify(token)
+    activate N
+    activate CR
+    CR -> N: subscribe_CB(token)
+    activate N #FFBBB
+    N --> CR: ok
+    deactivate N
+    CR --> N: ok
+    deactivate CR
+    deactivate N
+
+    note over PR,CR: it is now possible to publish notification
+
+    PR -> N: publish(message)
+    activate PR
+    activate N
+    N -> N: store
+    N --> PR: ok
+    deactivate PR
+
+    ...
+
+    loop subscriptions
+      N -> CR: subscribe_CB(message)
+      activate CR
+      CR --> N: ok
+      deactivate CR
+    end
+    deactivate N
+
+
+
+Services
+""""""""
+
+.. py:function:: subscribe(topic,URL)
+    :noindex:
+
+    Subscribe a URL to receive notifications sent to one topic
+
+    :param str topic: Topic
+    :param str URL: URL to be called when a notification is available
+    :return: a subscription ID
+
+This service is synchronous.
+
+.. py:function:: unsubscribe(id)
+    :noindex:
+
+    Unsubscribe a URL from the list of receiver for one topic
+
+    :param str id: Subscription ID
+    :return: bool
+
+This service is synchronous.
+
+.. py:function:: confirm(token)
+    :noindex:
+
+    Confirm that the URL used during the subscription is valid
+
+    :param str token: A token send through the URL.
+    :return: bool
+
+This service is synchronous.
+
+.. py:function:: publish(topic,subject,message)
+    :noindex:
+
+    Notify of a new event all systems that subscribed to this topic
+
+    :param str topic: Topic
+    :param str subject: The subject of the message
+    :param str message: The message itself (a string buffer)
+    :return: N/A
+
+This service is asynchronous (systems that subscribed on this topic are notified asynchronously).
 
 Dictionaries
 """"""""""""
+
+In the context of this document, the following events are identified:
 
 .. list-table:: Event Type
     :header-rows: 1

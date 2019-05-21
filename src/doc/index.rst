@@ -4,6 +4,7 @@
 
 .. toctree::
     :maxdepth: 3
+    :numbered:
 
     01 - intro
     02 - functional

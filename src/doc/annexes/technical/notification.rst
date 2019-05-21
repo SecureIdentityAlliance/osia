@@ -7,20 +7,391 @@ Notification
 Services
 """"""""
 
-.. attention::
+Publisher
+'''''''''
 
-    The interface to subscribe, receive, and notify events is not described here.
-    It has not been decided if it is worth defining a neutral interface abstracting
-    the broker and making the CR & PR provider independent from the broker selected
-    by the integrator, or if it is better to use the native interface of the broker.
+.. http:post:: /v1/topics
+    :synopsis: Create a topic
 
-    The first solution means an abstraction of the broker must be implemented, adding
-    possible source of bugs or failures.
+    **Create a topic**
 
-    The second solution means the CR or PR cannot be simply replaced by a CR or PR
-    from another vendor without some adaptation to use the interface of the broker.
+    Create a new topic. This service is idempotent.
 
-    To all reviewers: please comment and propose on this topic.
+    :query string name:
+        The topic name
+        (Required)
+    :status 200:
+        Topic was created.
+    :status 500:
+        Unexpected error
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        {
+            "uuid": "string",
+            "name": "string"
+        }
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. http:get:: /v1/topics
+    :synopsis: Get all topics
+
+    **Get all topics**
+
+    :status 200:
+        Get all topics
+    :status 500:
+        Unexpected error
+
+    **Example request:**
+
+    .. sourcecode:: http
+
+        GET /v1/topics HTTP/1.1
+        Host: example.com
+
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        [
+            {
+                "uuid": "string",
+                "name": "string"
+            }
+        ]
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. http:delete:: /v1/topics/{uuid}
+    :synopsis: Delete a topic
+
+    **Delete a topic**
+
+    Delete a topic
+
+    :param string uuid:
+        the unique ID returned when the topic was created
+    :status 204:
+        Topic successfully removed
+    :status 404:
+        Topic not found
+    :status 500:
+        Unexpected error
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. http:post:: /v1/topics/{uuid}/publish
+    :synopsis: Post a notification to a topic.
+
+    **Post a notification to a topic.**
+
+    :param string uuid:
+        the unique ID of the topic
+    :query string subject:
+        the subject of the message.
+    :status 200:
+        Notification published
+    :status 500:
+        Unexpected error
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+Subscriber
+''''''''''
+
+.. http:post:: /v1/subscriptions
+    :synopsis: Subscribe to a topic
+
+    **Subscribe to a topic**
+
+    Subscribes a client to receive event notification.
+    
+    Subscriptions are idempotent. Subscribing twice for the same topic and
+    endpoint (protocol, address) will return the same subscription ID and the
+    subscriber will receive only once the notifications.
+
+    :query string topic:
+        The name of the topic for which notifications will be sent
+        (Required)
+    :query string protocol:
+        The protocol used to send the notification
+    :query string address:
+        the endpoint address, where the notifications will be sent.
+        (Required)
+    :query string policy:
+        The delivery policy, expressing what happens when the message cannot be delivered.
+        
+        If not specified, retry will be done every hour for 7 days.
+        
+        The value is a set of integer separated by comma:
+        
+        - countdown: the number of seconds to wait before retrying. Default: 3600.
+        - max: the maximum max number of retry. -1 indicates infinite retry. Default: 168
+    :status 200:
+        Subscription successfully created. Waiting for confirmation message.
+    :status 500:
+        Unexpected error
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        {
+            "uuid": "string",
+            "topic": "string",
+            "protocol": "http",
+            "address": "string",
+            "policy": "string",
+            "active": true
+        }
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. admonition:: Callback: onEvent
+
+    .. http:post:: {$request.query.address}
+        :synopsis: null
+
+        :status 200:
+            Message received and processed.
+        :status 500:
+            Unexpected error
+        :reqheader message-type:
+            the type of the message
+            (Required)
+        :reqheader subscription-id:
+            the unique ID of the subscription
+        :reqheader message-id:
+            the unique ID of the message
+            (Required)
+        :reqheader topic-id:
+            the unique ID of the topic
+            (Required)
+
+        **Example request:**
+
+        .. sourcecode:: http
+
+            POST {$request.query.address} HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+
+            {
+                "type": "SubscriptionConfirmation",
+                "token": "string",
+                "topic": "string",
+                "message": "string",
+                "messageId": "string",
+                "subject": "string",
+                "subscribeURL": "https://example.com",
+                "timestamp": "string"
+            }
+
+
+        **Example response:**
+
+        .. sourcecode:: http
+
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+
+            {
+                "code": 1,
+                "message": "string"
+            }
+
+
+
+.. http:get:: /v1/subscriptions
+    :synopsis: Get all subscriptions
+
+    **Get all subscriptions**
+
+    :status 200:
+        Get all subscriptions
+    :status 500:
+        Unexpected error
+
+    **Example request:**
+
+    .. sourcecode:: http
+
+        GET /v1/subscriptions HTTP/1.1
+        Host: example.com
+
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        [
+            {
+                "uuid": "string",
+                "topic": "string",
+                "protocol": "http",
+                "address": "string",
+                "policy": "string",
+                "active": true
+            }
+        ]
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. http:delete:: /v1/subscriptions/{uuid}
+    :synopsis: Unsubscribe from a topic
+
+    **Unsubscribe from a topic**
+
+    Unsubscribes a client from receiving notifications for a topic
+
+    :param string uuid:
+        the unique ID returned when the subscription was done
+    :status 204:
+        Subscription successfully removed
+    :status 404:
+        Subscription not found
+    :status 500:
+        Unexpected error
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. http:get:: /v1/subscriptions/confirm
+    :synopsis: Confirm the subscription
+
+    **Confirm the subscription**
+
+    Confirm a subscription
+
+    :query string token:
+        the token sent to the endpoint
+        (Required)
+    :status 200:
+        Subscription successfully confirmed
+    :status 400:
+        Invalid token
+    :status 500:
+        Unexpected error
+
+    **Example request:**
+
+    .. sourcecode:: http
+
+        GET /v1/subscriptions/confirm?token=string HTTP/1.1
+        Host: example.com
+
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
 
 Notification Message
 """"""""""""""""""""

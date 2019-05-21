@@ -4,13 +4,15 @@ master_doc = 'index'
 exclude_patterns = []
 pygments_style = 'colorful'
 project = 'OSIA'
-release = '2.0a'
+release = '2.0'
 author = 'SIA'
 html_context = {'project':'OSIA', 'version':"2.0a0", 'copyright':'SIA'}
 html_show_sphinx = False
 
 html_theme = "sphinx_rtd_theme"
 html_logo = 'logo.png'
+
+numfig = True
 
 extensions = ['sphinxcontrib.httpdomain','sphinxcontrib.plantuml']
 
