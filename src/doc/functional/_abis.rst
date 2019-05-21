@@ -98,6 +98,8 @@ Services
     :param str subjectID: The subject ID
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
         encounters of the subject are returned.
+    :param str biometricType: The type of biometrics to consider
+    :param str biometricSubType: The subtype of biometrics to consider
     :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
     :return: a status indicating success, error, or pending operation.
