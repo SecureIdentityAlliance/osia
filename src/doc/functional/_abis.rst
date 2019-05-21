@@ -2,6 +2,16 @@
 Biometrics
 ----------
 
+This interface is described biometric services in the context of an identity system. It is based on
+the following principles:
+
+- It supports only multi-encounter model, meaning that an identity can have multiple set of biometric data,
+  one for each encounter.
+- It does not expose templates (only images) for CRUD services, with one exception to support
+  the use case of documents with biometrics.
+- Images can be passed by value or reference. When passed by value, they are base64-encoded.
+- Existing standards are used whenever possible, for instance image preferred format is ISO-19794.
+
 .. note:: Synchronous and Asynchronous Processing
 
     Some services can be very slow depending on the algorithm used, the system workload, etc.
@@ -14,16 +24,6 @@ Biometrics
     If no callback is provided, this indicates that the client wants a synchronous answer, whatever the time it takes.
 
     If a callback is provided, the server will decide if the processing is done synchronously or asynchronously.
-
-  :todo:`add sequence diagrams`
-
-..  admonition:: Principles
-
-    - Support only multi-encounter model
-    - Do not expose templates (only images) for CRUD services
-    - Focus on simple essential services (CRUD, identify, verify)
-    - Images can be passed by value or reference
-    - Image format: ISO-19794
 
 See :ref:`annex-interface-abis` for the technical details of this interface.
 
@@ -90,6 +90,20 @@ Services
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
     :return: a status indicating success, error, or pending operation.
         In case of pending operation, the operation status will be sent later.
+
+.. py:function:: getTemplate(subjectID, encounterID, biometricType, biometricSubType, callback, options)
+
+    Retrieve the data of an encounter.
+
+    :param str subjectID: The subject ID
+    :param str encounterID: The encounter ID. This is optional. If not provided, all the
+        encounters of the subject are returned.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, a list of template data is returned.
+        In case of pending operation, the result will be sent later.
+
 
 ----------
 
@@ -250,6 +264,11 @@ Data Model
       - Detailed information about a candidate found during an identification. It includes
         the score for the biometrics used.
       - :todo:`TBD`
+
+    * - Template
+      - A computed buffer corresponding to a biometric and allowing the comparison of biometrics.
+        A template has a format that can be a standard format or a vendor-specific format.
+      - N/A
       
 .. uml::
     :caption: Biometric Data Model
@@ -306,6 +325,11 @@ Data Model
 
     Encounter o-- "*" BiometricData
 
+    class Template {
+          byte[] buffer;
+        string format;
+    }
+
     class Finger {
         byte[] fingerImage;
         URL fingerImageRef;
@@ -329,7 +353,12 @@ Data Model
         URL irisImageRef;
     }
     BiometricData <|-- Iris
-    
+
+    Finger -- Template
+    Palm -- Template
+    Portrait -- Template
+    Iris -- Template
+
     class Candidate {
       int rank;
       int score;
