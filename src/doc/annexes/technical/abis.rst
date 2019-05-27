@@ -4,6 +4,8 @@
 Biometrics
 ----------
 
+Download the OpenAPI file for this interface :openapi:`abis.yaml`.
+
 Services
 """"""""
 

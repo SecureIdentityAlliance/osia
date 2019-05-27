@@ -4,6 +4,8 @@
 Data Access
 -----------
 
+Download the OpenAPI file for this interface :openapi:`dataaccess.yaml`.
+
 Services
 """"""""
 

@@ -10,7 +10,10 @@ html_context = {'project':'OSIA', 'version':"2.0", 'copyright':'SIA'}
 
 numfig = True
 
-extensions = ['sphinxcontrib.httpdomain','sphinxcontrib.plantuml']
+extensions = ['sphinx.ext.extlinks','sphinxcontrib.httpdomain','sphinxcontrib.plantuml']
+
+extlinks = {'openapi': ('https://github.com/SecureIdentityAlliance/open-source-api/tree/master/src/doc/yaml/%s',
+                      '')}
 
 plantuml_output_format = 'svg'
 

@@ -4,7 +4,7 @@
 UIN Management
 --------------
 
-Download the OpenAPI file for this interface :todo:`here`.
+Download the OpenAPI file for this interface :openapi:`uin.yaml`.
 
 Services
 """"""""

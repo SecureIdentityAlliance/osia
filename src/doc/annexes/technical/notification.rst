@@ -4,6 +4,8 @@
 Notification
 ------------
 
+Download the OpenAPI file for this interface :openapi:`notification.yaml`.
+
 Services
 """"""""
 
