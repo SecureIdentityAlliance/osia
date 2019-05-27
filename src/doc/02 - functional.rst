@@ -78,7 +78,7 @@ The components are:
 
 The components are represented on the following diagram:
 
-.. figure:: components.*
+.. figure:: images/components.*
     :width: 100%
 
     Components
