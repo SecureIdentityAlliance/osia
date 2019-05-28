@@ -8,11 +8,12 @@ Services
 """"""""
 
 .. py:function:: createUIN(attributes)
+    :noindex:
 
-   Generate a new UIN.
+    Generate a new UIN.
 
-   :param list[(str,str)] attributes: A list of pair (attribute name, value) that can be used to allocate a new UIN
-   :return: a new UIN or an error if the generation is not possible
+    :param list[(str,str)] attributes: A list of pair (attribute name, value) that can be used to allocate a new UIN
+    :return: a new UIN or an error if the generation is not possible
 
 This service is synchronous.
 

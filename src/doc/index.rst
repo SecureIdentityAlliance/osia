@@ -10,12 +10,7 @@
     02 - functional
     03 - security
     04 - versions
-    enrolment
-    population-registry
-    civil-registry
-    uin
-    abis
-    dms
-    3rdparty
+    05 - interfaces
+    06 - components
     annexes/index
 

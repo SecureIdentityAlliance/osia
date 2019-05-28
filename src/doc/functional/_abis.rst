@@ -31,6 +31,7 @@ Services
 """"""""
 
 .. py:function:: insert(subjectID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, options)
+    :noindex:
 
     Insert a new encounter. No identify is performed. This service is synchronous.
 
@@ -49,6 +50,7 @@ Services
         In case of pending operation, the result will be sent later.
 
 .. py:function:: read(subjectID, encounterID, callback, options)
+    :noindex:
 
     Retrieve the data of an encounter.
 
@@ -62,6 +64,7 @@ Services
         In case of pending operation, the result will be sent later.
 
 .. py:function:: update(subjectID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, options)
+    :noindex:
 
     Update an encounter.
 
@@ -80,6 +83,7 @@ Services
         In case of pending operation, the result will be sent later.
 
 .. py:function:: delete(subjectID, encounterID, callback, options)
+    :noindex:
 
     Delete an encounter.
 
@@ -92,6 +96,7 @@ Services
         In case of pending operation, the operation status will be sent later.
 
 .. py:function:: getTemplate(subjectID, encounterID, biometricType, biometricSubType, callback, options)
+    :noindex:
 
     Retrieve the data of an encounter.
 
@@ -110,6 +115,7 @@ Services
 ----------
 
 .. py:function:: identify(galleryID, filter, biometricData, callback, options)
+    :noindex:
 
     Identify a subject using biometrics data and filters on biographic or contextual data. This may include multiple
     operations, including manual operations.
@@ -124,6 +130,7 @@ Services
         A list of candidates is returned, either synchronously or using the callback.
 
 .. py:function:: identify(galleryID, filter, subjectID, callback, options)
+    :noindex:
 
     Identify a subject using biometrics data of a subject existing in the system and filters on biographic or
     contextual data. This may include multiple operations, including manual operations.
@@ -138,6 +145,7 @@ Services
         A list of candidates is returned, either synchronously or using the callback.
 
 .. py:function:: verify(galleryID, subjectID, biometricData, callback, options)
+    :noindex:
 
     Verify an identity using biometrics data.
 
@@ -153,6 +161,7 @@ Services
         about the matching result can be provided like the score per biometric and per encounter.
 
 .. py:function:: verify(biometricData1, biometricData2, callback, options)
+    :noindex:
 
     Verify that two sets of biometrics data correspond to the same subject.
 
@@ -168,6 +177,7 @@ Services
 ----------
 
 .. py:function:: getGalleries(callback, options)
+    :noindex:
 
     Get the ID os all the galleries.
 
@@ -177,6 +187,7 @@ Services
         A list of gallery ID is returned, either synchronously or using the callback.
 
 .. py:function:: getGalleryContent(galleryID, callback, options)
+    :noindex:
 
     Get the content of one gallery, i.e. the IDs of all the records linked to this gallery.
 
