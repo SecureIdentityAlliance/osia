@@ -2,18 +2,38 @@
 Functional View
 ===============
 
-Components
-----------
+Components: Standardized Definition and Scope
+---------------------------------------------
 
-The components are:
+OSIA provides seamless interconnection between multiple components part of the identity ecosystem.
 
-- The *Enrolment* component. This component is :todo:`to do`.
-- The *Population Registry* (PR) component. This component is :todo:`to do`.
-- The *UIN Generator* component. This component is :todo:`to do`.
-- The *ABIS* component. This component is :todo:`to do`.
-- The *Civil Registry* (CR) component. This component is :todo:`to do`.
-- The *Document Management System* (DMS) component. This component is :todo:`to do`.
-- The *Third Parties Services* component. This component is :todo:`to do`.
+The components are defined as follows:
+
+- The *Enrolment* component.
+- The *Population Registry* (PR) component.
+
+  Population register is defined as "an individualized data system, that is, a mechanism of continuous recording,
+  or of coordinated linkage, of selected information pertaining to each member of the resident population
+  of a country in such a way to provide the possibility of determining up-to-date information concerning
+  the size and characteristics of that population at selected time intervals. The population register is
+  the product of a continuous process, in which notifications of certain events, which may have been
+  recorded originally in different administrative systems, are automatically linked on a current basis.
+  A. method and sources of updating should cover all changes so that the characteristics of individuals in the
+  register remain current. Because of the nature of a population register, its organization, and also
+  its operation, must have a legal basis." [#]_
+
+
+- The *UIN Generator* component.
+- The *ABIS* component.
+- The *Civil Registry* (CR) component.
+
+  Civil registration is defined as "the continuous, permanent, compulsory and universal recording of the occurrence
+  and characteristics of vital events pertaining to the population, as provided through decree or regulation
+  is accordance with the legal requirement in each country.
+  Civil registration is carried out primarily for the purpose of establishing the documents provided by the law." [#]_
+
+- The *Document Management System* (DMS) component.
+- The *Third Parties Services* component.
 
 .. list-table:: Components
     :header-rows: 1
@@ -420,5 +440,12 @@ Police identity control Use Cases
         note right: display attributes for each candidates
     end
 
+.. rubric:: Footnotes
 
+.. [#] *Handbook on Civil Registration and Vital Statistics Systems: Management, Operation and Maintenance,
+   Revision 1, United Nations, New York, 2018, available at:*
+   https://unstats.un.org/unsd/demographic-social/Standards-and-Methods/files/Handbooks/crvs/crvs-mgt-E.pdf *, para 65.*
+
+.. [#] *Principles and Recommendations for a Vital Statistics System, United Nations publication
+   Sales Number E.13.XVII.10, New York, 2014, paragraph 279*
 

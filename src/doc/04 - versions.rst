@@ -1,4 +1,6 @@
 
+.. _osia-versions-ref:
+
 OSIA Versions & Referencing
 ===========================
 

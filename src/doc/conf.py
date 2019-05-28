@@ -61,7 +61,9 @@ html_theme_options = {
     'github_button': True,
     'show_powered_by': False,
     'show_relbars': True,
+    'fixed_sidebar': False,
 }
+html_show_sourcelink = False
 
 #
 # Latex/PDF Output Configuration
