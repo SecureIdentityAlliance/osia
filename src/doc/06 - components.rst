@@ -12,7 +12,7 @@ Enrolment Component
 Population Registry
 ===================
 
-The population registry component MUST implement the following interfaces:
+The population registry component MAY implement the following interfaces:
 
 .. include:: functional/_notification.rst
 
@@ -21,7 +21,7 @@ The population registry component MUST implement the following interfaces:
 Civil Registry
 ==============
 
-The civil registry component MUST implement the following interfaces:
+The civil registry component MAY implement the following interfaces:
 
 .. include:: functional/_notification.rst
 
@@ -31,14 +31,14 @@ The civil registry component MUST implement the following interfaces:
 UIN Generator
 =============
 
-The UIN generator component MUST implement the following interfaces:
+The UIN generator component MAY implement the following interfaces:
 
 .. include:: functional/_uin.rst
 
 ABIS
 ====
 
-The ABIS component MUST implement the following interfaces:
+The ABIS component MAY implement the following interfaces:
 
 .. include:: functional/_abis.rst
 
@@ -46,7 +46,7 @@ The ABIS component MUST implement the following interfaces:
 Document Management System
 ==========================
 
-The document management system component MUST implement the following interfaces:
+The document management system component MAY implement the following interfaces:
 
 :todo:`To be defined`
 
@@ -54,7 +54,7 @@ The document management system component MUST implement the following interfaces
 Third Party
 ===========
 
-The third party component MUST implement the following interfaces:
+The third party component MAY implement the following interfaces:
 
 .. include:: functional/_3rdparty.rst
 

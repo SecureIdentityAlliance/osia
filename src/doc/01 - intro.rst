@@ -44,20 +44,20 @@ OSIA scope is as follows:
 
 **1. Address the lack of common definitions within the identity ecosystem – NON PRESCRIPTIVE**
 
-Components of the identity ecosystem (civil registry, population registry, biometric identification system etc.)
-from different vendors are functionally incompatible due to the absence of a common definition/understanding of
-broader functionalities and scope.
+    Components of the identity ecosystem (civil registry, population registry, biometric identification system etc.)
+    from different vendors are functionally incompatible due to the absence of a common definition/understanding of
+    broader functionalities and scope.
 
-OSIA first step has been to formalize definitions, scope and main functionalities of each component
-within the identity ecosystem.
+    OSIA first step has been to formalize definitions, scope and main functionalities of each component
+    within the identity ecosystem.
 
 **2. Create a set of standardized interfaces – PRESCRIPTIVE**
 
-This core piece of work develops the set of interfaces and standardized data formats to connect the multiple
-identity ecosystem components to ensure seamless interaction via pre-defined services.
+    This core piece of work develops the set of interfaces and standardized data formats to connect the multiple
+    identity ecosystem components to ensure seamless interaction via pre-defined services.
 
-Process of interaction among components (hence type of services each component implements) is down to each government
-to define and implement according to local laws and regulations.
+    Process of interaction among components (hence type of services each component implements) is down to each government
+    to define and implement according to local laws and regulations.
 
 With OSIA, governments are free to select the components they need, from the suppliers
 they choose – without fear of lock in.

@@ -9,10 +9,11 @@ OSIA provides seamless interconnection between multiple components part of the i
 
 The components are defined as follows:
 
-- The *Enrolment* component.
+- The *Enrolment* component. Enrollment is defined as a system to register biographic and
+  biometric data of individuals.
 - The *Population Registry* (PR) component.
 
-  Population register is defined as "an individualized data system, that is, a mechanism of continuous recording,
+  Population registry is defined as "an individualized data system, that is, a mechanism of continuous recording,
   or of coordinated linkage, of selected information pertaining to each member of the resident population
   of a country in such a way to provide the possibility of determining up-to-date information concerning
   the size and characteristics of that population at selected time intervals. The population register is
@@ -22,9 +23,10 @@ The components are defined as follows:
   register remain current. Because of the nature of a population register, its organization, and also
   its operation, must have a legal basis." [#]_
 
-
-- The *UIN Generator* component.
-- The *ABIS* component.
+- The *UIN Generator* component. UIN generator is defined as a system to generate and manage unique identifiers.
+- The *Automated Biometric Identification System* (ABIS) component. An ABIS is defined as a *system to detect
+  the identity of an individual when it is unknown, or to verify the individual's identity when it is
+  provided, through biometrics*.
 - The *Civil Registry* (CR) component.
 
   Civil registration is defined as "the continuous, permanent, compulsory and universal recording of the occurrence
@@ -32,7 +34,8 @@ The components are defined as follows:
   is accordance with the legal requirement in each country.
   Civil registration is carried out primarily for the purpose of establishing the documents provided by the law." [#]_
 
-- The *Document Management System* (DMS) component.
+- The *Document Management System* (DMS) component. DMS is defined as a system to manage the production and
+  issuance of physical documents like ID Cards, passports, driving licenses, etc.
 - The *Third Parties Services* component.
 
 .. list-table:: Components
@@ -93,7 +96,7 @@ The components are defined as follows:
         - SMS and email server
 
     * - Third Parties Services
-      - ?
+      - :todo:`TBD`
       - KYC/auth
 
 The components are represented on the following diagram:
@@ -120,18 +123,16 @@ This chapter describes the following interfaces.
   The design is based on the following assumptions:
 
   #. All persons recorded in a registry have a :term:`UIN`. The UIN can be used as a key to access person data for all records.
-  #. The registries (civil and population) are both considered as centralized systems that are connected. If the civil registry
-     is architectured in a decentralized way, and it is often the case, one of its component must be centralized, connected to
-     the network, and in charge of the exchanges with the population registry.
-  #. Since theregistries are customized for each business needs, dictionaries must be explicitly
+  #. The registries (civil, population, or other) are considered as centralized systems that are connected. If one registry
+     is architectured in a decentralized way, one of its component must be centralized, connected to
+     the network, and in charge of the exchanges with the other registries.
+  #. Since the registries are customized for each business needs, dictionaries must be explicitly
      defined to describe the attributes, the event types, and the document types. See :ref:`annex-interface-dataaccess`
-     for the mandatory elements of those dictionaries.
+     for samples of those dictionaries.
   #. The relationship parent/child is not mandatory in the population registry. A population registry implementation may
      manage this relationship or may ignore it and rely on the civil registry to manage it.
   #. All persons are stored in the population registry. There is no record in the civil registry that is not also in
      the population registry.
-  #. The interface does not expose biometric services. Usage of biometrics is optional and is described in other
-     standards already defined.
 
 - Biometrics.
 - Third party. Identity based services implemented on top of Identity system mainly *Identity Verification* and
@@ -368,43 +369,6 @@ Police identity control Use Cases
 
 .. uml::
     :caption: Collaborative identity control
-    :scale: 50%
-
-    !include "skin.iwsd"
-    hide footbox
-    actor "Citizen" as citizen
-    actor "Policeman" as police
-    participant "Third Party" as usage
-    participant "ABIS" as ABIS
-    participant "PR" as PR
-
-    citizen -> police : Show ID card
-    citizen -> police : Capture fingerprint
-    activate citizen
-    activate police
-
-    group 1. Verify Identity
-        citizen -> police : UIN + Biometrics
-        deactivate citizen
-        activate usage
-        police -> usage : verifyIdentity(UIN, biometric or civil data or credential)
-        usage -> police : Y/N
-    end
-    group 2. Show corresponding attributes
-        police -> usage : getAttributeSet (UIN1, attribute set name)
-        usage -> PR : getPersonAttributes(UIN1)
-        usage -> police : List of attributes values
-        police -> usage : getAttributeSet (UIN2, attribute set name)
-        usage -> PR : getPersonAttributes(UIN2)
-        usage -> police : List of attributes values
-        police -> usage : getAttributeSet (UIN3, attribute set name)
-        usage -> PR : getPersonAttributes(UIN3)
-        usage -> police : List of attributes values
-        note right: display attributes for each candidates
-    end
-
-.. uml::
-    :caption: Non collaborative identity control
     :scale: 50%
 
     !include "skin.iwsd"

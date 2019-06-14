@@ -119,7 +119,7 @@ This service is asynchronous (systems that subscribed on this topic are notified
 Dictionaries
 """"""""""""
 
-In the context of this document, the following events are identified:
+As an example, below there is a list of events that each component might handle.
 
 .. list-table:: Event Type
     :header-rows: 1

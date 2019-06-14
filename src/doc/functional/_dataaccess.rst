@@ -159,6 +159,8 @@ This service is synchronous. It can be used to get the documents for a person.
 Dictionaries
 """"""""""""
 
+As an example, below there is a list of attributes/documents that each component might handle.
+
 .. list-table:: Person Attributes
     :header-rows: 1
     
