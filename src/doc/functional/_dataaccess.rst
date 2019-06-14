@@ -12,6 +12,8 @@ Services
 
     Retrieve person attributes.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str UIN: The person's UIN
     :param list[str] names: The names of the attributes requested
     :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
@@ -42,6 +44,8 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
 
     Match person attributes. This service is used to check the value of attributes without exposing private data
     
+    **Authorization**: :todo:`To be defined`
+
     :param str UIN: The person's UIN
     :param list[(str,str)] attributes: The attributes to match. Each attribute is described with its name and the expected value
     :return: If all attributes match, a *Yes* is returned. If one attribute does not match, a *No* is returned along with a list of (name,reason) for each non-matching attribute.
@@ -73,6 +77,8 @@ This service is synchronous. It can be used to match attributes in CR or in PR.
     Evaluate expressions on person attributes. This service is used to evaluate simple expressions on person's attributes
     without exposing private data
     
+    **Authorization**: :todo:`To be defined`
+
     :param str UIN: The person's UIN
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
     :return: A *Yes* if all expressions are true, a *No* if one expression is false, a *Unknown* if :todo:`To be defined`
@@ -103,6 +109,8 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
 
     Retrieve UIN based on a set of attributes. This service is used when the UIN is unknown.
 
+    **Authorization**: :todo:`To be defined`
+
     :param list[(str,str)] attributes: The attributes to be used to find UIN. Each attribute is described with its name and its value
     :return: a list of matching UIN
     
@@ -131,6 +139,8 @@ This service is synchronous. It can be used to get the UIN of a person.
     :noindex:
 
     Retrieve in a selected format (PDF, image, ...) a document such as a marriage certificate.
+
+    **Authorization**: :todo:`To be defined`
 
     :param list[str] UIN: The list of UINs for the persons concerned by the document
     :param str documentType: The type of document (birth certificate, etc.)

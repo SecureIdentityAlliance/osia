@@ -35,6 +35,8 @@ Services
 
     Insert a new encounter. No identify is performed. This service is synchronous.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str subjectID: The subject ID
     :param str encounterID: The encounter ID. This is optional
     :param list(str) galleryID: the gallery ID to which this encounter belongs
@@ -54,6 +56,8 @@ Services
 
     Retrieve the data of an encounter.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str subjectID: The subject ID
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
         encounters of the subject are returned.
@@ -67,6 +71,8 @@ Services
     :noindex:
 
     Update an encounter.
+
+    **Authorization**: :todo:`To be defined`
 
     :param str subjectID: The subject ID
     :param str encounterID: The encounter ID
@@ -87,6 +93,8 @@ Services
 
     Delete an encounter.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str subjectID: The subject ID
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
         encounters of the subject are deleted.
@@ -99,6 +107,8 @@ Services
     :noindex:
 
     Retrieve the data of an encounter.
+
+    **Authorization**: :todo:`To be defined`
 
     :param str subjectID: The subject ID
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
@@ -120,6 +130,8 @@ Services
     Identify a subject using biometrics data and filters on biographic or contextual data. This may include multiple
     operations, including manual operations.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str galleryID: Search only in this gallery.
     :param dict filter: The input data (filters and biometric data)
     :param biometricData: the biometric data.
@@ -135,6 +147,8 @@ Services
     Identify a subject using biometrics data of a subject existing in the system and filters on biographic or
     contextual data. This may include multiple operations, including manual operations.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str galleryID: Search only in this gallery.
     :param dict filter: The input data (filters and biometric data)
     :param subjectID: the subject ID
@@ -148,6 +162,8 @@ Services
     :noindex:
 
     Verify an identity using biometrics data.
+
+    **Authorization**: :todo:`To be defined`
 
     :param str galleryID: Search only in this gallery. If the subject does not belong to this gallery,
         an error is returned.
@@ -165,6 +181,8 @@ Services
 
     Verify that two sets of biometrics data correspond to the same subject.
 
+    **Authorization**: :todo:`To be defined`
+
     :param biometricData1: The first set of biometric data
     :param biometricData2: The second set of biometric data
     :param callback: The address of a service to be called when the result is available.
@@ -181,6 +199,8 @@ Services
 
     Get the ID os all the galleries.
 
+    **Authorization**: :todo:`To be defined`
+
     :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
     :return: a status indicating success, error, or pending operation.
@@ -190,6 +210,8 @@ Services
     :noindex:
 
     Get the content of one gallery, i.e. the IDs of all the records linked to this gallery.
+
+    **Authorization**: :todo:`To be defined`
 
     :param str galleryID: Gallery whose content will be returned.
     :param callback: The address of a service to be called when the result is available.

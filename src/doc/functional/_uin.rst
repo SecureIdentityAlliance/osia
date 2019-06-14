@@ -12,6 +12,8 @@ Services
 
     Generate a new UIN.
 
+    **Authorization**: :todo:`To be defined`
+
     :param list[(str,str)] attributes: A list of pair (attribute name, value) that can be used to allocate a new UIN
     :return: a new UIN or an error if the generation is not possible
 

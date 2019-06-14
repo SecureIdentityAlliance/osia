@@ -11,6 +11,8 @@ Services
     Verify Identity based on UIN and set of Identity Attributes.
     Attributes can be Biometric data, Civil data or a credential.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str UIN: The person's UIN
     :param list[str] IDAttribute: A list of list of pair (name,value) requested
     :return: Y or N
@@ -24,6 +26,8 @@ Services
     Attributes can be Biometric data, Civil data or a credential.
     Returns list of identities with attributes specified in outIDAttribute
 
+    **Authorization**: :todo:`To be defined`
+
     :param list[str] inIDAttribute: A list of list of pair (name,value) requested
     :param list[str] outIDAttribute: A list of list of attribute names requested
     :return: Y or N
@@ -35,6 +39,8 @@ Services
 
     Retrieve person attributes.
 
+    **Authorization**: :todo:`To be defined`
+
     :param str UIN: The person's UIN
     :param list[str] names: The names of the attributes requested
     :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.)
@@ -44,6 +50,8 @@ Services
     :noindex:
 
     Retrieve person attributes corresponding to a predefined set name.
+
+    **Authorization**: :todo:`To be defined`
 
     :param str UIN: The person's UIN
     :param str setName: The name of predefined attributes set name
