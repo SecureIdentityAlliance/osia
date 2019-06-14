@@ -12,7 +12,7 @@ numfig = True
 
 extensions = ['sphinx.ext.extlinks','sphinxcontrib.httpdomain','sphinxcontrib.plantuml']
 
-extlinks = {'openapi': ('https://github.com/SecureIdentityAlliance/open-source-api/tree/master/src/doc/yaml/%s',
+extlinks = {'openapi': ('https://github.com/SecureIdentityAlliance/osia/tree/master/src/doc/yaml/%s',
                       '')}
 
 plantuml_output_format = 'svg'
@@ -57,7 +57,7 @@ html_theme = "alabaster"
 html_theme_options = {
     'logo': 'logo.svg',
     'github_user': 'SecureIdentityAlliance',
-    'github_repo': 'open-source-api',
+    'github_repo': 'osia',
     'github_button': True,
     'show_powered_by': False,
     'show_relbars': True,

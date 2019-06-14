@@ -2,7 +2,7 @@
 
 _Accelerating the development of national identity schemes across the world_
 
-[![Documentation Status](https://readthedocs.org/projects/open-source-api/badge/?version=latest)](https://open-source-api.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/osia/badge/?version=latest)](https://osia.readthedocs.io/en/latest/?badge=latest)
 
 ## Presentation
 
@@ -23,7 +23,7 @@ See also https://secureidentityalliance.github.io/
 
 API documentation is written in reStruturedText and built with Sphinx.
 
-You can read the latest version on https://open-source-api.readthedocs.io/en/latest/
+You can read the latest version on https://osia.readthedocs.io/en/latest/
 
 To build it yourself, prepare your environment:
 ```

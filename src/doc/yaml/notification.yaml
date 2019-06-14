@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: SIA Notification Interface
+  title: OSIA Notification Interface
   version: 1.0.0
   description: >
     Notification service.

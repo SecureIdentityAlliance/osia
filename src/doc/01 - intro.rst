@@ -34,8 +34,8 @@ is now one of their biggest concerns.
 The OSIA Initiative
 -------------------
 
-Launched by the not-for-profit Secure Identity Alliance, OSIA is an initiative created for the public good
-to address vendor lock-in problem.
+Launched by the not-for-profit Secure Identity Alliance, *Open Standard Identity APIs* (OSIA) is an
+initiative created for the public good to address vendor lock-in problem.
 
 OSIA addresses the vendor lock-in concern by providing a simple, open standards-based connectivity layer
 between all key components within the national identity ecosystem.
@@ -73,8 +73,8 @@ existing identity ecosystems, and rapidly moves government initiatives from proo
 Diffusion, Audience, and Access
 -------------------------------
 
-This specification is hosted in `GitHub <https://github.com/SecureIdentityAlliance/open-source-api>`_ and can be
-downloaded from `ReadTheDocs <https://open-source-api.readthedocs.io/en/latest/>`_.
+This specification is hosted in `GitHub <https://github.com/SecureIdentityAlliance/osia>`_ and can be
+downloaded from `ReadTheDocs <https://osia.readthedocs.io/en/latest/>`_.
 
 This specification is licensed under `The MIT License <https://opensource.org/licenses/MIT>`_.
 

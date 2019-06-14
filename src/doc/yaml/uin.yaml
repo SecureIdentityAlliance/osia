@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Open Source API, UIN services
+  title: OSIA UIN services
   version: 1.0.0
 servers:
   - url: http://server.com/
