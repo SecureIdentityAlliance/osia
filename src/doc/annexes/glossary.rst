@@ -5,7 +5,8 @@ Glossary
 .. glossary::
 
     **ABIS**
-        Automated 
+        Automated Biometric Identification System
+        
     **CR**
         Civil Registry. The system in charge of the continuous, permanent, compulsory and universal recording
         of the occurrence and characteristics of vital events pertaining to the population, as provided
