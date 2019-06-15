@@ -1,0 +1,351 @@
+openapi: 3.0.0
+info:
+  title: OSIA data access services
+  version: 1.0.0
+servers:
+  - url: http://server.com/
+tags:
+  - name: Person
+  - name: Document
+paths:
+  /v1/persons:
+    get:
+      description: |
+        Retrieve a UIN based on a set of attributes.
+        This service is used when the UIN is unknown.
+        Example: http://registry.com/v1/persons?firstName=John&lastName=Do
+      operationId: getPersonUIN
+      tags:
+      - Person
+      parameters: 
+        - name: attributes
+          in: query
+          description: The attributes used to retrieve the UIN
+          required: true
+          schema:
+            type: object
+            additionalProperties: true
+          style: form
+          explode: true
+          example:
+            firstName: John
+            lastName: Do
+                        
+      responses:
+        200:
+          description: All UIN found (a list of at least one UIN)
+          content:
+            application/json:
+              schema:
+                type: array
+                minimum: 1
+                items:
+                  type: string
+              example:
+                - "1235567890"
+        400:
+          description: Invalid parameter
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        404:
+          description: No UIN found
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{uin}:
+    get:
+      description: "Retrieve attributes for a person. Example: http://registry.com/v1/persons/123456789?attributeNames=firstName&attributeNames=lastName&attributeNames=dob"
+      operationId: getPersonAttributes
+      tags:
+        - Person
+      parameters: 
+        - name: uin
+          in: path
+          description: Unique Identity Number
+          required: true
+          schema:
+            type: string
+        - name: attributeNames
+          in: query
+          description: The names of the attributes requested for this person
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - firstName
+              - lastName
+              - dob
+      responses:
+        200:
+          description: Requested attributes values or error description.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  oneOf:
+                  - type: string
+                  - type: integer
+                  - type: number
+                  - type: boolean
+                  - $ref: '#/components/schemas/Error'
+              example:
+                firstName: John
+                lastName: Doo
+                dob:
+                  code: 1023
+                  message: Unknown attribute name
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        404:
+          description: Unknown uin
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{uin}/match:
+    post:
+      description: |
+        Match person attributes.
+        This service is used to check the value of attributes without exposing private data.
+
+        The request body should contain a list of attributes and their value, formatted as a json dictionary.
+      operationId: matchPersonAttributes
+      tags:
+        - Person
+      parameters: 
+        - name: uin
+          in: path
+          description: Unique Identity Number
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A set of attributes for the person
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attributes'
+            example:
+              firstName: John
+              lastName: Doo
+              dateOfBirth: "1984-11-19"
+      responses:
+        200:
+          description: |
+            Information about non matching attributes. Returns a list of matching result.
+            An empty list indicates all attributes were matching.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchingError'
+              example:
+                - attributeName: firstName
+                  errorCode: 1
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        404:
+          description: Unknown uin
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{uin}/verify:
+    post:
+      description: |
+        Evaluate expressions on person attributes.
+        This service is used to evaluate simple expressions on
+        person's attributes without exposing private data
+
+        The request body should contain a list of expressions.
+      operationId: verifyPersonAttributes
+      tags:
+        - Person
+      parameters: 
+        - name: uin
+          in: path
+          description: Unique Identity Number
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A set of expressions on attributes of the person
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
+            example:
+              - attributeName: firstName
+                operator: "="
+                value: John
+              - attributeName: dateOfBirth
+                operator: "<"
+                value: "1990-12-31"
+      responses:
+        200:
+          description: The expressions are all true (true is returned) or one is false (false is returned)
+          content:
+            application/json:
+              schema:
+                type: boolean
+              example:
+                true
+        401:
+          description: Client must be authenticated
+        403:
+          description: Forbidden access. The service is forbidden or one of the attributes is forbidden.
+        404:
+          description: Unknown uin
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{uin}/document:
+    get:
+      description: |
+        Retrieve in an unstructured format (PDF, image) a document such as a marriage certificate.
+        Example: ``http://registry.com/v1/persons/123456789/document?doctype=marriage&secondaryUin=234567890&format=pdf``
+      operationId: getDocument
+      tags:
+        - Document
+      parameters: 
+        - name: uin
+          in: path
+          description: Unique Identity Number
+          required: true
+          schema:
+            type: string
+        - name: secondaryUin
+          in: query
+          description: |
+            Unique Identity Number of a second person linked to the requested document.
+            Example: wife, husband
+          required: false
+          schema:
+            type: string
+        - name: doctype
+          in: query
+          description: The type of document
+          required: true
+          schema:
+            type: string
+        - name: format
+          in: query
+          description: |
+            The expected format of the document.
+            If the document is not available at this format, it must be converted.
+            TBD: one format for certificate data.
+          required: true
+          schema:
+            type: string
+            enum: ['pdf', 'jpeg', 'png', 'TBD'] 
+      responses:
+        200:
+          description: The document(s) is/are found and returned, as binary data in a MIME multipart structure.
+          content:
+            multipart/mixed:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      type: string
+                      format: binary
+              encoding:
+                documents:
+                  contentType: application/pdf, image/jpeg, image/png
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        404:
+          description: Unknown uin
+        415:
+          description: Unsupported format
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Attributes:
+      type: object
+      additionalProperties:
+        oneOf:
+        - type: string
+        - type: integer
+        - type: number
+        - type: boolean
+      # Or ?:
+      #additionalProperties:
+      #  type: string
+    Expression:
+      type: object
+      required:
+        - attributeName
+        - operator
+        - value
+      properties:
+        attributeName:
+          type: string
+        operator:
+          type: string
+          enum: ['<', '>', '=', '>=', '<=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+    Expressions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expression'
+    MatchingError:
+      type: array
+      items:
+        type: object
+        properties:
+          attributeName:
+            type: string
+          errorCode:
+            type: integer
+            format: int32
+            enum: [0, 1]
+            description: 0=attribute does not exist; 1=attribute exists but does not match
