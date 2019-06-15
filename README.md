@@ -4,6 +4,8 @@ _Putting government back in control: how the pioneering OSIA Initiative eliminat
 
 [![Documentation Status](https://readthedocs.org/projects/osia/badge/?version=latest)](https://osia.readthedocs.io/en/latest/?badge=latest)
 
+![SIA Logo](Secure_Identity_Alliance_Graphic_RGB_small.jpg "Secure Identity Alliance"))
+
 ## Presentation
 
 Official identification (ID) is more than a convenience; it is a fundamental human right that gives people access to education, financial services, employment, health and social welfare – and more.
