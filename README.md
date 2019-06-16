@@ -4,7 +4,7 @@ _Putting government back in control: how the pioneering OSIA Initiative eliminat
 
 [![Documentation Status](https://readthedocs.org/projects/osia/badge/?version=latest)](https://osia.readthedocs.io/en/latest/?badge=latest)
 
-![SIA Logo](Secure_Identity_Alliance_Graphic_RGB_small.jpg "Secure Identity Alliance")
+![SIA Logo](OSIA_Colour_Logo_RGB_400px.png "Secure Identity Alliance")
 
 ## Presentation
 
