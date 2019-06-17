@@ -1,3 +1,14 @@
+
+.. _annex-interface-dataaccess:
+
+Data Access
+-----------
+
+Download the OpenAPI file for this interface :openapi:`dataaccess.yaml`.
+
+Services
+""""""""
+
 .. http:get:: /v1/persons
     :synopsis: null
 

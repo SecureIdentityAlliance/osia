@@ -18,7 +18,7 @@ lxml==4.2.5
 MarkupSafe==1.1.0
 numpy==1.14.2
 olefile==0.46
-Pillow==5.3.0
+Pillow==5.4.1
 pycrypto==2.6.1
 Pygments==2.3.1
 pyOpenSSL==18.0.0
@@ -29,8 +29,8 @@ roman==3.1
 scour==0.37
 SecretStorage==3.1.0
 six==1.11.0
-Sphinx==1.8.3
-sphinx-rtd-theme==0.4.2
+Sphinx==1.8.5
+sphinx-rtd-theme==0.4.3
 sphinxcontrib-autoprogram==0.1.5
 sphinxcontrib-httpdomain==1.7.0
 sphinxcontrib-plantuml==0.14

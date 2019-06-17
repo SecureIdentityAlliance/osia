@@ -84,12 +84,12 @@ PygmentsBridge.latex_formatter = CustomLatexFormatter
 # Copy images
 import os,shutil,fnmatch
 try:
-    os.makedirs('../../target/pdf')
+    os.makedirs('../../_build/latex')
 except:
     pass
 for root, dirs, files in os.walk('images'):
     for f in fnmatch.filter(files,"*.pdf"):
-        shutil.copy(os.path.join(root,f),"../../target/pdf")
+        shutil.copy(os.path.join(root,f),"../../_build/latex")
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
