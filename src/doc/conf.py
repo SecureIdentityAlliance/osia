@@ -81,16 +81,6 @@ class CustomLatexFormatter(LatexFormatter):
  
 PygmentsBridge.latex_formatter = CustomLatexFormatter
 
-# Copy images
-import os,shutil,fnmatch
-try:
-    os.makedirs('../../_build/latex')
-except:
-    pass
-for root, dirs, files in os.walk('images'):
-    for f in fnmatch.filter(files,"*.pdf"):
-        shutil.copy(os.path.join(root,f),"../../_build/latex")
-
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
  'papersize': 'a4paper',
@@ -158,3 +148,15 @@ latex_elements = {
 
 'classoptions' : ',english,openany,oneside'
 }
+
+# Copy images
+import os,shutil,fnmatch
+def setup(app):
+    try:
+        os.makedirs(app.outdir)
+    except:
+        pass
+    for root, dirs, files in os.walk(os.path.join(app.srcdir,'images')):
+        for f in fnmatch.filter(files,"*.pdf"):
+            shutil.copy(os.path.join(root,f),app.outdir)
+
