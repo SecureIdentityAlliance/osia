@@ -804,7 +804,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       callbacks:
-        readResponse:
+        readAllResponse:
           '${request.query.callback}':
             post:
               summary: Response callback
@@ -1828,7 +1828,7 @@ components:
         - encounterType
         - biometricData
       properties:
-        encouterId:
+        encounterId:
           type: string
         encounterType:
           type: string

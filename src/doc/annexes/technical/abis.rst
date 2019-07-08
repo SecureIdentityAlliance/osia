@@ -196,36 +196,34 @@ CRUD
             "galleries": [
                 "string"
             ],
-            "encounter": [
-                {
-                    "encounterType": "string",
-                    "clientData": "c3RyaW5n",
-                    "contextualData": {
-                        "date": "2019-05-21"
-                    },
-                    "biographicData": {
-                        "dateOfBirth": "2019-05-21",
-                        "gender": "M",
-                        "nationality": "string"
-                    },
-                    "biometricData": [
-                        {
-                            "biometricType": "FACE",
-                            "biometricSubType": "UNKNOWN",
-                            "image": "c3RyaW5n",
-                            "imageRef": "https://example.com",
-                            "captureDate": "2019-05-21",
-                            "captureDevice": "string",
-                            "impressionType": "LIVE_SCAN_PLAIN",
-                            "width": 1,
-                            "height": 1,
-                            "bitdepth": 1,
-                            "resolution": 1,
-                            "compression": "NONE"
-                        }
-                    ]
-                }
-            ]
+            "encounter": {
+                "encounterType": "string",
+                "clientData": "c3RyaW5n",
+                "contextualData": {
+                    "date": "2019-05-21"
+                },
+                "biographicData": {
+                    "dateOfBirth": "2019-05-21",
+                    "gender": "M",
+                    "nationality": "string"
+                },
+                "biometricData": [
+                    {
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN",
+                        "image": "c3RyaW5n",
+                        "imageRef": "https://example.com",
+                        "captureDate": "2019-05-21",
+                        "captureDevice": "string",
+                        "impressionType": "LIVE_SCAN_PLAIN",
+                        "width": 1,
+                        "height": 1,
+                        "bitdepth": 1,
+                        "resolution": 1,
+                        "compression": "NONE"
+                    }
+                ]
+            }
         }
 
 
@@ -431,6 +429,7 @@ CRUD
                     "string"
                 ],
                 "encounter": {
+                    "encounterId": "string",
                     "encounterType": "string",
                     "clientData": "c3RyaW5n",
                     "contextualData": {
@@ -518,36 +517,34 @@ CRUD
             "galleries": [
                 "string"
             ],
-            "encounter": [
-                {
-                    "encounterType": "string",
-                    "clientData": "c3RyaW5n",
-                    "contextualData": {
-                        "date": "2019-05-21"
-                    },
-                    "biographicData": {
-                        "dateOfBirth": "2019-05-21",
-                        "gender": "M",
-                        "nationality": "string"
-                    },
-                    "biometricData": [
-                        {
-                            "biometricType": "FACE",
-                            "biometricSubType": "UNKNOWN",
-                            "image": "c3RyaW5n",
-                            "imageRef": "https://example.com",
-                            "captureDate": "2019-05-21",
-                            "captureDevice": "string",
-                            "impressionType": "LIVE_SCAN_PLAIN",
-                            "width": 1,
-                            "height": 1,
-                            "bitdepth": 1,
-                            "resolution": 1,
-                            "compression": "NONE"
-                        }
-                    ]
-                }
-            ]
+            "encounter": {
+                "encounterType": "string",
+                "clientData": "c3RyaW5n",
+                "contextualData": {
+                    "date": "2019-05-21"
+                },
+                "biographicData": {
+                    "dateOfBirth": "2019-05-21",
+                    "gender": "M",
+                    "nationality": "string"
+                },
+                "biometricData": [
+                    {
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN",
+                        "image": "c3RyaW5n",
+                        "imageRef": "https://example.com",
+                        "captureDate": "2019-05-21",
+                        "captureDevice": "string",
+                        "impressionType": "LIVE_SCAN_PLAIN",
+                        "width": 1,
+                        "height": 1,
+                        "bitdepth": 1,
+                        "resolution": 1,
+                        "compression": "NONE"
+                    }
+                ]
+            }
         }
 
 
@@ -747,36 +744,34 @@ CRUD
             "galleries": [
                 "string"
             ],
-            "encounter": [
-                {
-                    "encounterType": "string",
-                    "clientData": "c3RyaW5n",
-                    "contextualData": {
-                        "date": "2019-05-21"
-                    },
-                    "biographicData": {
-                        "dateOfBirth": "2019-05-21",
-                        "gender": "M",
-                        "nationality": "string"
-                    },
-                    "biometricData": [
-                        {
-                            "biometricType": "FACE",
-                            "biometricSubType": "UNKNOWN",
-                            "image": "c3RyaW5n",
-                            "imageRef": "https://example.com",
-                            "captureDate": "2019-05-21",
-                            "captureDevice": "string",
-                            "impressionType": "LIVE_SCAN_PLAIN",
-                            "width": 1,
-                            "height": 1,
-                            "bitdepth": 1,
-                            "resolution": 1,
-                            "compression": "NONE"
-                        }
-                    ]
-                }
-            ]
+            "encounter": {
+                "encounterType": "string",
+                "clientData": "c3RyaW5n",
+                "contextualData": {
+                    "date": "2019-05-21"
+                },
+                "biographicData": {
+                    "dateOfBirth": "2019-05-21",
+                    "gender": "M",
+                    "nationality": "string"
+                },
+                "biometricData": [
+                    {
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN",
+                        "image": "c3RyaW5n",
+                        "imageRef": "https://example.com",
+                        "captureDate": "2019-05-21",
+                        "captureDevice": "string",
+                        "impressionType": "LIVE_SCAN_PLAIN",
+                        "width": 1,
+                        "height": 1,
+                        "bitdepth": 1,
+                        "resolution": 1,
+                        "compression": "NONE"
+                    }
+                ]
+            }
         }
 
 
@@ -863,6 +858,187 @@ CRUD
 
 
 
+.. http:get:: /v1/subjects/{subjectId}
+    :synopsis: Read all encounters of one subject
+
+    **Read all encounters of one subject**
+
+    :param string subjectId:
+        the id of the subject
+    :query string transactionId:
+        The id of the transaction
+    :query string callback:
+        the callback address, where the result will be sent when available
+    :query integer priority:
+        the request priority
+    :status 200:
+        Read successful
+    :status 202:
+        Request received successfully and correct, result will be returned through the callback.
+        The transaction ID is returned (if no transaction ID was provided, one is generated by the server)
+    :status 400:
+        Bad request
+    :status 403:
+        Read not allowed
+    :status 404:
+        Unknown record
+    :status 500:
+        Unexpected error
+
+    **Example request:**
+
+    .. sourcecode:: http
+
+        GET /v1/subjects/{subjectId} HTTP/1.1
+        Host: example.com
+
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        {
+            "galleries": [
+                "string"
+            ],
+            "encounters": [
+                {
+                    "encounterId": "string",
+                    "encounterType": "string",
+                    "clientData": "c3RyaW5n",
+                    "contextualData": {
+                        "date": "2019-07-08"
+                    },
+                    "biographicData": {
+                        "dateOfBirth": "2019-07-08",
+                        "gender": "M",
+                        "nationality": "string"
+                    },
+                    "biometricData": [
+                        {
+                            "biometricType": "FACE",
+                            "biometricSubType": "UNKNOWN",
+                            "image": "c3RyaW5n",
+                            "imageRef": "https://example.com",
+                            "captureDate": "2019-07-08",
+                            "captureDevice": "string",
+                            "impressionType": "LIVE_SCAN_PLAIN",
+                            "width": 1,
+                            "height": 1,
+                            "bitdepth": 1,
+                            "resolution": 1,
+                            "compression": "NONE"
+                        }
+                    ]
+                }
+            ]
+        }
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 202 Accepted
+        Content-Type: application/json
+
+        "123e4567-e89b-12d3-a456-426655440000"
+
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 500 Internal Server Error
+        Content-Type: application/json
+
+        {
+            "code": 1,
+            "message": "string"
+        }
+
+
+.. admonition:: Callback: readAllResponse
+
+    .. http:post:: ${request.query.callback}
+        :synopsis: Response callback
+
+        **Response callback**
+
+        :query string transactionId:
+            The id of the transaction
+            (Required)
+        :status 204:
+            Response is received and accepted.
+        :status 403:
+            Forbidden access to the service
+        :status 500:
+            Unexpected error
+
+        **Example request:**
+
+        .. sourcecode:: http
+
+            POST ${request.query.callback}?transactionId=string HTTP/1.1
+            Host: example.com
+            Content-Type: application/json
+
+            {
+                "galleries": [
+                    "string"
+                ],
+                "encounters": [
+                    {
+                        "encounterId": "string",
+                        "encounterType": "string",
+                        "clientData": "c3RyaW5n",
+                        "contextualData": {
+                            "date": "2019-07-08"
+                        },
+                        "biographicData": {
+                            "dateOfBirth": "2019-07-08",
+                            "gender": "M",
+                            "nationality": "string"
+                        },
+                        "biometricData": [
+                            {
+                                "biometricType": "FACE",
+                                "biometricSubType": "UNKNOWN",
+                                "image": "c3RyaW5n",
+                                "imageRef": "https://example.com",
+                                "captureDate": "2019-07-08",
+                                "captureDevice": "string",
+                                "impressionType": "LIVE_SCAN_PLAIN",
+                                "width": 1,
+                                "height": 1,
+                                "bitdepth": 1,
+                                "resolution": 1,
+                                "compression": "NONE"
+                            }
+                        ]
+                    }
+                ]
+            }
+
+
+        **Example response:**
+
+        .. sourcecode:: http
+
+            HTTP/1.1 500 Internal Server Error
+            Content-Type: application/json
+
+            {
+                "code": 1,
+                "message": "string"
+            }
+
+
+
 .. http:post:: /v1/subjects/{subjectId}
     :synopsis: Insert one encounter and generate its ID
 
@@ -902,36 +1078,34 @@ CRUD
             "galleries": [
                 "string"
             ],
-            "encounter": [
-                {
-                    "encounterType": "string",
-                    "clientData": "c3RyaW5n",
-                    "contextualData": {
-                        "date": "2019-05-21"
-                    },
-                    "biographicData": {
-                        "dateOfBirth": "2019-05-21",
-                        "gender": "M",
-                        "nationality": "string"
-                    },
-                    "biometricData": [
-                        {
-                            "biometricType": "FACE",
-                            "biometricSubType": "UNKNOWN",
-                            "image": "c3RyaW5n",
-                            "imageRef": "https://example.com",
-                            "captureDate": "2019-05-21",
-                            "captureDevice": "string",
-                            "impressionType": "LIVE_SCAN_PLAIN",
-                            "width": 1,
-                            "height": 1,
-                            "bitdepth": 1,
-                            "resolution": 1,
-                            "compression": "NONE"
-                        }
-                    ]
-                }
-            ]
+            "encounter": {
+                "encounterType": "string",
+                "clientData": "c3RyaW5n",
+                "contextualData": {
+                    "date": "2019-05-21"
+                },
+                "biographicData": {
+                    "dateOfBirth": "2019-05-21",
+                    "gender": "M",
+                    "nationality": "string"
+                },
+                "biometricData": [
+                    {
+                        "biometricType": "FACE",
+                        "biometricSubType": "UNKNOWN",
+                        "image": "c3RyaW5n",
+                        "imageRef": "https://example.com",
+                        "captureDate": "2019-05-21",
+                        "captureDevice": "string",
+                        "impressionType": "LIVE_SCAN_PLAIN",
+                        "width": 1,
+                        "height": 1,
+                        "bitdepth": 1,
+                        "resolution": 1,
+                        "compression": "NONE"
+                    }
+                ]
+            }
         }
 
 
