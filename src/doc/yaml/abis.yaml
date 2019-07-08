@@ -1846,24 +1846,16 @@ components:
             $ref: '#/components/schemas/BiometricData'
     ContextualData:
       type: object
-      properties:
-        date:
-          type: string
-          format: date
-          example: "2019-01-11"
+      additionalProperties: true
+      example:
+        date: "2019-01-11"
     BiographicData:
       type: object
-      properties:
-        dateOfBirth:
-          type: string
-          format: date
-          example: "1985-11-30"
-        gender:
-          type: string
-          enum: [M, F, U]
-        nationality:
-          type: string
-          example: FRA
+      additionalProperties: true
+      example:
+        dateOfBirth: "1985-11-30"
+        gender: M
+        nationality: FRA
     BiometricData:
       type: object
       required:
@@ -2034,15 +2026,10 @@ components:
         - PORTRAIT
     Filter:
       type: object
-      properties:
-        dateOfBirthMin:
-          type: string
-          format: date
-          example: "1980-01-01"
-        dateOfBirthMax:
-          type: string
-          format: date
-          example: "2019-12-31"
+      additionalProperties: true
+      example:
+        dateOfBirthMin: "1980-01-01"
+        dateOfBirthMax: "2019-12-31"
     Candidate:
       type: object
       required:
