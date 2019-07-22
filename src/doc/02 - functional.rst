@@ -152,18 +152,18 @@ The interfaces described in this chapter are summarized in the following table:
     --------------------------- ---------------------------------------------------------------
     **Interfaces**              Enroll  PR      UIN gen.    ABIS    CR      DMS         Third Parties
     =========================== ======= ======= =========== ======= ======= =========== =======
-    Notifications
+    **Notifications**
     --------------------------- ---------------------------------------------------------------
     Notify event                        U                           U
     Subscribe                           U                   U       U       U
     Unsubscribe                         U                   U       U       U
     Event callback                      I                   I       I       I
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
-    UIN Management
+    **UIN Management**
     --------------------------- ---------------------------------------------------------------
     Generate UIN                        U       I                   U       U
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
-    Data Access
+    **Data Access**
     --------------------------- ---------------------------------------------------------------
     Get Person Attributes       U       IU                  U       IU      U           U
     Match Person Attributes             IU                          IU      U           U
@@ -171,7 +171,7 @@ The interfaces described in this chapter are summarized in the following table:
     Get Person UIN              U       IU                          IU      U
     Get document                        IU                          IU
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
-    Biometrics
+    **Biometrics**
     --------------------------- ---------------------------------------------------------------
     Verify                      U                           I               U           U
     Identify                    U                           I               U           U
@@ -182,7 +182,7 @@ The interfaces described in this chapter are summarized in the following table:
     Get Gallery                         U                   I               U
     Get Gallery content                 U                   I               U
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
-    Third Party Services
+    **Third Party Services**
     --------------------------- ---------------------------------------------------------------
     Verify ID                                                                           I
     Identify ID                                                                         I
