@@ -10,7 +10,7 @@ the following principles:
 - It does not expose templates (only images) for CRUD services, with one exception to support
   the use case of documents with biometrics.
 - Images can be passed by value or reference. When passed by value, they are base64-encoded.
-- Existing standards are used whenever possible, for instance image preferred format is ISO-19794.
+- Existing standards are used whenever possible, for instance preferred image format is ISO-19794.
 
 .. note:: Synchronous and Asynchronous Processing
 

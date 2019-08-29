@@ -1868,7 +1868,7 @@ components:
         image:
           type: string
           format: byte
-          description: Base64-encoded template
+          description: Base64-encoded image
         imageRef:
           type: string
           format: uri
