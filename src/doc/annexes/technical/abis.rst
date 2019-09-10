@@ -12,13 +12,13 @@ Services
 CRUD
 ''''
 
-.. http:get:: /v1/subjects/{subjectId}/{encounterId}/templates
+.. http:get:: /v1/persons/{personId}/{encounterId}/templates
     :synopsis: Get biometrics templates
 
     **Get biometrics templates**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :param string encounterId:
         the id of the encounter
     :query string biometricType:
@@ -53,7 +53,7 @@ CRUD
 
     .. sourcecode:: http
 
-        GET /v1/subjects/{subjectId}/{encounterId}/templates HTTP/1.1
+        GET /v1/persons/{personId}/{encounterId}/templates HTTP/1.1
         Host: example.com
 
 
@@ -155,13 +155,13 @@ CRUD
 
 
 
-.. http:post:: /v1/subjects/{subjectId}/{encounterId}
+.. http:post:: /v1/persons/{personId}/{encounterId}
     :synopsis: Insert one encounter
 
     **Insert one encounter**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :param string encounterId:
         the id of the encounter
     :query string transactionId:
@@ -188,7 +188,7 @@ CRUD
 
     .. sourcecode:: http
 
-        POST /v1/subjects/{subjectId}/{encounterId} HTTP/1.1
+        POST /v1/persons/{personId}/{encounterId} HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
@@ -277,7 +277,7 @@ CRUD
 
             {
                 "status": "OK",
-                "subjectId": "string",
+                "personId": "string",
                 "encounterId": "string"
             }
 
@@ -296,13 +296,13 @@ CRUD
 
 
 
-.. http:get:: /v1/subjects/{subjectId}/{encounterId}
+.. http:get:: /v1/persons/{personId}/{encounterId}
     :synopsis: Read one encounter
 
     **Read one encounter**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :param string encounterId:
         the id of the encounter
     :query string transactionId:
@@ -329,7 +329,7 @@ CRUD
 
     .. sourcecode:: http
 
-        GET /v1/subjects/{subjectId}/{encounterId} HTTP/1.1
+        GET /v1/persons/{personId}/{encounterId} HTTP/1.1
         Host: example.com
 
 
@@ -474,13 +474,13 @@ CRUD
 
 
 
-.. http:put:: /v1/subjects/{subjectId}/{encounterId}
+.. http:put:: /v1/persons/{personId}/{encounterId}
     :synopsis: Update one encounter
 
     **Update one encounter**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :param string encounterId:
         the id of the encounter
     :query string transactionId:
@@ -509,7 +509,7 @@ CRUD
 
     .. sourcecode:: http
 
-        PUT /v1/subjects/{subjectId}/{encounterId} HTTP/1.1
+        PUT /v1/persons/{personId}/{encounterId} HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
@@ -613,13 +613,13 @@ CRUD
 
 
 
-.. http:delete:: /v1/subjects/{subjectId}/{encounterId}
+.. http:delete:: /v1/persons/{personId}/{encounterId}
     :synopsis: Delete one encounter
 
     **Delete one encounter**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :param string encounterId:
         the id of the encounter
     :query string transactionId:
@@ -707,10 +707,10 @@ CRUD
 
 
 
-.. http:post:: /v1/subjects
-    :synopsis: Insert one encounter and generate ID for both the subject and the encounter
+.. http:post:: /v1/persons
+    :synopsis: Insert one encounter and generate ID for both the person and the encounter
 
-    **Insert one encounter and generate ID for both the subject and the encounter**
+    **Insert one encounter and generate ID for both the person and the encounter**
 
     :query string transactionId:
         The id of the transaction
@@ -736,7 +736,7 @@ CRUD
 
     .. sourcecode:: http
 
-        POST /v1/subjects HTTP/1.1
+        POST /v1/persons HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
@@ -784,7 +784,7 @@ CRUD
 
         {
             "status": "OK",
-            "subjectId": "string",
+            "personId": "string",
             "encounterId": "string"
         }
 
@@ -839,7 +839,7 @@ CRUD
 
             {
                 "status": "OK",
-                "subjectId": "string",
+                "personId": "string",
                 "encounterId": "string"
             }
 
@@ -858,13 +858,13 @@ CRUD
 
 
 
-.. http:get:: /v1/subjects/{subjectId}
-    :synopsis: Read all encounters of one subject
+.. http:get:: /v1/persons/{personId}
+    :synopsis: Read all encounters of one person
 
-    **Read all encounters of one subject**
+    **Read all encounters of one person**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :query string transactionId:
         The id of the transaction
     :query string callback:
@@ -889,7 +889,7 @@ CRUD
 
     .. sourcecode:: http
 
-        GET /v1/subjects/{subjectId} HTTP/1.1
+        GET /v1/persons/{personId} HTTP/1.1
         Host: example.com
 
 
@@ -1039,13 +1039,13 @@ CRUD
 
 
 
-.. http:post:: /v1/subjects/{subjectId}
+.. http:post:: /v1/persons/{personId}
     :synopsis: Insert one encounter and generate its ID
 
     **Insert one encounter and generate its ID**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :query string transactionId:
         The id of the transaction
     :query string callback:
@@ -1070,7 +1070,7 @@ CRUD
 
     .. sourcecode:: http
 
-        POST /v1/subjects/{subjectId} HTTP/1.1
+        POST /v1/persons/{personId} HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
@@ -1118,7 +1118,7 @@ CRUD
 
         {
             "status": "OK",
-            "subjectId": "string",
+            "personId": "string",
             "encounterId": "string"
         }
 
@@ -1173,7 +1173,7 @@ CRUD
 
             {
                 "status": "OK",
-                "subjectId": "string",
+                "personId": "string",
                 "encounterId": "string"
             }
 
@@ -1192,13 +1192,13 @@ CRUD
 
 
 
-.. http:delete:: /v1/subjects/{subjectId}
-    :synopsis: Delete a subject and all its encounters
+.. http:delete:: /v1/persons/{personId}
+    :synopsis: Delete a person and all its encounters
 
-    **Delete a subject and all its encounters**
+    **Delete a person and all its encounters**
 
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :query string transactionId:
         The id of the transaction
     :query string callback:
@@ -1443,7 +1443,7 @@ Gallery
 
         [
             {
-                "subjectId": "string",
+                "personId": "string",
                 "encounterId": "string"
             }
         ]
@@ -1499,7 +1499,7 @@ Gallery
 
             [
                 {
-                    "subjectId": "string",
+                    "personId": "string",
                     "encounterId": "string"
                 }
             ]
@@ -1596,7 +1596,7 @@ Search
 
         [
             {
-                "subjectId": "string",
+                "personId": "string",
                 "rank": 1,
                 "score": 1.0,
                 "scoreList": [
@@ -1661,7 +1661,7 @@ Search
 
             [
                 {
-                    "subjectId": "string",
+                    "personId": "string",
                     "rank": 1,
                     "score": 1.0,
                     "scoreList": [
@@ -1690,7 +1690,7 @@ Search
 
 
 
-.. http:post:: /v1/identify/{galleryId}/{subjectId}
+.. http:post:: /v1/identify/{galleryId}/{personId}
     :synopsis: Biometric identification
 
     **Biometric identification**
@@ -1699,8 +1699,8 @@ Search
 
     :param string galleryId:
         the id of the gallery
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :query string transactionId:
         The id of the transaction
     :query string callback:
@@ -1729,7 +1729,7 @@ Search
 
     .. sourcecode:: http
 
-        POST /v1/identify/{galleryId}/{subjectId} HTTP/1.1
+        POST /v1/identify/{galleryId}/{personId} HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
@@ -1748,7 +1748,7 @@ Search
 
         [
             {
-                "subjectId": "string",
+                "personId": "string",
                 "rank": 1,
                 "score": 1.0,
                 "scoreList": [
@@ -1813,7 +1813,7 @@ Search
 
             [
                 {
-                    "subjectId": "string",
+                    "personId": "string",
                     "rank": 1,
                     "score": 1.0,
                     "scoreList": [
@@ -1842,7 +1842,7 @@ Search
 
 
 
-.. http:post:: /v1/verify/{galleryId}/{subjectId}
+.. http:post:: /v1/verify/{galleryId}/{personId}
     :synopsis: Biometric verification
 
     **Biometric verification**
@@ -1851,8 +1851,8 @@ Search
 
     :param string galleryId:
         the id of the gallery
-    :param string subjectId:
-        the id of the subject
+    :param string personId:
+        the id of the person
     :query string transactionId:
         The id of the transaction
     :query string callback:
@@ -1881,7 +1881,7 @@ Search
 
     .. sourcecode:: http
 
-        POST /v1/verify/{galleryId}/{subjectId} HTTP/1.1
+        POST /v1/verify/{galleryId}/{personId} HTTP/1.1
         Host: example.com
         Content-Type: application/json
 
