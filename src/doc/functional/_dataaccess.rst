@@ -140,7 +140,7 @@ This service is synchronous. It can be used to get the UIN of a person.
 
     Retrieve person attributes of records matching the provided attributes.
     This service is proposed as an optimization of a sequence of calls to
-    :py:function:`getPersonUIN` and :py:function:`getPersonAttributes`.
+    :py:func:`getPersonUIN` and :py:func:`getPersonAttributes`.
 
     **Authorization**: :todo:`To be defined`
 

@@ -53,7 +53,7 @@ paths:
             - lastName
         - name: max
           in: query
-          description: The maximum number of records to return. Default is 10.
+          description: The maximum number of records to return. Default is 10
           required: false
           schema:
             type: number

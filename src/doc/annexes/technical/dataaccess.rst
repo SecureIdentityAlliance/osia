@@ -12,14 +12,21 @@ Services
 .. http:get:: /v1/persons
     :synopsis: null
 
-    Retrieve a UIN based on a set of attributes.
+    Retrieve UIN or person attributes based on a set of attributes.
     This service is used when the UIN is unknown.
 
     :query object attributes:
         The attributes used to retrieve the UIN
         (Required)
+    :query array names:
+        The names of the attributes to return. If not provided, only the UIN is returned
+    :query int max:
+        The maximum number of records to return. Default is 10
     :status 200:
-        All UIN found (a list of at least one UIN)
+        The requested attributes for all found persons (a list of at least one entry).
+            
+        If no names are given, a flat list of UIN is returned.
+        If at least one name is given, a list of dictionaries (one dictionary per record) is returned.
     :status 400:
         Invalid parameter
     :status 401:
@@ -38,6 +45,12 @@ Services
         GET /v1/persons?firstName=John&lastName=Do HTTP/1.1
         Host: example.com
 
+    **Example request:**
+
+    .. sourcecode:: http
+
+        GET /v1/persons?firstName=John&lastName=Do&names=firstName&names=lastName&names=dob HTTP/1.1
+        Host: example.com
 
 
     **Example response:**
@@ -49,6 +62,24 @@ Services
 
         [
             "1235567890"
+        ]
+
+    **Example response:**
+
+    .. sourcecode:: http
+
+        HTTP/1.1 200 OK
+        Content-Type: application/json
+
+        [
+            {
+                "firstName": "John",
+                "lastName": "Doo",
+                "dob": {
+                    "code": 1023
+                    "message": "Unknown attribute name"
+                }
+            }
         ]
 
 
