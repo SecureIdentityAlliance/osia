@@ -2,7 +2,7 @@
 Biometrics
 ----------
 
-This interface is described biometric services in the context of an identity system. It is based on
+This interface describes biometric services in the context of an identity system. It is based on
 the following principles:
 
 - It supports only multi-encounter model, meaning that an identity can have multiple set of biometric data,
@@ -197,7 +197,7 @@ Services
 .. py:function:: getGalleries(callback, options)
     :noindex:
 
-    Get the ID os all the galleries.
+    Get the ID of all the galleries.
 
     **Authorization**: :todo:`To be defined`
 
