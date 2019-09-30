@@ -5,48 +5,126 @@ Population Registry
 This interface describes services to manage a registry of the population in the context of an identity system. It is based on
 the following principles:
 
-- It supports a historized identity model, meaning that a person has one identity and this identity
+- It supports a history of identities, meaning that a person has one identity and this identity
   has a history.
 - Images can be passed by value or reference. When passed by value, they are base64-encoded.
 - Existing standards are used whenever possible.
-- The services to access and exchange the data stored by the population registry are described separately and shared
-  with multiple registries.
+- This interface is complementary to the data access interface.
 
 See :ref:`annex-interface-pr` for the technical details of this interface.
 
 Services
 """"""""
 
-.. py:function:: insert(personID, galleryID, biographicData, contextualData, clientData, options)
+.. py:function:: queryPersons(attributes, options)
     :noindex:
 
-    Insert a new identity in a new or existing person. This service is synchronous.
+    Query a person using attributes.
 
     **Authorization**: :todo:`To be defined`
 
-    :param str personID: The ID of the person. If the person does not exist, it is created with a status XXX
-    :param list(str) galleryID: the gallery ID to which this person belongs
-    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
-    :param dict contextualData: The contextual data (ex: enrolment date, location, etc.)
-    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
-        when identity data is requested.
-    :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success or error and the ID of the new identity.
+    :param list(str) attributes: the attributes (name and value) to use for the search
+    :param dict options: the processing options. Supported options are ``transactionID`` and ``maxNb``.
+    :return: a status indicating success or error and in case of success the list of persons matching the criteria.
 
-.. py:function:: read(personID, identityID, callback, options)
+.. py:function:: insertPerson(personID, personData, options)
     :noindex:
 
-    Retrieve the data of an identity.
+    Insert a new person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person. If the person already exists for the ID an error is returned.
+    :param personData: The person attributes.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error.
+
+.. py:function:: readPerson(personID, options)
+    :noindex:
+
+    Retrieve the attributes of a person.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str identityID: The ID of the identity to be returned. This is optional. If not provided, all the
-        identities of the person are returned.
     :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success or error and the identity data.
+    :return: a status indicating success or error and in case of success the person data.
 
-.. py:function:: update(personID, identityID, galleryID, biographicData, contextualData, clientData, options)
+.. py:function:: updatePerson(personID, personData, options)
+    :noindex:
+
+    Update a person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param dict personData: The person data.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error.
+
+.. py:function:: deletePerson(personID, options)
+    :noindex:
+
+    Delete a person and all its identities.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error.
+
+----------
+
+.. py:function:: getIdentities(personID, options)
+    :noindex:
+
+    Get all the identities of one person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error, and in case of success a list of identities.
+
+.. py:function:: insertIdentity(personID, identity, options)
+    :noindex:
+
+    Insert a new identity in a person and generate the identity ID.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param identity: The new identity data.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error, and in case of success the ID allocated to the identity.
+
+.. py:function:: insertIdentityWithId(personID, identityID, identity, options)
+    :noindex:
+
+    Insert a new identity in a person and use the provided identity ID. An error is returned if this
+    ID is already used for another identity.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str identityID: The ID of the identity.
+    :param identity: The new identity data.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error.
+
+.. py:function:: readIdentity(personID, identityID, options)
+    :noindex:
+
+    Retrieve one identity of one person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str personID: The ID of the identity.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error, and in case of success the identity data.
+
+.. py:function:: updateIdentity(personID, identityID, identity, options)
     :noindex:
 
     Update an identity.
@@ -54,28 +132,60 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str identityID: The ID of the identity to be updated.
-    :param list(str) galleryID: the gallery ID to which this identity belongs
-    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
-    :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
-    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
-        when encounter data is requested.
+    :param str personID: The ID of the identity.
+    :param identity: The identity data.
     :param dict options: the processing options. Supported options are ``transactionID``.
     :return: a status indicating success or error.
 
-.. py:function:: delete(personID, identityID, options)
+.. py:function:: deleteIdentity(personID, identityID, options)
     :noindex:
 
-    Delete an encounter.
+    Delete an identity.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str identityID: The ID of the identity to be deleted. If not provided, all the
-        identities of the person are deleted.
+    :param str personID: The ID of the identity.
     :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success, error, or pending operation.
-        In case of pending operation, the operation status will be sent later.
+    :return: a status indicating success or error.
+
+.. py:function:: setIdentityStatus(personID, identityID, status, options)
+    :noindex:
+
+    Update an identity status.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str personID: The ID of the identity.
+    :param str status: The new status of the identity.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error.
+
+----------
+
+.. py:function:: defineReference(personID, identityID, options)
+    :noindex:
+
+    Define the reference identity of one person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str personID: The ID of the identity being now the reference.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error.
+
+.. py:function:: readReference(personID, options)
+    :noindex:
+
+    Retrieve the reference identity of one person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error and in case of success the reference identity.
 
 ----------
 
@@ -87,7 +197,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success or error and a list of gallery ID.
+    :return: a status indicating success or error, and in case of success a list of gallery ID.
 
 .. py:function:: getGalleryContent(galleryID, options)
     :noindex:
@@ -98,7 +208,7 @@ Services
 
     :param str galleryID: Gallery whose content will be returned.
     :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success or error and a list of persons/identities.
+    :return: a status indicating success or error. In case of success a list of person/identity IDs.
 
 
 Options
@@ -180,13 +290,13 @@ Data Model
         enum physicalStatus: Alive | Dead;
     }
 
-    Person "*" - "*" Gallery
-
     class Identity {
         string identityID;
         enum status: Claimed | Valid | Invalid | Revoked;
         byte[] clientData;
     }
+
+    Gallery "*" -- "*" Identity
 
     Person -- "*" Identity: "identities"
     Person -- Identity: "reference"
@@ -209,15 +319,6 @@ Data Model
     }
     ContextualData -o Identity
     
-    class Filters {
-        string filter1;
-        int filter2Min;
-        int filter2Max;
-        date filter3Min;
-        date filter3Max;
-        ...
-    }
-
     class Document {
       string documentID;
       enum type: Doc1 | Doc2 | Signature | etc;
@@ -236,4 +337,8 @@ Data Model
     Identity "1" -- "0..*" Document
     Identity "1" -- "0..*" Portrait
       
+
+:todo:`XXX state diagram for the identity`
+
+:todo:`XXX explain status of Person and Identity`
 

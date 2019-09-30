@@ -1,33 +1,75 @@
 openapi: 3.0.0
 info:
-  description: OSIA ABIS Interface
+  description: OSIA PR Interface
   version: 1.0.0
-  title: OSIA ABIS Interface
+  title: OSIA Population Registry Interface
 tags:
   - name: Person
   - name: Identity
+  - name: Reference
   - name: Gallery
 servers:
-  - url: http://abis.com/
-  - url: https://abis.com/
+  - url: http://pr.com/
+  - url: https://pr.com/
 paths:
 
-  /v1/persons/{personId}/{identityId}:
+  /v1/persons:
+    get:
+      tags:
+        - Person
+      summary: Query persons
+      operationId: queryPersons
+      parameters: 
+        - name: attributes
+          in: query
+          description: The attributes used to retrieve the person
+          required: true
+          schema:
+            type: object
+            additionalProperties: true
+          style: form
+          explode: true
+          example:
+            firstName: John
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+        - name: maxNb
+          in: query
+          description: The maximum number of records to return. Default is 10.
+          required: false
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                description: |
+                  An array of persons matching the attributes given.
+                  An empty array is possible if no persons are found.
+                type: array
+                items:
+                  $ref: '#/components/schemas/Person'
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+
+  /v1/persons/{personId}:
     post:
       tags:
-        - Identity
-      summary: Insert one identity
-      operationId: insert
+        - Person
+      summary: Insert one person
+      operationId: insertPerson
       parameters:
         - name: personId
           in: path
           description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
           required: true
           schema:
             type: string
@@ -41,17 +83,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - galleries
-                - identity
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                identity:
-                  $ref: '#/components/schemas/identity'
+              $ref: '#/components/schemas/Person'
       responses:
         '201':
           description: Insertion successful
@@ -67,215 +99,9 @@ paths:
                 $ref: '#/components/schemas/Error'
     get:
       tags:
-        - Identity
-      summary: Read one identity
-      operationId: read
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: false
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Read successful
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - galleries
-                  - identity
-                properties:
-                  galleries:
-                    type: array
-                    items:
-                      type: string
-                  identity:
-                    $ref: '#/components/schemas/identity'
-        '400':
-          description: Bad request
-        '403':
-          description: Read not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    put:
-      tags:
-        - Identity
-      summary: Update one identity
-      operationId: update
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: false
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - galleries
-                - identity
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                identity:
-                  $ref: '#/components/schemas/identity'
-      responses:
-        '204':
-          description: Update successful
-        '400':
-          description: Bad request
-        '403':
-          description: Update not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    delete:
-      tags:
-        - Identity
-      summary: Delete one identity
-      operationId: delete
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: false
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Delete successful
-        '400':
-          description: Bad request
-        '403':
-          description: Delete not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /v1/persons:
-    post:
-      tags:
         - Person
-      summary: Insert one person
-      description: Insert one person and generate his/her id. If an identity is provided it is also inserted.
-      operationId: insertNoIds
-      parameters:
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: false
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - galleries
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                # XXX all person attributes
-                identity:
-                  $ref: '#/components/schemas/identity'
-      responses:
-        '200':
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - status
-                  - identityId
-                properties:
-                  status:
-                    type: string
-                    enum: [OK, ERROR]
-                  personId:
-                    type: string
-                  identityId:
-                    type: string
-        '400':
-          description: Bad request
-        '403':
-          description: Insertion not allowed
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /v1/persons/{personId}:
-    get:
-      tags:
-        - Person
-      summary: Read one person and all his/her identities
-      operationId: readAll
+      summary: Read one person
+      operationId: readPerson
       parameters:
         - name: personId
           in: path
@@ -295,86 +121,13 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - galleries
-                  - identities
-                properties:
-                  galleries:
-                    type: array
-                    items:
-                      type: string
-                  identities:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/identity'
+                $ref: '#/components/schemas/Person'
         '400':
           description: Bad request
         '403':
           description: Read not allowed
         '404':
           description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    post:
-      tags:
-        - Identity
-      summary: Insert one identity and generate its ID
-      operationId: insertNoId
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: false
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - galleries
-                - identity
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                identity:
-                  $ref: '#/components/schemas/identity'
-      responses:
-        '200':
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - status
-                  - identityId
-                properties:
-                  status:
-                    type: string
-                    enum: [OK, ERROR]
-                  personId:
-                    type: string
-                  identityId:
-                    type: string
-        '400':
-          description: Bad request
-        '403':
-          description: Insertion not allowed
         '500':
           description: Unexpected error
           content:
@@ -403,15 +156,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - galleries
-              properties:
-                # XXX all person attributes
-                galleries:
-                  type: array
-                  items:
-                    type: string
+              $ref: '#/components/schemas/Person'
       responses:
         '204':
           description: Update successful
@@ -431,7 +176,7 @@ paths:
       tags:
         - Person
       summary: Delete a person and all its identities
-      operationId: deleteAll
+      operationId: deletePerson
       parameters:
         - name: personId
           in: path
@@ -460,6 +205,386 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personId}/identities:
+    get:
+      tags:
+        - Identity
+      summary: Get the list of identities for a person
+      operationId: getIdentities
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Identity'
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Identity
+      summary: Insert one identity and generate its ID
+      operationId: insertIdentity
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Identity'
+      responses:
+        '200':
+          description: Insertion successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - identityId
+                properties:
+                  identityId:
+                    type: string
+        '400':
+          description: Bad request
+        '403':
+          description: Insertion not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personId}/identities/{identityId}:
+    post:
+      tags:
+        - Identity
+      summary: Insert one identity
+      operationId: insertIdentityWithId
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Identity'
+      responses:
+        '201':
+          description: Insertion successful
+        '400':
+          description: Bad request
+        '403':
+          description: Insertion not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Identity
+      summary: Read one identity
+      operationId: readIdentity
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identity'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Identity
+      summary: Update one identity
+      operationId: updateIdentity
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Identity'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Identity
+      summary: Delete one identity
+      operationId: deleteIdentity
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Delete successful
+        '400':
+          description: Bad request
+        '403':
+          description: Delete not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personId}/identities/{identityId}/status:
+    put:
+      tags:
+        - Identity
+      summary: Change the status of an identity
+      operationId: setIdentityStatus
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: The status of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Operation successful
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personId}/identities/{identityId}/reference:
+    put:
+      tags:
+        - Reference
+      summary: Define the reference
+      operationId: defineReference
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Operation successful
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+  /v1/persons/{personId}/reference:
+    get:
+      tags:
+        - Reference
+      summary: Read the reference
+      operationId: readReference
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Identity'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
   /v1/galleries:
     get:
@@ -526,9 +651,9 @@ paths:
                     - personId
                     - identityId
                   properties:
-                    personId:
+                    subjectId:
                       type: string
-                    identityId:
+                    encounterId:
                       type: string
         '400':
           description: Bad request
@@ -558,14 +683,37 @@ components:
         message:
           description: Error message
           type: string
-    identity:
+    Person:
+      description: >-
+        Person entity.
       type: object
       required:
-        - identityType
-        - biometricData
+        - status
+        - physicalStatus
+      properties:
+        personId:
+          description: The unique id for this person
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE]
+        physicalStatus:
+          type: string
+          enum: [DEAD, ALIVE]
+    Identity:
+      type: object
+      required:
+        - status
+        - biographicData
       properties:
         identityId:
           type: string
+        status:
+          type: string
+          enum: [CLAIMED, VALID, INVALID, REVOKED]
+        galleries:
+          type: array
+          items:
+            type: string
         clientData:
           type: string
           format: byte
@@ -624,7 +772,8 @@ components:
         
     PortraitType:
       type: string
-      enum: [FACE, PROFILE, XXX]
+      description: Type of portrait. Can be extended.
+      enum: [FACE, PROFILE]
 
     CompressionType:
       type: string
@@ -660,4 +809,5 @@ components:
           $ref: '#/components/schemas/CompressionType'
     DocumentType:
       type: string
-      enum: [ID_CARD, PASSPORT, XXX]
+      description: Type of document. Can be extended.
+      enum: [ID_CARD, PASSPORT]
