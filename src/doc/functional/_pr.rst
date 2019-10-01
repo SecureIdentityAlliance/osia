@@ -9,23 +9,13 @@ the following principles:
   has a history.
 - Images can be passed by value or reference. When passed by value, they are base64-encoded.
 - Existing standards are used whenever possible.
-- This interface is complementary to the data access interface.
+- This interface is complementary to the data access interface. The data access interface is used
+  to query the persons and uses the reference identity to return attributes.
 
 See :ref:`annex-interface-pr` for the technical details of this interface.
 
 Services
 """"""""
-
-.. py:function:: queryPersons(attributes, options)
-    :noindex:
-
-    Query a person using attributes.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param list(str) attributes: the attributes (name and value) to use for the search
-    :param dict options: the processing options. Supported options are ``transactionID`` and ``maxNb``.
-    :return: a status indicating success or error and in case of success the list of persons matching the criteria.
 
 .. py:function:: insertPerson(personID, personData, options)
     :noindex:

@@ -13,53 +13,6 @@ servers:
   - url: https://pr.com/
 paths:
 
-  /v1/persons:
-    get:
-      tags:
-        - Person
-      summary: Query persons
-      operationId: queryPersons
-      parameters: 
-        - name: attributes
-          in: query
-          description: The attributes used to retrieve the person
-          required: true
-          schema:
-            type: object
-            additionalProperties: true
-          style: form
-          explode: true
-          example:
-            firstName: John
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: false
-          schema:
-            type: string
-        - name: maxNb
-          in: query
-          description: The maximum number of records to return. Default is 10.
-          required: false
-          schema:
-            type: number
-      responses:
-        '200':
-          description: Operation successful
-          content:
-            application/json:
-              schema:
-                description: |
-                  An array of persons matching the attributes given.
-                  An empty array is possible if no persons are found.
-                type: array
-                items:
-                  $ref: '#/components/schemas/Person'
-        '400':
-          description: Bad request
-        '403':
-          description: Operation not allowed
-
   /v1/persons/{personId}:
     post:
       tags:
