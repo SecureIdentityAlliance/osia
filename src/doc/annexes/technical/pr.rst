@@ -4,7 +4,7 @@
 Population Registery Management
 -------------------------------
 
-Download the OpenAPI file for this interface :openapi:`pr2.yaml`.
+Download the OpenAPI file for this interface :openapi:`pr.yaml`.
 
 Services
 """"""""
