@@ -164,7 +164,7 @@ paths:
       tags:
         - Identity
       summary: Get the list of identities for a person
-      operationId: getIdentities
+      operationId: readIdentities
       parameters:
         - name: personId
           in: path
@@ -360,6 +360,56 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Identity'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Identity
+      summary: Update partially one identity
+      description: Update partially an identity. Payload content is a partial identity object compliant with RFC7396.
+      operationId: partialUpdateIdentity
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Identity'
+            example:
+              galleries: [G1, G2]
+              biographicData:
+                gender: null
+                nationality: FRA
       responses:
         '204':
           description: Update successful
@@ -604,9 +654,9 @@ paths:
                     - personId
                     - identityId
                   properties:
-                    subjectId:
+                    personId:
                       type: string
-                    encounterId:
+                    identityId:
                       type: string
         '400':
           description: Bad request
@@ -716,17 +766,17 @@ components:
           example: "http://imageserver.com/image?id=00003"
         width:
           type: integer
-          description: the width of the image
+          description: the width of the image in pixels
         height:
           type: integer
-          description: the height of the image
+          description: the height of the image in pixels
         compression:
           $ref: '#/components/schemas/CompressionType'
         
     PortraitType:
       type: string
       description: Type of portrait. Can be extended.
-      enum: [FACE, PROFILE]
+      enum: [FACE, LEFT_PROFILE, RIGHT_PROFILE]
 
     CompressionType:
       type: string
@@ -742,7 +792,7 @@ components:
         documentType:
           $ref: '#/components/schemas/DocumentType'
         page:
-          type: number
+          type: integer
         image:
           type: string
           format: byte
@@ -754,10 +804,10 @@ components:
           example: "http://imageserver.com/image?id=00003"
         width:
           type: integer
-          description: the width of the image
+          description: the width of the image in pixels
         height:
           type: integer
-          description: the height of the image
+          description: the height of the image in pixels
         compression:
           $ref: '#/components/schemas/CompressionType'
     DocumentType:

@@ -65,7 +65,7 @@ Services
 
 ----------
 
-.. py:function:: getIdentities(personID, options)
+.. py:function:: readIdentities(personID, options)
     :noindex:
 
     Get all the identities of one person.
@@ -117,13 +117,28 @@ Services
 .. py:function:: updateIdentity(personID, identityID, identity, options)
     :noindex:
 
-    Update an identity.
+    Update an identity. An identity can be updated only in the status ``claimed``.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
     :param str personID: The ID of the identity.
     :param identity: The identity data.
+    :param dict options: the processing options. Supported options are ``transactionID``.
+    :return: a status indicating success or error.
+
+.. py:function:: partialUpdateIdentity(personID, identityID, identity, options)
+    :noindex:
+
+    Update part of an identity. Not all attributes are mandatory. The payload
+    is defined as per :rfc:`7396`.
+    An identity can be updated only in the status ``claimed``.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str personID: The ID of the identity.
+    :param identity: Part of the identity data.
     :param dict options: the processing options. Supported options are ``transactionID``.
     :return: a status indicating success or error.
 
@@ -233,18 +248,38 @@ Data Model
       - ``VIP``, ``Wanted``, etc.
 
     * - Person
-      - Person who is known to an identity assurance system. A person record has a status such as:
-        ``active`` or ``inactive`` (the record is excluded from identification searches), a set
-        of identities, and a reference identity (i.e. the current correct identity of the person).
+      - Person who is known to an identity assurance system. A person record has:
+      
+        - a status, such as ``active`` or ``inactive``, defining the status of the record
+          (the record can be excluded from queries based on this status),
+        - a physical status, such as ``alive`` or ``dead``, defining the status of the person,
+        - a set of identities, keeping track of all identity data submitted by the person during
+          the life of the system,
+        - a reference identity, i.e. a consolidated view of all the identities
+          defining the current correct identity of the person. It corresponds usually to the last
+          valid identity but it can also include data from previous identities.
       - N/A
 
     * - Identity
       - The attributes describing an identity of a person.
         An identity has a status such as: ``claimed`` (identity not yet validated), ``valid``
-        (the identity is valid), ``invalid`` (the identity is  not valid), ``revoked`` (the identity is
-        no longer valid).
+        (the identity is valid), ``invalid`` (the identity is  not valid), ``revoked`` (the identity
+        cannot be used any longer).
+
+        An identity can be updated only in the status ``claimed``.
+
+        The allowed transitions for the status are represented below:
+
+        .. uml::
+            :scale: 30%
+
+            [*] --> claimed
+            claimed --> valid
+            claimed -->invalid
+            valid --> revoked
 
         The attributes are separated into two categories: the biographic data and the contextual data.
+
       - N/A
 
     * - Biographic Data
@@ -267,8 +302,6 @@ Data Model
 .. uml::
     :caption: Population Registry Data Model
     :scale: 50%
-
-    !include "skin.iwsd"
 
     class Gallery {
         string galleryID;
@@ -326,9 +359,4 @@ Data Model
     
     Identity "1" -- "0..*" Document
     Identity "1" -- "0..*" Portrait
-      
-
-:todo:`XXX state diagram for the identity`
-
-:todo:`XXX explain status of Person and Identity`
 
