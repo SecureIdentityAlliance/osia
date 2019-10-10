@@ -169,6 +169,7 @@ The interfaces described in this chapter are summarized in the following table:
     Match Person Attributes             IU                          IU      U           U
     Verify Person Attributes            IU                          IU      U           U
     Get Person UIN              U       IU                          IU      U
+    Get Person List             U       IU                          IU      U
     Get document                        IU                          IU
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
     **Biometrics**

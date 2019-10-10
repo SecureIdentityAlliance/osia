@@ -135,6 +135,40 @@ This service is synchronous. It can be used to get the UIN of a person.
 
 -------
 
+.. py:function:: getPersonList(attributes, names)
+    :noindex:
+
+    Retrieve person attributes of records matching the provided attributes.
+    This service is proposed as an optimization of a sequence of calls to
+    :py:func:`getPersonUIN` and :py:func:`getPersonAttributes`.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param list[(str,str)] attributes: The attributes to be used to find the persons. Each attribute is described with its name and its value
+    :param list[str] names: The names of the attributes requested
+    :return: a list of lists of pairs (name,value). In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
+
+This service is synchronous. It can be used to retrieve attributes from CR or from PR.
+
+.. uml::
+    :caption: ``getPersonList`` Sequence Diagram
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+    participant "CR" as CR
+    participant "PR" as PR
+
+    note over CR,PR: CR can request person's attributes from PR
+    CR -> PR: getPersonList([attributes],[names])
+    PR -->> CR: [attributes]
+
+    note over CR,PR: PR can request person's attributes from CR
+    PR -> CR: getPersonList([attributes],[names])
+    CR -->> PR: [attributes]
+
+-------
+
 .. py:function:: getDocument(UINs,documentType,format)
     :noindex:
 
