@@ -1,9 +1,17 @@
 openapi: 3.0.0
 info:
   title: OSIA data access services
-  version: 1.0.0
+  version: 1.1.0
+  description: |
+    The OSIA Data Access interface.
+    
+    Change log:
+    
+    - 1.1.0: extended getPersonUIN/getPersonList operation to return a list of attributes, and not only a list of UIN
+    - 1.0.0: first version proposed in OSIA.
+    
 servers:
-  - url: http://server.com/
+  - url: http://registry.com/
 tags:
   - name: Person
   - name: Document
@@ -11,16 +19,16 @@ paths:
   /v1/persons:
     get:
       description: |
-        Retrieve a UIN based on a set of attributes.
+        Retrieve UIN or person attributes based on a set of attributes.
         This service is used when the UIN is unknown.
-        Example: http://registry.com/v1/persons?firstName=John&lastName=Do
-      operationId: getPersonUIN
+        Example: http://registry.com/v1/persons?firstName=John&lastName=Do&names=firstName
+      operationId: getPersonList
       tags:
       - Person
       parameters: 
         - name: attributes
           in: query
-          description: The attributes used to retrieve the UIN
+          description: The attributes (names and values) used to retrieve the UIN
           required: true
           schema:
             type: object
@@ -30,19 +38,61 @@ paths:
           example:
             firstName: John
             lastName: Do
-                        
+        - name: names
+          in: query
+          description: The names of the attributes to return. If not provided, only the UIN is returned
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example:
+            - firstName
+            - lastName
+        - name: max
+          in: query
+          description: The maximum number of records to return. Default is 10
+          required: false
+          schema:
+            type: number
+
       responses:
         200:
-          description: All UIN found (a list of at least one UIN)
+          description: >
+            The requested attributes for all found persons (a list of at least one entry).
+            
+            If no names are given, a flat list of UIN is returned.
+            If at least one name is given, a list of dictionaries (one dictionary per record) is returned.
           content:
             application/json:
               schema:
-                type: array
-                minimum: 1
-                items:
-                  type: string
-              example:
-                - "1235567890"
+                oneOf:
+                - type: array
+                  minimum: 1
+                  items:
+                    type: string
+                  example:
+                    - "1235567890"
+                - type: array
+                  minimum: 1
+                  items:
+                    type: object
+                    additionalProperties:
+                      oneOf:
+                      - type: string
+                      - type: integer
+                      - type: number
+                      - type: boolean
+                      - $ref: '#/components/schemas/Error'
+                    example:
+                      firstName: John
+                      lastName: Doo
+                      dob:
+                        code: 1023
+                        message: Unknown attribute name
+                    
         400:
           description: Invalid parameter
         401:
@@ -50,7 +100,7 @@ paths:
         403:
           description: Service forbidden
         404:
-          description: No UIN found
+          description: No record found
         500:
           description: Unexpected error
           content:
@@ -313,8 +363,7 @@ components:
         - type: number
         - type: boolean
       # Or ?:
-      #additionalProperties:
-      #  type: string
+      #additionalProperties: true
     Expression:
       type: object
       required:

@@ -11,16 +11,16 @@ servers:
   - url: http://abis.com/
   - url: https://abis.com/
 paths:
-  /v1/subjects/{subjectId}/{encounterId}/templates:
+  /v1/persons/{personId}/{encounterId}/templates:
     get:
       tags:
         - CRUD
       summary: Get biometrics templates
       operationId: getTemplate
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -147,16 +147,16 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /v1/subjects/{subjectId}/{encounterId}:
+  /v1/persons/{personId}/{encounterId}:
     post:
       tags:
         - CRUD
       summary: Insert one encounter
       operationId: insert
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -256,7 +256,7 @@ paths:
                         status:
                           type: string
                           enum: [OK, ERROR]
-                        subjectId:
+                        personId:
                           type: string
                         encounterId:
                           type: string
@@ -277,9 +277,9 @@ paths:
       summary: Read one encounter
       operationId: read
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -395,9 +395,9 @@ paths:
       summary: Update one encounter
       operationId: update
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -511,9 +511,9 @@ paths:
       summary: Delete one encounter
       operationId: delete
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -601,11 +601,11 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /v1/subjects:
+  /v1/persons:
     post:
       tags:
         - CRUD
-      summary: Insert one encounter and generate ID for both the subject and the encounter
+      summary: Insert one encounter and generate ID for both the person and the encounter
       operationId: insertNoIds
       parameters:
         - name: transactionId
@@ -663,7 +663,7 @@ paths:
                   status:
                     type: string
                     enum: [OK, ERROR]
-                  subjectId:
+                  personId:
                     type: string
                   encounterId:
                     type: string
@@ -714,7 +714,7 @@ paths:
                         status:
                           type: string
                           enum: [OK, ERROR]
-                        subjectId:
+                        personId:
                           type: string
                         encounterId:
                           type: string
@@ -730,16 +730,16 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /v1/subjects/{subjectId}:
+  /v1/persons/{personId}:
     get:
       tags:
         - CRUD
-      summary: Read all encounters of one subject
+      summary: Read all encounters of one person
       operationId: readAll
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -853,9 +853,9 @@ paths:
       summary: Insert one encounter and generate its ID
       operationId: insertNoId
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -914,7 +914,7 @@ paths:
                   status:
                     type: string
                     enum: [OK, ERROR]
-                  subjectId:
+                  personId:
                     type: string
                   encounterId:
                     type: string
@@ -965,7 +965,7 @@ paths:
                         status:
                           type: string
                           enum: [OK, ERROR]
-                        subjectId:
+                        personId:
                           type: string
                         encounterId:
                           type: string
@@ -983,12 +983,12 @@ paths:
     delete:
       tags:
         - CRUD
-      summary: Delete a subject and all its encounters
+      summary: Delete a person and all its encounters
       operationId: deleteAll
       parameters:
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -1200,7 +1200,7 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /v1/identify/{galleryId}/{subjectId}:
+  /v1/identify/{galleryId}/{personId}:
     post:
       tags:
         - Search
@@ -1214,9 +1214,9 @@ paths:
           required: true
           schema:
             type: string
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -1326,7 +1326,7 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /v1/verify/{galleryId}/{subjectId}:
+  /v1/verify/{galleryId}/{personId}:
     post:
       tags:
         - Search
@@ -1340,9 +1340,9 @@ paths:
           required: true
           schema:
             type: string
-        - name: subjectId
+        - name: personId
           in: path
-          description: the id of the subject
+          description: the id of the person
           required: true
           schema:
             type: string
@@ -1736,10 +1736,10 @@ paths:
                 items:
                   type: object
                   required:
-                    - subjectId
+                    - personId
                     - encounterId
                   properties:
-                    subjectId:
+                    personId:
                       type: string
                     encounterId:
                       type: string
@@ -1788,10 +1788,10 @@ paths:
                       items:
                         type: object
                         required:
-                          - subjectId
+                          - personId
                           - encounterId
                         properties:
-                          subjectId:
+                          personId:
                             type: string
                           encounterId:
                             type: string
@@ -2033,13 +2033,13 @@ components:
     Candidate:
       type: object
       required:
-        - subjectId
+        - personId
         - rank
         - score
       properties:
-        subjectId:
+        personId:
           type: string
-          description: the identifier of the subject
+          description: the identifier of the person
         rank:
           type: integer
           format: int32
