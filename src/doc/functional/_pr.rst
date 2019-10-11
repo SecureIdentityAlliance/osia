@@ -11,6 +11,10 @@ the following principles:
 - Existing standards are used whenever possible.
 - This interface is complementary to the data access interface. The data access interface is used
   to query the persons and uses the reference identity to return attributes.
+- The population registry can store the biometric data or can rely on the ABIS subsystem to do it.
+  The preferred solution, for a clean separation of data of different nature and by application
+  of GDPR principles, is to put the biometric data only in the ABIS. Yet many existing systems
+  store biometric data with the biographic data and this specification gives the flexibility to do it.
 
 See :ref:`annex-interface-pr` for the technical details of this interface.
 
@@ -290,14 +294,17 @@ Data Model
       - A dictionary (list of names and values) attached to the context of establishing the identity
       - ``operatorName``, ``enrolmentDate``, etc.
 
+    * - Biometric Data
+      - Digital representation of biometric characteristics.
+        All images can be passed by value (image buffer is in the request) or by reference (the address of the
+        image is in the request).
+        All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
+        metadata specific to fingerprint, palmprint, portrait or iris.
+      - Finger print, portrait, iris
+
     * - Document
       - The document data (images) attached to the identity and used to validate it.
       - Birth certificate, invoice
-
-    * - Portrait
-      - The portrait (image) at the time the identity record was created. This is stored for information
-        purpose but not used for automatic processing.
-      - N/A
 
 .. uml::
     :caption: Population Registry Data Model
@@ -342,6 +349,15 @@ Data Model
     }
     ContextualData -o Identity
     
+    class BiometricData {
+    string type
+    string subType
+    byte[] image
+    URL imageRef
+    ...
+    }
+    Identity "1" -- "0..*" BiometricData
+
     class Document {
       string documentID;
       enum type: Doc1 | Doc2 | Signature | etc;
@@ -350,13 +366,5 @@ Data Model
       URL imageRef;
     }
 
-    class Portrait {
-      string portraitID;
-      enum type: F1 | etc;
-      byte[] image;
-      URL imageRef;
-    }
-    
     Identity "1" -- "0..*" Document
-    Identity "1" -- "0..*" Portrait
 

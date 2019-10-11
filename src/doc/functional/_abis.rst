@@ -284,12 +284,11 @@ Data Model
 
     * - Biometric Data
       - Digital representation of biometric characteristics.
-        As an example, a record containing the image of a finger is a biometric data.
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait or iris.
-      - :todo:`TBD`
+      - Finger print, portrait, iris
 
     * - Candidate
       - Information about a candidate found during an identification

@@ -724,10 +724,10 @@ components:
           $ref: '#/components/schemas/ContextualData'
         biographicData:
           $ref: '#/components/schemas/BiographicData'
-        portraits:
+        biometricData:
           type: array
           items:
-            $ref: '#/components/schemas/Portrait'
+            $ref: '#/components/schemas/BiometricData'
         documents:
           type: array
           items:
@@ -746,37 +746,6 @@ components:
         dateOfBirth: "1985-11-30"
         gender: M
         nationality: FRA
-    Portrait:
-      type: object
-      required:
-        - portraitId
-      properties:
-        portraitId:
-          type: string
-        portraitType:
-          $ref: '#/components/schemas/PortraitType'
-        image:
-          type: string
-          format: byte
-          description: Base64-encoded image
-        imageRef:
-          type: string
-          format: uri
-          description: URI to an image
-          example: "http://imageserver.com/image?id=00003"
-        width:
-          type: integer
-          description: the width of the image in pixels
-        height:
-          type: integer
-          description: the height of the image in pixels
-        compression:
-          $ref: '#/components/schemas/CompressionType'
-        
-    PortraitType:
-      type: string
-      description: Type of portrait. Can be extended.
-      enum: [FACE, LEFT_PROFILE, RIGHT_PROFILE]
 
     CompressionType:
       type: string
@@ -814,3 +783,104 @@ components:
       type: string
       description: Type of document. Can be extended.
       enum: [ID_CARD, PASSPORT]
+
+    BiometricData:
+      type: object
+      required:
+        - biometricType
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        image:
+          type: string
+          format: byte
+          description: Base64-encoded image
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - PALM
+        - IRIS
+        - UNKNOWN
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
