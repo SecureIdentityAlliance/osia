@@ -1566,7 +1566,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Verification response callback
-              operationId: verifyFromIdCB
+              operationId: verifyFromBioCB
               parameters:
                 # query parameters
                 - name: transactionId
