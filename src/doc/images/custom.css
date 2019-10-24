@@ -62,3 +62,10 @@ div#changelog-history h2{
     font-weight: bold;
 }
 
+table.field-list {
+    width: 100%;
+}
+
+table.field-list colgroup .field-body {
+    width: 85%;
+}

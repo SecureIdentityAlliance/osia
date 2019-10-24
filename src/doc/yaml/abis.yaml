@@ -2024,6 +2024,8 @@ components:
         - EYE_LEFT
         
         - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
     Filter:
       type: object
       additionalProperties: true

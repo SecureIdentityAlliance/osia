@@ -2,7 +2,7 @@
 Biometrics
 ----------
 
-This interface is described biometric services in the context of an identity system. It is based on
+This interface describes biometric services in the context of an identity system. It is based on
 the following principles:
 
 - It supports only multi-encounter model, meaning that an identity can have multiple set of biometric data,
@@ -197,7 +197,7 @@ Services
 .. py:function:: getGalleries(callback, options)
     :noindex:
 
-    Get the ID os all the galleries.
+    Get the ID of all the galleries.
 
     **Authorization**: :todo:`To be defined`
 
@@ -284,12 +284,11 @@ Data Model
 
     * - Biometric Data
       - Digital representation of biometric characteristics.
-        As an example, a record containing the image of a finger is a biometric data.
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait or iris.
-      - :todo:`TBD`
+      - Finger print, portrait, iris
 
     * - Candidate
       - Information about a candidate found during an identification

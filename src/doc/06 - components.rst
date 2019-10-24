@@ -18,6 +18,8 @@ The population registry component MAY implement the following interfaces:
 
 .. include:: functional/_dataaccess.rst
 
+.. include:: functional/_pr.rst
+
 Civil Registry
 ==============
 

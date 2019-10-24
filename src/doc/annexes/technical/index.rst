@@ -7,5 +7,6 @@ Technical Specifications
     notification
     uin
     dataaccess
+    pr
     abis
     3rdparty
