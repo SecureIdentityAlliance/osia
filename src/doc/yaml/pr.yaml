@@ -760,8 +760,12 @@ components:
           type: string
         documentType:
           $ref: '#/components/schemas/DocumentType'
+        instance:
+          type: integer
+          description: Used to separate two distincts documents of the same type (ex: two passports)
         page:
           type: integer
+          description: The page number for a pair (type, instance). Used to group and sort pages for multi-page documents
         image:
           type: string
           format: byte

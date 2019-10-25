@@ -361,6 +361,7 @@ Data Model
     class Document {
       string documentID;
       enum type: Doc1 | Doc2 | Signature | etc;
+      int instance;
       int page;
       byte[] image;
       URL imageRef;
