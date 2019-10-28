@@ -27,14 +27,16 @@ OSIA documentation is written in reStruturedText and built with Sphinx.
 You can read the latest version on https://osia.readthedocs.io/en/latest/
 
 To build it yourself, prepare your environment:
+
 ```
 pip install "Sphinx<2.0"
-pip install sphinxcontrib-httpdomain sphinxcontrib-plantuml
+pip install sphinxcontrib-httpdomain sphinxcontrib-plantuml sphinxcontrib-openapi
 ```
 
 UML diagrams are built with PlantUML and Java 8. They must be installed separately.
 
 Build:
+
 ```
 sphinx-build -b html src/doc target/html
 ```
