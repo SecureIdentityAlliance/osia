@@ -22,7 +22,7 @@ See also https://secureidentityalliance.github.io/
 
 ## Building documentation
 
-API documentation is written in reStruturedText and built with Sphinx.
+OSIA documentation is written in reStruturedText and built with Sphinx.
 
 You can read the latest version on https://osia.readthedocs.io/en/latest/
 

@@ -9,6 +9,10 @@ Interfaces
 
 .. include:: functional/_uin.rst
 
+.. include:: functional/_enrolment.rst
+
+.. include:: functional/_pr.rst
+
 .. include:: functional/_abis.rst
 
 .. include:: functional/_dms.rst

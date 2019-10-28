@@ -8,6 +8,9 @@ This chapter describes for each component the interfaces that it must implement.
 Enrolment Component
 ===================
 
+The enrolment component MAY implement the following interfaces:
+
+.. include:: functional/_enrolment.rst
 
 Population Registry
 ===================
