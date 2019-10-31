@@ -135,6 +135,9 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/BiometricComputedData'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -257,16 +260,14 @@ paths:
                   application/json:
                     schema:
                       type: object
-                      required:
-                        - status
                       properties:
-                        status:
-                          type: string
-                          enum: [OK, ERROR]
                         personId:
                           type: string
                         encounterId:
                           type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -389,6 +390,9 @@ paths:
                           uniqueItems: true
                         encounter:
                           $ref: '#/components/schemas/Encounter'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -506,7 +510,10 @@ paths:
                   application/json:
                     schema:
                       type: string
-                      enum: [OK, ERROR]
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -604,7 +611,10 @@ paths:
                   application/json:
                     schema:
                       type: string
-                      enum: [OK, ERROR]
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -675,12 +685,8 @@ paths:
               schema:
                 type: object
                 required:
-                  - status
                   - encounterId
                 properties:
-                  status:
-                    type: string
-                    enum: [OK, ERROR]
                   personId:
                     type: string
                   encounterId:
@@ -726,16 +732,15 @@ paths:
                     schema:
                       type: object
                       required:
-                        - status
                         - encounterId
                       properties:
-                        status:
-                          type: string
-                          enum: [OK, ERROR]
                         personId:
                           type: string
                         encounterId:
                           type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -858,6 +863,9 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/Encounter'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -935,12 +943,8 @@ paths:
               schema:
                 type: object
                 required:
-                  - status
                   - encounterId
                 properties:
-                  status:
-                    type: string
-                    enum: [OK, ERROR]
                   personId:
                     type: string
                   encounterId:
@@ -986,16 +990,15 @@ paths:
                     schema:
                       type: object
                       required:
-                        - status
                         - encounterId
                       properties:
-                        status:
-                          type: string
-                          enum: [OK, ERROR]
                         personId:
                           type: string
                         encounterId:
                           type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1084,7 +1087,10 @@ paths:
                   application/json:
                     schema:
                       type: string
-                      enum: [OK, ERROR]
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1215,6 +1221,9 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/Candidate'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1341,6 +1350,9 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/Candidate'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1484,6 +1496,9 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1618,6 +1633,9 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1708,6 +1726,9 @@ paths:
                       type: array
                       items:
                         type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1822,6 +1843,9 @@ paths:
                             type: string
                           encounterId:
                             type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
