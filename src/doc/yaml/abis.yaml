@@ -152,6 +152,11 @@ paths:
       tags:
         - CRUD
       summary: Insert one encounter
+      description: |
+        Insert one encounter in the person identified by his/her id.
+        If the person does not yet exist, it is created automatically.
+        
+        If the encounter also exists, an error 403 is returned.
       operationId: insert
       parameters:
         - name: personId
@@ -205,6 +210,8 @@ paths:
                   type: array
                   items:
                     type: string
+                  minItems: 1
+                  uniqueItems: true
                 encounter:
                   $ref: '#/components/schemas/Encounter'
       responses:
@@ -324,6 +331,8 @@ paths:
                     type: array
                     items:
                       type: string
+                    minItems: 1
+                    uniqueItems: true
                   encounter:
                     $ref: '#/components/schemas/Encounter'
         '202':
@@ -376,6 +385,8 @@ paths:
                           type: array
                           items:
                             type: string
+                          minItems: 1
+                          uniqueItems: true
                         encounter:
                           $ref: '#/components/schemas/Encounter'
               responses:
@@ -446,6 +457,8 @@ paths:
                   type: array
                   items:
                     type: string
+                  minItems: 1
+                  uniqueItems: true
                 encounter:
                   $ref: '#/components/schemas/Encounter'
       responses:
@@ -509,6 +522,9 @@ paths:
       tags:
         - CRUD
       summary: Delete one encounter
+      description: |
+        Delete one encounter from the person identified by his/her id.
+        If this is the last encounter in the person, the person is also deleted.
       operationId: delete
       parameters:
         - name: personId
@@ -647,6 +663,8 @@ paths:
                   type: array
                   items:
                     type: string
+                  minItems: 1
+                  uniqueItems: true
                 encounter:
                   $ref: '#/components/schemas/Encounter'
       responses:
@@ -778,6 +796,8 @@ paths:
                     type: array
                     items:
                       type: string
+                    minItems: 1
+                    uniqueItems: true
                   encounters:
                     type: array
                     items:
@@ -832,6 +852,8 @@ paths:
                           type: array
                           items:
                             type: string
+                          minItems: 1
+                          uniqueItems: true
                         encounters:
                           type: array
                           items:
@@ -851,6 +873,9 @@ paths:
       tags:
         - CRUD
       summary: Insert one encounter and generate its ID
+      description: |
+        Insert one encounter in the person identified by his/her id.
+        If the person does not yet exist, it is created automatically.
       operationId: insertNoId
       parameters:
         - name: personId
@@ -898,6 +923,8 @@ paths:
                   type: array
                   items:
                     type: string
+                  minItems: 1
+                  uniqueItems: true
                 encounter:
                   $ref: '#/components/schemas/Encounter'
       responses:
