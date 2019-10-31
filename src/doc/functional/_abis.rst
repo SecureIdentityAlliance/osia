@@ -318,13 +318,13 @@ Data Model
         string personID;
     }
 
-    Person "*" - "*" Gallery
-
     class Encounter {
         string encounterID;
         string encounterType;
         byte[] clientData;
     }
+
+    Encounter "*" -- "*" Gallery
 
     Person o-- "*" Encounter
 
@@ -355,6 +355,8 @@ Data Model
 
 
     class BiometricData {
+        byte[] image;
+        URL imageRef;
     }
 
     Encounter o-- "*" BiometricData
@@ -363,35 +365,7 @@ Data Model
           byte[] buffer;
         string format;
     }
-
-    class Finger {
-        byte[] fingerImage;
-        URL fingerImageRef;
-    }
-    BiometricData <|-- Finger
-
-    class Palm {
-        byte[] palmImage;
-        URL palmImageRef;
-    }
-    BiometricData <|-- Palm
-
-    class Portrait {
-        byte[] portraitImage;
-        URL portraitImageRef;
-    }
-    BiometricData <|-- Portrait
-    
-    class Iris {
-        byte[] irisImage;
-        URL irisImageRef;
-    }
-    BiometricData <|-- Iris
-
-    Finger -- Template
-    Palm -- Template
-    Portrait -- Template
-    Iris -- Template
+    BiometricData -- Template
 
     class Candidate {
       int rank;
