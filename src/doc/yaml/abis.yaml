@@ -112,7 +112,7 @@ paths:
         getTemplateResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Get biometrics templates response callback
               operationId: getTemplateCB
               parameters:
                 # query parameters
@@ -233,7 +233,7 @@ paths:
         insertResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Insert one encounter response callback
               operationId: insertCB
               parameters:
                 # query parameters
@@ -351,7 +351,7 @@ paths:
         readResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Read one encounter response callback
               operationId: readCB
               parameters:
                 # query parameters
@@ -476,7 +476,7 @@ paths:
         updateResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Update one encounter response callback
               operationId: updateCB
               parameters:
                 # query parameters
@@ -571,7 +571,7 @@ paths:
         deleteResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Delete one encounter response callback
               operationId: deleteCB
               parameters:
                 # query parameters
@@ -690,7 +690,7 @@ paths:
         insertResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Insert one encounter and generate both IDs response callback
               operationId: insertNoIdsCB
               parameters:
                 # query parameters
@@ -807,7 +807,7 @@ paths:
         readAllResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Read all encounters response callback
               operationId: readAllCB
               parameters:
                 # query parameters
@@ -941,7 +941,7 @@ paths:
         insertResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Insert one encounter and generate its ID response callback
               operationId: insertNoIdCB
               parameters:
                 # query parameters
@@ -1040,7 +1040,7 @@ paths:
         deleteResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Delete a person response callback
               operationId: deleteAllCB
               parameters:
                 # query parameters
@@ -1169,7 +1169,7 @@ paths:
         identifyResponse:
           '${request.query.callback}':
             post:
-              summary: Identification response callback
+              summary: Biometric identification response callback
               operationId: identifyCB
               parameters:
                 # query parameters
@@ -1204,7 +1204,7 @@ paths:
     post:
       tags:
         - Search
-      summary: Biometric identification
+      summary: Biometric identification based on existing data
       description: Identification based on existing data from one gallery
       operationId: identifyFromId
       parameters:
@@ -1295,7 +1295,7 @@ paths:
         identifyResponse:
           '${request.query.callback}':
             post:
-              summary: Identification response callback
+              summary: Biometric identification based on existing data response callback
               operationId: identifyFromIdCB
               parameters:
                 # query parameters
@@ -1431,7 +1431,7 @@ paths:
         verifyResponse:
           '${request.query.callback}':
             post:
-              summary: Verification response callback
+              summary: Biometric verification response callback
               operationId: verifyFromIdCB
               parameters:
                 # query parameters
@@ -1473,7 +1473,7 @@ paths:
     post:
       tags:
         - Search
-      summary: Biometric verification
+      summary: Biometric verification with two sets of data
       description: Verification of two sets of biometric data
       operationId: verifyFromBio
       parameters:
@@ -1565,7 +1565,7 @@ paths:
         verifyResponse:
           '${request.query.callback}':
             post:
-              summary: Verification response callback
+              summary: Biometric verification with two sets of data response callback
               operationId: verifyFromBioCB
               parameters:
                 # query parameters
@@ -1662,7 +1662,7 @@ paths:
         getGalleriesResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Get the ID of all the galleries response callback
               operationId: galleriesCB
               parameters:
                 # query parameters
@@ -1768,7 +1768,7 @@ paths:
         getGalleryContentResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Get the content of one gallery response callback
               operationId: galleryContentCB
               parameters:
                 # query parameters
