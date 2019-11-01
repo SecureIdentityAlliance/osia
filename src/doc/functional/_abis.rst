@@ -37,9 +37,9 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str personID: The person ID
-    :param str encounterID: The encounter ID. This is optional
-    :param list(str) galleryID: the gallery ID to which this encounter belongs
+    :param str personID: The person ID. This is optional and will be generated if not provided
+    :param str encounterID: The encounter ID. This is optional and will be generated if not provided
+    :param list(str) galleryID: the gallery ID to which this encounter belongs. A minimum of one gallery must be provided
     :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
     :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
     :param list biometricData: the biometric data (images)
@@ -76,7 +76,7 @@ Services
 
     :param str personID: The person ID
     :param str encounterID: The encounter ID
-    :param list(str) galleryID: the gallery ID to which this encounter belongs
+    :param list(str) galleryID: the gallery ID to which this encounter belongs. A minimum of one gallery must be provided
     :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
     :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
     :param list biometricData: the biometric data (images)
@@ -318,13 +318,13 @@ Data Model
         string personID;
     }
 
-    Person "*" - "*" Gallery
-
     class Encounter {
         string encounterID;
         string encounterType;
         byte[] clientData;
     }
+
+    Encounter "*" -- "*" Gallery
 
     Person o-- "*" Encounter
 
@@ -355,6 +355,8 @@ Data Model
 
 
     class BiometricData {
+        byte[] image;
+        URL imageRef;
     }
 
     Encounter o-- "*" BiometricData
@@ -363,35 +365,7 @@ Data Model
           byte[] buffer;
         string format;
     }
-
-    class Finger {
-        byte[] fingerImage;
-        URL fingerImageRef;
-    }
-    BiometricData <|-- Finger
-
-    class Palm {
-        byte[] palmImage;
-        URL palmImageRef;
-    }
-    BiometricData <|-- Palm
-
-    class Portrait {
-        byte[] portraitImage;
-        URL portraitImageRef;
-    }
-    BiometricData <|-- Portrait
-    
-    class Iris {
-        byte[] irisImage;
-        URL irisImageRef;
-    }
-    BiometricData <|-- Iris
-
-    Finger -- Template
-    Palm -- Template
-    Portrait -- Template
-    Iris -- Template
+    BiometricData -- Template
 
     class Candidate {
       int rank;

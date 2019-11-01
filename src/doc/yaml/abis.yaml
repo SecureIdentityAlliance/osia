@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: OSIA ABIS Interface
-  version: 1.0.0
+  version: 1.1.0
   title: OSIA ABIS Interface
 tags:
   - name: CRUD
@@ -112,7 +112,7 @@ paths:
         getTemplateResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Get biometrics templates response callback
               operationId: getTemplateCB
               parameters:
                 # query parameters
@@ -135,6 +135,9 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/BiometricComputedData'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -152,6 +155,11 @@ paths:
       tags:
         - CRUD
       summary: Insert one encounter
+      description: |
+        Insert one encounter in the person identified by his/her id.
+        If the person does not yet exist, it is created automatically.
+        
+        If the encounter also exists, an error 403 is returned.
       operationId: insert
       parameters:
         - name: personId
@@ -196,17 +204,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - galleries
-                - encounter
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                encounter:
-                  $ref: '#/components/schemas/Encounter'
+              $ref: '#/components/schemas/Encounter'
       responses:
         '201':
           description: Insertion successful
@@ -233,7 +231,7 @@ paths:
         insertResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Insert one encounter response callback
               operationId: insertCB
               parameters:
                 # query parameters
@@ -250,16 +248,14 @@ paths:
                   application/json:
                     schema:
                       type: object
-                      required:
-                        - status
                       properties:
-                        status:
-                          type: string
-                          enum: [OK, ERROR]
                         personId:
                           type: string
                         encounterId:
                           type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -315,17 +311,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - galleries
-                  - encounter
-                properties:
-                  galleries:
-                    type: array
-                    items:
-                      type: string
-                  encounter:
-                    $ref: '#/components/schemas/Encounter'
+                $ref: '#/components/schemas/Encounter'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -351,7 +337,7 @@ paths:
         readResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Read one encounter response callback
               operationId: readCB
               parameters:
                 # query parameters
@@ -367,17 +353,10 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      required:
-                        - galleries
-                        - encounter
-                      properties:
-                        galleries:
-                          type: array
-                          items:
-                            type: string
-                        encounter:
-                          $ref: '#/components/schemas/Encounter'
+                      $ref: '#/components/schemas/Encounter'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -437,17 +416,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - galleries
-                - encounter
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                encounter:
-                  $ref: '#/components/schemas/Encounter'
+              $ref: '#/components/schemas/Encounter'
       responses:
         '202':
           description: |
@@ -476,7 +445,7 @@ paths:
         updateResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Update one encounter response callback
               operationId: updateCB
               parameters:
                 # query parameters
@@ -493,7 +462,10 @@ paths:
                   application/json:
                     schema:
                       type: string
-                      enum: [OK, ERROR]
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -509,6 +481,9 @@ paths:
       tags:
         - CRUD
       summary: Delete one encounter
+      description: |
+        Delete one encounter from the person identified by his/her id.
+        If this is the last encounter in the person, the person is also deleted.
       operationId: delete
       parameters:
         - name: personId
@@ -571,7 +546,7 @@ paths:
         deleteResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Delete one encounter response callback
               operationId: deleteCB
               parameters:
                 # query parameters
@@ -588,7 +563,10 @@ paths:
                   application/json:
                     schema:
                       type: string
-                      enum: [OK, ERROR]
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -638,17 +616,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - galleries
-                - encounter
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                encounter:
-                  $ref: '#/components/schemas/Encounter'
+              $ref: '#/components/schemas/Encounter'
       responses:
         '200':
           description: Insertion successful
@@ -657,12 +625,8 @@ paths:
               schema:
                 type: object
                 required:
-                  - status
                   - encounterId
                 properties:
-                  status:
-                    type: string
-                    enum: [OK, ERROR]
                   personId:
                     type: string
                   encounterId:
@@ -690,7 +654,7 @@ paths:
         insertResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Insert one encounter and generate both IDs response callback
               operationId: insertNoIdsCB
               parameters:
                 # query parameters
@@ -708,16 +672,15 @@ paths:
                     schema:
                       type: object
                       required:
-                        - status
                         - encounterId
                       properties:
-                        status:
-                          type: string
-                          enum: [OK, ERROR]
                         personId:
                           type: string
                         encounterId:
                           type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -769,19 +732,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - galleries
-                  - encounters
-                properties:
-                  galleries:
-                    type: array
-                    items:
-                      type: string
-                  encounters:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Encounter'
+                type: array
+                items:
+                  $ref: '#/components/schemas/Encounter'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -807,7 +760,7 @@ paths:
         readAllResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Read all encounters response callback
               operationId: readAllCB
               parameters:
                 # query parameters
@@ -823,19 +776,12 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      required:
-                        - galleries
-                        - encounters
-                      properties:
-                        galleries:
-                          type: array
-                          items:
-                            type: string
-                        encounters:
-                          type: array
-                          items:
-                            $ref: '#/components/schemas/Encounter'
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Encounter'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -851,6 +797,9 @@ paths:
       tags:
         - CRUD
       summary: Insert one encounter and generate its ID
+      description: |
+        Insert one encounter in the person identified by his/her id.
+        If the person does not yet exist, it is created automatically.
       operationId: insertNoId
       parameters:
         - name: personId
@@ -889,17 +838,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - galleries
-                - encounter
-              properties:
-                galleries:
-                  type: array
-                  items:
-                    type: string
-                encounter:
-                  $ref: '#/components/schemas/Encounter'
+              $ref: '#/components/schemas/Encounter'
       responses:
         '200':
           description: Insertion successful
@@ -908,12 +847,8 @@ paths:
               schema:
                 type: object
                 required:
-                  - status
                   - encounterId
                 properties:
-                  status:
-                    type: string
-                    enum: [OK, ERROR]
                   personId:
                     type: string
                   encounterId:
@@ -941,7 +876,7 @@ paths:
         insertResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Insert one encounter and generate its ID response callback
               operationId: insertNoIdCB
               parameters:
                 # query parameters
@@ -959,16 +894,15 @@ paths:
                     schema:
                       type: object
                       required:
-                        - status
                         - encounterId
                       properties:
-                        status:
-                          type: string
-                          enum: [OK, ERROR]
                         personId:
                           type: string
                         encounterId:
                           type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1040,7 +974,7 @@ paths:
         deleteResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Delete a person response callback
               operationId: deleteAllCB
               parameters:
                 # query parameters
@@ -1057,7 +991,10 @@ paths:
                   application/json:
                     schema:
                       type: string
-                      enum: [OK, ERROR]
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1169,7 +1106,7 @@ paths:
         identifyResponse:
           '${request.query.callback}':
             post:
-              summary: Identification response callback
+              summary: Biometric identification response callback
               operationId: identifyCB
               parameters:
                 # query parameters
@@ -1188,6 +1125,9 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/Candidate'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1204,7 +1144,7 @@ paths:
     post:
       tags:
         - Search
-      summary: Biometric identification
+      summary: Biometric identification based on existing data
       description: Identification based on existing data from one gallery
       operationId: identifyFromId
       parameters:
@@ -1295,7 +1235,7 @@ paths:
         identifyResponse:
           '${request.query.callback}':
             post:
-              summary: Identification response callback
+              summary: Biometric identification based on existing data response callback
               operationId: identifyFromIdCB
               parameters:
                 # query parameters
@@ -1314,6 +1254,9 @@ paths:
                       type: array
                       items:
                         $ref: '#/components/schemas/Candidate'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1431,7 +1374,7 @@ paths:
         verifyResponse:
           '${request.query.callback}':
             post:
-              summary: Verification response callback
+              summary: Biometric verification response callback
               operationId: verifyFromIdCB
               parameters:
                 # query parameters
@@ -1457,6 +1400,9 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1473,7 +1419,7 @@ paths:
     post:
       tags:
         - Search
-      summary: Biometric verification
+      summary: Biometric verification with two sets of data
       description: Verification of two sets of biometric data
       operationId: verifyFromBio
       parameters:
@@ -1565,7 +1511,7 @@ paths:
         verifyResponse:
           '${request.query.callback}':
             post:
-              summary: Verification response callback
+              summary: Biometric verification with two sets of data response callback
               operationId: verifyFromBioCB
               parameters:
                 # query parameters
@@ -1591,6 +1537,9 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1662,7 +1611,7 @@ paths:
         getGalleriesResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Get the ID of all the galleries response callback
               operationId: galleriesCB
               parameters:
                 # query parameters
@@ -1681,6 +1630,9 @@ paths:
                       type: array
                       items:
                         type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1768,7 +1720,7 @@ paths:
         getGalleryContentResponse:
           '${request.query.callback}':
             post:
-              summary: Response callback
+              summary: Get the content of one gallery response callback
               operationId: galleryContentCB
               parameters:
                 # query parameters
@@ -1795,6 +1747,9 @@ paths:
                             type: string
                           encounterId:
                             type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
               responses:
                 '204':
                   description: Response is received and accepted.
@@ -1833,6 +1788,12 @@ components:
         encounterType:
           type: string
           description: Type of the encounter
+        galleries:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          uniqueItems: true
         clientData:
           type: string
           format: byte
