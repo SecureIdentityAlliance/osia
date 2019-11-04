@@ -45,7 +45,7 @@ Services
 .. py:function:: deletePerson(personID, options)
     :noindex:
 
-    Delete a person and all their identities.
+    Delete a person.
 
     **Authorization**: :todo:`To be defined`
 
@@ -80,64 +80,67 @@ Services
 
 ----------
 
-.. py:function:: createDocumentValidationRequest(documentID, documentData, callback, options)
+.. py:function:: createPersonDocument(personID, documentID, documentData, callback, options)
     :noindex:
 
-    Request validation of a document.
+    Add a new document for to a person.  This will trigger a document validation process.
 
     **Authorization**: :todo:`To be defined`
 
+    :param str personID: The ID of the person.
     :param str documentID: The ID of the document.
     :param documentData: The content and attributes of the document to be validated.
-    :param uri callback: The address of a service to be called when the result is available.
+    :param uri callback: The address of a service to be called when the validation result is available.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error.  In the case of success, a document validation identifier.
 
-.. py:function:: getDocumentValidationRequest(documentValidationID, options)
+.. py:function:: getDocumentValidationStatus(documentValidationID, options)
     :noindex:
 
-    Retrieve the attributes/status of a document validation.
+    Retrieve the status of a document validation.
 
     **Authorization**: :todo:`To be defined`
 
-    :param str issuanceID: The ID of the issuance.
+    :param str issuanceID: The ID of the document.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error, and in case of success the document validation status.
 
-.. py:function:: createBiometricValidationRequest(biometricID, biometricData, callback, options)
+.. py:function:: createPersonBiometric(personID, biometricID, biometricData, callback, options)
     :noindex:
 
-    Request validation of biometric data.
+    Add a new biometric for to a person.  This will trigger a biometric validation process.
 
     **Authorization**: :todo:`To be defined`
 
+    :param str personID: The ID of the person.
     :param str documentID: The ID of the biometric data.
     :param documentData: The content and attributes of the biometric to be validated.
-    :param uri callback: The address of a service to be called when the result is available.
+    :param uri callback: The address of a service to be called when the validation result is available.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error.  In the case of success, a biometric validation identifier.
 
-.. py:function:: getBiometricValidationRequest(biometricValidationID, options)
+.. py:function:: getBiometricValidationStatus(biometricValidationID, options)
     :noindex:
 
-    Retrieve the attributes/status of a biometric validation.
+    Retrieve the status of a biometric validation.
 
     **Authorization**: :todo:`To be defined`
 
-    :param str issuanceID: The ID of the issuance.
+    :param str issuanceID: The ID of the biometric data.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error, and in case of success the biometric validation status.
 
-.. py:function:: createBiographicValidationRequest(biographicID, biometricData, callback, options)
+.. py:function:: createBiographicValidationRequest(personID, biographicID, biometricData, callback, options)
     :noindex:
 
-    Request validation of biographic data.
+    Add a new biographic for to a person.  This will trigger a biographic validation process.
 
     **Authorization**: :todo:`To be defined`
 
+    :param str personID: The ID of the person.
     :param str documentID: The ID of the biographic data.
     :param documentData: The content and attributes of the biographic to be validated.
-    :param uri callback: The address of a service to be called when the result is available.
+    :param uri callback: The address of a service to be called when the validation result is available.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error.  In the case of success, a biographic validation identifier.
 
@@ -148,7 +151,7 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str issuanceID: The ID of the issuance.
+    :param str issuanceID: The ID of the biographic data.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error, and in case of success the biographic validation status.
 
