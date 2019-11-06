@@ -42,7 +42,8 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
 .. py:function:: matchPersonAttributes(UIN, attributes)
     :noindex:
 
-    Match person attributes. This service is used to check the value of attributes without exposing private data
+    Match person attributes. This service is used to check the value of attributes without exposing private data.
+    The implementation can use a simple comparison or a more advanced technique (for example: phonetic comparison for names)
     
     **Authorization**: :todo:`To be defined`
 
@@ -76,6 +77,7 @@ This service is synchronous. It can be used to match attributes in CR or in PR.
 
     Evaluate expressions on person attributes. This service is used to evaluate simple expressions on person's attributes
     without exposing private data
+    The implementation can use a simple comparison or a more advanced technique (for example: phonetic comparison for names)
     
     **Authorization**: :todo:`To be defined`
 
@@ -108,6 +110,7 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
     :noindex:
 
     Query the persons by a set of attributes. This service is used when the UIN is unknown.
+    The implementation can use a simple comparison or a more advanced technique (for example: phonetic comparison for names)
 
     **Authorization**: :todo:`To be defined`
 
