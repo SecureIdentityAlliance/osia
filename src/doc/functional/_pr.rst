@@ -340,10 +340,19 @@ Data Model
       string documentID;
       enum type: Doc1 | Doc2 | Signature | etc;
       int instance;
-      int page;
-      byte[] image;
-      URL imageRef;
+    }
+
+    class DocumentPart {
+      int[] pages;
+      byte[] data;
+      URL dataRef;
+      int width;
+      int height;
+      date captureDate;
+      string captureDevice;
+      string format;
     }
 
     Identity "1" -- "0..*" Document
 
+    Document "1" -- "1..*" DocumentPart
