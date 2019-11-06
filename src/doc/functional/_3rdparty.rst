@@ -34,10 +34,10 @@ Services
     
     In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
 
-.. py:function:: getAttributes(UIN, names)
+.. py:function:: readAttributes(UIN, names)
     :noindex:
 
-    Retrieve person attributes.
+    Read person attributes.
 
     **Authorization**: :todo:`To be defined`
 
@@ -46,10 +46,10 @@ Services
     :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.)
         the value is replaced with an error
 
-.. py:function:: getAttributeSet(UIN, setName)
+.. py:function:: readAttributeSet(UIN, setName)
     :noindex:
 
-    Retrieve person attributes corresponding to a predefined set name.
+    Read person attributes corresponding to a predefined set name.
 
     **Authorization**: :todo:`To be defined`
 

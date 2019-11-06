@@ -10,7 +10,7 @@ paths:
       description: |
         Request the generation of a new UIN.
         The request body should contain a list of attributes and their value, formatted as a json dictionary.
-      operationId: createUIN
+      operationId: generateUIN
       requestBody:
         description: A set of attributes for the person
         content:

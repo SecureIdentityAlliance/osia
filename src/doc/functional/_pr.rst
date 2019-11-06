@@ -21,10 +21,10 @@ See :ref:`annex-interface-pr` for the technical details of this interface.
 Services
 """"""""
 
-.. py:function:: insertPerson(personID, personData, options)
+.. py:function:: createPerson(personID, personData, options)
     :noindex:
 
-    Insert a new person.
+    Create a new person.
 
     **Authorization**: :todo:`To be defined`
 
@@ -36,7 +36,7 @@ Services
 .. py:function:: readPerson(personID, options)
     :noindex:
 
-    Retrieve the attributes of a person.
+    Read the attributes of a person.
 
     **Authorization**: :todo:`To be defined`
 
@@ -69,34 +69,12 @@ Services
 
 ----------
 
-.. py:function:: readIdentities(personID, options)
+.. py:function:: createIdentity(personID, identityID, identity, options)
     :noindex:
 
-    Get all the identities of one person.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str personID: The ID of the person.
-    :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success or error, and in case of success a list of identities.
-
-.. py:function:: insertIdentity(personID, identity, options)
-    :noindex:
-
-    Insert a new identity in a person and generate the identity ID.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str personID: The ID of the person.
-    :param identity: The new identity data.
-    :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success or error, and in case of success the ID allocated to the identity.
-
-.. py:function:: insertIdentityWithId(personID, identityID, identity, options)
-    :noindex:
-
-    Insert a new identity in a person and use the provided identity ID. An error is returned if this
-    ID is already used for another identity.
+    Create a new identity in a person. If no identityID is provided, a new one is generated. If identityID
+    is provided, it is checked for uniqueness and used for the identity if unique.
+    An error is returned if the provided identityID is not unique.
 
     **Authorization**: :todo:`To be defined`
 
@@ -109,14 +87,14 @@ Services
 .. py:function:: readIdentity(personID, identityID, options)
     :noindex:
 
-    Retrieve one identity of one person.
+    Read one or all the identities of one person.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str personID: The ID of the identity.
+    :param str personID: The ID of the identity. If not provided, all identities are returned.
     :param dict options: the processing options. Supported options are ``transactionID``.
-    :return: a status indicating success or error, and in case of success the identity data.
+    :return: a status indicating success or error, and in case of success a list of identities.
 
 .. py:function:: updateIdentity(personID, identityID, identity, options)
     :noindex:
@@ -161,7 +139,7 @@ Services
 .. py:function:: setIdentityStatus(personID, identityID, status, options)
     :noindex:
 
-    Update an identity status.
+    Set an identity status.
 
     **Authorization**: :todo:`To be defined`
 
@@ -188,7 +166,7 @@ Services
 .. py:function:: readReference(personID, options)
     :noindex:
 
-    Retrieve the reference identity of one person.
+    Read the reference identity of one person.
 
     **Authorization**: :todo:`To be defined`
 
@@ -198,20 +176,20 @@ Services
 
 ----------
 
-.. py:function:: getGalleries(options)
+.. py:function:: readGalleries(options)
     :noindex:
 
-    Get the ID of all the galleries.
+    Read the ID of all the galleries.
 
     **Authorization**: :todo:`To be defined`
 
     :param dict options: the processing options. Supported options are ``transactionID``.
     :return: a status indicating success or error, and in case of success a list of gallery ID.
 
-.. py:function:: getGalleryContent(galleryID, options)
+.. py:function:: readGalleryContent(galleryID, options)
     :noindex:
 
-    Get the content of one gallery, i.e. the IDs of all the records linked to this gallery.
+    Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
 
     **Authorization**: :todo:`To be defined`
 

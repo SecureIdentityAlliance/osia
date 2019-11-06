@@ -17,8 +17,8 @@ paths:
     post:
       tags:
         - Person
-      summary: Insert one person
-      operationId: insertPerson
+      summary: Create one person
+      operationId: createPerson
       parameters:
         - name: personId
           in: path
@@ -39,11 +39,11 @@ paths:
               $ref: '#/components/schemas/Person'
       responses:
         '201':
-          description: Insertion successful
+          description: Operation successful
         '400':
           description: Bad request
         '403':
-          description: Insertion not allowed
+          description: Operation not allowed
         '500':
           description: Unexpected error
           content:
@@ -163,7 +163,7 @@ paths:
     get:
       tags:
         - Identity
-      summary: Get the list of identities for a person
+      summary: Read all the identities of a person
       operationId: readIdentities
       parameters:
         - name: personId
@@ -202,8 +202,8 @@ paths:
     post:
       tags:
         - Identity
-      summary: Insert one identity and generate its ID
-      operationId: insertIdentity
+      summary: Create one identity and generate its id
+      operationId: createIdentity
       parameters:
         - name: personId
           in: path
@@ -249,8 +249,11 @@ paths:
     post:
       tags:
         - Identity
-      summary: Insert one identity
-      operationId: insertIdentityWithId
+      summary: Create one identity
+      description: |
+        Create one new identity for a person. The provided identityId is
+        checked for validity and used for the new identity.
+      operationId: createIdentityWithId
       parameters:
         - name: personId
           in: path
@@ -593,8 +596,8 @@ paths:
     get:
       tags:
         - Gallery
-      summary: Get the ID of all the galleries
-      operationId: getGalleries
+      summary: Read the ID of all the galleries
+      operationId: readGalleries
       parameters:
         - name: transactionId
           in: query
@@ -626,8 +629,8 @@ paths:
     get:
       tags:
         - Gallery
-      summary: Get the content of one gallery
-      operationId: getGalleryContent
+      summary: Read the content of one gallery
+      operationId: readGalleryContent
       parameters:
         - name: galleryId
           in: path

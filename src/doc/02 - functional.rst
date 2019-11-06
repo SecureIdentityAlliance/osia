@@ -165,30 +165,48 @@ The interfaces described in this chapter are summarized in the following table:
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
     **Data Access**
     --------------------------- ---------------------------------------------------------------
-    Get Person Attributes       U       IU                  U       IU      U           U
+    Read Person Attributes      U       IU                  U       IU      U           U
     Match Person Attributes             IU                          IU      U           U
     Verify Person Attributes            IU                          IU      U           U
-    Get Person UIN              U       IU                          IU      U
-    Get Person List             U       IU                          IU      U
-    Get document                        IU                          IU
+    Query Person UIN            U       IU                          IU      U
+    Query Person List           U       IU                          IU      U
+    Read Document                       IU                          IU
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
     **Biometrics**
     --------------------------- ---------------------------------------------------------------
-    Verify                      U                           I               U           U
-    Identify                    U                           I               U           U
-    Insert                              U                   I               U
+    Create                              U                   I                
     Read                                U                   I               U           U
-    Update                              U                   I               U
-    Delete                              U                   I               U
-    Get Gallery                         U                   I               U
-    Get Gallery content                 U                   I               U
+    Update                              U                   I                
+    Delete                              U                   I                
+    readTemplate                                            I               U
+    Read Galleries                      U                   I               
+    Read Gallery Content                U                   I               
+    Identify                    U                           I                           U
+    Verify                      U                           I                           U
+    --------------------------- ------- ------- ----------- ------- ------- ----------- -------
+    **Population Registry**
+    --------------------------- ---------------------------------------------------------------
+    Create Person                       I                   I               U
+    Read Person                         I                   I               U           U
+    Update Person                       I                   I               U
+    Delete Person                       I                   I               U
+    Create Identity                     I
+    Read Identity                       I
+    Update Identity                     I
+    PartialUpdate Identity              I
+    Delete Identity                     I
+    Set Identity Status                 I
+    Define Reference                    I
+    Read Reference                      I
+    Read Galleries                      I                                    
+    Read Gallery Content                I                                    
     --------------------------- ------- ------- ----------- ------- ------- ----------- -------
     **Third Party Services**
     --------------------------- ---------------------------------------------------------------
     Verify ID                                                                           I
     Identify ID                                                                         I
-    Get Attributes                                                                      I
-    Get Attributes set                                                                  I
+    Read Attributes                                                                     I
+    Read Attributes set                                                                 I
     =========================== ======= ======= =========== ======= ======= =========== =======
 
 where:
@@ -222,14 +240,14 @@ Birth Use Case
     group 1. Checks
         CR -> PR: matchPersonAttributes(mother attributes)
         CR -> PR: matchPersonAttributes(father attributes)
-        CR -> PR: getPersonAttributes(mother)
-        CR -> PR: getPersonAttributes(father)
-        CR -> PR: getPersonUIN(new born attributes)
+        CR -> PR: readPersonAttributes(mother)
+        CR -> PR: readPersonAttributes(father)
+        CR -> PR: queryPersonUIN(new born attributes)
         CR -> CR: Additional checks
     end
     
     group 2. Creation
-        CR -> UINGen: createUIN()
+        CR -> UINGen: generateUIN()
         CR -> CR
         note right: register the birth
 
@@ -243,10 +261,10 @@ Birth Use Case
 
         ...
         
-        PR -> CR: getPersonAttributes(new born)
+        PR -> CR: readPersonAttributes(new born)
         activate PR
-        PR -> CR: getPersonAttributes(mother)
-        PR -> CR: getPersonAttributes(father)
+        PR -> CR: readPersonAttributes(mother)
+        PR -> CR: readPersonAttributes(father)
         PR -> PR
         note right: create/update identities
         deactivate PR
@@ -257,8 +275,8 @@ Birth Use Case
    When a request is submitted, the CR may run checks against the data available in the PR using:
 
    - ``matchPersonAttributes``: to check the exactitude of the parents' attributes as known in the PR
-   - ``getPersonAttributes``: to get missing data about the parents's identity
-   - ``getPersonUIN``: to check if the new born is already known to PR or not
+   - ``readPersonAttributes``: to get missing data about the parents's identity
+   - ``readPersonUIN``: to check if the new born is already known to PR or not
 
    How the CR will process the request in case of data discrepancy is specific to each CR implementation
    and not in the scope of this document.
@@ -266,7 +284,7 @@ Birth Use Case
 2. Creation
 
    The birth is registered in the CR. The first step after the checks is to generate a new UIN
-   a call to ``createUIN``.
+   a call to ``generateUIN``.
     
 3. Notification
 
@@ -277,7 +295,7 @@ Birth Use Case
    
    The PR, upon reception of the birth event, will update the identity registry with this new identity using:
     
-   - ``getPersonAttributes``: to get the attributes of interest to the PR for the parents and the new child.
+   - ``readPersonAttributes``: to get the attributes of interest to the PR for the parents and the new child.
 
 Death Use Case
 """"""""""""""
@@ -313,7 +331,7 @@ and decides to merge them, a notification must be sent.
 
     ...
 
-    CR -> PR: getPersonAttributes(UIN)
+    CR -> PR: readPersonAttributes(UIN)
     activate CR
     activate PR
     CR -> CR: merge()
@@ -356,8 +374,8 @@ Bank account opening Use Case
         bank -> bank  : create account for UIN
     end
     group 2. Get certified Attributes
-        bank -> usage : getAttributeSet (UIN, attribute set name)
-        usage -> PR : getPersonAttributes(UIN)
+        bank -> usage : readAttributeSet (UIN, attribute set name)
+        usage -> PR : readPersonAttributes(UIN)
         usage -> bank : List of attributes values
         note right: fill-in attributes in bank account
     end
@@ -393,14 +411,14 @@ Police identity control Use Cases
         usage -> police : Y/N
     end
     group 2. Show corresponding attributes
-        police -> usage : getAttributeSet (UIN1, attribute set name)
-        usage -> PR : getPersonAttributes(UIN1)
+        police -> usage : readAttributeSet (UIN1, attribute set name)
+        usage -> PR : readPersonAttributes(UIN1)
         usage -> police : List of attributes values
-        police -> usage : getAttributeSet (UIN2, attribute set name)
-        usage -> PR : getPersonAttributes(UIN2)
+        police -> usage : readAttributeSet (UIN2, attribute set name)
+        usage -> PR : readtPersonAttributes(UIN2)
         usage -> police : List of attributes values
-        police -> usage : getAttributeSet (UIN3, attribute set name)
-        usage -> PR : getPersonAttributes(UIN3)
+        police -> usage : readAttributeSet (UIN3, attribute set name)
+        usage -> PR : readPersonAttributes(UIN3)
         usage -> police : List of attributes values
         note right: display attributes for each candidates
     end

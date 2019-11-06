@@ -7,10 +7,10 @@ See :ref:`annex-interface-dataaccess` for the technical details of this interfac
 Services
 """"""""
 
-.. py:function:: getPersonAttributes(UIN, names)
+.. py:function:: readPersonAttributes(UIN, names)
     :noindex:
 
-    Retrieve person attributes.
+    Read person attributes.
 
     **Authorization**: :todo:`To be defined`
 
@@ -21,7 +21,7 @@ Services
 This service is synchronous. It can be used to retrieve attributes from CR or from PR.
 
 .. uml::
-    :caption: ``getPersonAttributes`` Sequence Diagram
+    :caption: ``readPersonAttributes`` Sequence Diagram
     :scale: 50%
 
     !include "skin.iwsd"
@@ -30,11 +30,11 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     participant "PR" as PR
 
     note over CR,PR: CR can request person's attributes from PR
-    CR -> PR: getPersonAttributes(UIN,[names])
+    CR -> PR: readPersonAttributes(UIN,[names])
     PR -->> CR: attributes
 
     note over CR,PR: PR can request person's attributes from CR
-    PR -> CR: getPersonAttributes(UIN,[names])
+    PR -> CR: readPersonAttributes(UIN,[names])
     CR -->> PR: attributes
 
 -------
@@ -104,10 +104,10 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
 
 -------
 
-.. py:function:: getPersonUIN(attributes)
+.. py:function:: queryPersonUIN(attributes)
     :noindex:
 
-    Retrieve UIN based on a set of attributes. This service is used when the UIN is unknown.
+    Query the persons by a set of attributes. This service is used when the UIN is unknown.
 
     **Authorization**: :todo:`To be defined`
 
@@ -117,7 +117,7 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
 This service is synchronous. It can be used to get the UIN of a person.
 
 .. uml::
-    :caption: ``getPersonUIN`` Sequence Diagram
+    :caption: ``queryPersonUIN`` Sequence Diagram
     :scale: 50%
 
     !include "skin.iwsd"
@@ -126,21 +126,21 @@ This service is synchronous. It can be used to get the UIN of a person.
     participant "PR" as PR
 
     note over CR,PR: CR can get UIN from PR
-    CR -> PR: getPersonUIN([attributes])
+    CR -> PR: queryPersonUIN([attributes])
     PR -->> CR: [UIN]
 
     note over CR,PR: PR can get UIN from CR
-    PR -> CR: getPersonUIN([attributes])
+    PR -> CR: queryPersonUIN([attributes])
     CR -->> PR: [UIN]
 
 -------
 
-.. py:function:: getPersonList(attributes, names)
+.. py:function:: queryPersonList(attributes, names)
     :noindex:
 
-    Retrieve person attributes of records matching the provided attributes.
+    Query the persons by a list of attributes and their values.
     This service is proposed as an optimization of a sequence of calls to
-    :py:func:`getPersonUIN` and :py:func:`getPersonAttributes`.
+    :py:func:`queryPersonUIN` and :py:func:`readPersonAttributes`.
 
     **Authorization**: :todo:`To be defined`
 
@@ -151,7 +151,7 @@ This service is synchronous. It can be used to get the UIN of a person.
 This service is synchronous. It can be used to retrieve attributes from CR or from PR.
 
 .. uml::
-    :caption: ``getPersonList`` Sequence Diagram
+    :caption: ``queryPersonList`` Sequence Diagram
     :scale: 50%
 
     !include "skin.iwsd"
@@ -160,19 +160,19 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     participant "PR" as PR
 
     note over CR,PR: CR can request person's attributes from PR
-    CR -> PR: getPersonList([attributes],[names])
+    CR -> PR: queryPersonList([attributes],[names])
     PR -->> CR: [attributes]
 
     note over CR,PR: PR can request person's attributes from CR
-    PR -> CR: getPersonList([attributes],[names])
+    PR -> CR: queryPersonList([attributes],[names])
     CR -->> PR: [attributes]
 
 -------
 
-.. py:function:: getDocument(UINs,documentType,format)
+.. py:function:: readDocument(UINs,documentType,format)
     :noindex:
 
-    Retrieve in a selected format (PDF, image, ...) a document such as a marriage certificate.
+    Read in a selected format (PDF, image, ...) a document such as a marriage certificate.
 
     **Authorization**: :todo:`To be defined`
 
@@ -184,7 +184,7 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
 This service is synchronous. It can be used to get the documents for a person.
 
 .. uml::
-    :caption: ``getDocument`` Sequence Diagram
+    :caption: ``readDocument`` Sequence Diagram
     :scale: 50%
 
     !include "skin.iwsd"
@@ -193,11 +193,11 @@ This service is synchronous. It can be used to get the documents for a person.
     participant "PR" as PR
 
     note over CR,PR: CR can get a document from PR
-    CR -> PR: getDocument([UIN],documentType,format)
+    CR -> PR: readDocument([UIN],documentType,format)
     PR -->> CR: [documents]
 
     note over CR,PR: PR can get a document from CR
-    PR -> CR: getDocument([UIN],documentType,format)
+    PR -> CR: readDocument([UIN],documentType,format)
     CR -->> PR: [documents]
 
 Dictionaries

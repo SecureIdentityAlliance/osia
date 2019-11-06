@@ -30,10 +30,10 @@ See :ref:`annex-interface-abis` for the technical details of this interface.
 Services
 """"""""
 
-.. py:function:: insert(personID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, options)
+.. py:function:: create(personID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, options)
     :noindex:
 
-    Insert a new encounter. No identify is performed. This service is synchronous.
+    Create a new encounter. No identify is performed. This service is synchronous.
 
     **Authorization**: :todo:`To be defined`
 
@@ -54,7 +54,7 @@ Services
 .. py:function:: read(personID, encounterID, callback, options)
     :noindex:
 
-    Retrieve the data of an encounter.
+    Read the data of an encounter.
 
     **Authorization**: :todo:`To be defined`
 
@@ -103,24 +103,49 @@ Services
     :return: a status indicating success, error, or pending operation.
         In case of pending operation, the operation status will be sent later.
 
-.. py:function:: getTemplate(personID, encounterID, biometricType, biometricSubType, callback, options)
+.. py:function:: readTemplate(personID, encounterID, biometricType, biometricSubType, callback, options)
     :noindex:
 
-    Retrieve the data of an encounter.
+    Read the generated template.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The person ID
-    :param str encounterID: The encounter ID. This is optional. If not provided, all the
-        encounters of the person are returned.
-    :param str biometricType: The type of biometrics to consider
-    :param str biometricSubType: The subtype of biometrics to consider
+    :param str encounterID: The encounter ID.
+    :param str biometricType: The type of biometrics to consider (optional)
+    :param str biometricSubType: The subtype of biometrics to consider (optional)
     :param callback: The address of a service to be called when the result is available.
     :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
     :return: a status indicating success, error, or pending operation.
         In case of success, a list of template data is returned.
         In case of pending operation, the result will be sent later.
 
+----------
+
+.. py:function:: readGalleries(callback, options)
+    :noindex:
+
+    Read the ID of all the galleries.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        A list of gallery ID is returned, either synchronously or using the callback.
+
+.. py:function:: readGalleryContent(galleryID, callback, options)
+    :noindex:
+
+    Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str galleryID: Gallery whose content will be returned.
+    :param callback: The address of a service to be called when the result is available.
+    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        A list of persons/encounters is returned, either synchronously or using the callback.
 
 ----------
 
@@ -191,34 +216,6 @@ Services
     :return: a status indicating success, error, or pending operation.
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per the biometric.
-
-----------
-
-.. py:function:: getGalleries(callback, options)
-    :noindex:
-
-    Get the ID of all the galleries.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-    :return: a status indicating success, error, or pending operation.
-        A list of gallery ID is returned, either synchronously or using the callback.
-
-.. py:function:: getGalleryContent(galleryID, callback, options)
-    :noindex:
-
-    Get the content of one gallery, i.e. the IDs of all the records linked to this gallery.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str galleryID: Gallery whose content will be returned.
-    :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
-    :return: a status indicating success, error, or pending operation.
-        A list of persons/encounters is returned, either synchronously or using the callback.
-
 
 Options
 """""""

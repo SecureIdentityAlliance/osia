@@ -7,7 +7,7 @@ info:
     
     Change log:
     
-    - 1.1.0: extended getPersonUIN/getPersonList operation to return a list of attributes, and not only a list of UIN
+    - 1.1.0: extended queryPersonUIN/queryPersonList operation to return a list of attributes, and not only a list of UIN
     - 1.0.0: first version proposed in OSIA.
     
 servers:
@@ -19,16 +19,16 @@ paths:
   /v1/persons:
     get:
       description: |
-        Retrieve UIN or person attributes based on a set of attributes.
+        Query for persons using a set of attributes. Retrieve the UIN or the person attributes.
         This service is used when the UIN is unknown.
         Example: http://registry.com/v1/persons?firstName=John&lastName=Do&names=firstName
-      operationId: getPersonList
+      operationId: queryPersonList
       tags:
       - Person
       parameters: 
         - name: attributes
           in: query
-          description: The attributes (names and values) used to retrieve the UIN
+          description: The attributes (names and values) used to query
           required: true
           schema:
             type: object
@@ -110,8 +110,8 @@ paths:
 
   /v1/persons/{uin}:
     get:
-      description: "Retrieve attributes for a person. Example: http://registry.com/v1/persons/123456789?attributeNames=firstName&attributeNames=lastName&attributeNames=dob"
-      operationId: getPersonAttributes
+      description: "Read attributes for a person. Example: http://registry.com/v1/persons/123456789?attributeNames=firstName&attributeNames=lastName&attributeNames=dob"
+      operationId: readPersonAttributes
       tags:
         - Person
       parameters: 
@@ -274,9 +274,9 @@ paths:
   /v1/persons/{uin}/document:
     get:
       description: |
-        Retrieve in an unstructured format (PDF, image) a document such as a marriage certificate.
+        Read in an unstructured format (PDF, image) a document such as a marriage certificate.
         Example: ``http://registry.com/v1/persons/123456789/document?doctype=marriage&secondaryUin=234567890&format=pdf``
-      operationId: getDocument
+      operationId: readDocument
       tags:
         - Document
       parameters: 
