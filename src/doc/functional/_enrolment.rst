@@ -19,7 +19,7 @@ Services
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error.
 
-.. py:function:: getPerson(personID, options)
+.. py:function:: readPerson(personID, filter, options)
     :noindex:
 
     Retrieve the attributes of a person.
@@ -27,6 +27,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
+    :param set filter: A set of required attributes to retrieve.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error and in case of success the person data.
 
@@ -55,45 +56,67 @@ Services
 
 ----------
 
-.. py:function:: createCredentialIssuanceRequest(personID, credentialProfileID, options)
+.. py:function:: createDocument(personID, documentID, documentData, options)
     :noindex:
 
-    Request issuance of a smart card / mobile identity.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str personID: The ID of the person.
-    :param str credentialProfileID: The ID of the credential profile to issue to the person.
-    :param dict options: The processing options. Supported options are transactionID.
-    :return: a status indicating success or error.  In the case of success, an issuance identifier.
-
-.. py:function:: getCredentialIssuanceRequest(issuanceID, options)
-    :noindex:
-
-    Retrieve the attributes/status of an issuance.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str issuanceID: The ID of the issuance.
-    :param dict options: The processing options. Supported options are transactionID.
-    :return: a status indicating success or error, and in case of success the issuance data/status.
-
-----------
-
-.. py:function:: createPersonDocument(personID, documentID, documentData, options)
-    :noindex:
-
-    Add a new document for to a person.  This will trigger a document validation process.
+    Add a new document for a person.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
     :param str documentID: The ID of the document.
-    :param documentData: The content and attributes of the document to be validated.
+    :param documentData: The content and attributes of the document.
     :param dict options: The processing options. Supported options are transactionID.
-    :return: a status indicating success or error.  In the case of success, a document validation identifier.
+    :return: a status indicating success or error.  In the case of success, a document identifier.
 
-.. py:function:: getDocumentValidationStatus(documentValidationID, options)
+.. py:function:: readDocument(documentID, filter, options)
+    :noindex:
+
+    Retrieve document data.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str documentID: The ID of the document.
+    :param set filter: A set of required attributes to retrieve.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error, and in case of success the document data.
+
+.. py:function:: updateDocument(documentID, documentData, options)
+    :noindex:
+
+    Update a document for a person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str documentID: The ID of the document.
+    :param documentData: The content and attributes of the document.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: deleteDocument(documentID, options)
+    :noindex:
+
+    Delete a document for a person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str documentID: The ID of the document.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: updateDocumentValidationStatus(documentID, status, options)
+    :noindex:
+
+    Updates the status of a document validation.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str documentValidationID: The ID of the document.
+    :param status: The status of the document validation, e.g. 'ready' to validate.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: readDocumentValidationStatus(documentID, options)
     :noindex:
 
     Retrieve the status of a document validation.
@@ -102,60 +125,178 @@ Services
 
     :param str documentValidationID: The ID of the document.
     :param dict options: The processing options. Supported options are transactionID.
-    :return: a status indicating success or error, and in case of success the document validation status.
+    :return: a status indicating success or error, and in case of success the document validation status and its metadata.
 
-.. py:function:: createPersonBiometric(personID, biometricID, biometricData, options)
+----------
+
+.. py:function:: createBiometric(personID, biometricID, biometricData, options)
     :noindex:
 
-    Add a new biometric for to a person.  This will trigger a biometric validation process.
+    Add a new biometric for a person.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str documentID: The ID of the biometric data.
-    :param documentData: The content and attributes of the biometric to be validated.
+    :param str biometricID: The ID of the biometric.
+    :param biometricData: The content and attributes of the biometric.
     :param dict options: The processing options. Supported options are transactionID.
-    :return: a status indicating success or error.  In the case of success, a biometric validation identifier.
+    :return: a status indicating success or error.  In the case of success, a biometric identifier.
 
-.. py:function:: getBiometricValidationStatus(biometricValidationID, options)
+.. py:function:: readBiometric(biometricID, filter, options)
+    :noindex:
+
+    Retrieve biometric data.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str biometricValidationID: The ID of the biometric.
+    :param set filter: A set of required attributes to retrieve.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error, and in case of success the biometric data.
+
+.. py:function:: updateBiometric(biometricID, biometricData, options)
+    :noindex:
+
+    Update a biometric for a person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str biometricID: The ID of the biometric.
+    :param biometricData: The content and attributes of the biometric.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: deleteBiometric(biometricID, options)
+    :noindex:
+
+    Delete a biometric for a person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str biometricID: The ID of the biometric.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: updateBiometricValidationStatus(biometricID, status, options)
+    :noindex:
+
+    Updates the status of a biometric validation.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str biometricValidationID: The ID of the biometric.
+    :param status: The status of the biometric validation, e.g. 'ready' to validate.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error, and in case of success the biometric validation status.
+
+.. py:function:: readBiometricValidationStatus(biometricID, options)
     :noindex:
 
     Retrieve the status of a biometric validation.
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biometricValidationID: The ID of the biometric data.
+    :param str biometricValidationID: The ID of the biometric.
     :param dict options: The processing options. Supported options are transactionID.
-    :return: a status indicating success or error, and in case of success the biometric validation status.
+    :return: a status indicating success or error, and in case of success the biometric validation status and metadata.
 
-.. py:function:: createPersonBiographic(personID, biometricID, biometricData, options)
+----------
+
+.. py:function:: createBiographic(personID, biographicID, biographicData, options)
     :noindex:
 
-    Add a new biographic for to a person.  This will trigger a biographic validation process.
+    Add a new biographic for a person.
 
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str documentID: The ID of the biographic data.
-    :param documentData: The content and attributes of the biographic to be validated.
+    :param str biographicID: The ID of the biographic.
+    :param biographicData: The content and attributes of the biographic.
     :param dict options: The processing options. Supported options are transactionID.
-    :return: a status indicating success or error.  In the case of success, a biographic validation identifier.
+    :return: a status indicating success or error.  In the case of success, a biographic identifier.
 
-.. py:function:: getBiographicValidationRequest(biographicValidationID, options)
+.. py:function:: readBiographic(biographicID, filter, options)
     :noindex:
 
-    Retrieve the attributes/status of a biographic validation.
+    Retrieve biographic data.
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biographicValidationID: The ID of the biographic data.
+    :param str biographicValidationID: The ID of the biographic.
+    :param set filter: A set of required attributes to retrieve.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error, and in case of success the biographic data.
+
+.. py:function:: updateBiographic(biographicID, biographicData, options)
+    :noindex:
+
+    Update a biographic for a person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str biographicID: The ID of the biographic.
+    :param biographicData: The content and attributes of the biographic.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: deleteBiographic(biographicID, options)
+    :noindex:
+
+    Delete a biographic for a person.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str biographicID: The ID of the biographic.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: updateBiographicValidationStatus(biographicID, status, options)
+    :noindex:
+
+    Updates the status of a biographic validation.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str biographicValidationID: The ID of the biographic.
+    :param status: The status of the biographic validation, e.g. 'ready' to validate.
     :param dict options: The processing options. Supported options are transactionID.
     :return: a status indicating success or error, and in case of success the biographic validation status.
+
+.. py:function:: readBiographicValidationStatus(biographicID, options)
+    :noindex:
+
+    Retrieve the status of a biographic validation.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str biomgraphicValidationID: The ID of the biographic.
+    :param dict options: The processing options. Supported options are transactionID.
+    :return: a status indicating success or error, and in case of success the biographic validation status and metadata.
+
+----------
+
+Filter
+""""""
+
+The "filter" parameter used in "read" calls is used to provide a set of
+identifiers that limit the amount of data that is returned.
+It is often the case that the whole data set is not required, but instead,
+a subset of that data.
+Where possible, existing standards based identifiers should be used for the
+attributes to retrieve.
+
+E.g. For surname/familyname, use OID 2.5.4.4 or id-at-surname.
+
+Some calls may require new filter attributes to be defined.  E.g. when
+retrieving biometric data, the caller may only want the meta data about
+that biometric, rather than the actual biometric data.
 
 Options
 """""""
 
-.. list-table:: Population Registry Services Options
+.. list-table:: Enrolment Services Options
     :header-rows: 1
     :widths: 25 75
 
