@@ -9,7 +9,7 @@ OSIA provides seamless interconnection between multiple components part of the i
 
 The components are defined as follows:
 
-- The *Enrolment* component. Enrollment is defined as a system to register biographic and
+- The *Enrollment* component. Enrollment is defined as a system to register biographic and
   biometric data of individuals.
 - The *Population Registry* (PR) component.
 
@@ -34,8 +34,8 @@ The components are defined as follows:
   is accordance with the legal requirement in each country.
   Civil registration is carried out primarily for the purpose of establishing the documents provided by the law." [#]_
 
-- The *Document Management System* (DMS) component. DMS is defined as a system to manage the production and
-  issuance of physical documents like ID Cards, passports, driving licenses, etc.
+- The *Credential Management System* (CMS) component. CMS is defined as a system to manage the production and
+  issuance of credentials such as ID Cards, passports, driving licenses, digital ID, etc.
 - The *Third Parties Services* component.
 
 .. list-table:: Components
@@ -84,14 +84,14 @@ The components are defined as follows:
         - Certificate production
         - Workflow
 
-    * - DMS
+    * - CMS
       - - Alpha
         - UIN
         - History
         - Supporting documents
-      - - Document data storage
-        - Document Life cycle management
-        - Document Production
+      - - Credential data storage
+        - Credential Life cycle management
+        - Credential Production
         - Workflow
         - SMS and email server
 
@@ -150,7 +150,7 @@ The interfaces described in this chapter are summarized in the following table:
     =========================== ======= ======= =========== ======= ======= =========== =======
     ..                          **Components**
     --------------------------- ---------------------------------------------------------------
-    **Interfaces**              Enroll  PR      UIN gen.    ABIS    CR      DMS         Third Parties
+    **Interfaces**              Enroll  PR      UIN gen.    ABIS    CR      CMS         Third Parties
     =========================== ======= ======= =========== ======= ======= =========== =======
     **Notifications**
     --------------------------- ---------------------------------------------------------------

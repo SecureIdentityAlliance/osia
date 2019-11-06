@@ -139,7 +139,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.979899"
-     inkscape:cx="270.63721"
+     inkscape:cx="202.45781"
      inkscape:cy="108.22826"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -585,7 +585,7 @@
          id="tspan115281">(CR)</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222224px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="100.89426"
        y="80.110771"
        id="text115285"
@@ -594,17 +594,17 @@
          id="tspan115283"
          x="100.89426"
          y="80.110771"
-         style="line-height:100%;stroke-width:0.26458332px;-inkscape-font-specification:'Arial, Bold';font-family:Arial;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;font-size:2.82222224px;text-anchor:start;text-align:start;writing-mode:lr;">Document</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px">Credential</tspan><tspan
          sodipodi:role="line"
          x="100.89426"
-         y="83.63855"
-         style="line-height:100%;stroke-width:0.26458332px;-inkscape-font-specification:'Arial, Bold';font-family:Arial;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;font-size:2.82222224px;text-anchor:start;text-align:start;writing-mode:lr;"
+         y="82.932991"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
          id="tspan115287">Management</tspan><tspan
          sodipodi:role="line"
          x="100.89426"
-         y="87.166328"
-         style="line-height:100%;stroke-width:0.26458332px;-inkscape-font-specification:'Arial, Bold';font-family:Arial;font-weight:bold;font-style:normal;font-stretch:normal;font-variant:normal;font-size:2.82222224px;text-anchor:start;text-align:start;writing-mode:lr;"
-         id="tspan115289">System (DMS)</tspan></text>
+         y="85.755219"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
+         id="tspan115289">System (CMS)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222224px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
