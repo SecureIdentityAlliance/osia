@@ -178,7 +178,7 @@ The interfaces described in this chapter are summarized in the following table:
     Read                                U                   I               U           U
     Update                              U                   I                
     Delete                              U                   I                
-    readTemplate                                            I               U
+    Read Template                                           I               U
     Read Galleries                      U                   I               
     Read Gallery Content                U                   I               
     Identify                    U                           I                           U
