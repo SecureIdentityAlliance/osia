@@ -8,11 +8,11 @@ the following principles:
 - It supports only multi-encounter model, meaning that an identity can have multiple set of biometric data,
   one for each encounter.
 - It does not expose templates (only images) for CRUD services, with one exception to support
-  the use case of documents with biometrics.
+  the use case of credentials with biometrics.
 - Images can be passed by value or reference. When passed by value, they are base64-encoded.
-- Existing standards are used whenever possible, for instance preferred image format is ISO-19794.
+- Existing standards are used whenever possible, for instance preferred image format for biometric data is ISO-19794.
 
-.. note:: Synchronous and Asynchronous Processing
+.. admonition:: About synchronous and asynchronous processing
 
     Some services can be very slow depending on the algorithm used, the system workload, etc.
     Services are described so that:
