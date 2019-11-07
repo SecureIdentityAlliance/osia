@@ -1,8 +1,8 @@
 
 .. _annex-interface-pr:
 
-Population Registery Management
--------------------------------
+Population Registry Management
+------------------------------
 
 Download the OpenAPI file for this interface :openapi:`pr.yaml`.
 

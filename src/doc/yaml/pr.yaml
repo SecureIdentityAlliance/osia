@@ -17,8 +17,8 @@ paths:
     post:
       tags:
         - Person
-      summary: Insert one person
-      operationId: insertPerson
+      summary: Create one person
+      operationId: createPerson
       parameters:
         - name: personId
           in: path
@@ -29,7 +29,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -39,11 +39,11 @@ paths:
               $ref: '#/components/schemas/Person'
       responses:
         '201':
-          description: Insertion successful
+          description: Operation successful
         '400':
           description: Bad request
         '403':
-          description: Insertion not allowed
+          description: Operation not allowed
         '500':
           description: Unexpected error
           content:
@@ -65,7 +65,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -102,7 +102,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -140,7 +140,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -163,7 +163,7 @@ paths:
     get:
       tags:
         - Identity
-      summary: Get the list of identities for a person
+      summary: Read all the identities of a person
       operationId: readIdentities
       parameters:
         - name: personId
@@ -175,7 +175,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -202,8 +202,8 @@ paths:
     post:
       tags:
         - Identity
-      summary: Insert one identity and generate its ID
-      operationId: insertIdentity
+      summary: Create one identity and generate its id
+      operationId: createIdentity
       parameters:
         - name: personId
           in: path
@@ -214,7 +214,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -249,8 +249,11 @@ paths:
     post:
       tags:
         - Identity
-      summary: Insert one identity
-      operationId: insertIdentityWithId
+      summary: Create one identity
+      description: |
+        Create one new identity for a person. The provided identityId is
+        checked for validity and used for the new identity.
+      operationId: createIdentityWithId
       parameters:
         - name: personId
           in: path
@@ -267,7 +270,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -309,7 +312,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -352,7 +355,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -397,7 +400,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -446,7 +449,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -493,7 +496,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -532,7 +535,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -565,7 +568,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -593,13 +596,13 @@ paths:
     get:
       tags:
         - Gallery
-      summary: Get the ID of all the galleries
-      operationId: getGalleries
+      summary: Read the ID of all the galleries
+      operationId: readGalleries
       parameters:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -626,8 +629,8 @@ paths:
     get:
       tags:
         - Gallery
-      summary: Get the content of one gallery
-      operationId: getGalleryContent
+      summary: Read the content of one gallery
+      operationId: readGalleryContent
       parameters:
         - name: galleryId
           in: path
@@ -638,7 +641,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -753,10 +756,15 @@ components:
       type: string
       enum: [NONE, JPEG, JPEG2000, PNG]
 
+    DocumentFormatType:
+      type: string
+      enum: [NONE, JPEG, PNG, PDF]
+
     Document:
       type: object
       required:
         - documentId
+        - parts
       properties:
         documentId:
           type: string
@@ -765,26 +773,42 @@ components:
         instance:
           type: integer
           description: "Used to separate two distincts documents of the same type (ex: two passports)"
-        page:
-          type: integer
-          description: The page number for a pair (type, instance). Used to group and sort pages for multi-page documents
-        image:
+        parts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentPart'
+    DocumentPart:
+      type: object
+      properties:
+        pages:
+          type: array
+          description: The pages included in this part. Can be a single page number, or a list.
+          items:
+            type: integer
+        data:
           type: string
           format: byte
-          description: Base64-encoded image
-        imageRef:
+          description: Base64-encoded data of the document
+        dataRef:
           type: string
           format: uri
-          description: URI to an image
-          example: "http://imageserver.com/image?id=00003"
+          description: URI to the data
+          example: "http://server.com/buffer?id=00003"
         width:
           type: integer
           description: the width of the image in pixels
         height:
           type: integer
           description: the height of the image in pixels
-        compression:
-          $ref: '#/components/schemas/CompressionType'
+        format:
+          $ref: '#/components/schemas/DocumentFormatType'
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the document part
     DocumentType:
       type: string
       description: Type of document. Can be extended.

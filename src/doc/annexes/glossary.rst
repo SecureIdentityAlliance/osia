@@ -12,8 +12,16 @@ Glossary
         of the occurrence and characteristics of vital events pertaining to the population, as provided
         through decree or regulation in accordance with the legal requirements in each country.
         
-    **DMS**
-        Document Management System
+    **CMS**
+        Credential Management System
+
+    **Credential**
+        A document, object, or data structure that vouches for the identity of a person through some method of
+        trust and authentication. Common types of identity credentials include - but are not limited to — ID cards,
+        certificates, numbers, passwords, or SIM cards. A biometric identifier can also be used as a credential
+        once it has been registered with the identity provider.
+        
+        (Source: `ID4D Practioner's Guide <http://documents.worldbank.org/curated/en/248371559325561562/pdf/ID4D-Practitioner-s-Guide.pdf>`_)
 
     **Functional systems and registries**
         Managing data including voter rolls, land registry, vehicle registration, passport, residence registry,

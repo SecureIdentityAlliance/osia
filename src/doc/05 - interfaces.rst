@@ -15,6 +15,6 @@ Interfaces
 
 .. include:: functional/_abis.rst
 
-.. include:: functional/_dms.rst
+.. include:: functional/_cms.rst
 
 .. include:: functional/_3rdparty.rst
