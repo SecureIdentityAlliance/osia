@@ -21,7 +21,7 @@ See :ref:`annex-interface-pr` for the technical details of this interface.
 Services
 """"""""
 
-.. py:function:: createPerson(personID, personData, options)
+.. py:function:: createPerson(personID, personData, transactionID)
     :noindex:
 
     Create a new person.
@@ -30,10 +30,10 @@ Services
 
     :param str personID: The ID of the person. If the person already exists for the ID an error is returned.
     :param personData: The person attributes.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
-.. py:function:: readPerson(personID, options)
+.. py:function:: readPerson(personID, transactionID)
     :noindex:
 
     Read the attributes of a person.
@@ -41,10 +41,10 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error and in case of success the person data.
 
-.. py:function:: updatePerson(personID, personData, options)
+.. py:function:: updatePerson(personID, personData, transactionID)
     :noindex:
 
     Update a person.
@@ -53,10 +53,9 @@ Services
 
     :param str personID: The ID of the person.
     :param dict personData: The person data.
-    :param dict options: the processing options. Supported options are ``transactionID``.
     :return: a status indicating success or error.
 
-.. py:function:: deletePerson(personID, options)
+.. py:function:: deletePerson(personID, transactionID)
     :noindex:
 
     Delete a person and all its identities.
@@ -64,12 +63,12 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
 ----------
 
-.. py:function:: createIdentity(personID, identityID, identity, options)
+.. py:function:: createIdentity(personID, identityID, identity, transactionID)
     :noindex:
 
     Create a new identity in a person. If no identityID is provided, a new one is generated. If identityID
@@ -81,10 +80,10 @@ Services
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity.
     :param identity: The new identity data.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
-.. py:function:: readIdentity(personID, identityID, options)
+.. py:function:: readIdentity(personID, identityID, transactionID)
     :noindex:
 
     Read one or all the identities of one person.
@@ -93,10 +92,10 @@ Services
 
     :param str personID: The ID of the person.
     :param str personID: The ID of the identity. If not provided, all identities are returned.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error, and in case of success a list of identities.
 
-.. py:function:: updateIdentity(personID, identityID, identity, options)
+.. py:function:: updateIdentity(personID, identityID, identity, transactionID)
     :noindex:
 
     Update an identity. An identity can be updated only in the status ``claimed``.
@@ -106,10 +105,10 @@ Services
     :param str personID: The ID of the person.
     :param str personID: The ID of the identity.
     :param identity: The identity data.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
-.. py:function:: partialUpdateIdentity(personID, identityID, identity, options)
+.. py:function:: partialUpdateIdentity(personID, identityID, identity, transactionID)
     :noindex:
 
     Update part of an identity. Not all attributes are mandatory. The payload
@@ -121,10 +120,9 @@ Services
     :param str personID: The ID of the person.
     :param str personID: The ID of the identity.
     :param identity: Part of the identity data.
-    :param dict options: the processing options. Supported options are ``transactionID``.
     :return: a status indicating success or error.
 
-.. py:function:: deleteIdentity(personID, identityID, options)
+.. py:function:: deleteIdentity(personID, identityID, transactionID)
     :noindex:
 
     Delete an identity.
@@ -133,10 +131,10 @@ Services
 
     :param str personID: The ID of the person.
     :param str personID: The ID of the identity.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
-.. py:function:: setIdentityStatus(personID, identityID, status, options)
+.. py:function:: setIdentityStatus(personID, identityID, status, transactionID)
     :noindex:
 
     Set an identity status.
@@ -146,12 +144,12 @@ Services
     :param str personID: The ID of the person.
     :param str personID: The ID of the identity.
     :param str status: The new status of the identity.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
 ----------
 
-.. py:function:: defineReference(personID, identityID, options)
+.. py:function:: defineReference(personID, identityID, transactionID)
     :noindex:
 
     Define the reference identity of one person.
@@ -160,10 +158,10 @@ Services
 
     :param str personID: The ID of the person.
     :param str personID: The ID of the identity being now the reference.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
-.. py:function:: readReference(personID, options)
+.. py:function:: readReference(personID, transactionID)
     :noindex:
 
     Read the reference identity of one person.
@@ -171,22 +169,22 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error and in case of success the reference identity.
 
 ----------
 
-.. py:function:: readGalleries(options)
+.. py:function:: readGalleries(transactionID)
     :noindex:
 
     Read the ID of all the galleries.
 
     **Authorization**: :todo:`To be defined`
 
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error, and in case of success a list of gallery ID.
 
-.. py:function:: readGalleryContent(galleryID, options)
+.. py:function:: readGalleryContent(galleryID, transactionID)
     :noindex:
 
     Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
@@ -194,23 +192,9 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str galleryID: Gallery whose content will be returned.
-    :param dict options: the processing options. Supported options are ``transactionID``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error. In case of success a list of person/identity IDs.
 
-
-Options
-"""""""
-
-.. list-table:: Population Registry Services Options
-    :header-rows: 1
-    :widths: 25 75
-
-    * - Name
-      - Description
-
-    * - ``transactionID``
-      - A string provided by the client application to identity the request being submitted.
-        It is optional in most cases. When provided, it can be used for tracing and debugging.
 
 Data Model
 """"""""""

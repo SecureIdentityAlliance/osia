@@ -29,7 +29,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -65,7 +65,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -102,7 +102,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -140,7 +140,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -175,7 +175,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -214,7 +214,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -270,7 +270,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -312,7 +312,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -355,7 +355,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -400,7 +400,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       requestBody:
@@ -449,7 +449,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -496,7 +496,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -535,7 +535,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -568,7 +568,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -602,7 +602,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:
@@ -641,7 +641,7 @@ paths:
         - name: transactionId
           in: query
           description: The id of the transaction
-          required: false
+          required: true
           schema:
             type: string
       responses:

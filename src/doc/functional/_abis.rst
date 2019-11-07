@@ -30,7 +30,7 @@ See :ref:`annex-interface-abis` for the technical details of this interface.
 Services
 """"""""
 
-.. py:function:: create(personID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, options)
+.. py:function:: create(personID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, transactionID, options)
     :noindex:
 
     Create a new encounter. No identify is performed. This service is synchronous.
@@ -46,12 +46,13 @@ Services
     :param bytes clientData: additional data not interpreted by the server but stored as is and returned
         when encounter data is requested.
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``, ``algorithm``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``, ``algorithm``.
     :return: a status indicating success, error, or pending operation.
         In case of success, the person ID and the encounter ID are returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: read(personID, encounterID, callback, options)
+.. py:function:: read(personID, encounterID, callback, transactionID, options)
     :noindex:
 
     Read the data of an encounter.
@@ -62,12 +63,13 @@ Services
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
         encounters of the person are returned.
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         In case of success, the encounter data is returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: update(personID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, options)
+.. py:function:: update(personID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, transactionID, options)
     :noindex:
 
     Update an encounter.
@@ -83,12 +85,13 @@ Services
     :param bytes clientData: additional data not interpreted by the server but stored as is and returned
         when encounter data is requested.
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``, ``algorithm``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``, ``algorithm``.
     :return: a status indicating success, error, or pending operation.
         In case of success, the person ID and the encounter ID are returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: delete(personID, encounterID, callback, options)
+.. py:function:: delete(personID, encounterID, callback, transactionID, options)
     :noindex:
 
     Delete an encounter.
@@ -99,11 +102,12 @@ Services
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
         encounters of the person are deleted.
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         In case of pending operation, the operation status will be sent later.
 
-.. py:function:: readTemplate(personID, encounterID, biometricType, biometricSubType, callback, options)
+.. py:function:: readTemplate(personID, encounterID, biometricType, biometricSubType, callback, transactionID, options)
     :noindex:
 
     Read the generated template.
@@ -115,14 +119,15 @@ Services
     :param str biometricType: The type of biometrics to consider (optional)
     :param str biometricSubType: The subtype of biometrics to consider (optional)
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         In case of success, a list of template data is returned.
         In case of pending operation, the result will be sent later.
 
 ----------
 
-.. py:function:: readGalleries(callback, options)
+.. py:function:: readGalleries(callback, transactionID, options)
     :noindex:
 
     Read the ID of all the galleries.
@@ -130,11 +135,12 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         A list of gallery ID is returned, either synchronously or using the callback.
 
-.. py:function:: readGalleryContent(galleryID, callback, options)
+.. py:function:: readGalleryContent(galleryID, callback, transactionID, options)
     :noindex:
 
     Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
@@ -143,13 +149,14 @@ Services
 
     :param str galleryID: Gallery whose content will be returned.
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         A list of persons/encounters is returned, either synchronously or using the callback.
 
 ----------
 
-.. py:function:: identify(galleryID, filter, biometricData, callback, options)
+.. py:function:: identify(galleryID, filter, biometricData, callback, transactionID, options)
     :noindex:
 
     Identify a person using biometrics data and filters on biographic or contextual data. This may include multiple
@@ -161,12 +168,13 @@ Services
     :param dict filter: The input data (filters and biometric data)
     :param biometricData: the biometric data.
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``,
         ``maxNbCand``, ``threshold``, ``accuracyLevel``.
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
-.. py:function:: identify(galleryID, filter, personID, callback, options)
+.. py:function:: identify(galleryID, filter, personID, callback, transactionID, options)
     :noindex:
 
     Identify a person using biometrics data of a person existing in the system and filters on biographic or
@@ -178,12 +186,13 @@ Services
     :param dict filter: The input data (filters and biometric data)
     :param personID: the person ID
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``,
         ``maxNbCand``, ``threshold``, ``accuracyLevel``.
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
-.. py:function:: verify(galleryID, personID, biometricData, callback, options)
+.. py:function:: verify(galleryID, personID, biometricData, callback, transactionID, options)
     :noindex:
 
     Verify an identity using biometrics data.
@@ -195,13 +204,14 @@ Services
     :param str personID: The person ID
     :param biometricData: The biometric data
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``,
         ``threshold``, ``accuracyLevel``.
     :return: a status indicating success, error, or pending operation.
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per biometric and per encounter.
 
-.. py:function:: verify(biometricData1, biometricData2, callback, options)
+.. py:function:: verify(biometricData1, biometricData2, callback, transactionID, options)
     :noindex:
 
     Verify that two sets of biometrics data correspond to the same person.
@@ -211,7 +221,8 @@ Services
     :param biometricData1: The first set of biometric data
     :param biometricData2: The second set of biometric data
     :param callback: The address of a service to be called when the result is available.
-    :param dict options: the processing options. Supported options are ``transactionID``, ``priority``,
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``,
         ``threshold``, ``accuracyLevel``.
     :return: a status indicating success, error, or pending operation.
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
@@ -227,10 +238,6 @@ Options
     * - Name
       - Description
 
-    * - ``transactionID``
-      - A string provided by the client application to identity the request being submitted.
-        It is optional in most cases. When provided, it can be used for tracing and debugging.
-        It is mandatory for asynchronous services and is included in the response pushed asynchronously.
     * - ``priority``
       - Priority of the request. Values range from 0 to 9
     * - ``maxNbCand``
