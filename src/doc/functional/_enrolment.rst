@@ -295,9 +295,9 @@ that biometric, rather than the actual biometric data.
 
 Transaction ID
 """"""""""""""
-The "transactionID" is a string provided by the client application to identity the request being
-submitted. It is optional in most cases. When provided, it can be used for
-tracing and debugging.
+The "transactionID" is a string provided by the client application to identity
+the request being submitted. It is optional in most cases. When provided, it
+can be used for tracing and debugging.
 
 
 Data Model
