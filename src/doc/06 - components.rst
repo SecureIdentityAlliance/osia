@@ -48,10 +48,10 @@ The ABIS component MAY implement the following interfaces:
 .. include:: functional/_abis.rst
 
 
-Document Management System
-==========================
+Credential Management System
+============================
 
-The document management system component MAY implement the following interfaces:
+The credential management system component MAY implement the following interfaces:
 
 :todo:`To be defined`
 

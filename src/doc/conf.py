@@ -160,3 +160,13 @@ def setup(app):
         for f in fnmatch.filter(files,"*.pdf"):
             shutil.copy(os.path.join(root,f),app.outdir)
 
+# Temporary patch of sphinxcontrib.openapi (waiting for merge of PR)
+import sys,os
+sys.path.append(os.path.split(__file__)[0])
+import _openapi30
+from sphinxcontrib.openapi import openapi30
+
+openapi30._parse_schema =     _openapi30._parse_schema
+openapi30._example =          _openapi30._example
+openapi30._httpresource =     _openapi30._httpresource
+openapi30.openapihttpdomain = _openapi30.openapihttpdomain

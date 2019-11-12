@@ -7,7 +7,7 @@ See :ref:`annex-interface-uin` for the technical details of this interface.
 Services
 """"""""
 
-.. py:function:: createUIN(attributes)
+.. py:function:: generateUIN(attributes)
     :noindex:
 
     Generate a new UIN.
@@ -20,7 +20,7 @@ Services
 This service is synchronous.
 
 .. uml::
-    :caption: ``createUIN`` Sequence Diagram
+    :caption: ``generateUIN`` Sequence Diagram
     :scale: 50%
 
     !include "skin.iwsd"
@@ -30,9 +30,9 @@ This service is synchronous.
     participant "UIN Generator" as UIN
 
     note over CR,UIN: CR can request a new UIN
-    CR -> UIN: createUIN([attributes])
+    CR -> UIN: generateUIN([attributes])
     UIN -->> CR: UIN
 
     note over PR,UIN: PR can request a new UIN
-    PR -> UIN: createUIN([attributes])
+    PR -> UIN: generateUIN([attributes])
     UIN -->> PR: UIN
