@@ -27,7 +27,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param set filter: A set of required attributes to retrieve.
+    :param set filter: The (optional) set of required attributes to retrieve.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error and in case of success the person data.
 
@@ -54,6 +54,17 @@ Services
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error.
 
+.. py:function:: findPeople(filter, transactionID)
+    :noindex:
+
+    Retrieve a list of people who match passed in search criteria.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param dict filter: The search criteria to match on.
+    :param string transactionID: The (optional) client generated transactionID.
+    :return: a status indicating success or error and in case of success the matching person list.
+
 ----------
 
 .. py:function:: createDocument(personID, documentID, documentData, transactionID)
@@ -77,7 +88,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str documentID: The ID of the document.
-    :param set filter: A set of required attributes to retrieve.
+    :param set filter: The (optional) set of required attributes to retrieve.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the document data.
 
@@ -111,7 +122,7 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str documentValidationID: The ID of the document.
+    :param str documentID: The ID of the document.
     :param status: The status of the document validation, e.g. 'ready' to validate.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error.
@@ -123,7 +134,7 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str documentValidationID: The ID of the document.
+    :param str documentID: The ID of the document.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the document validation status and its metadata.
 
@@ -146,13 +157,28 @@ Services
     :noindex:
 
     Retrieve biometric data.
+    
+    NOTE - do we want this method in the system?  We don't beleive that this data should be
+    retrievable.  A separate method is provided for reading enrolled biometric metadata (see below).
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biometricValidationID: The ID of the biometric.
-    :param set filter: A set of required attributes to retrieve.
+    :param str biometricID: The ID of the biometric.
+    :param set filter: The (optional) set of required attributes to retrieve.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the biometric data.
+
+.. py:function:: readBiometricMetadata(biometricID, filter, transactionID)
+    :noindex:
+
+    Retrieve biometric data.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str biometricID: The ID of the biometric.
+    :param set filter: The (optional) set of required attributes to retrieve.
+    :param string transactionID: The (optional) client generated transactionID.
+    :return: a status indicating success or error, and in case of success the biometric metadata.
 
 .. py:function:: updateBiometric(biometricID, biometricData, transactionID)
     :noindex:
@@ -185,7 +211,7 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biometricValidationID: The ID of the biometric.
+    :param str biometricID: The ID of the biometric.
     :param status: The status of the biometric validation, e.g. 'ready' to validate.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the biometric validation status.
@@ -197,13 +223,13 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biometricValidationID: The ID of the biometric.
+    :param str biometricID: The ID of the biometric.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the biometric validation status and metadata.
 
 ----------
 
-.. py:function:: createBiographic(personID, biographicID, biographicData, optitransactionIDons)
+.. py:function:: createBiographic(personID, biographicID, biographicData, transactionID)
     :noindex:
 
     Add a new biographic for a person.
@@ -223,8 +249,8 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biographicValidationID: The ID of the biographic.
-    :param set filter: A set of required attributes to retrieve.
+    :param str biographicID: The ID of the biographic.
+    :param set filter: The (optional) set of required attributes to retrieve.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the biographic data.
 
@@ -259,7 +285,7 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biographicValidationID: The ID of the biographic.
+    :param str biographicID: The ID of the biographic.
     :param status: The status of the biographic validation, e.g. 'ready' to validate.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the biographic validation status.
@@ -271,7 +297,7 @@ Services
 
     **Authorization**: :todo:`To be defined`
 
-    :param str biomgraphicValidationID: The ID of the biographic.
+    :param str biographicID: The ID of the biographic.
     :param string transactionID: The (optional) client generated transactionID.
     :return: a status indicating success or error, and in case of success the biographic validation status and metadata.
 
