@@ -1,0 +1,5 @@
+
+.vscode/settings.json
+src/doc/_build/*
+.DS_Store
+target/
