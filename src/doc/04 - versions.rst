@@ -15,11 +15,15 @@ For instance below is the string to reference the *Notification* interface:
 
 Below is the complete list of available interfaces with related version to date:
 
-- OSIA - Notifications - v. 1.0
-- OSIA - UIN Management - v. 1.0
-- OSIA - Data Access - v. 1.0
-- OSIA - Biometrics - v. 1.0
-- OSIA - Third Party Services - v. 1.0
+- OSIA - Notification - v. 2.0.0
+- OSIA - Data Access - v. 2.0.0
+- OSIA - UIN Management - v. 2.0.0
+- OSIA - Enrollment Services - v. 2.0.0
+- OSIA - Identity Management - v. 2.0.0
+- OSIA - Population Registry Services - v. 2.0.0
+- OSIA - Biometrics - v. 2.0.0
+- OSIA - Credential Services - v. 2.0.0
+- OSIA - ID Usage - v. 2.0.0
 
 This document proposes as well a set of interfaces that could be used by each component (non-prescriptive).
 
@@ -30,10 +34,10 @@ It is possible to reference the bundle of these interfaces as follows:
 
 For instance for Civil Registry (CR) OSIA proposes the following set of interfaces: 
 
-- OSIA - Notifications - v. 1.0
-- OSIA - Data Access - v. 1.0
+- OSIA - Notifications - v. 1.0.0
+- OSIA - Data Access - v. 1.0.0
 
 Below is the string to reference this set of interfaces linked to CR:
 
-    ``OSIA – CR v. 1.0``
+    ``OSIA – CR v. 1.0.0``
 

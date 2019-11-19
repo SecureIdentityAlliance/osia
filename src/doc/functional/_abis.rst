@@ -292,7 +292,7 @@ Data Model
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait or iris.
-      - Finger print, portrait, iris
+      - fingerprint, portrait, iris
 
     * - Candidate
       - Information about a candidate found during an identification

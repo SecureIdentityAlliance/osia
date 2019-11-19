@@ -9,8 +9,11 @@ OSIA provides seamless interconnection between multiple components part of the i
 
 The components are defined as follows:
 
-- The *Enrollment* component. Enrollment is defined as a system to register biographic and
+- The *Enrollment* component.
+
+  Enrollment is defined as a system to register biographic and
   biometric data of individuals.
+
 - The *Population Registry* (PR) component.
 
   Population registry is defined as "an individualized data system, that is, a mechanism of continuous recording,
@@ -23,10 +26,16 @@ The components are defined as follows:
   register remain current. Because of the nature of a population register, its organization, and also
   its operation, must have a legal basis." [#]_
 
-- The *UIN Generator* component. UIN generator is defined as a system to generate and manage unique identifiers.
-- The *Automated Biometric Identification System* (ABIS) component. An ABIS is defined as a *system to detect
+- The *UIN Generator* component.
+
+  UIN generator is defined as a system to generate and manage unique identifiers.
+
+- The *Automated Biometric Identification System* (ABIS) component.
+
+  An ABIS is defined as a *system to detect
   the identity of an individual when it is unknown, or to verify the individual's identity when it is
   provided, through biometrics*.
+
 - The *Civil Registry* (CR) component.
 
   Civil registration is defined as "the continuous, permanent, compulsory and universal recording of the occurrence
@@ -34,9 +43,14 @@ The components are defined as follows:
   is accordance with the legal requirement in each country.
   Civil registration is carried out primarily for the purpose of establishing the documents provided by the law." [#]_
 
-- The *Credential Management System* (CMS) component. CMS is defined as a system to manage the production and
+- The *Credential Management System* (CMS) component.
+
+  CMS is defined as a system to manage the production and
   issuance of credentials such as ID Cards, passports, driving licenses, digital ID, etc.
-- The *Third Parties Services* component.
+
+- The *Third Party Services* component.
+
+  :todo:`TBD`
 
 .. list-table:: Components
     :header-rows: 1
@@ -48,10 +62,10 @@ The components are defined as follows:
       - Functions
       
     * - Enrollment
-      - - Alpha*
-        - UIN*
-        - History*
-        - Supporting documents*
+      - - Alpha
+        - UIN
+        - History
+        - Supporting documents
       - - Recording application
         - Collecting personal data 
 
@@ -104,110 +118,285 @@ The components are represented on the following diagram:
 .. figure:: images/components.*
     :width: 100%
 
-    Components
+    Components identified as part of the identity ecosystem
     
 
 Interfaces
 ----------
 
-:todo:`To do`
+This chapter describes the following interfaces:
 
-This chapter describes the following interfaces.
+- Notification
 
-- UIN management. This interface can be implemented by PR, by CR or by another system. We will consider it is provided
-  by a system called *UIN Generator*.
-- Notifications. When data is changed, a notification is sent and received by systems that registered for
-  this type of events. For instance, PR can register for the events *birth* emitted by CR.
-- Data access. A set of services to access data.
+  A set of services to manage notifications for different types of events as for instance birth and death.
+
+- Data access
+
+  A set of services to access data.
 
   The design is based on the following assumptions:
 
-  #. All persons recorded in a registry have a :term:`UIN`. The UIN can be used as a key to access person data for all records.
-  #. The registries (civil, population, or other) are considered as centralized systems that are connected. If one registry
-     is architectured in a decentralized way, one of its component must be centralized, connected to
-     the network, and in charge of the exchanges with the other registries.
-  #. Since the registries are customized for each business needs, dictionaries must be explicitly
-     defined to describe the attributes, the event types, and the document types. See :ref:`annex-interface-dataaccess`
-     for samples of those dictionaries.
-  #. The relationship parent/child is not mandatory in the population registry. A population registry implementation may
-     manage this relationship or may ignore it and rely on the civil registry to manage it.
-  #. All persons are stored in the population registry. There is no record in the civil registry that is not also in
-     the population registry.
+  #. All persons recorded in a registry have a UIN. The UIN can be used as a key to access person data for all records.
+     Please note that the UIN is the same throughout all registries (see Chapter 3 - Security & Privacy).
+  #. The registries (civil, population, or other) are considered as centralized systems that are connected.
+     If one registry is architectured in a decentralized way, one of its component must be centralized, connected to the network, 
+     and in charge of the exchanges with the other registries.
+  #. Since the registries are customized for each business needs, dictionaries must be explicitly defined to describe the attributes, 
+     the event types, and the document types. See Data Access for samples of those dictionaries.
+  #. The relationship parent/child is not mandatory in the population registry. A population registry implementation may manage this 
+     relationship or may ignore it and rely on the civil registry to manage it.
+  #. All persons are stored in the population registry. There is no record in the civil registry that is not also in the population registry.
 
-- Biometrics.
-- Third party. Identity based services implemented on top of Identity system mainly *Identity Verification* and
-  *Identity Attribute* sharing.
+- UIN Management
+
+  A set of services to manage the unique identifier.
+
+-  Enrollment
+
+  A set of services to manage biographic and biometric data upon collection.
+
+- XXX
+
+  :todo: To be defined.
+
+- Population Registry
+
+  A set of services to manage a registry of the population.
+
+- Biometrics
+
+  A set of services to manage biometric data and databases.
+
+- Credential Services
+
+  A set of services to manage credentials, physical and digital.
+
+- ID Usage
+
+  A set of services implemented on top of identity systems to favour third parties consumption of identity data.
+
+The following table describes in detail the interfaces and associated services.
+
+.. table:: Interfaces List
+    :class: longtable
+    :widths: 30 70
+
+    =========================== 	=====================================================================================
+    **Services**                	**Description**
+    --------------------------- 	-------------------------------------------------------------------------------------
+    **Notification**
+    --------------------------- 	-------------------------------------------------------------------------------------
+    Subscribe				Subscribe a URL to receive notifications sent to one topic
+    Unsubscribe				Unsubscribe a URL from the list of receiver for one topic
+    Confirm 				Confirm that the URL used during the subscription is valid
+    Publish				Notify of a new event all systems that subscribed to this topic
+    --------------------------- 	-------------------------------------------------------------------------------------
+    **Data Access**
+    --------------------------- 	-------------------------------------------------------------------------------------
+    Read Person Attributes		Read person attributes.
+    Match Person Attributes		Check the value of attributes without exposing private data.
+    Verify Person Attributes		Evaluate simple expressions on persons attributes without exposing private data
+    Query Person UIN	        	Query the persons by a set of attributes, used when the UIN is unknown
+    Query Person List 	        	Query the persons by a list of attributes and their values.
+    Read document	        	Read in a selected format (PDF, image, etc.) a document such as a marriage certificate
+    --------------------------- 	-------------------------------------------------------------------------------------
+    **UIN Management**
+    --------------------------- 	-------------------------------------------------------------------------------------
+    Generate UIN                	Generate a new UIN
+    --------------------------- 	-------------------------------------------------------------------------------------
+    **Enrollment Services**
+    --------------------------- 	-------------------------------------------------------------------------------------
+    Create Person			Insert a new person
+    Read Person				Retrieve the attributes of a person
+    Update Person			Update a person
+    Delete Person			Delete a person
+    Find People				Retrieve a list of people who match passed in search criteria
+    --------------------------- 	-------------------------------------------------------------------------------------
+    **Identity Management**
+    --------------------------- 	-------------------------------------------------------------------------------------
+    Create Document 	        	Add a new document for a person
+    Read Document			Retrieve document data
+    Update Document			Update a document for a person
+    Delete Document			Delete a document for a person
+    Update Document Validation Status	Updates the status of a document validation
+    Read Document Validation Status	Retrieve the status of a document validation
+    Create Biometric			Add a new biometric for a person
+    Read Biometric Metadata		Retrieve biometric data
+    Update Biometric			Update a biometric for a person
+    Delete Biometric			Delete a biometric for a person
+    Update Biometric Validation Status	Updates the status of a biometric validation
+    Read Biometric Validation Status	Retrieve the status of a biometric validation
+    Create Biographic			Add a new biographic for a person
+    Read Biographic			Retrieve biographic data
+    Update Biographic			Update a biographic for a person
+    Delete Biographic			Delete a biographic for a person
+    Update Biographic Validation Status	Updates the status of a biographic validation
+    Read Biographic Validation Status	Retrieve the status of a biographic validation
+    List Credential Profiles		Retrieve the list of credential profiles
+    Read Credential Profiles		Retrieve the credential profile
+    Create Credential Issuance Request	Request issuance of a secure document / credential
+    Read Credential Issuance Request	Retrieve the data/status of an issuance
+    Update Credential Issuance Request	Update the requested issuance of a secure document / credential
+    Delete Credential Issuance Request	Delete/cancel the requested issuance of a secure document / credential
+    Read Credential			Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)
+    Suspend Credential			Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
+    Unsuspend Credential		Unsuspend an issued credential. For electronic credentials this will unsuspend any PKI certificates that are present
+    Cancel Credential			Cancel an issued credential. For electronic credentials this will revoke any PKI certificates that are present
+    ---------------------------         -------------------------------------------------------------------------------------
+    **Population Registry Services**
+    ---------------------------         -------------------------------------------------------------------------------------
+    Create Person			Create a new person
+    Read Person				Read the attributes of a person
+    Update Person			Update a person
+    Delete Person			Delete a person and all its identities
+    Create Identity			Create a new identity in a person
+    Read Identity			Read one or all the identities of one person
+    Update Identity			Update an identity. An identity can be updated only in the status claimed
+    Partial Update Identity		Update part of an identity. Not all attributes are mandatory. An identity can be updated only in the status claimed
+    Delete Identity			Delete an identity
+    Set Identity Status			Set an identity status
+    Define Reference			Define the reference identity of one person
+    Read Reference			Read the reference identity of one person
+    Read Galleries			Read the ID of all the galleries
+    Read Gallery Content		Read the content of one gallery, i.e. the IDs of all the records linked to this gallery
+    ---------------------------         -------------------------------------------------------------------------------------
+    **Biometrics**
+    ---------------------------         -------------------------------------------------------------------------------------
+    Create				Create a new encounter. No identify is performed
+    Read				Read the data of an encounter
+    Update				Update an encounter
+    Delete				Delete an encounter
+    Read Template			Read the generated template
+    Read Galleries 			Read the ID of all the galleries
+    Read Gallery content		Read the content of one gallery, i.e. the IDs of all the records linked to this gallery
+    Identify				Identify a person using biometrics data and filters on biographic or contextual data
+    Verify				Verify an identity using biometrics data
+    ---------------------------         -------------------------------------------------------------------------------------
+    **Credential Services**
+    ---------------------------         -------------------------------------------------------------------------------------
+    :todo:`TBD`                         :todo:`TBD`
+    ---------------------------         -------------------------------------------------------------------------------------
+    **ID Usage**
+    ---------------------------         -------------------------------------------------------------------------------------
+    Verify ID				Verify Identity based on UIN and set of attributes (biometric data, demographics, credential)
+    Identify				Identify a person based on a set of attributes (biometric data, demographics, credential)
+    Read Attributes			Read person attributes
+    Read Attributes set			Read person attributes corresponding to a predefined set name
+    ===========================         =====================================================================================
 
 Components vs Interfaces Mapping
 --------------------------------
 
-The interfaces described in this chapter are summarized in the following table:
+The interfaces described in the following chapter can be mapped against ID ecosystem components as per the table below:
 
 .. table:: Components vs Interfaces Mapping
     :class: longtable
-    :widths: 30 10 10 10 10 10 10 10
-    
-    =========================== ======= ======= =========== ======= ======= =========== =======
+    :widths: 30 10 10 10 10 10 10 10 10
+
+    =========================== ============= ============= ======= =========== ======= ======= ======= =============
     ..                          **Components**
-    --------------------------- ---------------------------------------------------------------
-    **Interfaces**              Enroll  PR      UIN gen.    ABIS    CR      CMS         Third Parties
-    =========================== ======= ======= =========== ======= ======= =========== =======
-    **Notifications**
-    --------------------------- ---------------------------------------------------------------
-    Notify event                        U                           U
-    Subscribe                           U                   U       U       U
-    Unsubscribe                         U                   U       U       U
-    Event callback                      I                   I       I       I
-    --------------------------- ------- ------- ----------- ------- ------- ----------- -------
-    **UIN Management**
-    --------------------------- ---------------------------------------------------------------
-    Generate UIN                        U       I                   U       U
-    --------------------------- ------- ------- ----------- ------- ------- ----------- -------
+    --------------------------- -------------------------------------------------------------------------------------
+    **Interfaces**              Enroll client  Enroll server   PR     UIN gen.   ABIS     CR      CMS   3rd party serv.
+    =========================== ============= ============= ======= =========== ======= ======= ======= =============
+    **Notification**
+    --------------------------- -------------------------------------------------------------------------------------
+    Subscribe                           			U                 U       U         U
+    Unsubscribe                        				U                 U       U         U
+    Confirm
+    Publish                             			I                 I       I         I
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
     **Data Access**
-    --------------------------- ---------------------------------------------------------------
-    Read Person Attributes      U       IU                  U       IU      U           U
-    Match Person Attributes             IU                          IU      U           U
-    Verify Person Attributes            IU                          IU      U           U
-    Query Person UIN            U       IU                          IU      U
-    Query Person List           U       IU                          IU      U
-    Read Document                       IU                          IU
-    --------------------------- ------- ------- ----------- ------- ------- ----------- -------
+    --------------------------- -------------------------------------------------------------------------------------
+    Read Person Attributes      		     U          IU                U       IU                 U
+    Match Person Attributes             	     U          IU                 	  IU                 U
+    Verify Person Attributes            	     U          IU                 	  IU	             U
+    Query Person UIN            		     U          IU      		  IU
+    Query Person List
+    Read Document                                    U          IU			  IU
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
+    **UIN Management**
+    --------------------------- -------------------------------------------------------------------------------------
+    Generate UIN                                                U        I                U
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
+    **Enrollment Services**
+    --------------------------- -------------------------------------------------------------------------------------
+    Create Person			U            I
+    Read Person                         U	     I
+    Update Person                       U	     I
+    Delete Person                       U            I
+    Find People                         U            I
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
+    **Identity Management**
+    --------------------------- -------------------------------------------------------------------------------------
+    Create Document
+    Read Document
+    Update Document
+    Delete Document
+    Update Document Validation Status
+    Read Document Validation Status
+    Create Biometric
+    Read Biometric Metadata
+    Update Biometric
+    Delete Biometric
+    Update Biometric Validation Status
+    Read Biometric Validation Status
+    Create Biographic
+    Read Biographic
+    Update Biographic
+    Delete Biographic
+    Update Biographic Validation Status
+    Read Biographic Validation Status
+    List Credential Profiles
+    Read Credential Profiles
+    Create Credential Issuance Request
+    Read Credential Issuance Request
+    Update Credential Issuance Request
+    Delete Credential Issuance Request
+    Read Credential
+    Suspend Credential
+    Unsuspend Credential
+    Cancel Credential
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
+    **Population Registry Services**
+    --------------------------- -------------------------------------------------------------------------------------
+    Create Person                      			      	I                 I                 U
+    Read Person                         			I                 I                 U        U
+    Update Person                       			I                 I                 U
+    Delete Person                       			I                 I                 U
+    Create Identity                     			I
+    Read Identity                       			I
+    Update Identity                     			I
+    Partial Update Identity             			I
+    Delete Identity                     			I
+    Set Identity Status                				I
+    Define Reference                    			I
+    Read Reference                      			I
+    Read Galleries                      			I
+    Read Gallery Content                			I
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
     **Biometrics**
-    --------------------------- ---------------------------------------------------------------
-    Create                              U                   I                
-    Read                                U                   I               U           U
-    Update                              U                   I                
-    Delete                              U                   I                
-    Read Template                                           I               U
-    Read Galleries                      U                   I               
-    Read Gallery Content                U                   I               
-    Identify                    U                           I                           U
-    Verify                      U                           I                           U
-    --------------------------- ------- ------- ----------- ------- ------- ----------- -------
-    **Population Registry**
-    --------------------------- ---------------------------------------------------------------
-    Create Person                       I                   I               U
-    Read Person                         I                   I               U           U
-    Update Person                       I                   I               U
-    Delete Person                       I                   I               U
-    Create Identity                     I
-    Read Identity                       I
-    Update Identity                     I
-    PartialUpdate Identity              I
-    Delete Identity                     I
-    Set Identity Status                 I
-    Define Reference                    I
-    Read Reference                      I
-    Read Galleries                      I                                    
-    Read Gallery Content                I                                    
-    --------------------------- ------- ------- ----------- ------- ------- ----------- -------
-    **Third Party Services**
-    --------------------------- ---------------------------------------------------------------
-    Verify ID                                                                           I
-    Identify ID                                                                         I
-    Read Attributes                                                                     I
-    Read Attributes set                                                                 I
-    =========================== ======= ======= =========== ======= ======= =========== =======
+    --------------------------- -------------------------------------------------------------------------------------
+    Create                              	     U		U                I
+    Read                                             U		U	         I                          U
+    Update                                           U	        U                I
+    Delete                                           U	        U                I
+    Read Template                                    U          U                I
+    Read Galleries
+    Read Gallery Content                             U          U    	         I
+    Identify                                         U    		         I                          U
+    Verify                      	             U			         I                          U
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
+    **Credential Services**
+    --------------------------- -------------------------------------------------------------------------------------
+    TBD
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
+    **ID Usage**
+    --------------------------- -------------------------------------------------------------------------------------
+    Verify ID                                                                                               I
+    Identify ID                                                                                             I
+    Read Attributes                                                                                         I
+    Read Attributes set                                                                                     I
+    =========================== ============= ============= ======= =========== ======= ======= ======= =============
 
 where:
 
@@ -217,7 +406,7 @@ where:
 Use Cases - How to Use |project|
 --------------------------------
 
-:todo:`Introduction to be done`
+Below are a set of examples of how OSIA interfaces could be implemented in various use cases.
 
 Birth Use Case
 """"""""""""""
@@ -256,7 +445,7 @@ Birth Use Case
     end
     
     group 3. Notification
-        CR ->> PR: notify(birth,UIN)
+        CR ->> PR: publish(birth,UIN)
         deactivate CR
 
         ...
@@ -276,26 +465,27 @@ Birth Use Case
 
    - ``matchPersonAttributes``: to check the exactitude of the parents' attributes as known in the PR
    - ``readPersonAttributes``: to get missing data about the parents's identity
-   - ``readPersonUIN``: to check if the new born is already known to PR or not
+   - ``qureyPersonUIN``: to check if the new born is already known to PR or not
 
    How the CR will process the request in case of data discrepancy is specific to each CR implementation
    and not in the scope of this document.
 
 2. Creation
 
-   The birth is registered in the CR. The first step after the checks is to generate a new UIN
-   a call to ``generateUIN``.
+   The first step after the checks is to generate a new UIN. To do so, the CR requests a new UIN to the PR using generateUIN service.
+   At this point the birth registration takes place.
+   How the CR will process the birth registration is specific to each CR implementation and not in the scope of this document.
     
 3. Notification
 
    As part of the birth registration, it is the responsibility of the CR to notify other systems, including the PR,
    of this event using:
    
-   - ``notify``: to send a *birth* along with the new ``UIN``.
+   - ``publish``: to send a *birth* along with the new ``UIN``.
    
    The PR, upon reception of the birth event, will update the identity registry with this new identity using:
     
-   - ``readPersonAttributes``: to get the attributes of interest to the PR for the parents and the new child.
+   - ``readPersonAttributes``: to get the attributes of interest to the PR for the parents if relevant and the new child.
 
 Death Use Case
 """"""""""""""
@@ -307,8 +497,8 @@ Marriage Use Case
 
 :todo:`To be completed`
 
-Deduplication
-"""""""""""""
+Deduplication Use Case
+""""""""""""""""""""""
 
 During the lifetime of a registry, it is possible that duplicates are detected. This can happen for instance
 after the addition of biometrics in the system. When a registry considers that two records are actually the same
@@ -341,8 +531,8 @@ and decides to merge them, a notification must be sent.
   
 How the target of the notification should react is specific to each subsystem.
 
-ID Card Request
-"""""""""""""""
+ID Card Request Use Case
+""""""""""""""""""""""""
 
 :todo:`To be completed`
 
@@ -358,7 +548,7 @@ Bank account opening Use Case
     hide footbox
     actor "Citizen" as citizen
     actor "Bank attendant" as bank
-    participant "Third Party" as usage
+    participant "Third Party Services" as usage
     participant "PR" as PR
     
     citizen -> bank : Go to agency
@@ -394,7 +584,7 @@ Police identity control Use Cases
     hide footbox
     actor "Citizen" as citizen
     actor "Policeman" as police
-    participant "Third Party" as usage
+    participant "Third Party Services" as usage
     participant "ABIS" as ABIS
     participant "PR" as PR
 
@@ -420,7 +610,7 @@ Police identity control Use Cases
         police -> usage : readAttributeSet (UIN3, attribute set name)
         usage -> PR : readPersonAttributes(UIN3)
         usage -> police : List of attributes values
-        note right: display attributes for each candidates
+        note right: display attributes for each candidate
     end
 
 .. rubric:: Footnotes
