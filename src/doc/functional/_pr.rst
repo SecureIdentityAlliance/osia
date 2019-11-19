@@ -1,6 +1,6 @@
 
-Population Registry
--------------------
+Population Registry Services
+----------------------------
 
 This interface describes services to manage a registry of the population in the context of an identity system. It is based on
 the following principles:
@@ -262,7 +262,7 @@ Data Model
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait or iris.
-      - Finger print, portrait, iris
+      - fingerprint, portrait, iris
 
     * - Document
       - The document data (images) attached to the identity and used to validate it.

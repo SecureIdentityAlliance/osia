@@ -1,6 +1,6 @@
 
-Enrolment Services
-------------------
+Enrollment Services
+-------------------
 
 
 
@@ -116,7 +116,7 @@ Data Model
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait or iris.
-      - Finger print, portrait, iris
+      - fingerprint, portrait, iris
 
     * - Biographic Data
       - a dictionary (list of names and values) giving the biographic data of interest for the biographic services.
@@ -124,8 +124,8 @@ Data Model
 
 ----------
 
-XXX
----
+Identity Management
+-------------------
 
 
 
@@ -547,7 +547,7 @@ Data Model
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait or iris.
-      - Finger print, portrait, iris
+      - fingerprint, portrait, iris
 
     * - Biographic Data
       - a dictionary (list of names and values) giving the biographic data of interest for the biographic services.

@@ -3,10 +3,10 @@
 Components
 ==========
 
-This chapter describes for each component the interfaces that it must implement.
+This chapter describes for each component the interfaces that it MAY implement.
 
-Enrolment Component
-===================
+Enrollment Component
+====================
 
 The enrolment component MAY implement the following interfaces:
 
@@ -56,8 +56,8 @@ The credential management system component MAY implement the following interface
 :todo:`To be defined`
 
 
-Third Party
-===========
+Third Party Services
+====================
 
 The third party component MAY implement the following interfaces:
 

@@ -9,9 +9,9 @@ Target 16.9 of the UN Sustainable Development Goals is to "provide legal identit
 by the year 2030. But there is a major barrier: the lack of vendor/provider and technology neutrality - commonly
 known as "vendor lock-in".
 
-The lack of partner and technology neutrality and its consequences becomes apparent when a customer needs to
+The lack of vendor and technology neutrality and its consequences becomes apparent when a customer needs to
 replace one component of the identity management solution with one from another provider, or expand the scope
-of their solution by linking to new components. Technology barriers are the following:
+of their solution by linking to new components. Main technology barriers are the following:
 
 1. *Solution architectures are not interoperable by design*. The lack of common definitions as to the overall
    scope of an identity ecosystem, as well as in the main functionalities of a system’s components (civil registry,
@@ -29,7 +29,7 @@ is now one of their biggest concerns.
 
 .. figure:: images/vendorlockin.*
 
-    Vendor Lock-In
+    The dependency challenge
 
 The OSIA Initiative
 -------------------
@@ -89,17 +89,17 @@ Document Overview
 This document aims at:
 
 - formalizing definitions, scope and main functionalities of each component within the identity ecosystem,
-- defining standardized interface and data format to connect the multiple ecosystem components to ensure
+- defining standardized interfaces and data format to connect the multiple ecosystem components to ensure
   seamless interaction via pre-defined services.
 
 This document is structured as follows:
 
-- Chapter 1 Introduction
-- Chapter 2 Functional View
-- Chapter 3 Security and Privacy
-- Chapter 4 OSIA Versions and Referencing
-- Chapter 5 Interfaces
-- Chapter 6 Components
+- Chapter 1 Introduction: This chapter introduces the problem statement and the OSIA initiative.
+- Chapter 2 Functional View: This chapter provides an overview of OSIA interfaces and how they can be mapped against the various identity ecosystem components. Finally, the chapter describes a series of use cases where different OSIA interfaces are implemented between multiple identity ecosystem components.
+- Chapter 3 Security and Privacy: This chapter lists a set of Privacy and Security features embedded in OSIA interfaces specifications.
+- Chapter 4 OSIA Versions and Referencing: This chapter describes the way OSIA interfaces can be referenced in documents and tenders.
+- Chapter 5 Interfaces: This chapter describes the specifications of all OSIA interfaces.
+- Chapter 6 Components: This chapter describes OSIA interfaces that each component of the identity ecosystem may implement.
 
 Convention and Typographical Rules
 ----------------------------------
@@ -135,10 +135,10 @@ Revision History
    * - Version
      - Date
      - Notes
-   * - 1.0
+   * - 1.0.0
      - 2018-12
      - First release
-   * - 2.0
+   * - 2.0.0
      - 2019-06
      - Second release
 

@@ -3,6 +3,8 @@
 Interfaces
 ==========
 
+The chapter below describes the specifications of all OSIA interfaces and related services.
+
 .. include:: functional/_notification.rst
 
 .. include:: functional/_dataaccess.rst
