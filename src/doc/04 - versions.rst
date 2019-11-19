@@ -11,7 +11,7 @@ Each interface can be referenced in tenders as follows:
 
 For instance below is the string to reference the *Notification* interface:
 
-    ``OSIA - Notification v. 1.0``
+    ``OSIA - Notification v. 1.0.0``
 
 Below is the complete list of available interfaces with related version to date:
 

@@ -109,7 +109,7 @@ The components are defined as follows:
         - Workflow
         - SMS and email server
 
-    * - Third Parties Services
+    * - Third Party Services
       - :todo:`TBD`
       - KYC/auth
 
@@ -151,15 +151,11 @@ This chapter describes the following interfaces:
 
   A set of services to manage the unique identifier.
 
--  Enrollment
+-  Enrollment Services
 
   A set of services to manage biographic and biometric data upon collection.
 
-- XXX
-
-  :todo: To be defined.
-
-- Population Registry
+- Population Registry Services
 
   A set of services to manage a registry of the population.
 
@@ -175,12 +171,16 @@ This chapter describes the following interfaces:
 
   A set of services implemented on top of identity systems to favour third parties consumption of identity data.
 
+- Under discussion
+
+  A set of services under discussion and not yet linked to any specific tag.
+
 The following table describes in detail the interfaces and associated services.
 
 .. table:: Interfaces List
     :class: longtable
     :widths: 30 70
-
+    
     =========================== 	=====================================================================================
     **Services**                	**Description**
     --------------------------- 	-------------------------------------------------------------------------------------
@@ -195,7 +195,7 @@ The following table describes in detail the interfaces and associated services.
     --------------------------- 	-------------------------------------------------------------------------------------
     Read Person Attributes		Read person attributes.
     Match Person Attributes		Check the value of attributes without exposing private data.
-    Verify Person Attributes		Evaluate simple expressions on persons attributes without exposing private data
+    Verify Person Attributes		Evaluate simple expressions on person's attributes without exposing private data
     Query Person UIN	        	Query the persons by a set of attributes, used when the UIN is unknown
     Query Person List 	        	Query the persons by a list of attributes and their values.
     Read document	        	Read in a selected format (PDF, image, etc.) a document such as a marriage certificate
@@ -211,37 +211,6 @@ The following table describes in detail the interfaces and associated services.
     Update Person			Update a person
     Delete Person			Delete a person
     Find People				Retrieve a list of people who match passed in search criteria
-    --------------------------- 	-------------------------------------------------------------------------------------
-    **Identity Management**
-    --------------------------- 	-------------------------------------------------------------------------------------
-    Create Document 	        	Add a new document for a person
-    Read Document			Retrieve document data
-    Update Document			Update a document for a person
-    Delete Document			Delete a document for a person
-    Update Document Validation Status	Updates the status of a document validation
-    Read Document Validation Status	Retrieve the status of a document validation
-    Create Biometric			Add a new biometric for a person
-    Read Biometric Metadata		Retrieve biometric data
-    Update Biometric			Update a biometric for a person
-    Delete Biometric			Delete a biometric for a person
-    Update Biometric Validation Status	Updates the status of a biometric validation
-    Read Biometric Validation Status	Retrieve the status of a biometric validation
-    Create Biographic			Add a new biographic for a person
-    Read Biographic			Retrieve biographic data
-    Update Biographic			Update a biographic for a person
-    Delete Biographic			Delete a biographic for a person
-    Update Biographic Validation Status	Updates the status of a biographic validation
-    Read Biographic Validation Status	Retrieve the status of a biographic validation
-    List Credential Profiles		Retrieve the list of credential profiles
-    Read Credential Profiles		Retrieve the credential profile
-    Create Credential Issuance Request	Request issuance of a secure document / credential
-    Read Credential Issuance Request	Retrieve the data/status of an issuance
-    Update Credential Issuance Request	Update the requested issuance of a secure document / credential
-    Delete Credential Issuance Request	Delete/cancel the requested issuance of a secure document / credential
-    Read Credential			Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)
-    Suspend Credential			Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
-    Unsuspend Credential		Unsuspend an issued credential. For electronic credentials this will unsuspend any PKI certificates that are present
-    Cancel Credential			Cancel an issued credential. For electronic credentials this will revoke any PKI certificates that are present
     ---------------------------         -------------------------------------------------------------------------------------
     **Population Registry Services**
     ---------------------------         -------------------------------------------------------------------------------------
@@ -274,7 +243,16 @@ The following table describes in detail the interfaces and associated services.
     ---------------------------         -------------------------------------------------------------------------------------
     **Credential Services**
     ---------------------------         -------------------------------------------------------------------------------------
-    :todo:`TBD`                         :todo:`TBD`
+    List Credential Profiles		Retrieve the list of credential profiles
+    Read Credential Profiles		Retrieve the credential profile
+    Create Credential Issuance Request	Request issuance of a secure document / credential
+    Read Credential Issuance Request	Retrieve the data/status of an issuance
+    Update Credential Issuance Request	Update the requested issuance of a secure document / credential
+    Delete Credential Issuance Request	Delete/cancel the requested issuance of a secure document / credential
+    Read Credential			Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)
+    Suspend Credential			Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
+    Unsuspend Credential		Unsuspend an issued credential. For electronic credentials this will unsuspend any PKI certificates that are present
+    Cancel Credential			Cancel an issued credential. For electronic credentials this will revoke any PKI certificates that are present
     ---------------------------         -------------------------------------------------------------------------------------
     **ID Usage**
     ---------------------------         -------------------------------------------------------------------------------------
@@ -282,6 +260,27 @@ The following table describes in detail the interfaces and associated services.
     Identify				Identify a person based on a set of attributes (biometric data, demographics, credential)
     Read Attributes			Read person attributes
     Read Attributes set			Read person attributes corresponding to a predefined set name
+    --------------------------- 	-------------------------------------------------------------------------------------
+    **Under discussion**
+    --------------------------- 	-------------------------------------------------------------------------------------
+    Create Document 	        	Add a new document for a person
+    Read Document			Retrieve document data
+    Update Document			Update a document for a person
+    Delete Document			Delete a document for a person
+    Update Document Validation Status	Updates the status of a document validation
+    Read Document Validation Status	Retrieve the status of a document validation
+    Create Biometric			Add a new biometric for a person
+    Read Biometric Metadata		Retrieve biometric data
+    Update Biometric			Update a biometric for a person
+    Delete Biometric			Delete a biometric for a person
+    Update Biometric Validation Status	Updates the status of a biometric validation
+    Read Biometric Validation Status	Retrieve the status of a biometric validation
+    Create Biographic			Add a new biographic for a person
+    Read Biographic			Retrieve biographic data
+    Update Biographic			Update a biographic for a person
+    Delete Biographic			Delete a biographic for a person
+    Update Biographic Validation Status	Updates the status of a biographic validation
+    Read Biographic Validation Status	Retrieve the status of a biographic validation
     ===========================         =====================================================================================
 
 Components vs Interfaces Mapping
@@ -292,7 +291,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
 .. table:: Components vs Interfaces Mapping
     :class: longtable
     :widths: 30 10 10 10 10 10 10 10 10
-
+    
     =========================== ============= ============= ======= =========== ======= ======= ======= =============
     ..                          **Components**
     --------------------------- -------------------------------------------------------------------------------------
@@ -326,37 +325,6 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Delete Person                       U            I
     Find People                         U            I
     --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
-    **Identity Management**
-    --------------------------- -------------------------------------------------------------------------------------
-    Create Document
-    Read Document
-    Update Document
-    Delete Document
-    Update Document Validation Status
-    Read Document Validation Status
-    Create Biometric
-    Read Biometric Metadata
-    Update Biometric
-    Delete Biometric
-    Update Biometric Validation Status
-    Read Biometric Validation Status
-    Create Biographic
-    Read Biographic
-    Update Biographic
-    Delete Biographic
-    Update Biographic Validation Status
-    Read Biographic Validation Status
-    List Credential Profiles
-    Read Credential Profiles
-    Create Credential Issuance Request
-    Read Credential Issuance Request
-    Update Credential Issuance Request
-    Delete Credential Issuance Request
-    Read Credential
-    Suspend Credential
-    Unsuspend Credential
-    Cancel Credential
-    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
     **Population Registry Services**
     --------------------------- -------------------------------------------------------------------------------------
     Create Person                      			      	I                 I                 U
@@ -388,7 +356,16 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
     **Credential Services**
     --------------------------- -------------------------------------------------------------------------------------
-    TBD
+    List Credential Profiles
+    Read Credential Profiles
+    Create Credential Issuance Request
+    Read Credential Issuance Request
+    Update Credential Issuance Request
+    Delete Credential Issuance Request
+    Read Credential
+    Suspend Credential
+    Unsuspend Credential
+    Cancel Credential
     --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
     **ID Usage**
     --------------------------- -------------------------------------------------------------------------------------
@@ -396,6 +373,27 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Identify ID                                                                                             I
     Read Attributes                                                                                         I
     Read Attributes set                                                                                     I
+    --------------------------- ------------- ------------- ------- ----------- ------- ------- ------- -------------
+    **Under discussion**
+    --------------------------- -------------------------------------------------------------------------------------
+    Create Document
+    Read Document
+    Update Document
+    Delete Document
+    Update Document Validation Status
+    Read Document Validation Status
+    Create Biometric
+    Read Biometric Metadata
+    Update Biometric
+    Delete Biometric
+    Update Biometric Validation Status
+    Read Biometric Validation Status
+    Create Biographic
+    Read Biographic
+    Update Biographic
+    Delete Biographic
+    Update Biographic Validation Status
+    Read Biographic Validation Status
     =========================== ============= ============= ======= =========== ======= ======= ======= =============
 
 where:
@@ -573,8 +571,8 @@ Bank account opening Use Case
     deactivate bank
 
  
-Police identity control Use Cases
-"""""""""""""""""""""""""""""""""
+Police identity control Use Case
+""""""""""""""""""""""""""""""""
 
 .. uml::
     :caption: Collaborative identity control
