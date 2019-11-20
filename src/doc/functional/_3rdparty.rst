@@ -8,8 +8,7 @@ Services
 .. py:function:: verifyIdentity(UIN, [IDAttribute])
     :noindex:
 
-    Verify Identity based on UIN and set of Identity Attributes.
-    Attributes can be Biometric data, Civil data or a credential.
+    Verify Identity based on UIN and set of Identity Attributes (biometric data, credential, etc.)
 
     **Authorization**: :todo:`To be defined`
 
@@ -22,9 +21,7 @@ Services
 .. py:function:: identify([inIDAttribute], [outIDAttribute])
     :noindex:
 
-    Identify a person based on a set of inIDAttribute Identity Attributes.
-    Attributes can be Biometric data, Civil data or a credential.
-    Returns list of identities with attributes specified in outIDAttribute
+    Identify a person based on a set of Identity Attributes (biometric data, credential, etc.)
 
     **Authorization**: :todo:`To be defined`
 
