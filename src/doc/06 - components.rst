@@ -53,8 +53,7 @@ Credential Management System
 
 The credential management system component MAY implement the following interfaces:
 
-:todo:`To be defined`
-
+.. include:: functional/_cms.rst
 
 Third Party Services
 ====================

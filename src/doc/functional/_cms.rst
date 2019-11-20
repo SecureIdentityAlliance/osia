@@ -15,7 +15,7 @@ Services
     :param str personID: The ID of the person.
     :param str credentialProfileID: The ID of the credential profile to issue to the person.
     :param dict additionalData: Additional data relating to the requested credential profile,
-    e.g. credential lifetime if overriding default, delivery addresses, etc.
+        e.g. credential lifetime if overriding default, delivery addresses, etc.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.  In the case of success, an issuance identifier.
 
@@ -41,7 +41,7 @@ Services
     :param str issuanceID: The ID of the issuance.
     :param string transactionID: The client generated transactionID.
     :param dict additionalData: Additional data relating to the requested credential profile,
-    e.g. credential lifetime if overriding default, delivery addresses, etc.
+        e.g. credential lifetime if overriding default, delivery addresses, etc.
     :return: a status indicating success or error.
 
 .. py:function:: deleteCredential(issuanceID, transactionID)
@@ -70,7 +70,7 @@ Services
     :param set filter: The (optional) set of required attributes to retrieve.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, in the case of success the
-    requested data will be returned.
+        requested data will be returned.
 
 .. py:function:: suspendCredential(credentialID, transactionID)
     :noindex:

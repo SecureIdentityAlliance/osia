@@ -23,6 +23,15 @@ Glossary
         
         (Source: `ID4D Practioner's Guide <http://documents.worldbank.org/curated/en/248371559325561562/pdf/ID4D-Practitioner-s-Guide.pdf>`_)
 
+    **Encounter**
+        Event in which the client application interacts with
+        a person resulting in data being collected during or
+        about the encounter. An encounter is characterized by
+        an identifier and a type (also called purpose in some
+        context).
+
+        (Source: ISO-30108-1)
+
     **Functional systems and registries**
         Managing data including voter rolls, land registry, vehicle registration, passport, residence registry,
         education, health and benefits.
