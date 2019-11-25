@@ -91,7 +91,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str personID: The ID of the identity. If not provided, all identities are returned.
+    :param str identityID: The ID of the identity. If not provided, all identities are returned.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error, and in case of success a list of identities.
 
@@ -103,7 +103,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str personID: The ID of the identity.
+    :param str identityID: The ID of the identity.
     :param identity: The identity data.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
@@ -118,7 +118,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str personID: The ID of the identity.
+    :param str identityID: The ID of the identity.
     :param identity: Part of the identity data.
     :return: a status indicating success or error.
 
@@ -130,7 +130,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str personID: The ID of the identity.
+    :param str identityID: The ID of the identity.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
@@ -142,7 +142,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str personID: The ID of the identity.
+    :param str identityID: The ID of the identity.
     :param str status: The new status of the identity.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
@@ -157,7 +157,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str personID: The ID of the person.
-    :param str personID: The ID of the identity being now the reference.
+    :param str identityID: The ID of the identity being now the reference.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
