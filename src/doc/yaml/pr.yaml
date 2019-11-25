@@ -698,6 +698,7 @@ components:
         - physicalStatus
       properties:
         personId:
+          type: string
           description: The unique id for this person
         status:
           type: string
@@ -763,18 +764,17 @@ components:
     Document:
       type: object
       required:
-        - documentId
+        - documentType
         - parts
       properties:
-        documentId:
-          type: string
         documentType:
           $ref: '#/components/schemas/DocumentType'
         instance:
-          type: integer
+          type: string
           description: "Used to separate two distincts documents of the same type (ex: two passports)"
         parts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
     DocumentPart:
@@ -783,6 +783,7 @@ components:
         pages:
           type: array
           description: The pages included in this part. Can be a single page number, or a list.
+          minItems: 1
           items:
             type: integer
         data:

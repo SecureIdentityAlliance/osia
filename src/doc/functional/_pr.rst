@@ -321,9 +321,8 @@ Data Model
     Identity "1" -- "0..*" BiometricData
 
     class Document {
-      string documentID;
       enum type: Doc1 | Doc2 | Signature | etc;
-      int instance;
+      string instance;
     }
 
     class DocumentPart {
