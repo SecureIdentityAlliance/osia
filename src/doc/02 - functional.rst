@@ -235,6 +235,7 @@ The following table describes in detail the interfaces and associated services.
     Read                               Read the data of an encounter
     Update                             Update an encounter
     Delete                             Delete an encounter
+    Set Encounter Status               Set an encounter status
     Read Template                      Read the generated template
     Read Galleries                     Read the ID of all the galleries
     Read Gallery content               Read the content of one gallery, i.e. the IDs of all the records linked to this gallery
@@ -349,6 +350,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Read                                 U       U                I                      U
     Update                               U       U                I
     Delete                               U       U                I
+    Set Encounter Status                 U       U                I
     Read Template                        U       U                I
     Read Galleries
     Read Gallery Content                 U       U                I
