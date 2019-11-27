@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: OSIA ABIS Interface
-  version: 1.1.0
+  version: 1.2.0
   title: OSIA ABIS Interface
 tags:
   - name: CRUD
@@ -533,6 +533,109 @@ paths:
               requestBody:
                 required: true
                 description: Result of the deletion
+                content:
+                  application/json:
+                    schema:
+                      type: string
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personIdTarget}/merge/{personIdSource}:
+    post:
+      tags:
+        - CRUD
+      summary: Merge two sets of encounters
+      description: |
+        Merge two sets of encounters into a single one. Encounter ID are preserved and in case of duplicates
+        an error is returned and no changes are done.
+      operationId: merge
+      parameters:
+        - name: personIdTarget
+          in: path
+          description: the id of the person receiving new encounters
+          required: true
+          schema:
+            type: string
+        - name: personIdSource
+          in: path
+          description: the id of the person giving the encounters
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+      responses:
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            The transaction ID is returned
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "123e4567-e89b-12d3-a456-426655440000"
+        '204':
+          description: Merge successful
+        '400':
+          description: Bad request
+        '403':
+          description: Merge not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        mergeResponse:
+          '${request.query.callback}':
+            post:
+              summary: Merge two persons response callback
+              operationId: mergeCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the merge
                 content:
                   application/json:
                     schema:

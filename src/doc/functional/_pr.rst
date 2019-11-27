@@ -66,6 +66,21 @@ Services
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
+.. py:function:: mergePerson(personID1, personID2, transactionID)
+    :noindex:
+
+    Merge two person records into a single one. Identity ID are preserved and in case of duplicates
+    an error is returned and no changes are done.
+    The reference identity is not changed.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID1: The ID of the person that will receive new identities
+    :param str personID2: The ID of the person that will give its identities. It will be deleted if the move of all identities is successful.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
+    :return: a status indicating success or error.
+
 ----------
 
 .. py:function:: createIdentity(personID, identityID, identity, transactionID)

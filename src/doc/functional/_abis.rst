@@ -33,7 +33,7 @@ Services
 .. py:function:: create(personID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, transactionID, options)
     :noindex:
 
-    Create a new encounter. No identify is performed. This service is synchronous.
+    Create a new encounter. No identify is performed.
 
     **Authorization**: :todo:`To be defined`
 
@@ -106,6 +106,22 @@ Services
     :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         In case of pending operation, the operation status will be sent later.
+
+.. py:function:: merge(personID1, personID2, callback, transactionID, options)
+    :noindex:
+
+    Merge two sets of encounters into a single one. Encounter ID are preserved and in case of duplicates
+    an error is returned and no changes are done.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID1: The ID of the person that will receive new encounters
+    :param str personID2: The ID of the person that will give its encounters
+    :param callback: The address of a service to be called when the result is available.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        In case of pending operation, the result will be sent later.
 
 .. py:function:: readTemplate(personID, encounterID, biometricType, biometricSubType, callback, transactionID, options)
     :noindex:

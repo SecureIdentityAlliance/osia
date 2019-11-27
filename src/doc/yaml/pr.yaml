@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: OSIA PR Interface
-  version: 1.0.0
+  version: 1.1.0
   title: OSIA Population Registry Interface
 tags:
   - name: Person
@@ -150,6 +150,51 @@ paths:
           description: Bad request
         '403':
           description: Delete not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personIdTarget}/merge/{personIdSource}:
+    post:
+      tags:
+        - Person
+      summary: Merge two persons
+      description: |
+        Merge two person records into a single one. Identity ID are preserved and in case of duplicates
+        an error is returned and no changes are done.
+        If the operation is successful, the person merged is deleted.
+      operationId: mergePerson
+      parameters:
+        - name: personIdTarget
+          in: path
+          description: the id of the person receiving new identities
+          required: true
+          schema:
+            type: string
+        - name: personIdSource
+          in: path
+          description: the id of the person giving the identities
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Merge successful
+        '400':
+          description: Bad request
+        '403':
+          description: Merge not allowed
         '404':
           description: Unknown record
         '500':
