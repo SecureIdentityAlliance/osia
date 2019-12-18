@@ -221,7 +221,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Identity'
+              allOf:
+                - $ref: '#/components/schemas/Identity'
+                - type: object
+                  required:
+                    - status
       responses:
         '200':
           description: Insertion successful
@@ -277,7 +281,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Identity'
+              allOf:
+                - $ref: '#/components/schemas/Identity'
+                - type: object
+                  required:
+                    - status
       responses:
         '201':
           description: Insertion successful
@@ -362,7 +370,11 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Identity'
+              allOf:
+                - $ref: '#/components/schemas/Identity'
+                - type: object
+                  required:
+                    - status
       responses:
         '204':
           description: Update successful
@@ -708,9 +720,6 @@ components:
           enum: [DEAD, ALIVE]
     Identity:
       type: object
-      required:
-        - status
-        - biographicData
       properties:
         identityId:
           type: string
