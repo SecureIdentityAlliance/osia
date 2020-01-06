@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   description: OSIA ABIS Interface
-  version: 1.1.0
+  version: 1.2.0
   title: OSIA ABIS Interface
 tags:
   - name: CRUD
@@ -124,6 +124,229 @@ paths:
                     application/json:
                       schema:
                         $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personId}/encounters:
+    post:
+      tags:
+        - CRUD
+      summary: Create one encounter and generate its ID
+      description: |
+        Create one encounter in the person identified by his/her id.
+        If the person does not yet exist, it is created automatically.
+      operationId: createNoId
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+        - name: algorithm
+          in: query
+          description: Hint about the algorithm to be used
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      responses:
+        '200':
+          description: creation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - encounterId
+                properties:
+                  personId:
+                    type: string
+                  encounterId:
+                    type: string
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            The transaction ID is returned
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "123e4567-e89b-12d3-a456-426655440000"
+        '400':
+          description: Bad request
+        '403':
+          description: Creation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        createResponse:
+          '${request.query.callback}':
+            post:
+              summary: Create one encounter and generate its ID response callback
+              operationId: createNoIdCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the creation
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      required:
+                        - encounterId
+                      properties:
+                        personId:
+                          type: string
+                        encounterId:
+                          type: string
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - CRUD
+      summary: Read all encounters of one person
+      operationId: readAll
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: priority
+          in: query
+          description: the request priority
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Encounter'
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            The transaction ID is returned
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "123e4567-e89b-12d3-a456-426655440000"
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        readAllResponse:
+          '${request.query.callback}':
+            post:
+              summary: Read all encounters response callback
+              operationId: readAllCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Encounter data
+                content:
+                  application/json:
+                    schema:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Encounter'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+                        
   /v1/persons/{personId}/encounters/{encounterId}:
     post:
       tags:
@@ -553,6 +776,104 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
+  /persons/{personId}/encounters/{encounterId}/status:
+    put:
+      tags:
+        - CRUD
+      summary: Update status of an encounter
+      operationId: updateEncounterStatus
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: New status of encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+      responses:
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            The transaction ID is returned
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "123e4567-e89b-12d3-a456-426655440000"
+        '204':
+          description: Status has been updated
+        '400':
+          description: Bad request
+        '403':
+          description: Encounter status update not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        updateEncounterStatusResponse:
+          '${request.query.callback}':
+            post:
+              summary: Update encounter status response callback
+              operationId: updateEncounterStatusCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the status update
+                content:
+                  application/json:
+                    schema:
+                      type: string
+                      enum: [OK]
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+
   /v1/persons/{personId}/encounters/{encounterId}/templates:
     get:
       tags:
@@ -692,227 +1013,6 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /v1/persons/{personId}/encounters:
-    post:
-      tags:
-        - CRUD
-      summary: Create one encounter and generate its ID
-      description: |
-        Create one encounter in the person identified by his/her id.
-        If the person does not yet exist, it is created automatically.
-      operationId: createNoId
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-        - name: callback
-          in: query
-          description: the callback address, where the result will be sent when available
-          required: false
-          schema:
-            type: string
-            format: uri
-            example: "http://client.com/callback"
-        - name: priority
-          in: query
-          description: the request priority
-          required: false
-          schema:
-            type: integer
-        - name: algorithm
-          in: query
-          description: Hint about the algorithm to be used
-          required: false
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Encounter'
-      responses:
-        '200':
-          description: creation successful
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - encounterId
-                properties:
-                  personId:
-                    type: string
-                  encounterId:
-                    type: string
-        '202':
-          description: |
-            Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
-        '400':
-          description: Bad request
-        '403':
-          description: Creation not allowed
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      callbacks:
-        createResponse:
-          '${request.query.callback}':
-            post:
-              summary: Create one encounter and generate its ID response callback
-              operationId: createNoIdCB
-              parameters:
-                # query parameters
-                - name: transactionId
-                  in: query
-                  required: true
-                  description: The id of the transaction
-                  schema:
-                    type: string
-              requestBody:
-                required: true
-                description: Result of the creation
-                content:
-                  application/json:
-                    schema:
-                      type: object
-                      required:
-                        - encounterId
-                      properties:
-                        personId:
-                          type: string
-                        encounterId:
-                          type: string
-                  application/error+json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-              responses:
-                '204':
-                  description: Response is received and accepted.
-                '403':
-                  description: Forbidden access to the service
-                '500':
-                  description: Unexpected error
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
-    get:
-      tags:
-        - CRUD
-      summary: Read all encounters of one person
-      operationId: readAll
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-        - name: callback
-          in: query
-          description: the callback address, where the result will be sent when available
-          required: false
-          schema:
-            type: string
-            format: uri
-            example: "http://client.com/callback"
-        - name: priority
-          in: query
-          description: the request priority
-          required: false
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Read successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Encounter'
-        '202':
-          description: |
-            Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
-          content:
-            application/json:
-              schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
-        '400':
-          description: Bad request
-        '403':
-          description: Read not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      callbacks:
-        readAllResponse:
-          '${request.query.callback}':
-            post:
-              summary: Read all encounters response callback
-              operationId: readAllCB
-              parameters:
-                # query parameters
-                - name: transactionId
-                  in: query
-                  required: true
-                  description: The id of the transaction
-                  schema:
-                    type: string
-              requestBody:
-                required: true
-                description: Encounter data
-                content:
-                  application/json:
-                    schema:
-                      type: array
-                      items:
-                        $ref: '#/components/schemas/Encounter'
-                  application/error+json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-              responses:
-                '204':
-                  description: Response is received and accepted.
-                '403':
-                  description: Forbidden access to the service
-                '500':
-                  description: Unexpected error
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
   /v1/persons/{personId}:
     delete:
       tags:
@@ -1780,11 +1880,15 @@ components:
     Encounter:
       type: object
       required:
+        - status
         - encounterType
         - biometricData
       properties:
         encounterId:
           type: string
+        status:
+          type: string
+          enum: [ACTIVE, INACTIVE]
         encounterType:
           type: string
           description: Type of the encounter

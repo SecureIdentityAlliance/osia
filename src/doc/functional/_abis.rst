@@ -125,6 +125,20 @@ Services
         In case of success, a list of template data is returned.
         In case of pending operation, the result will be sent later.
 
+.. py:function:: setEncounterStatus(personID, encounterID, status, transactionID)
+    :noindex:
+
+    Set an encounter status.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str personID: The ID of the person.
+    :param str encounterID: The encounter ID.
+    :param str status: The new status of the encounter.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :return: a status indicating success or error.
+
+
 ----------
 
 .. py:function:: readGalleries(callback, transactionID, options)
@@ -275,6 +289,10 @@ Data Model
       - Event in which the client application interacts with a person resulting in data being
         collected during or about the encounter. An encounter is characterized by an *identifier* and a *type*
         (also called *purpose* in some context).
+
+        An encounter has a status indicating if this encounter is used in the biometric searches. Allowed values
+        are ``active`` or ``inactive``.
+
       - :todo:`TBD`
 
     * - Biographic Data
@@ -324,6 +342,7 @@ Data Model
 
     class Encounter {
         string encounterID;
+        string status;
         string encounterType;
         byte[] clientData;
     }
