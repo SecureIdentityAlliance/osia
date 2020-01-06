@@ -3,3 +3,4 @@
 src/doc/_build/*
 .DS_Store
 target/
+__pycache__
