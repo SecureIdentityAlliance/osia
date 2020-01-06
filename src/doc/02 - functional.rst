@@ -206,11 +206,15 @@ The following table describes in detail the interfaces and associated services.
     --------------------------------- -----------------------------------------------------------------------------------
     **Enrollment Services**
     ---------------------------------------------------------------------------------------------------------------------
-    Create Person                      Insert a new person
-    Read Person                        Retrieve the attributes of a person
-    Update Person                      Update a person
-    Delete Person                      Delete a person
-    Find People                        Retrieve a list of people who match passed in search criteria   
+    Create Enrollment                      Insert a new enrollment
+    Read Enrollment                        Retrieve an enrollment
+    Update Enrollment                      Update an enrollment
+    Delete Enrollment                      Delete an enrollment
+    Find Enrollment                        Retrieve a list of enrollment who match passed in search criteria
+    Create Document Capture                Add a new document for an enrollment
+    Read Document Capture                  Retrieve document data
+    Update Document Capture                Update a document for an enrollment
+    Delete Document Capture                Delete a document for an enrollment
     --------------------------------- -----------------------------------------------------------------------------------
     **Population Registry Services**
     ---------------------------------------------------------------------------------------------------------------------
@@ -232,10 +236,10 @@ The following table describes in detail the interfaces and associated services.
     --------------------------------- -----------------------------------------------------------------------------------
     **Biometrics**
     ---------------------------------------------------------------------------------------------------------------------
-    Create                             Create a new encounter. No identify is performed
-    Read                               Read the data of an encounter
-    Update                             Update an encounter
-    Delete                             Delete an encounter
+    Create Encounter                   Create a new encounter. No identify is performed
+    Read Encounter                     Read the data of an encounter
+    Update Encounter                   Update an encounter
+    Delete Encounter                   Delete an encounter
     Merge                              Merge two sets of encounters
     Set Encounter Status               Set an encounter status
     Read Template                      Read the generated template
@@ -246,10 +250,10 @@ The following table describes in detail the interfaces and associated services.
     --------------------------------- -----------------------------------------------------------------------------------
     **Credential Services**
     ---------------------------------------------------------------------------------------------------------------------
-    Create Credential                  Request issuance of a secure document / credential
-    Read Credential Issuance           Retrieve the data/status of an issuance
-    Update Credential                  Update the requested issuance of a secure document / credential
-    Delete Credential                  Delete/cancel the requested issuance of a secure document / credential
+    Create Credential Request          Request issuance of a secure credential
+    Read Credential Request            Retrieve the data/status of a credential request
+    Update Credential Request          Update the requested issuance of a secure credential
+    Delete Credential Request          Delete/cancel the requested issuance of a secure document / credential
     Read Credential                    Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)
     Suspend Credential                 Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
     Unsuspend Credential               Unsuspend an issued credential. For electronic credentials this will unsuspend any PKI certificates that are present
@@ -266,10 +270,6 @@ The following table describes in detail the interfaces and associated services.
     ---------------------------------------------------------------------------------------------------------------------
     List Credential Profiles           Retrieve the list of credential profiles
     Read Credential Profiles           Retrieve the credential profile
-    Create Document                    Add a new document for a person
-    Read Document                      Retrieve document data
-    Update Document                    Update a document for a person
-    Delete Document                    Delete a document for a person
     Update Document Val Status         Updates the status of a document validation
     Read Document Val Status           Retrieve the status of a document validation
     Create Biometric                   Add a new biometric for a person
@@ -323,11 +323,15 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ---------------------------------  ------- ------- ------- ------- ------- ------- -------
     **Enrollment Services**
     ------------------------------------------------------------------------------------------
-    Create Person                         I
-    Read Person                           I
-    Update Person                         I
-    Delete Person                         I
-    Find People                           I
+    Create Enrollment                     U+I
+    Read Enrollment                       U+I
+    Update Enrollment                     U+I
+    Delete Enrollment                     U+I
+    Find Enrollment                       U+I
+    Create Document Capture
+    Read Document Capture
+    Update Document Capture
+    Delete Document Capture
     ---------------------------------  ------- ------- ------- ------- ------- ------- -------
     **Population Registry Services**
     ------------------------------------------------------------------------------------------
@@ -349,11 +353,11 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ---------------------------------  ------- ------- ------- ------- ------- ------- -------
     **Biometrics**
     ------------------------------------------------------------------------------------------
-    Create                               U       U                I
-    Read                                 U       U                I                      U
-    Update                               U       U                I
-    Delete                               U       U                I
-    Merge                                        U                I
+    Create Encounter                     U       U                I
+    Read Encounter                       U       U                I                      U
+    Update Encounter                     U       U                I
+    Delete Encounter                     U       U                I
+    Merge Encounter                              U                I
     Set Encounter Status                 U       U                I
     Read Template                        U       U                I
     Read Galleries
@@ -363,14 +367,14 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ---------------------------------  ------- ------- ------- ------- ------- ------- -------
     **Credential Services**
     ------------------------------------------------------------------------------------------
-    Create Credential
-    Read Credential Issuance
-    Update Credential
-    Delete Credential
-    Read Credential
-    Suspend Credential
-    Unsuspend Credential
-    Cancel Credential
+    Create Credential Request                                                     I
+    Read Credential Request                                                       I
+    Update Credential Request                                                     I
+    Delete Credential Request                                                     I
+    Read Credential                                                               I
+    Suspend Credential                                                            I
+    Unsuspend Credential                                                          I
+    Cancel Credential                                                             I
     ---------------------------------  ------- ------- ------- ------- ------- ------- -------
     **ID Usage**
     ------------------------------------------------------------------------------------------
@@ -383,10 +387,6 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ------------------------------------------------------------------------------------------
     List Cred Profiles
     Read Cred Profiles
-    Create Document 
-    Read Document
-    Update Document
-    Delete Document
     Update Document Val Status
     Read Document Val Status
     Create Biometric

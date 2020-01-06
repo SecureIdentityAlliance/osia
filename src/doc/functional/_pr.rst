@@ -269,7 +269,7 @@ Data Model
 
     * - Contextual Data
       - A dictionary (list of names and values) attached to the context of establishing the identity
-      - ``operatorName``, ``enrolmentDate``, etc.
+      - ``operatorName``, ``enrollmentDate``, etc.
 
     * - Biometric Data
       - Digital representation of biometric characteristics.

@@ -13,7 +13,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param set filter: The (optional) set of required attributes to retrieve.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the credential profile list.
 
 .. py:function:: readCredentialProfile(credentialProfileID, filter, transactionID)
@@ -25,58 +25,8 @@ Services
 
     :param str credentialProfileID: The ID of the credential profile.
     :param set filter: The (optional) set of required attributes to retrieve.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the credential profile.
-
-----------
-
-.. py:function:: createDocument(personID, documentID, documentData, transactionID)
-    :noindex:
-
-    Add a new document for a person.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str personID: The ID of the person.
-    :param str documentID: The ID of the document.
-    :param documentData: The content and attributes of the document.
-    :param string transactionID: The (optional) client generated transactionID.
-    :return: a status indicating success or error.  In the case of success, a document identifier.
-
-.. py:function:: readDocument(documentID, filter, transactionID)
-    :noindex:
-
-    Retrieve document data.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str documentID: The ID of the document.
-    :param set filter: The (optional) set of required attributes to retrieve.
-    :param string transactionID: The (optional) client generated transactionID.
-    :return: a status indicating success or error, and in case of success the document data.
-
-.. py:function:: updateDocument(documentID, documentData, transactionID)
-    :noindex:
-
-    Update a document for a person.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str documentID: The ID of the document.
-    :param documentData: The content and attributes of the document, this can be partial data.
-    :param string transactionID: The (optional) client generated transactionID.
-    :return: a status indicating success or error.
-
-.. py:function:: deleteDocument(documentID, transactionID)
-    :noindex:
-
-    Delete a document for a person.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param str documentID: The ID of the document.
-    :param string transactionID: The (optional) client generated transactionID.
-    :return: a status indicating success or error.
 
 .. py:function:: updateDocumentValStatus(documentID, status, transactionID)
     :noindex:
@@ -87,7 +37,7 @@ Services
 
     :param str documentID: The ID of the document.
     :param status: The status of the document validation, e.g. 'ready' to validate.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
 .. py:function:: readDocumentValStatus(documentID, transactionID)
@@ -98,7 +48,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str documentID: The ID of the document.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the document validation status and its metadata.
 
 ----------
@@ -113,7 +63,7 @@ Services
     :param str personID: The ID of the person.
     :param str biometricID: The ID of the biometric.
     :param biometricData: The content and attributes of the biometric.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.  In the case of success, a biometric identifier.
 
 .. py:function:: readBiometric(biometricID, filter, transactionID)
@@ -128,7 +78,7 @@ Services
 
     :param str biometricID: The ID of the biometric.
     :param set filter: The (optional) set of required attributes to retrieve.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the biometric data.
 
 .. py:function:: readBiometricMetadata(biometricID, filter, transactionID)
@@ -140,7 +90,7 @@ Services
 
     :param str biometricID: The ID of the biometric.
     :param set filter: The (optional) set of required attributes to retrieve.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the biometric metadata.
 
 .. py:function:: updateBiometric(biometricID, biometricData, transactionID)
@@ -153,7 +103,7 @@ Services
     :param str personID: The ID of the person.
     :param str biometricID: The ID of the biometric.
     :param biometricData: The content and attributes of the biometric, this can be partial data.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
 .. py:function:: deleteBiometric(biometricID, transactionID)
@@ -164,7 +114,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str biometricID: The ID of the biometric.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
 .. py:function:: updateBiometricValStatus(biometricID, status, transactionID)
@@ -176,7 +126,7 @@ Services
 
     :param str biometricID: The ID of the biometric.
     :param status: The status of the biometric validation, e.g. 'ready' to validate.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the biometric validation status.
 
 .. py:function:: readBiometricValStatus(biometricID, transactionID)
@@ -187,7 +137,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str biometricID: The ID of the biometric.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the biometric validation status and metadata.
 
 ----------
@@ -202,7 +152,7 @@ Services
     :param str personID: The ID of the person.
     :param str biographicID: The ID of the biographic.
     :param biographicData: The content and attributes of the biographic.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.  In the case of success, a biographic identifier.
 
 .. py:function:: readBiographic(biographicID, filter, transactionID)
@@ -214,7 +164,7 @@ Services
 
     :param str biographicID: The ID of the biographic.
     :param set filter: The (optional) set of required attributes to retrieve.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the biographic data.
 
 .. py:function:: updateBiographic(biographicID, biographicData, transactionID)
@@ -227,7 +177,7 @@ Services
     :param str personID: The ID of the person.
     :param str biographicID: The ID of the biographic.
     :param biographicData: The content and attributes of the biographic, this can be partial data.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
 .. py:function:: deleteBiographic(biographicID, transactionID)
@@ -238,7 +188,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str biographicID: The ID of the biographic.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
 .. py:function:: updateBiographicValStatus(biographicID, status, transactionID)
@@ -250,7 +200,7 @@ Services
 
     :param str biographicID: The ID of the biographic.
     :param status: The status of the biographic validation, e.g. 'ready' to validate.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the biographic validation status.
 
 .. py:function:: readBiographicValStatus(biographicID, transactionID)
@@ -261,7 +211,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str biographicID: The ID of the biographic.
-    :param string transactionID: The (optional) client generated transactionID.
+    :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the biographic validation status and metadata.
 
 Filter
@@ -284,8 +234,7 @@ Transaction ID
 """"""""""""""
 
 The "transactionID" is a string provided by the client application to identity
-the request being submitted. It is optional in most cases. When provided, it
-can be used for tracing and debugging.
+the request being submitted. It can be used for tracing and debugging.
 
 
 Data Model

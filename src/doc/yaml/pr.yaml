@@ -796,7 +796,7 @@ components:
       type: object
       additionalProperties: true
       example:
-        enrolmentDate: "2019-01-11"
+        enrollmentDate: "2019-01-11"
     BiographicData:
       type: object
       additionalProperties: true

@@ -16,7 +16,7 @@ paths:
       tags:
         - CRUD
       summary: Create one encounter and generate ID for both the person and the encounter
-      operationId: createNoIds
+      operationId: createEncounterNoIds
       parameters:
         - name: transactionId
           in: query
@@ -87,7 +87,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Create one encounter and generate both IDs response callback
-              operationId: createNoIdsCB
+              operationId: createEncounterNoIdsCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -133,7 +133,7 @@ paths:
       description: |
         Create one encounter in the person identified by his/her id.
         If the person does not yet exist, it is created automatically.
-      operationId: createNoId
+      operationId: createEncounterNoId
       parameters:
         - name: personId
           in: path
@@ -210,7 +210,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Create one encounter and generate its ID response callback
-              operationId: createNoIdCB
+              operationId: createEncounterNoIdCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -251,7 +251,7 @@ paths:
       tags:
         - CRUD
       summary: Read all encounters of one person
-      operationId: readAll
+      operationId: readAllEncounters
       parameters:
         - name: personId
           in: path
@@ -314,7 +314,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Read all encounters response callback
-              operationId: readAllCB
+              operationId: readAllEncountersCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -357,7 +357,7 @@ paths:
         If the person does not yet exist, it is created automatically.
         
         If the encounter already exists, an error 403 is returned.
-      operationId: create
+      operationId: createEncounter
       parameters:
         - name: personId
           in: path
@@ -429,7 +429,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Create one encounter response callback
-              operationId: createCB
+              operationId: createEncounterCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -468,7 +468,7 @@ paths:
       tags:
         - CRUD
       summary: Read one encounter
-      operationId: read
+      operationId: readEncounter
       parameters:
         - name: personId
           in: path
@@ -535,7 +535,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Read one encounter response callback
-              operationId: readCB
+              operationId: readEncounterCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -569,7 +569,7 @@ paths:
       tags:
         - CRUD
       summary: Update one encounter
-      operationId: update
+      operationId: updateEncounter
       parameters:
         - name: personId
           in: path
@@ -643,7 +643,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Update one encounter response callback
-              operationId: updateCB
+              operationId: updateEncounterCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -681,7 +681,7 @@ paths:
       description: |
         Delete one encounter from the person identified by his/her id.
         If this is the last encounter in the person, the person is also deleted.
-      operationId: delete
+      operationId: deleteEncounter
       parameters:
         - name: personId
           in: path
@@ -744,7 +744,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Delete one encounter response callback
-              operationId: deleteCB
+              operationId: deleteEncounterCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -784,7 +784,7 @@ paths:
       description: |
         Merge two sets of encounters into a single one. Encounter ID are preserved and in case of duplicates
         an error is returned and no changes are done.
-      operationId: merge
+      operationId: mergeEncounter
       parameters:
         - name: personIdTarget
           in: path
@@ -847,7 +847,7 @@ paths:
           '${request.query.callback}':
             post:
               summary: Merge two persons response callback
-              operationId: mergeCB
+              operationId: mergeEncounterCB
               parameters:
                 # query parameters
                 - name: transactionId

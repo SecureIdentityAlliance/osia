@@ -30,7 +30,7 @@ See :ref:`annex-interface-abis` for the technical details of this interface.
 Services
 """"""""
 
-.. py:function:: create(personID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, transactionID, options)
+.. py:function:: createEncounter(personID, encounterID, galleryID, biographicData, contextualData, biometricData, clientData,callback, transactionID, options)
     :noindex:
 
     Create a new encounter. No identify is performed.
@@ -52,7 +52,7 @@ Services
         In case of success, the person ID and the encounter ID are returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: read(personID, encounterID, callback, transactionID, options)
+.. py:function:: readEncounter(personID, encounterID, callback, transactionID, options)
     :noindex:
 
     Read the data of an encounter.
@@ -69,7 +69,7 @@ Services
         In case of success, the encounter data is returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: update(personID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, transactionID, options)
+.. py:function:: updateEncounter(personID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, transactionID, options)
     :noindex:
 
     Update an encounter.
@@ -91,7 +91,7 @@ Services
         In case of success, the person ID and the encounter ID are returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: delete(personID, encounterID, callback, transactionID, options)
+.. py:function:: deleteEncounter(personID, encounterID, callback, transactionID, options)
     :noindex:
 
     Delete an encounter.
@@ -107,7 +107,7 @@ Services
     :return: a status indicating success, error, or pending operation.
         In case of pending operation, the operation status will be sent later.
 
-.. py:function:: merge(personID1, personID2, callback, transactionID, options)
+.. py:function:: mergeEncounter(personID1, personID2, callback, transactionID, options)
     :noindex:
 
     Merge two sets of encounters into a single one. Encounter ID are preserved and in case of duplicates

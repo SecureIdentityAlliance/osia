@@ -11,7 +11,7 @@ The chapter below describes the specifications of all OSIA interfaces and relate
 
 .. include:: functional/_uin.rst
 
-.. include:: functional/_enrolment.rst
+.. include:: functional/_enrollment.rst
 
 .. include:: functional/_pr.rst
 
