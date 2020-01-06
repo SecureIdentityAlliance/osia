@@ -206,15 +206,15 @@ The following table describes in detail the interfaces and associated services.
     --------------------------------- -----------------------------------------------------------------------------------
     **Enrollment Services**
     ---------------------------------------------------------------------------------------------------------------------
-    Create Enrollment                      Insert a new enrollment
-    Read Enrollment                        Retrieve an enrollment
-    Update Enrollment                      Update an enrollment
-    Delete Enrollment                      Delete an enrollment
-    Find Enrollment                        Retrieve a list of enrollment who match passed in search criteria
-    Create Document Capture                Add a new document for an enrollment
-    Read Document Capture                  Retrieve document data
-    Update Document Capture                Update a document for an enrollment
-    Delete Document Capture                Delete a document for an enrollment
+    Create Enrollment                  Insert a new enrollment
+    Read Enrollment                    Retrieve an enrollment
+    Update Enrollment                  Update an enrollment
+    Delete Enrollment                  Delete an enrollment
+    Find Enrollment                    Retrieve a list of enrollment who match passed in search criteria
+    Create Document Capture            Add a new document for an enrollment
+    Read Document Capture              Retrieve document data
+    Update Document Capture            Update a document for an enrollment
+    Delete Document Capture            Delete a document for an enrollment
     --------------------------------- -----------------------------------------------------------------------------------
     **Population Registry Services**
     ---------------------------------------------------------------------------------------------------------------------
@@ -240,7 +240,7 @@ The following table describes in detail the interfaces and associated services.
     Read Encounter                     Read the data of an encounter
     Update Encounter                   Update an encounter
     Delete Encounter                   Delete an encounter
-    Merge                              Merge two sets of encounters
+    Merge Encounter                    Merge two sets of encounters
     Set Encounter Status               Set an encounter status
     Read Template                      Read the generated template
     Read Galleries                     Read the ID of all the galleries
@@ -296,95 +296,96 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     :widths: 30 10 10 10 10 10 10 10 10
     
 
-    =================================  ======= ======= ======= ======= ======= ======= =======
+    =================================  ======= ======= ======= ======= ======= ======= ======= =======
        ..                              **Components**
-    ---------------------------------  -------------------------------------------------------
-    **Interfaces**                     Enroll    PR    UIN Gen  ABIS     CR      CMS    3rd PS
-    =================================  ======= ======= ======= ======= ======= ======= =======
+    ---------------------------------  ---------------------------------------------------------------
+    **Interfaces**                     Enroll  Enroll    PR    UIN Gen  ABIS     CR      CMS    3rd PS
+                                       Clt     Srv
+    =================================  ======= ======= ======= ======= ======= ======= ======= =======
     **Notification**
-    ------------------------------------------------------------------------------------------
-     Subscribe                                   U                U       U       U
-     Unsubscribe                                 U                U       U       U
+    --------------------------------------------------------------------------------------------------
+     Subscribe                                           U                U       U       U
+     Unsubscribe                                         U                U       U       U
      Confirm
-     Publish                                     I                I       I       I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+     Publish                                             I                I       I       I
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Data Access**
-    ------------------------------------------------------------------------------------------
-     Read Person Attributes               U      IU               U       IU              U
-     Match Person Attributes              U      IU                       IU              U
-     Verify Person Attributes             U      IU                       IU              U
-     Query Person UIN                     U      IU                       IU
-     Query Person List                                                    U
-     Read Document                        U      IU                       IU
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+    --------------------------------------------------------------------------------------------------
+     Read Person Attributes                       U      IU               U       IU              U
+     Match Person Attributes                      U      IU                       IU              U
+     Verify Person Attributes                     U      IU                       IU              U
+     Query Person UIN                             U      IU                       IU
+     Query Person List                                                            U
+     Read Document                                U      IU                       IU
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **UIN Management**
-    ------------------------------------------------------------------------------------------
-     Generate UIN                                 U       I               U
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+    --------------------------------------------------------------------------------------------------
+     Generate UIN                                         U       I               U
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Enrollment Services**
-    ------------------------------------------------------------------------------------------
-    Create Enrollment                     U+I
-    Read Enrollment                       U+I
-    Update Enrollment                     U+I
-    Delete Enrollment                     U+I
-    Find Enrollment                       U+I
+    --------------------------------------------------------------------------------------------------
+    Create Enrollment                     U      I
+    Read Enrollment                       U      I
+    Update Enrollment                     U      I
+    Delete Enrollment                     U      I
+    Find Enrollment                       U      I
     Create Document Capture
     Read Document Capture
     Update Document Capture
     Delete Document Capture
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Population Registry Services**
-    ------------------------------------------------------------------------------------------
-    Create Person                                I               U                U
-    Read Person                                  I               U                U       U
-    Update Person                                I               U                U
-    Delete Person                                I               U                U
-    Merge Person                                 I               U
-    Create Identity                              I
-    Read Identity                                I
-    Update Identity                              I
-    Partial Update Identity                      I
-    Delete Identity                              I
-    Set Identity Status                          I
-    Define Reference                             I
-    Read Reference                               I
-    Read Galleries                               I
-    Read Gallery Content                         I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+    --------------------------------------------------------------------------------------------------
+    Create Person                                        I               U                U
+    Read Person                                          I               U                U       U
+    Update Person                                        I               U                U
+    Delete Person                                        I               U                U
+    Merge Person                                         I               U
+    Create Identity                                      I
+    Read Identity                                        I
+    Update Identity                                      I
+    Partial Update Identity                              I
+    Delete Identity                                      I
+    Set Identity Status                                  I
+    Define Reference                                     I
+    Read Reference                                       I
+    Read Galleries                                       I
+    Read Gallery Content                                 I
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Biometrics**
-    ------------------------------------------------------------------------------------------
-    Create Encounter                     U       U                I
-    Read Encounter                       U       U                I                      U
-    Update Encounter                     U       U                I
-    Delete Encounter                     U       U                I
-    Merge Encounter                              U                I
-    Set Encounter Status                 U       U                I
-    Read Template                        U       U                I
+    --------------------------------------------------------------------------------------------------
+    Create Encounter                             U       U                I
+    Read Encounter                               U       U                I                      U
+    Update Encounter                             U       U                I
+    Delete Encounter                             U       U                I
+    Merge Encounter                                      U                I
+    Set Encounter Status                         U       U                I
+    Read Template                                U       U                I
     Read Galleries
-    Read Gallery Content                 U       U                I
-    Identify                             U                        I                      U
-    Verify                               U                        I                      U
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+    Read Gallery Content                         U       U                I
+    Identify                                     U                        I                      U
+    Verify                                       U                        I                      U
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Credential Services**
-    ------------------------------------------------------------------------------------------
-    Create Credential Request                                                     I
-    Read Credential Request                                                       I
-    Update Credential Request                                                     I
-    Delete Credential Request                                                     I
-    Read Credential                                                               I
-    Suspend Credential                                                            I
-    Unsuspend Credential                                                          I
-    Cancel Credential                                                             I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+    --------------------------------------------------------------------------------------------------
+    Create Credential Request                                                             I
+    Read Credential Request                                                               I
+    Update Credential Request                                                             I
+    Delete Credential Request                                                             I
+    Read Credential                                                                       I
+    Suspend Credential                                                                    I
+    Unsuspend Credential                                                                  I
+    Cancel Credential                                                                     I
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **ID Usage**
-    ------------------------------------------------------------------------------------------
-    Verify ID                                                                             I
-    Identify ID                                                                           I
-    Read Attributes                                                                       I
-    Read Attributes set                                                                   I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- -------
+    --------------------------------------------------------------------------------------------------
+    Verify ID                                                                                     I
+    Identify ID                                                                                   I
+    Read Attributes                                                                               I
+    Read Attributes set                                                                           I
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Under discussion**
-    ------------------------------------------------------------------------------------------
+    --------------------------------------------------------------------------------------------------
     List Cred Profiles
     Read Cred Profiles
     Update Document Val Status
@@ -401,7 +402,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Delete Biographic
     Update Biographic Val Status
     Read Biographic Val Status
-    =================================  ======= ======= ======= ======= ======= ======= =======
+    =================================  ======= ======= ======= ======= ======= ======= ======= =======
 
 where:
 
