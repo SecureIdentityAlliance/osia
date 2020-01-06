@@ -218,6 +218,7 @@ The following table describes in detail the interfaces and associated services.
     Read Person                        Read the attributes of a person
     Update Person                      Update a person
     Delete Person                      Delete a person and all its identities
+    Merge Persons                      Merge two persons
     Create Identity                    Create a new identity in a person
     Read Identity                      Read one or all the identities of one person
     Update Identity                    Update an identity. An identity can be updated only in the status claimed
@@ -235,6 +236,7 @@ The following table describes in detail the interfaces and associated services.
     Read                               Read the data of an encounter
     Update                             Update an encounter
     Delete                             Delete an encounter
+    Merge                              Merge two sets of encounters
     Set Encounter Status               Set an encounter status
     Read Template                      Read the generated template
     Read Galleries                     Read the ID of all the galleries
@@ -329,10 +331,11 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ---------------------------------  ------- ------- ------- ------- ------- ------- -------
     **Population Registry Services**
     ------------------------------------------------------------------------------------------
-    Create Person                                I               I                U
-    Read Person                                  I               I                U       U
-    Update Person                                I               I                U
-    Delete Person                                I               I                U
+    Create Person                                I               U                U
+    Read Person                                  I               U                U       U
+    Update Person                                I               U                U
+    Delete Person                                I               U                U
+    Merge Person                                 I               U
     Create Identity                              I
     Read Identity                                I
     Update Identity                              I
@@ -350,6 +353,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Read                                 U       U                I                      U
     Update                               U       U                I
     Delete                               U       U                I
+    Merge                                        U                I
     Set Encounter Status                 U       U                I
     Read Template                        U       U                I
     Read Galleries
