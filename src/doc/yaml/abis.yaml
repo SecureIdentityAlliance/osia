@@ -57,6 +57,7 @@ paths:
               schema:
                 type: object
                 required:
+                  - personId
                   - encounterId
                 properties:
                   personId:
@@ -104,6 +105,7 @@ paths:
                     schema:
                       type: object
                       required:
+                        - personId
                         - encounterId
                       properties:
                         personId:
