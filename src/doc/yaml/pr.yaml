@@ -1,8 +1,14 @@
+
+# (c) Secure Identity Alliance
+
 openapi: 3.0.0
 info:
   description: OSIA PR Interface
   version: 1.1.0
   title: OSIA Population Registry Interface
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 tags:
   - name: Person
   - name: Identity

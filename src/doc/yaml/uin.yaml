@@ -1,7 +1,13 @@
+
+# (c) Secure Identity Alliance
+
 openapi: 3.0.0
 info:
   title: OSIA UIN services
   version: 1.0.0
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 servers:
   - url: http://server.com/
 paths:

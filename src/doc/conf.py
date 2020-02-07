@@ -1,12 +1,15 @@
 
+# (c) Secure Identity Alliance
+
+import datetime
+
 source_suffix = '.rst'
 master_doc = 'index'
 exclude_patterns = []
 pygments_style = 'colorful'
 project = 'OSIA'
-release = '2.0.0'
+release = '3.0.0'
 author = 'SIA'
-html_context = {'project':'OSIA', 'version':"2.0.0", 'copyright':'SIA'}
 
 numfig = True
 
@@ -64,6 +67,8 @@ html_theme_options = {
     'fixed_sidebar': False,
 }
 html_show_sourcelink = False
+html_context = {'project':'OSIA', 'version':release, 'copyright':'Secure Identity Alliance, '+str(datetime.date.today().year)}
+html_last_updated_fmt = '%b %d, %Y'
 
 #
 # Latex/PDF Output Configuration
@@ -124,11 +129,12 @@ latex_elements = {
         {\vspace{0.5cm} \companylogo }
         \vspace{1.5cm}
         \par
-        {\rm\Huge\sffamily\bfseries {\textcolor[rgb]{0.678,0.325,0.537}{Specifications version 2.0.0} } \par}
+        {\rm\Huge\sffamily\bfseries {\textcolor[rgb]{0.678,0.325,0.537}{Specifications version '''+release+ur'''} } \par}
         \vfill
         %% Project logo
         \includegraphics[ width=12cm]{logo2.pdf} \par
         \vfill
+        \small {\textcolor[rgb]{0.678,0.325,0.537}{\textcopyright Secure Identity Alliance, '''+str(datetime.date.today().year)+ur''' } }
     \end{center}    
         
     \par
