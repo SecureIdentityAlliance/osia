@@ -12,6 +12,17 @@ Data Access
 
     Get the OpenAPI file for this interface: \textattachfile[]{../html/dataaccess.yaml}{dataaccess.yaml}
 
+.. sidebar:: Data Access Services
+
+    .. hlist::
+        :columns: 2
+
+        - `queryPersonList <#get--v1-persons>`_
+        - `readPersonAttributes <#get--v1-persons-uin>`_
+        - `matchPersonAttributes <#post--v1-persons-uin-match>`_
+        - `verifyPersonAttributes <#post--v1-persons-uin-verify>`_
+        - `readDocument <#get--v1-persons-uin-document>`_
+
 Services
 """"""""
 

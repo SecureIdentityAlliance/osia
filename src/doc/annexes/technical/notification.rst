@@ -12,6 +12,20 @@ Notification
 
     Get the OpenAPI file for this interface: \textattachfile[]{../html/notification.yaml}{notification.yaml}
 
+.. sidebar:: Notification Services
+
+    .. hlist::
+        :columns: 2
+
+        - `subscribe <#post--v1-subscriptions>`_
+        - `list_subscription <#get--v1-subscriptions>`_
+        - `unsubscribe <#delete--v1-subscriptions-uuid>`_
+        - `confirm <#get--v1-subscriptions-confirm>`_
+        - `create_topic <#post--v1-topics>`_
+        - `list_topics <#get--v1-topics>`_
+        - `delete_topic <#delete--v1-topics-uuid>`_
+        - `publish <#post--v1-topics-uuid-publish>`_
+
 Services
 """"""""
 
