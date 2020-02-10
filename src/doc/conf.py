@@ -99,7 +99,7 @@ latex_elements = {
 \\usepackage{bbding,pifont} %% two dingbat fonts
 \\usepackage{attachfile}
 
-\\attachfilesetup{author=Secure Identity Alliance,color=0 0.5 0.5,icon=paperclip,mimetype=application/json}
+\\attachfilesetup{author=Secure Identity Alliance,color=0 0.5 0.5}
 
 \\DeclareUnicodeCharacter{2714}{\\Checkmark}
 \\newcommand{\\DUroletodo}[1]{\\colorbox{yellow}{#1} }
