@@ -4,7 +4,13 @@
 Population Registry Management
 ------------------------------
 
-Download the OpenAPI file for this interface :openapi:`pr.yaml`.
+.. only:: html
+
+    Get the OpenAPI file for this interface: `pr.yaml <../../pr.yaml>`_
+
+.. raw:: latex
+
+    Get the OpenAPI file for this interface: \textattachfile[]{../html/pr.yaml}{pr.yaml}
 
 Services
 """"""""

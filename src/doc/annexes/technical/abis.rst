@@ -4,7 +4,13 @@
 Biometrics
 ----------
 
-Download the OpenAPI file for this interface :openapi:`abis.yaml`.
+.. only:: html
+
+    Get the OpenAPI file for this interface: `abis.yaml <../../abis.yaml>`_
+
+.. raw:: latex
+
+    Get the OpenAPI file for this interface: \textattachfile[]{../html/abis.yaml}{abis.yaml}
 
 Services
 """"""""

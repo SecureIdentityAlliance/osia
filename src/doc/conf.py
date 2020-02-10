@@ -69,6 +69,7 @@ html_theme_options = {
 html_show_sourcelink = False
 html_context = {'project':'OSIA', 'version':release, 'copyright':'Secure Identity Alliance, '+str(datetime.date.today().year)}
 html_last_updated_fmt = '%b %d, %Y'
+html_extra_path = ['yaml']
 
 #
 # Latex/PDF Output Configuration
@@ -99,6 +100,9 @@ latex_elements = {
  # no raw string can contain '\u' (this is interpreted as unicode char)
  'preamble': u'''
 \\usepackage{bbding,pifont} %% two dingbat fonts
+\\usepackage{attachfile}
+
+\\attachfilesetup{author=Secure Identity Alliance,color=0 0.5 0.5}
 
 \\DeclareUnicodeCharacter{2714}{\\Checkmark}
 \\newcommand{\\DUroletodo}[1]{\\colorbox{yellow}{#1} }

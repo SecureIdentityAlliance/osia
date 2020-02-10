@@ -4,7 +4,13 @@
 Data Access
 -----------
 
-Download the OpenAPI file for this interface :openapi:`dataaccess.yaml`.
+.. only:: html
+
+    Get the OpenAPI file for this interface: `dataaccess.yaml <../../dataaccess.yaml>`_
+
+.. raw:: latex
+
+    Get the OpenAPI file for this interface: \textattachfile[]{../html/dataaccess.yaml}{dataaccess.yaml}
 
 Services
 """"""""

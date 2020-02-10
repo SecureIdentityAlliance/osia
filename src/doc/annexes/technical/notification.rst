@@ -4,7 +4,13 @@
 Notification
 ------------
 
-Download the OpenAPI file for this interface :openapi:`notification.yaml`.
+.. only:: html
+
+    Get the OpenAPI file for this interface: `notification.yaml <../../notification.yaml>`_
+
+.. raw:: latex
+
+    Get the OpenAPI file for this interface: \textattachfile[]{../html/notification.yaml}{notification.yaml}
 
 Services
 """"""""
