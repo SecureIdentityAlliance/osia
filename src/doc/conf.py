@@ -13,10 +13,7 @@ author = 'SIA'
 
 numfig = True
 
-extensions = ['sphinx.ext.extlinks','sphinxcontrib.httpdomain','sphinxcontrib.plantuml','sphinxcontrib.openapi']
-
-extlinks = {'openapi': ('https://github.com/SecureIdentityAlliance/osia/tree/master/src/doc/yaml/%s',
-                      '')}
+extensions = ['sphinxcontrib.httpdomain','sphinxcontrib.plantuml','sphinxcontrib.openapi']
 
 plantuml_output_format = 'svg'
 
@@ -102,7 +99,7 @@ latex_elements = {
 \\usepackage{bbding,pifont} %% two dingbat fonts
 \\usepackage{attachfile}
 
-\\attachfilesetup{author=Secure Identity Alliance,color=0 0.5 0.5}
+\\attachfilesetup{author=Secure Identity Alliance,color=0 0.5 0.5,icon=paperclip,mimetype=application/json}
 
 \\DeclareUnicodeCharacter{2714}{\\Checkmark}
 \\newcommand{\\DUroletodo}[1]{\\colorbox{yellow}{#1} }
