@@ -13,6 +13,9 @@ info:
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+tags:
+  - name: Publisher
+  - name: Subscriber
 servers:
   - url: http://notification.com/
   - url: https://notification.com/
