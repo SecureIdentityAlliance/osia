@@ -76,7 +76,7 @@ Diffusion, Audience, and Access
 This specification is hosted in `GitHub <https://github.com/SecureIdentityAlliance/osia>`_ and can be
 downloaded from `ReadTheDocs <https://osia.readthedocs.io/en/latest/>`_.
 
-This specification is licensed under `The MIT License <https://opensource.org/licenses/MIT>`_.
+This specification is licensed under `The SIA License <https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE>`_.
 
 Any country, technology partner or individual is free to download the functional and technical specifications
 to implement it in their customized foundational and sectoral ID systems or components.

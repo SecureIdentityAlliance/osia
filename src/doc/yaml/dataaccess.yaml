@@ -1,3 +1,6 @@
+
+# (c) Secure Identity Alliance
+
 openapi: 3.0.0
 info:
   title: OSIA data access services
@@ -9,7 +12,10 @@ info:
     
     - 1.1.0: extended queryPersonUIN/queryPersonList operation to return a list of attributes, and not only a list of UIN
     - 1.0.0: first version proposed in OSIA.
-    
+
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 servers:
   - url: http://registry.com/
 tags:

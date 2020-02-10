@@ -1,3 +1,6 @@
+
+# (c) Secure Identity Alliance
+
 openapi: 3.0.0
 info:
   title: OSIA Notification Interface
@@ -7,6 +10,9 @@ info:
     
     Notifications are guaranteed to be delivered at least once. In some situation,
     it is possible they are delivered twice.
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 servers:
   - url: http://notification.com/
   - url: https://notification.com/
