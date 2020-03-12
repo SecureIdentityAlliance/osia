@@ -123,7 +123,7 @@ Services
     :return: a status indicating success, error, or pending operation.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: readTemplate(personID, encounterID, biometricType, biometricSubType, callback, transactionID, options)
+.. py:function:: readTemplate(personID, encounterID, biometricType, biometricSubType, templateFormat, qualityFormat, callback, transactionID, options)
     :noindex:
 
     Read the generated template.
@@ -134,6 +134,8 @@ Services
     :param str encounterID: The encounter ID.
     :param str biometricType: The type of biometrics to consider (optional)
     :param str biometricSubType: The subtype of biometrics to consider (optional)
+    :param str templateFormat: the format of the template to return (optional)
+    :param str qualityFormat: the format of the quality to return (optional)
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``.
@@ -334,7 +336,8 @@ Data Model
 
     * - CandidateScore
       - Detailed information about a candidate found during an identification. It includes
-        the score for the biometrics used.
+        the score for the biometrics used. It can also be extended with proprietary information to better describe
+        the matching result (for instance: rotation needed to align the probe and the candidate)
       - :todo:`TBD`
 
     * - Template
@@ -401,21 +404,22 @@ Data Model
     Encounter o-- "*" BiometricData
 
     class Template {
-          byte[] buffer;
+        byte[] buffer;
         string format;
     }
     BiometricData -- Template
 
     class Candidate {
-      int rank;
-      int score;
+        int rank;
+        int score;
     }
     Candidate . Person
 
     class CandidateScore {
-      int score;
-      string encounterID;
-      enum biometricType;
-      enum biometricSubType;
+        float score;
+        string encounterID;
+        enum biometricType;
+        enum biometricSubType;
+        ...
     }
     Candidate -- "*" CandidateScore

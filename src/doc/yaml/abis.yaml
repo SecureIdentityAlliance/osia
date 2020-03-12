@@ -4,7 +4,7 @@
 openapi: 3.0.0
 info:
   description: OSIA ABIS Interface
-  version: 1.2.1
+  version: 1.2.2
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -2101,21 +2101,16 @@ components:
           type: string
     TemplateFormat:
       type: string
-      enum:
-        - ISO_19794_2
-        - ISO_19794_2_NS
-        - ISO_19794_2_CS
-        - ISO_19794_2_2011
-        - ANSI_378_2009
-        - ANSI_378
-      description: Format of the template
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
     QualityFormat:
       type: string
-      enum:
-        - ISO_19794
-        - NFIQ
-        - NFIQ2
-      description: Format of the quality
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
@@ -2238,6 +2233,13 @@ components:
           items:
             $ref: '#/components/schemas/ScoreDetail'
     ScoreDetail:
+      description: |
+        Scoring information calculated after a biometric search.
+        It includes at least the score (a float) and optionnally the encounterId,
+        type and subtype of the matching bometric item.
+        It can also be extended with proprietary information to better describe
+        the matching result (for instance: rotation needed to align
+        the probe and the candidate)
       type: object
       required:
         - score
@@ -2252,3 +2254,4 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+      additionalProperties: true
