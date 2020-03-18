@@ -3,7 +3,7 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA PR Interface
+  description: OSIA Enrollment Interface
   version: 1.1.0
   title: OSIA Enrollment Interface
   license:
@@ -12,8 +12,8 @@ info:
 tags:
   - name: Enrollment
 servers:
-  - url: http://pr.com/
-  - url: https://pr.com/
+  - url: http://enrollment.com/
+  - url: https://enrollment.com/
 paths:
 
   /v1/enrollment/{enrollmentId}:
@@ -71,14 +71,17 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                attributes:
-                  $ref:  '#/components/schemas/Attributes'
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - surname
+              - familyname
       responses:
         '200':
           description: Read successful
@@ -177,20 +180,18 @@ paths:
       summary: Retrieve a list of enrollments which match passed in search criteria
       operationId: findEnrollments
       parameters:
+        - name: expressions
+          in: query
+          description: The expressions to evaluate.
+          required: true
+          schema:
+            $ref: '#/components/schemas/Expressions'
         - name: transactionId
           in: query
           description: The id of the transaction
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filter:
-                  $ref:  '#/components/schemas/Filter'
       responses:
         '200':
           description: Read successful
@@ -240,19 +241,27 @@ components:
           description: The unique id for this enrollment
         enrollmentTypeId:
           type: string
-          enum: [ACTIVE, INACTIVE]
-    Attributes:
+          description: The enrollment type id for this enrollment
+    Expression:
       type: object
-      additionalProperties:
-        oneOf:
-        - type: string
-        - type: integer
-        - type: number
-        - type: boolean
-    Filter:
-      type: object
-      additionalProperties: true
-      example:
-        dateOfBirthMin: "1980-01-01"
-        dateOfBirthMax: "2019-12-31"
+      required:
+        - attributeName
+        - operator
+        - value
+      properties:
+        attributeName:
+          type: string
+        operator:
+          type: string
+          enum: ['<', '>', '=', '>=', '<=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+    Expressions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expression'
    

@@ -27,7 +27,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str enrollmentID: The ID of the enrollment.
-    :param set filter: The (optional) set of required attributes to retrieve.
+    :param set attributes: The (optional) set of required attributes to retrieve.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the enrollment data.
 
@@ -54,14 +54,14 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
-.. py:function:: findEnrollments(filter, transactionID)
+.. py:function:: findEnrollments(expressions, transactionID)
     :noindex:
 
     Retrieve a list of enrollments which match passed in search criteria.
 
     **Authorization**: :todo:`To be defined`
 
-    :param dict filter: The search criteria to match on.
+    :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the matching enrollment list.
 
@@ -80,7 +80,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.  In the case of success, a document identifier.
 
-.. py:function:: readDocumentCapture(documentID, filter, transactionID)
+.. py:function:: readDocumentCapture(documentID, attributes, transactionID)
     :noindex:
 
     Retrieve document data.
@@ -88,7 +88,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str documentID: The ID of the document.
-    :param set filter: The (optional) set of required attributes to retrieve.
+    :param set attributes: The (optional) set of required attributes to retrieve.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error, and in case of success the document data.
 
@@ -116,10 +116,10 @@ Services
     :return: a status indicating success or error.
 
 
-Filter
+Attributes
 """"""
 
-The "filter" parameter used in "read" calls is used to provide a set of
+The "attributes" parameter used in "read" calls is used to provide a set of
 identifiers that limit the amount of data that is returned.
 It is often the case that the whole data set is not required, but instead,
 a subset of that data.
@@ -128,7 +128,7 @@ attributes to retrieve.
 
 E.g. For surname/familyname, use OID 2.5.4.4 or id-at-surname.
 
-Some calls may require new filter attributes to be defined.  E.g. when
+Some calls may require new attributes to be defined.  E.g. when
 retrieving biometric data, the caller may only want the meta data about
 that biometric, rather than the actual biometric data.
 
