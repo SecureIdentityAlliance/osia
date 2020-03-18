@@ -19,7 +19,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
-.. py:function:: readEnrollment(enrollmentID, filter, transactionID)
+.. py:function:: readEnrollment(enrollmentID, attributes, transactionID)
     :noindex:
 
     Retrieve the attributes of an enrollment.
@@ -54,7 +54,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
-.. py:function:: findEnrollment(filter, transactionID)
+.. py:function:: findEnrollments(filter, transactionID)
     :noindex:
 
     Retrieve a list of enrollments which match passed in search criteria.

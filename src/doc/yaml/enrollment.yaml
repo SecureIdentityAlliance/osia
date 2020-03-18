@@ -1,0 +1,258 @@
+
+# (c) Secure Identity Alliance
+
+openapi: 3.0.0
+info:
+  description: OSIA PR Interface
+  version: 1.1.0
+  title: OSIA Enrollment Interface
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+tags:
+  - name: Enrollment
+servers:
+  - url: http://pr.com/
+  - url: https://pr.com/
+paths:
+
+  /v1/enrollment/{enrollmentId}:
+    post:
+      tags:
+        - Enrollment
+      summary: Create one enrollment
+      operationId: createEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enrollment'
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Enrollment
+      summary: Read one enrollment
+      operationId: readEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attributes:
+                  $ref:  '#/components/schemas/Attributes'
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - enrollment
+      summary: Update one enrollment
+      operationId: updateEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enrollment'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Enrollment
+      summary: Delete an enrollment
+      operationId: deleteEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Delete successful
+        '400':
+          description: Bad request
+        '403':
+          description: Delete not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/enrollments:
+    get:
+      tags:
+        - Enrollment
+      summary: Retrieve a list of enrollments which match passed in search criteria
+      operationId: findEnrollments
+      parameters:
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filter:
+                  $ref:  '#/components/schemas/Filter'
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/Enrollment'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+    Enrollment:
+      description: >-
+        Enrollment entity.
+      type: object
+      required:
+        - enrollmentTypeId
+      properties:
+        enrollmentId:
+          type: string
+          description: The unique id for this enrollment
+        enrollmentTypeId:
+          type: string
+          enum: [ACTIVE, INACTIVE]
+    Attributes:
+      type: object
+      additionalProperties:
+        oneOf:
+        - type: string
+        - type: integer
+        - type: number
+        - type: boolean
+    Filter:
+      type: object
+      additionalProperties: true
+      example:
+        dateOfBirthMin: "1980-01-01"
+        dateOfBirthMax: "2019-12-31"
+   
