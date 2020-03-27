@@ -4,7 +4,7 @@
 openapi: 3.0.0
 info:
   description: OSIA Enrollment Interface
-  version: 1.1.0
+  version: 1.0.0
   title: OSIA Enrollment Interface
   license:
     name: SIA
@@ -103,7 +103,7 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       tags:
-        - enrollment
+        - Enrollment
       summary: Update one enrollment
       operationId: updateEnrollment
       parameters:
@@ -174,7 +174,7 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /v1/enrollments:
-    get:
+    post:
       tags:
         - Enrollment
       summary: Retrieve a list of enrollments which match passed in search criteria
@@ -192,6 +192,19 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        description: A set of expressions on attributes of the person
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
+            example:
+              - attributeName: firstName
+                operator: "="
+                value: John
+              - attributeName: dateOfBirth
+                operator: "<"
+                value: "1990-12-31"
       responses:
         '200':
           description: Read successful
