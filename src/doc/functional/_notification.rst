@@ -81,6 +81,8 @@ For the Subscriber
 
     Subscribe a URL to receive notifications sent to one topic
 
+    **Authorization**: ``notif.sub.write``
+
     :param str topic: Topic
     :param str URL: URL to be called when a notification is available
     :return: a subscription ID
@@ -92,7 +94,8 @@ This service is synchronous.
 
     Get all subscriptions
 
-    :param str topic: Topic
+    **Authorization**: ``notif.sub.read``
+
     :param str URL: URL to be called when a notification is available
     :return: a subscription ID
 
@@ -103,6 +106,8 @@ This service is synchronous.
 
     Unsubscribe a URL from the list of receiver for one topic
 
+    **Authorization**: ``notif.sub.write``
+
     :param str id: Subscription ID
     :return: bool
 
@@ -112,6 +117,8 @@ This service is synchronous.
     :noindex:
 
     Used to confirm that the URL used during the subscription is valid
+
+    **Authorization**: ``notif.sub.write``
 
     :param str token: A token send through the URL.
     :return: bool
@@ -126,6 +133,8 @@ For the Publisher
 
     Create a new topic. This is required before an event can be sent to it.
 
+    **Authorization**: ``notif.topic.write``
+
     :param str topic: Topic
     :return: N/A
 
@@ -136,6 +145,8 @@ This service is synchronous.
 
     Get the list of all existing topics.
 
+    **Authorization**: ``notif.topic.read``
+
     :return: N/A
 
 This service is synchronous.
@@ -144,6 +155,8 @@ This service is synchronous.
     :noindex:
 
     Delete a topic.
+
+    **Authorization**: ``notif.topic.write``
 
     :param str topic: Topic
     :return: N/A
@@ -154,6 +167,8 @@ This service is synchronous.
     :noindex:
 
     Notify of a new event all systems that subscribed to this topic
+
+    **Authorization**: ``notif.topic.publish``
 
     :param str topic: Topic
     :param str subject: The subject of the message

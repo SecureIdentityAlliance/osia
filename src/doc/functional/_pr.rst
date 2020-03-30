@@ -26,7 +26,7 @@ Services
 
     Create a new person.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.write``
 
     :param str personID: The ID of the person. If the person already exists for the ID an error is returned.
     :param personData: The person attributes.
@@ -38,7 +38,7 @@ Services
 
     Read the attributes of a person.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.read``
 
     :param str personID: The ID of the person.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
@@ -49,7 +49,7 @@ Services
 
     Update a person.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.write``
 
     :param str personID: The ID of the person.
     :param dict personData: The person data.
@@ -60,7 +60,7 @@ Services
 
     Delete a person and all its identities.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.write``
 
     :param str personID: The ID of the person.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
@@ -73,7 +73,7 @@ Services
     an error is returned and no changes are done.
     The reference identity is not changed.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.write``
 
     :param str personID1: The ID of the person that will receive new identities
     :param str personID2: The ID of the person that will give its identities. It will be deleted if the move of all identities is successful.
@@ -90,7 +90,7 @@ Services
     is provided, it is checked for uniqueness and used for the identity if unique.
     An error is returned if the provided identityID is not unique.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.identity.write``
 
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity.
@@ -103,7 +103,7 @@ Services
 
     Read one or all the identities of one person.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.identity.read``
 
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity. If not provided, all identities are returned.
@@ -115,7 +115,7 @@ Services
 
     Update an identity. An identity can be updated only in the status ``claimed``.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.identity.write``
 
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity.
@@ -130,7 +130,7 @@ Services
     is defined as per :rfc:`7396`.
     An identity can be updated only in the status ``claimed``.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.identity.write``
 
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity.
@@ -142,7 +142,7 @@ Services
 
     Delete an identity.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.identity.write``
 
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity.
@@ -154,7 +154,7 @@ Services
 
     Set an identity status.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.identity.write``
 
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity.
@@ -169,7 +169,7 @@ Services
 
     Define the reference identity of one person.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.reference.write``
 
     :param str personID: The ID of the person.
     :param str identityID: The ID of the identity being now the reference.
@@ -181,7 +181,7 @@ Services
 
     Read the reference identity of one person.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.reference.read``
 
     :param str personID: The ID of the person.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
@@ -194,7 +194,7 @@ Services
 
     Read the ID of all the galleries.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.gallery.read``
 
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error, and in case of success a list of gallery ID.
@@ -204,7 +204,7 @@ Services
 
     Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.gallery.read``
 
     :param str galleryID: Gallery whose content will be returned.
     :param str transactionID: A free text used to track the system activities related to the same transaction.

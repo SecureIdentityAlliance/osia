@@ -10,7 +10,7 @@ Services
 
     Request issuance of a secure credential.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.request.write``
 
     :param str personID: The ID of the person.
     :param str credentialProfileID: The ID of the credential profile to issue to the person.
@@ -24,7 +24,7 @@ Services
 
     Retrieve the data/status of a credential request.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.request.read``
 
     :param str credentialRequestID: The ID of the credential request.
     :param set filter: The (optional) set of required attributes to retrieve.
@@ -36,7 +36,7 @@ Services
 
     Update the requested issuance of a secure credential.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.request.write``
 
     :param str credentialRequestID: The ID of the credential request.
     :param string transactionID: The client generated transactionID.
@@ -49,7 +49,7 @@ Services
 
     Delete/cancel the requested issuance of a secure credential.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.request.write``
 
     :param str credentialRequestID: The ID of the credential request.
     :param string transactionID: The client generated transactionID.
@@ -64,7 +64,7 @@ Services
     information may be returned, dependant on the type of credential that was
     issued, smart card, mobile, passport, etc.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.credential.read``
 
     :param str credentialID: The ID of the credential.
     :param set filter: The (optional) set of required attributes to retrieve.
@@ -78,7 +78,7 @@ Services
     Suspend an issued credential.  For electronic credentials this will suspend any
     PKI certificates that are present.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.credential.write``
 
     :param str credentialID: The ID of the credential.
     :param string transactionID: The (optional) client generated transactionID.
@@ -90,7 +90,7 @@ Services
     Unsuspend an issued credential.  For electronic credentials this will unsuspend any
     PKI certificates that are present.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.credential.write``
 
     :param str credentialID: The ID of the credential.
     :param string transactionID: The client generated transactionID.
@@ -102,7 +102,7 @@ Services
     Cancel an issued credential.  For electronic credentials this will revoke any
     PKI certificates that are present.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.credential.write``
 
     :param str credentialID: The ID of the credential.
     :param string transactionID: The client generated transactionID.

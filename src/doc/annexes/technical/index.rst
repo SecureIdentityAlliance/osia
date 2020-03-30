@@ -1,4 +1,6 @@
 
+.. _chapter-tech-specs:
+
 Technical Specifications
 ========================
 

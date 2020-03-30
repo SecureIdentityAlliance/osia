@@ -35,7 +35,7 @@ Services
 
     Create a new encounter. No identify is performed.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.encounter.write``
 
     :param str personID: The person ID. This is optional and will be generated if not provided
     :param str encounterID: The encounter ID. This is optional and will be generated if not provided
@@ -57,7 +57,7 @@ Services
 
     Read the data of an encounter.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.encounter.read``
 
     :param str personID: The person ID
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
@@ -74,7 +74,7 @@ Services
 
     Update an encounter.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.encounter.write``
 
     :param str personID: The person ID
     :param str encounterID: The encounter ID
@@ -96,7 +96,7 @@ Services
 
     Delete an encounter.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.encounter.write``
 
     :param str personID: The person ID
     :param str encounterID: The encounter ID. This is optional. If not provided, all the
@@ -113,7 +113,7 @@ Services
     Merge two sets of encounters into a single one. Encounter ID are preserved and in case of duplicates
     an error is returned and no changes are done.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.encounter.write``
 
     :param str personID1: The ID of the person that will receive new encounters
     :param str personID2: The ID of the person that will give its encounters
@@ -128,7 +128,7 @@ Services
 
     Read the generated template.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.encounter.read``
 
     :param str personID: The person ID
     :param str encounterID: The encounter ID.
@@ -146,7 +146,7 @@ Services
 
     Set an encounter status.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.encounter.write``
 
     :param str personID: The ID of the person.
     :param str encounterID: The encounter ID.
@@ -162,7 +162,7 @@ Services
 
     Read the ID of all the galleries.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.gallery.read``
 
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
@@ -175,7 +175,7 @@ Services
 
     Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.gallery.read``
 
     :param str galleryID: Gallery whose content will be returned.
     :param callback: The address of a service to be called when the result is available.
@@ -192,7 +192,7 @@ Services
     Identify a person using biometrics data and filters on biographic or contextual data. This may include multiple
     operations, including manual operations.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.identify``
 
     :param str galleryID: Search only in this gallery.
     :param dict filter: The input data (filters and biometric data)
@@ -210,7 +210,7 @@ Services
     Identify a person using biometrics data of a person existing in the system and filters on biographic or
     contextual data. This may include multiple operations, including manual operations.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.verify``
 
     :param str galleryID: Search only in this gallery.
     :param dict filter: The input data (filters and biometric data)

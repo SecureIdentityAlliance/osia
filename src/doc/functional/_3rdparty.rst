@@ -10,7 +10,7 @@ Services
 
     Verify Identity based on UIN and set of Identity Attributes (biometric data, credential, etc.)
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``id.verify``
 
     :param str UIN: The person's UIN
     :param list[str] IDAttribute: A list of list of pair (name,value) requested
@@ -23,7 +23,7 @@ Services
 
     Identify a person based on a set of Identity Attributes (biometric data, credential, etc.)
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``id.identify``
 
     :param list[str] inIDAttribute: A list of list of pair (name,value) requested
     :param list[str] outIDAttribute: A list of list of attribute names requested
@@ -36,7 +36,7 @@ Services
 
     Read person attributes.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``id.read``
 
     :param str UIN: The person's UIN
     :param list[str] names: The names of the attributes requested
@@ -48,7 +48,7 @@ Services
 
     Read person attributes corresponding to a predefined set name.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``id.set.read``
 
     :param str UIN: The person's UIN
     :param str setName: The name of predefined attributes set name
