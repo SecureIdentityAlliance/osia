@@ -187,9 +187,13 @@ The following table describes in detail the interfaces and associated services.
     **Notification**
     ---------------------------------------------------------------------------------------------------------------------
     Subscribe                          Subscribe a URL to receive notifications sent to one topic
+    List Subscription                  Get the list of all the subscriptions registered in the server
     Unsubscribe                        Unsubscribe a URL from the list of receiver for one topic
     Confirm                            Confirm that the URL used during the subscription is valid
-    Publish	                           Notify of a new event all systems that subscribed to this topic
+    Create Topic                       Create a new topic
+    List Topics                        List all the existing topics
+    Delete Topic                       Delete a topic
+    Publish                            Notify of a new event all systems that subscribed to this topic
     --------------------------------- -----------------------------------------------------------------------------------
     **Data Access**
     ---------------------------------------------------------------------------------------------------------------------
@@ -305,9 +309,13 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     **Notification**
     --------------------------------------------------------------------------------------------------
      Subscribe                                           U                U       U       U
+     List Subscription                                   U                U       U       U
      Unsubscribe                                         U                U       U       U
-     Confirm
-     Publish                                             I                I       I       I
+     Confirm                                             U                U       U       U
+     Create Topic                                        U                U       U       U
+     List Topics                                         U                U       U       U
+     Delete Topic                                        U                U       U       U
+     Publish                                             U                U       U       U
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Data Access**
     --------------------------------------------------------------------------------------------------

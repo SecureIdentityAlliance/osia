@@ -4,7 +4,7 @@
 openapi: 3.0.0
 info:
   title: OSIA Notification Interface
-  version: 1.0.0
+  version: 1.0.1
   description: >
     Notification service.
     
@@ -14,8 +14,8 @@ info:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 tags:
-  - name: Publisher
   - name: Subscriber
+  - name: Publisher
 servers:
   - url: http://notification.com/
   - url: https://notification.com/
@@ -133,7 +133,7 @@ paths:
 
     get:
       summary: Get all subscriptions
-      operationId: list_subscription
+      operationId: listSubscription
       tags:
         - Subscriber
       responses:
@@ -211,7 +211,7 @@ paths:
     post:
       summary: Create a topic
       description: Create a new topic. This service is idempotent.
-      operationId: create_topic
+      operationId: createTopic
       tags:
         - Publisher
       parameters:
@@ -237,7 +237,7 @@ paths:
 
     get:
       summary: Get all topics
-      operationId: list_topics
+      operationId: listTopics
       tags:
         - Publisher
       responses:
@@ -260,7 +260,7 @@ paths:
     delete:
       summary: Delete a topic
       description: Delete a topic
-      operationId: delete_topic
+      operationId: deleteTopic
       tags:
         - Publisher
       parameters:
