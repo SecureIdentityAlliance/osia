@@ -59,6 +59,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /v1/credentialRequest/{credentialRequestId}:
     get:
       tags:
         - Credential Request
@@ -168,16 +169,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /v1/persons/{personId}/identities:
-    get:
+  /v1/credential:
+    post:
       tags:
-        - Identity
-      summary: Read all the identities of a person
-      operationId: readIdentities
+        - Credential
+      summary: Create a credential
+      operationId: createCredential
       parameters:
-        - name: personId
-          in: path
-          description: the id of the person
+        - name: credentialProfileId
+          in: query
+          description: The id of the credential request
           required: true
           schema:
             type: string
@@ -187,142 +188,34 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credential'
       responses:
-        '200':
+        '201':
           description: Operation successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Identity'
         '400':
           description: Bad request
         '403':
           description: Operation not allowed
-        '404':
-          description: Unknown record
         '500':
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    post:
-      tags:
-        - Identity
-      summary: Create one identity and generate its id
-      operationId: createIdentity
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/Identity'
-                - type: object
-                  required:
-                    - status
-      responses:
-        '200':
-          description: Insertion successful
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - identityId
-                properties:
-                  identityId:
-                    type: string
-        '400':
-          description: Bad request
-        '403':
-          description: Insertion not allowed
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /v1/persons/{personId}/identities/{identityId}:
-    post:
-      tags:
-        - Identity
-      summary: Create one identity
-      description: |
-        Create one new identity for a person. The provided identityId is
-        checked for validity and used for the new identity.
-      operationId: createIdentityWithId
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/Identity'
-                - type: object
-                  required:
-                    - status
-      responses:
-        '201':
-          description: Insertion successful
-        '400':
-          description: Bad request
-        '403':
-          description: Insertion not allowed
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+  /v1/credential/{credentialId}:
     get:
       tags:
-        - Identity
-      summary: Read one identity
-      operationId: readIdentity
+        - Credential
+      summary: Read one credential request
+      operationId: readCredential
       parameters:
-        - name: personId
+        - name: credentialId
           in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
+          description: the id of the credential
           required: true
           schema:
             type: string
@@ -338,7 +231,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Identity'
+                $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
         '403':
@@ -353,19 +246,13 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       tags:
-        - Identity
-      summary: Update one identity
-      operationId: updateIdentity
+        - Credential
+      summary: Update one credential
+      operationId: updateCredential
       parameters:
-        - name: personId
+        - name: credentialId
           in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
+          description: the id of the credential
           required: true
           schema:
             type: string
@@ -379,61 +266,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/Identity'
-                - type: object
-                  required:
-                    - status
-      responses:
-        '204':
-          description: Update successful
-        '400':
-          description: Bad request
-        '403':
-          description: Update not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    patch:
-      tags:
-        - Identity
-      summary: Update partially one identity
-      description: Update partially an identity. Payload content is a partial identity object compliant with RFC7396.
-      operationId: partialUpdateIdentity
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Identity'
-            example:
-              galleries: [G1, G2]
-              biographicData:
-                gender: null
-                nationality: FRA
+              $ref: '#/components/schemas/Credential'
       responses:
         '204':
           description: Update successful
@@ -451,19 +284,13 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       tags:
-        - Identity
-      summary: Delete one identity
-      operationId: deleteIdentity
+        - Credential
+      summary: Delete a credential
+      operationId: deleteCredential
       parameters:
-        - name: personId
+        - name: credentialId
           in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
+          description: the id of the credential
           required: true
           schema:
             type: string
@@ -482,51 +309,6 @@ paths:
           description: Delete not allowed
         '404':
           description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /v1/persons/{personId}/identities/{identityId}/status:
-    put:
-      tags:
-        - Identity
-      summary: Change the status of an identity
-      operationId: setIdentityStatus
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
-          required: true
-          schema:
-            type: string
-        - name: status
-          in: query
-          description: The status of the identity
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Operation successful
-        '400':
-          description: Bad request
-        '403':
-          description: Operation not allowed
         '500':
           description: Unexpected error
           content:
@@ -569,6 +351,17 @@ components:
     CredentialRequest:
       description: A request for a credential
       type: object
+      properties:
+        credentialRequestId:
+          type: string
+          description: The unique id for this credential request
+    Credential:
+      description: A credential
+      type: object
+      properties:
+        credentialId:
+          type: string
+          description: The unique id for this credential
     Identity:
       type: object
       properties:
