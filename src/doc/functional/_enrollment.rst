@@ -12,7 +12,7 @@ Services
 
     Insert a new enrollment.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.write``
 
     :param str enrollmentID: The ID of the enrollment. If the enrollment already exists for the ID an error is returned.
     :param dict enrollmentData: The enrollment attributes.
@@ -24,7 +24,7 @@ Services
 
     Retrieve the attributes of an enrollment.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.read``
 
     :param str enrollmentID: The ID of the enrollment.
     :param set filter: The (optional) set of required attributes to retrieve.
@@ -36,7 +36,7 @@ Services
 
     Update an enrollment.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.write``
 
     :param str enrollmentID: The ID of the enrollment.
     :param dict enrollmentData: The enrollment data, this can be partial data.
@@ -48,7 +48,7 @@ Services
 
     Delete an enrollment.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.write``
 
     :param str enrollmentID: The ID of the enrollment.
     :param string transactionID: The client generated transactionID.
@@ -59,7 +59,7 @@ Services
 
     Retrieve a list of enrollments which match passed in search criteria.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.read``
 
     :param dict filter: The search criteria to match on.
     :param string transactionID: The client generated transactionID.
@@ -72,7 +72,7 @@ Services
 
     Add a new document for an enrollment.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.doc.write``
 
     :param str enrollmentID: The ID of the enrollment.
     :param str documentID: The ID of the document.
@@ -85,7 +85,7 @@ Services
 
     Retrieve document data.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.doc.read``
 
     :param str documentID: The ID of the document.
     :param set filter: The (optional) set of required attributes to retrieve.
@@ -97,7 +97,7 @@ Services
 
     Update a document for an enrollment.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.doc.write``
 
     :param str documentID: The ID of the document.
     :param documentData: The content and attributes of the document, this can be partial data.
@@ -109,7 +109,7 @@ Services
 
     Delete a document for an enrollment.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``enroll.doc.write``
 
     :param str documentID: The ID of the document.
     :param string transactionID: The client generated transactionID.
