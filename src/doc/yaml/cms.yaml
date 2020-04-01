@@ -10,19 +10,16 @@ info:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 tags:
-  - name: Person
-  - name: Identity
-  - name: Reference
-  - name: Gallery
+  - name: Credential Request
 servers:
-  - url: http://pr.com/
-  - url: https://pr.com/
+  - url: http://cms.com/
+  - url: https://cms.com/
 paths:
 
-  /v1/creddentialRequest:
+  /v1/credentialRequest:
     post:
       tags:
-        - Credential request
+        - Credential Request
       summary: Create a request for a credential
       operationId: createCredentialRequest
       parameters:
@@ -38,11 +35,17 @@ paths:
           required: true
           schema:
             type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CMS'
+              $ref: '#/components/schemas/CredentialRequest'
       responses:
         '201':
           description: Operation successful
@@ -58,13 +61,13 @@ paths:
                 $ref: '#/components/schemas/Error'
     get:
       tags:
-        - Person
-      summary: Read one person
-      operationId: readPerson
+        - Credential Request
+      summary: Read one credential request
+      operationId: readCredentialRequest
       parameters:
-        - name: personId
+        - name: credentialRequestId
           in: path
-          description: the id of the person
+          description: the id of the credential request
           required: true
           schema:
             type: string
@@ -80,7 +83,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Person'
+                $ref: '#/components/schemas/CredentialRequest'
         '400':
           description: Bad request
         '403':
@@ -95,13 +98,13 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       tags:
-        - Person
-      summary: Update one person
-      operationId: updatePerson
+        - Credential Request
+      summary: Update one credential request
+      operationId: updateCredentialRequest
       parameters:
-        - name: personId
+        - name: credentialRequestId
           in: path
-          description: the id of the person
+          description: the id of the credential request
           required: true
           schema:
             type: string
@@ -115,7 +118,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Person'
+              $ref: '#/components/schemas/CredentialRequest'
       responses:
         '204':
           description: Update successful
@@ -133,13 +136,13 @@ paths:
                 $ref: '#/components/schemas/Error'
     delete:
       tags:
-        - Person
-      summary: Delete a person and all its identities
-      operationId: deletePerson
+        - Credential Request
+      summary: Delete a credential request
+      operationId: deleteCredentialRequest
       parameters:
-        - name: personId
+        - name: credentialRequestId
           in: path
-          description: the id of the person
+          description: the id of the credential request
           required: true
           schema:
             type: string
@@ -156,51 +159,6 @@ paths:
           description: Bad request
         '403':
           description: Delete not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /v1/persons/{personIdTarget}/merge/{personIdSource}:
-    post:
-      tags:
-        - Person
-      summary: Merge two persons
-      description: |
-        Merge two person records into a single one. Identity ID are preserved and in case of duplicates
-        an error is returned and no changes are done.
-        If the operation is successful, the person merged is deleted.
-      operationId: mergePerson
-      parameters:
-        - name: personIdTarget
-          in: path
-          description: the id of the person receiving new identities
-          required: true
-          schema:
-            type: string
-        - name: personIdSource
-          in: path
-          description: the id of the person giving the identities
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Merge successful
-        '400':
-          description: Bad request
-        '403':
-          description: Merge not allowed
         '404':
           description: Unknown record
         '500':
@@ -576,167 +534,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /v1/persons/{personId}/identities/{identityId}/reference:
-    put:
-      tags:
-        - Reference
-      summary: Define the reference
-      operationId: defineReference
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: identityId
-          in: path
-          description: the id of the identity
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Operation successful
-        '400':
-          description: Bad request
-        '403':
-          description: Operation not allowed
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-    
-  /v1/persons/{personId}/reference:
-    get:
-      tags:
-        - Reference
-      summary: Read the reference
-      operationId: readReference
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Read successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Identity'
-        '400':
-          description: Bad request
-        '403':
-          description: Read not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-
-  /v1/galleries:
-    get:
-      tags:
-        - Gallery
-      summary: Read the ID of all the galleries
-      operationId: readGalleries
-      parameters:
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Operation successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: string
-        '400':
-          description: Bad request
-        '403':
-          description: Read not allowed
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /v1/galleries/{galleryId}:
-    get:
-      tags:
-        - Gallery
-      summary: Read the content of one gallery
-      operationId: readGalleryContent
-      parameters:
-        - name: galleryId
-          in: path
-          description: the id of the gallery
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Operation successful
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - personId
-                    - identityId
-                  properties:
-                    personId:
-                      type: string
-                    identityId:
-                      type: string
-        '400':
-          description: Bad request
-        '403':
-          description: Read not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
 components:
   schemas:
     Error:
@@ -769,6 +566,9 @@ components:
         physicalStatus:
           type: string
           enum: [DEAD, ALIVE]
+    CredentialRequest:
+      description: A request for a credential
+      type: object
     Identity:
       type: object
       properties:
