@@ -30,10 +30,9 @@ Principles
 
 Securing OSIA services is implemented with the following principles:
 
-- Rely on JWT: "JSON Web Token (JWT) is a compact, URL-safe means of representing
-   claims to be transferred between two parties". It can be "digitally
-   signed or integrity protected with a Message Authentication Code
-   (MAC) and/or encrypted". [:rfc:`7519`]
+- Rely on JWT: "JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties"
+  It can be "digitally signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted".
+  [:rfc:`7519`]
 - Tokens of type "Bearer Token" are used. [:rfc:`6750`]
   The generation and management of those tokens are not in the scope of this document.
 - Validating the token is the responsibility of the service implementation, with the help of components
