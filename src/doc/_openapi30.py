@@ -144,7 +144,7 @@ def _parse_schema(schema, method):
 
 
 def _example(media_type_objects, method=None, endpoint=None, status=None,
-             nb_indent=0):
+             nb_indent=0,headers={},auth=False):
     """
     Format examples in `Media Type Object` openapi v3 to HTTP request or
     HTTP response example.
@@ -230,6 +230,13 @@ def _example(media_type_objects, method=None, endpoint=None, status=None,
                 if content_type:
                     yield '{extra_indent}{indent}Content-Type: {content_type}'\
                         .format(**locals())
+                if auth:
+                    yield '{extra_indent}{indent}Authorization: Bearer cn389ncoiwuencr'\
+                        .format(**locals())
+                if headers:
+                    for k,v in headers:
+                        yield '{extra_indent}{indent}{k}: {v}'\
+                            .format(**locals())
 
             # Print http response example
             else:
@@ -268,6 +275,12 @@ def _httpresource(endpoint, method, properties, convert, render_examples,
     if 'description' in properties:
         for line in convert(properties['description']).splitlines():
             yield '{indent}{line}'.format(**locals())
+        yield ''
+
+    if 'security' in properties:
+        for sec_schema in properties['security']:
+            sec_scope = ' or '.join(['``{}``'.format(s) for sch in sec_schema.values() for s in sch])
+            yield '{indent}**Scope required**: {sec_scope}'.format(**locals())
         yield ''
 
     # print request's path params
@@ -330,9 +343,11 @@ def _httpresource(endpoint, method, properties, convert, render_examples,
             yield '{indent}{indent}(Required)'.format(**locals())
 
     # print response headers
+    headers_ex = {}
     for status, response in responses.items():
         for headername, header in response.get('headers', {}).items():
             yield indent + ':resheader {name}:'.format(name=headername)
+            headers_res[headername] = '<VALUE>'
             for line in convert(header['description']).splitlines():
                 yield '{indent}{indent}{line}'.format(**locals())
 
@@ -348,7 +363,9 @@ def _httpresource(endpoint, method, properties, convert, render_examples,
                 request_content,
                 method,
                 endpoint=endpoint_examples,
-                nb_indent=1):
+                nb_indent=1,
+                headers = headers_ex,
+                auth= True if 'security' in properties else False):
             yield line
 
         # print response example

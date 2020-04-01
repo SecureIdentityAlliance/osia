@@ -4,7 +4,7 @@
 openapi: 3.0.0
 info:
   title: OSIA Notification Interface
-  version: 1.0.1
+  version: 1.1.0
   description: >
     Notification service.
     
@@ -17,7 +17,6 @@ tags:
   - name: Subscriber
   - name: Publisher
 servers:
-  - url: http://notification.com/
   - url: https://notification.com/
 paths:
   /v1/subscriptions:
@@ -29,6 +28,8 @@ paths:
         Subscriptions are idempotent. Subscribing twice for the same topic and
         endpoint (protocol, address) will return the same subscription ID and the
         subscriber will receive only once the notifications.
+      security:
+        - BearerAuth: [notif.sub.write]
       operationId: subscribe
       tags:
         - Subscriber
@@ -134,6 +135,8 @@ paths:
     get:
       summary: Get all subscriptions
       operationId: listSubscription
+      security:
+        - BearerAuth: [notif.sub.read]
       tags:
         - Subscriber
       responses:
@@ -158,6 +161,8 @@ paths:
       summary: Unsubscribe from a topic
       description: Unsubscribes a client from receiving notifications for a topic
       operationId: unsubscribe
+      security:
+        - BearerAuth: [notif.sub.write]
       tags:
         - Subscriber
       parameters:
@@ -185,6 +190,8 @@ paths:
       description: |
         Confirm a subscription
       operationId: confirm
+      security:
+        - BearerAuth: [notif.sub.write]
       tags:
         - Subscriber
       parameters:
@@ -212,6 +219,8 @@ paths:
       summary: Create a topic
       description: Create a new topic. This service is idempotent.
       operationId: createTopic
+      security:
+        - BearerAuth: [notif.topic.write]
       tags:
         - Publisher
       parameters:
@@ -238,6 +247,8 @@ paths:
     get:
       summary: Get all topics
       operationId: listTopics
+      security:
+        - BearerAuth: [notif.topic.read]
       tags:
         - Publisher
       responses:
@@ -261,6 +272,8 @@ paths:
       summary: Delete a topic
       description: Delete a topic
       operationId: deleteTopic
+      security:
+        - BearerAuth: [notif.topic.write]
       tags:
         - Publisher
       parameters:
@@ -286,6 +299,8 @@ paths:
     post:
       summary: Post a notification to a topic.
       operationId: publish
+      security:
+        - BearerAuth: [notif.topic.publish]
       tags:
         - Publisher
       parameters:
@@ -319,6 +334,11 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object

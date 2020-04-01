@@ -4,7 +4,7 @@
 openapi: 3.0.0
 info:
   description: OSIA ABIS Interface
-  version: 1.2.1
+  version: 1.3.0
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -14,7 +14,6 @@ tags:
   - name: Search
   - name: Gallery
 servers:
-  - url: http://abis.com/
   - url: https://abis.com/
 paths:
   /v1/persons:
@@ -23,6 +22,8 @@ paths:
         - CRUD
       summary: Create one encounter and generate ID for both the person and the encounter
       operationId: createEncounterNoIds
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: transactionId
           in: query
@@ -142,6 +143,8 @@ paths:
         Create one encounter in the person identified by his/her id.
         If the person does not yet exist, it is created automatically.
       operationId: createEncounterNoId
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: personId
           in: path
@@ -260,6 +263,8 @@ paths:
         - CRUD
       summary: Read all encounters of one person
       operationId: readAllEncounters
+      security:
+        - BearerAuth: [abis.encounter.read]
       parameters:
         - name: personId
           in: path
@@ -366,6 +371,8 @@ paths:
         
         If the encounter already exists, an error 403 is returned.
       operationId: createEncounter
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: personId
           in: path
@@ -477,6 +484,8 @@ paths:
         - CRUD
       summary: Read one encounter
       operationId: readEncounter
+      security:
+        - BearerAuth: [abis.encounter.read]
       parameters:
         - name: personId
           in: path
@@ -578,6 +587,8 @@ paths:
         - CRUD
       summary: Update one encounter
       operationId: updateEncounter
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: personId
           in: path
@@ -690,6 +701,8 @@ paths:
         Delete one encounter from the person identified by his/her id.
         If this is the last encounter in the person, the person is also deleted.
       operationId: deleteEncounter
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: personId
           in: path
@@ -793,6 +806,8 @@ paths:
         Merge two sets of encounters into a single one. Encounter ID are preserved and in case of duplicates
         an error is returned and no changes are done.
       operationId: mergeEncounter
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: personIdTarget
           in: path
@@ -893,6 +908,8 @@ paths:
         - CRUD
       summary: Update status of an encounter
       operationId: updateEncounterStatus
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: personId
           in: path
@@ -991,6 +1008,8 @@ paths:
         - CRUD
       summary: Read biometrics templates
       operationId: readTemplate
+      security:
+        - BearerAuth: [abis.encounter.read]
       parameters:
         - name: personId
           in: path
@@ -1130,6 +1149,8 @@ paths:
         - CRUD
       summary: Delete a person and all its encounters
       operationId: deleteAll
+      security:
+        - BearerAuth: [abis.encounter.write]
       parameters:
         - name: personId
           in: path
@@ -1225,6 +1246,8 @@ paths:
       summary: Biometric identification
       description: Identification based on biometric data from one gallery
       operationId: identify
+      security:
+        - BearerAuth: [abis.identify]
       parameters:
         - name: galleryId
           in: path
@@ -1358,6 +1381,8 @@ paths:
       summary: Biometric identification based on existing data
       description: Identification based on existing data from one gallery
       operationId: identifyFromId
+      security:
+        - BearerAuth: [abis.identify]
       parameters:
         - name: galleryId
           in: path
@@ -1487,6 +1512,8 @@ paths:
       summary: Biometric verification
       description: Verification of one set of biometric data and a record in the system
       operationId: verifyFromId
+      security:
+        - BearerAuth: [abis.verify]
       parameters:
         - name: galleryId
           in: path
@@ -1633,6 +1660,8 @@ paths:
       summary: Biometric verification with two sets of data
       description: Verification of two sets of biometric data
       operationId: verifyFromBio
+      security:
+        - BearerAuth: [abis.verify]
       parameters:
         - name: transactionId
           in: query
@@ -1769,6 +1798,8 @@ paths:
         - Gallery
       summary: Read the ID of all the galleries
       operationId: readGalleries
+      security:
+        - BearerAuth: [abis.gallery.read]
       parameters:
         - name: transactionId
           in: query
@@ -1862,6 +1893,8 @@ paths:
         - Gallery
       summary: Read the content of one gallery
       operationId: readGalleryContent
+      security:
+        - BearerAuth: [abis.gallery.read]
       parameters:
         - name: galleryId
           in: path
@@ -1974,6 +2007,11 @@ paths:
                         $ref: '#/components/schemas/Error'
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object

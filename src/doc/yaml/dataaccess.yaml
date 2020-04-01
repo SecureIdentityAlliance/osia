@@ -4,12 +4,13 @@
 openapi: 3.0.0
 info:
   title: OSIA data access services
-  version: 1.1.0
+  version: 1.2.0
   description: |
     The OSIA Data Access interface.
     
     Change log:
     
+    - 1.2.0: addition of security
     - 1.1.0: extended queryPersonUIN/queryPersonList operation to return a list of attributes, and not only a list of UIN
     - 1.0.0: first version proposed in OSIA.
 
@@ -17,7 +18,8 @@ info:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 servers:
-  - url: http://registry.com/
+  - url: https://pr.com/
+  - url: https://cr.com/
 tags:
   - name: Person
   - name: Document
@@ -29,6 +31,8 @@ paths:
         This service is used when the UIN is unknown.
         Example: http://registry.com/v1/persons?firstName=John&lastName=Do&names=firstName
       operationId: queryPersonList
+      security:
+        - BearerAuth: [pr.person.read, cr.person.read]
       tags:
       - Person
       parameters: 
@@ -118,6 +122,8 @@ paths:
     get:
       description: "Read attributes for a person. Example: http://registry.com/v1/persons/123456789?attributeNames=firstName&attributeNames=lastName&attributeNames=dob"
       operationId: readPersonAttributes
+      security:
+        - BearerAuth: [pr.person.read, cr.person.read]
       tags:
         - Person
       parameters: 
@@ -180,6 +186,8 @@ paths:
 
         The request body should contain a list of attributes and their value, formatted as a json dictionary.
       operationId: matchPersonAttributes
+      security:
+        - BearerAuth: [pr.person.match, cr.person.match]
       tags:
         - Person
       parameters: 
@@ -233,6 +241,8 @@ paths:
 
         The request body should contain a list of expressions.
       operationId: verifyPersonAttributes
+      security:
+        - BearerAuth: [pr.person.verify, cr.person.verify]
       tags:
         - Person
       parameters: 
@@ -283,6 +293,8 @@ paths:
         Read in an unstructured format (PDF, image) a document such as a marriage certificate.
         Example: ``http://registry.com/v1/persons/123456789/document?doctype=marriage&secondaryUin=234567890&format=pdf``
       operationId: readDocument
+      security:
+        - BearerAuth: [pr.document.read, cr.document.read]
       tags:
         - Document
       parameters: 
@@ -348,6 +360,11 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object

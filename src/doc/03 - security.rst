@@ -197,6 +197,7 @@ included in this document must be changed to:
             BearerAuth:
               type: http
               scheme: bearer
+              bearerFormat: JWT
 
 #. Apply the security scheme and define the scope (i.e. permission) for each service. Example:
 
