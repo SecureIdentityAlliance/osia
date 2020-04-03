@@ -63,7 +63,7 @@ paths:
     get:
       tags:
         - Credential Request
-      summary: Read one credential request
+      summary: Read a credential request
       operationId: readCredentialRequest
       parameters:
         - name: credentialRequestId
@@ -78,6 +78,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            $ref: '#/components/schemas/Attributes'
       responses:
         '200':
           description: Read successful
@@ -100,7 +106,7 @@ paths:
     put:
       tags:
         - Credential Request
-      summary: Update one credential request
+      summary: Update a credential request
       operationId: updateCredentialRequest
       parameters:
         - name: credentialRequestId
@@ -178,7 +184,7 @@ paths:
       parameters:
         - name: credentialProfileId
           in: query
-          description: The id of the credential request
+          description: The id of the credential
           required: true
           schema:
             type: string
@@ -210,7 +216,7 @@ paths:
     get:
       tags:
         - Credential
-      summary: Read one credential request
+      summary: Read a credential
       operationId: readCredential
       parameters:
         - name: credentialId
@@ -247,7 +253,7 @@ paths:
     put:
       tags:
         - Credential
-      summary: Update one credential
+      summary: Update a credential
       operationId: updateCredential
       parameters:
         - name: credentialId
@@ -331,6 +337,7 @@ components:
         message:
           description: Error message
           type: string
+    
     Person:
       description: >-
         Person entity.
@@ -348,6 +355,7 @@ components:
         physicalStatus:
           type: string
           enum: [DEAD, ALIVE]
+    
     CredentialRequest:
       description: A request for a credential
       type: object
@@ -355,6 +363,7 @@ components:
         credentialRequestId:
           type: string
           description: The unique id for this credential request
+    
     Credential:
       description: A credential
       type: object
@@ -362,6 +371,23 @@ components:
         credentialId:
           type: string
           description: The unique id for this credential
+    
+    Filter:
+      type: object
+      additionalProperties: true
+      example:
+        dateOfBirthMin: "1980-01-01"
+        dateOfBirthMax: "2019-12-31"
+        
+    Attributes:
+      type: object
+      additionalProperties:
+        oneOf:
+        - type: string
+        - type: integer
+        - type: number
+        - type: boolean
+        
     Identity:
       type: object
       properties:
@@ -391,11 +417,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Document'
+    
     ContextualData:
       type: object
       additionalProperties: true
       example:
         enrollmentDate: "2019-01-11"
+    
     BiographicData:
       type: object
       additionalProperties: true
@@ -430,6 +458,7 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+    
     DocumentPart:
       type: object
       properties:
@@ -463,6 +492,7 @@ components:
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
+    
     DocumentType:
       type: string
       description: Type of document. Can be extended.
@@ -506,6 +536,7 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+    
     BiometricType:
       type: string
       enum:
@@ -514,6 +545,7 @@ components:
         - PALM
         - IRIS
         - UNKNOWN
+    
     BiometricSubType:
       type: string
       enum:
