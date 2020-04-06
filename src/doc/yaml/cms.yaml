@@ -72,18 +72,23 @@ paths:
           required: true
           schema:
             type: string
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - surname
+              - familyname
         - name: transactionId
           in: query
           description: The id of the transaction
           required: true
           schema:
             type: string
-        - name: attributes
-          in: query
-          description: The (optional) set of required attributes to retrieve
-          required: false
-          schema:
-            $ref: '#/components/schemas/Attributes'
       responses:
         '200':
           description: Read successful
@@ -176,42 +181,48 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /v1/credential:
-    post:
+    get:
       tags:
         - Credential
-      summary: Create a credential
-      operationId: createCredential
+      summary: Retrieve a list of credentials that match the passed in search criteria
+      operationId: findCredentials
       parameters:
-        - name: credentialProfileId
+        - name: expressions
           in: query
-          description: The id of the credential
+          description: The expressions to evaluate. Each expression
+            is described with the attribute's name, the operator
+            (one of ``<``, ``>``, ``=``, ``>=``, ``<=``)
+            and the attribute value.
           required: true
           schema:
-            type: string
+            $ref: '#/components/schemas/Expressions'
         - name: transactionId
           in: query
           description: The id of the transaction
           required: true
           schema:
             type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Credential'
       responses:
-        '201':
-          description: Operation successful
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
         '403':
-          description: Operation not allowed
+          description: Read not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+
   /v1/credential/{credentialId}:
     get:
       tags:
@@ -225,6 +236,17 @@ paths:
           required: true
           schema:
             type: string
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - surname
+              - familyname
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -338,24 +360,6 @@ components:
           description: Error message
           type: string
     
-    Person:
-      description: >-
-        Person entity.
-      type: object
-      required:
-        - status
-        - physicalStatus
-      properties:
-        personId:
-          type: string
-          description: The unique id for this person
-        status:
-          type: string
-          enum: [ACTIVE, INACTIVE]
-        physicalStatus:
-          type: string
-          enum: [DEAD, ALIVE]
-    
     CredentialRequest:
       description: A request for a credential
       type: object
@@ -372,231 +376,26 @@ components:
           type: string
           description: The unique id for this credential
     
-    Filter:
-      type: object
-      additionalProperties: true
-      example:
-        dateOfBirthMin: "1980-01-01"
-        dateOfBirthMax: "2019-12-31"
-        
-    Attributes:
-      type: object
-      additionalProperties:
-        oneOf:
-        - type: string
-        - type: integer
-        - type: number
-        - type: boolean
-        
-    Identity:
-      type: object
-      properties:
-        identityId:
-          type: string
-        status:
-          type: string
-          enum: [CLAIMED, VALID, INVALID, REVOKED]
-        galleries:
-          type: array
-          items:
-            type: string
-          minItems: 1
-          uniqueItems: true
-        clientData:
-          type: string
-          format: byte
-        contextualData:
-          $ref: '#/components/schemas/ContextualData'
-        biographicData:
-          $ref: '#/components/schemas/BiographicData'
-        biometricData:
-          type: array
-          items:
-            $ref: '#/components/schemas/BiometricData'
-        documents:
-          type: array
-          items:
-            $ref: '#/components/schemas/Document'
-    
-    ContextualData:
-      type: object
-      additionalProperties: true
-      example:
-        enrollmentDate: "2019-01-11"
-    
-    BiographicData:
-      type: object
-      additionalProperties: true
-      example:
-        firstName: John
-        lastName: Doo
-        dateOfBirth: "1985-11-30"
-        gender: M
-        nationality: FRA
-
-    CompressionType:
-      type: string
-      enum: [NONE, JPEG, JPEG2000, PNG]
-
-    DocumentFormatType:
-      type: string
-      enum: [NONE, JPEG, PNG, PDF]
-
-    Document:
+    Expression:
       type: object
       required:
-        - documentType
-        - parts
+        - attributeName
+        - operator
+        - value
       properties:
-        documentType:
-          $ref: '#/components/schemas/DocumentType'
-        instance:
+        attributeName:
           type: string
-          description: "Used to separate two distincts documents of the same type (ex: two passports)"
-        parts:
-          type: array
-          minItems: 1
-          items:
-            $ref: '#/components/schemas/DocumentPart'
-    
-    DocumentPart:
-      type: object
-      properties:
-        pages:
-          type: array
-          description: The pages included in this part. Can be a single page number, or a list.
-          minItems: 1
-          items:
-            type: integer
-        data:
+        operator:
           type: string
-          format: byte
-          description: Base64-encoded data of the document
-        dataRef:
-          type: string
-          format: uri
-          description: URI to the data
-          example: "http://server.com/buffer?id=00003"
-        width:
-          type: integer
-          description: the width of the image in pixels
-        height:
-          type: integer
-          description: the height of the image in pixels
-        format:
-          $ref: '#/components/schemas/DocumentFormatType'
-        captureDate:
-          type: string
-          format: date
-          example: "2019-05-21"
-        captureDevice:
-          type: string
-          description: A string identifying the device used to capture the document part
-    
-    DocumentType:
-      type: string
-      description: Type of document. Can be extended.
-      enum: [ID_CARD, PASSPORT]
-
-    BiometricData:
-      type: object
-      required:
-        - biometricType
-      properties:
-        biometricType:
-          $ref: '#/components/schemas/BiometricType'
-        biometricSubType:
-          $ref: '#/components/schemas/BiometricSubType'
-        image:
-          type: string
-          format: byte
-          description: Base64-encoded image
-        imageRef:
-          type: string
-          format: uri
-          description: URI to an image
-          example: "http://imageserver.com/image?id=00003"
-        captureDate:
-          type: string
-          format: date
-          example: "2019-05-21"
-        captureDevice:
-          type: string
-          description: A string identifying the device used to capture the biometric
-        width:
-          type: integer
-          description: the width of the image
-        height:
-          type: integer
-          description: the height of the image
-        bitdepth:
-          type: integer
-        resolution:
-          type: integer
-          description: the image resolution (in DPI)
-        compression:
-          $ref: '#/components/schemas/CompressionType'
-    
-    BiometricType:
-      type: string
-      enum:
-        - FACE
-        - FINGER
-        - PALM
-        - IRIS
-        - UNKNOWN
-    
-    BiometricSubType:
-      type: string
-      enum:
-        - UNKNOWN
-        - RIGHT_THUMB
-        - RIGHT_INDEX
-        - RIGHT_MIDDLE
-        - RIGHT_RING
-        - RIGHT_LITTLE
-        - LEFT_THUMB
-        - LEFT_INDEX
-        - LEFT_MIDDLE
-        - LEFT_RING
-        - LEFT_LITTLE
-        - PLAIN_RIGHT_FOUR_FINGERS
-        - PLAIN_LEFT_FOUR_FINGERS
-        - PLAIN_THUMBS
+          enum: ['<', '>', '=', '>=', '<=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+    Expressions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expression'
         
-        - UNKNOWN_PALM
-        - RIGHT_FULL_PALM
-        - RIGHT_WRITERS_PALM
-        - LEFT_FULL_PALM
-        - LEFT_WRITERS_PALM
-        - RIGHT_LOWER_PALM
-        - RIGHT_UPPER_PALM
-        - LEFT_LOWER_PALM
-        - LEFT_UPPER_PALM
-        - RIGHT_OTHER
-        - LEFT_OTHER
-        - RIGHT_INTERDIGITAL
-        - RIGHT_THENAR
-        - LEFT_INTERDIGITAL
-        - LEFT_THENAR
-        - LEFT_HYPOTHENAR
-        
-        - RIGHT_INDEX_AND_MIDDLE
-        - RIGHT_MIDDLE_AND_RING
-        - RIGHT_RING_AND_LITTLE
-        - LEFT_INDEX_AND_MIDDLE
-        - LEFT_MIDDLE_AND_RING
-        - LEFT_RING_AND_LITTLE
-        - RIGHT_INDEX_AND_LEFT_INDEX
-        - RIGHT_INDEX_AND_MIDDLE_AND_RING
-        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
-        - LEFT_INDEX_AND_MIDDLE_AND_RING
-        - LEFT_MIDDLE_AND_RING_AND_LITTLE
-        
-        - EYE_UNDEF
-        - EYE_RIGHT
-        - EYE_LEFT
-        
-        - PORTRAIT
-        - LEFT_PROFILE
-        - RIGHT_PROFILE
