@@ -197,6 +197,14 @@ paths:
           required: true
           schema:
             $ref: '#/components/schemas/Expressions'
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -244,9 +252,6 @@ paths:
             type: array
             items:
               type: string
-            example:
-              - surname
-              - familyname
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -382,7 +387,16 @@ components:
         credentialRequestId:
           type: string
           description: The unique id for this credential request
-    
+        credentialProfileId:
+          type: string
+          description: The id of the credential request
+        requestedExpiryDate:
+          type: string
+          format: date-time
+          description: May be used to override the default expiry of the credential
+      required:
+        - credentialRequestId
+
     Credential:
       description: A credential
       type: object
@@ -390,7 +404,26 @@ components:
         credentialId:
           type: string
           description: The unique id for this credential
-    
+        personId:
+          type: string
+          description: The unique id of person that the credential is issued to
+        issuedDate:
+          type: string
+          format: date-time
+          description: The date that this credential was issued
+        expiryDate:
+          type: string
+          format: date-time
+          description: The date that this credential expires
+        suspended:
+          type: boolean
+          description: Is this credential suspended
+        cancelled:
+          type: boolean
+          description: Is this credential cancelled
+      required:
+        - credentialId
+
     Expression:
       type: object
       required:
