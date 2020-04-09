@@ -16,7 +16,7 @@ servers:
   - url: https://cms.com/
 paths:
 
-  /v1/credentialRequest:
+  /v1/credentialRequest/person/{personId}:
     post:
       tags:
         - Credential Request
@@ -24,14 +24,8 @@ paths:
       operationId: createCredentialRequest
       parameters:
         - name: personId
-          in: query
+          in: path
           description: the id of the person to create the credential request for
-          required: true
-          schema:
-            type: string
-        - name: credentialProfileId
-          in: query
-          description: The id of the credential request
           required: true
           schema:
             type: string
@@ -49,6 +43,10 @@ paths:
       responses:
         '201':
           description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialRequestId'
         '400':
           description: Bad request
         '403':
@@ -93,10 +91,7 @@ paths:
       responses:
         '200':
           description: Read successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CredentialRequest'
+          $ref: '#/components/responses/CredentialRequestResponse'
         '400':
           description: Bad request
         '403':
@@ -214,10 +209,7 @@ paths:
       responses:
         '200':
           description: Read successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Credential'
+          $ref: '#/components/responses/CredentialResponse'
         '400':
           description: Bad request
         '403':
@@ -261,10 +253,7 @@ paths:
       responses:
         '200':
           description: Read successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Credential'
+          $ref: '#/components/responses/CredentialResponse'
         '400':
           description: Bad request
         '403':
@@ -324,19 +313,6 @@ paths:
           required: true
           schema:
             type: string
-        - name: status
-          in: query
-          description: the suspended status of the credential
-          required: true
-          schema:
-            type: string
-            enum: [ACTIVE, SUSPENDED]
-        - name: reason
-          in: query
-          description: the reason for (un)suspension
-          required: true
-          schema:
-            type: string
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -347,7 +323,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Credential'
+              $ref: '#/components/schemas/SuspendCredential'
       responses:
         '204':
           description: Update successful
@@ -365,6 +341,27 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
+  responses:
+    CredentialRequestResponse:
+      description: The response for a credential request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/CredentialRequestId'
+              - $ref: '#/components/schemas/PersonId'
+              - $ref: '#/components/schemas/CredentialRequest'      
+
+    CredentialResponse:
+      description: The response for a credential request
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/CredentialId'
+              - $ref: '#/components/schemas/PersonId'
+              - $ref: '#/components/schemas/Credential'
+
   schemas:
     Error:
       type: object
@@ -379,34 +376,48 @@ components:
         message:
           description: Error message
           type: string
-    
-    CredentialRequest:
-      description: A request for a credential
+
+    PersonId:
+        type: object
+        properties:
+          personId:
+            type: string
+            description: The unique id of person that the credential request is for
+
+    CredentialRequestId:
       type: object
       properties:
         credentialRequestId:
           type: string
-          description: The unique id for this credential request
+          description: The unique id of this credential request
+
+    CredentialRequest:
+      description: A request for a credential
+      type: object
+      properties:
         credentialProfileId:
           type: string
-          description: The id of the credential request
+          description: The id of the credential profile to request
         requestedExpiryDate:
           type: string
           format: date-time
-          description: May be used to override the default expiry of the credential
+          description: May be used to override the default expiry date of the
+            requested credential.  This must only be earlier than the default
+            expiry, not later.
       required:
-        - credentialRequestId
+        - credentialProfileId
 
-    Credential:
-      description: A credential
+    CredentialId:
       type: object
       properties:
         credentialId:
           type: string
           description: The unique id for this credential
-        personId:
-          type: string
-          description: The unique id of person that the credential is issued to
+
+    Credential:
+      description: A credential
+      type: object
+      properties:
         issuedDate:
           type: string
           format: date-time
@@ -418,11 +429,23 @@ components:
         suspended:
           type: boolean
           description: Is this credential suspended
+          default: false
         cancelled:
           type: boolean
           description: Is this credential cancelled
+          default: false
       required:
         - credentialId
+
+    SuspendCredential:
+      type: object
+      properties:
+        suspended:
+          type: boolean
+        reason:
+          type: string
+          description: the reason for (un)suspension
+
 
     Expression:
       type: object
