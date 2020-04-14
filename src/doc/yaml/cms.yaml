@@ -73,7 +73,7 @@ paths:
             type: string
         - name: attributes
           in: query
-          description: The (optional) set of required attributes to retrieve
+          description: The (optional) set of attributes to retrieve
           required: false
           schema:
             type: array
@@ -398,7 +398,13 @@ components:
         credentialProfileId:
           type: string
           description: The id of the credential profile to request
-        requestedExpiryDate:
+        validFromDate:
+          type: string
+          format: date-time
+          description: May be used to override the default start date of the
+            requested credential.  This must only be later than the current
+            date, not earlier.
+        validToDate:
           type: string
           format: date-time
           description: May be used to override the default expiry date of the
@@ -458,7 +464,7 @@ components:
           type: string
         operator:
           type: string
-          enum: ['<', '>', '=', '>=', '<=']
+          enum: ['<', '>', '=', '>=', '<=', '!=']
         value:
           oneOf:
           - type: string
