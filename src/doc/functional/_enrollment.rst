@@ -15,12 +15,12 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str enrollmentID: The ID of the enrollment. If the enrollment already exists for the ID an error is returned.
-	:param str enrollmentTypeId: The enrollment type ID of the enrollment.
-	:param dict enrollmentFlags: The enrollment custom flags.
+    :param str enrollmentTypeId: The enrollment type ID of the enrollment.
+    :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
-	:param dict biometricData: The enrollment biometric data.
-	:param biographicData: The enrollment biographic data.
-	:param dict documentData: The enrollment biometric data.
+    :param dict biometricData: The enrollment biometric data.
+    :param biographicData: The enrollment biographic data.
+    :param dict documentData: The enrollment biometric data.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
@@ -44,12 +44,12 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str enrollmentID: The ID of the enrollment. If the enrollment already exists for the ID an error is returned.
-	:param str enrollmentTypeId: The enrollment type ID of the enrollment.
-	:param dict enrollmentFlags: The enrollment custom flags.
+    :param str enrollmentTypeId: The enrollment type ID of the enrollment.
+    :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
-	:param dict biometricData: The enrollment biometric data, this can be partial data.
-	:param dict biographicData: The enrollment biographic data.
-	:param dict documentData: The enrollment biometric data, this can be partial data.
+    :param dict biometricData: The enrollment biometric data, this can be partial data.
+    :param dict biographicData: The enrollment biographic data.
+    :param dict documentData: The enrollment biometric data, this can be partial data.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
@@ -83,7 +83,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str enrollmentID: The ID of the enrollment.
-	:param image data: The image of the request.
+    :param image data: The image of the request.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the matching enrollment list.
 
