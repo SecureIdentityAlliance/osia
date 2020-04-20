@@ -11,6 +11,8 @@ info:
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 tags:
   - name: Credential Request
+  - name: Credential
+  - name: Credential Profile
 servers:
   - url: http://cms.com/
   - url: https://cms.com/
