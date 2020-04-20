@@ -131,6 +131,19 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
+----------
+
+.. py:function:: findCredentialProfiles(expressions, transactionID)
+    :noindex:
+
+    Retrieve the data/status of a credential request.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``, ``!=``) and the attribute value
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error, and in case of success the matching credential profile list.
+
 
 Attributes
 """"""""""
