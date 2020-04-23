@@ -73,10 +73,24 @@ in the following diagram:
 Services
 """"""""
 
+For the Subscriber
+''''''''''''''''''
+
 .. py:function:: subscribe(topic,URL)
     :noindex:
 
     Subscribe a URL to receive notifications sent to one topic
+
+    :param str topic: Topic
+    :param str URL: URL to be called when a notification is available
+    :return: a subscription ID
+
+This service is synchronous.
+
+.. py:function:: listSubscriptions()
+    :noindex:
+
+    Get all subscriptions
 
     :param str topic: Topic
     :param str URL: URL to be called when a notification is available
@@ -97,10 +111,42 @@ This service is synchronous.
 .. py:function:: confirm(token)
     :noindex:
 
-    Confirm that the URL used during the subscription is valid
+    Used to confirm that the URL used during the subscription is valid
 
     :param str token: A token send through the URL.
     :return: bool
+
+This service is synchronous.
+
+For the Publisher
+'''''''''''''''''
+
+.. py:function:: createTopic(topic)
+    :noindex:
+
+    Create a new topic. This is required before an event can be sent to it.
+
+    :param str topic: Topic
+    :return: N/A
+
+This service is synchronous.
+
+.. py:function:: listTopics()
+    :noindex:
+
+    Get the list of all existing topics.
+
+    :return: N/A
+
+This service is synchronous.
+
+.. py:function:: deleteTopic(topic)
+    :noindex:
+
+    Delete a topic.
+
+    :param str topic: Topic
+    :return: N/A
 
 This service is synchronous.
 
