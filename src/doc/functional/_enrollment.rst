@@ -29,9 +29,9 @@ Services
     :param str enrollmentTypeId: The enrollment type ID of the enrollment.
     :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
-    :param dict biometricData: The enrollment biometric data.
+    :param list biometricData: The enrollment biometric data.
     :param dict biographicData: The enrollment biographic data.
-    :param dict documentData: The enrollment biometric data.
+    :param list documentData: The enrollment biometric data.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the enrollment ID.
 
@@ -58,9 +58,9 @@ Services
     :param str enrollmentTypeId: The enrollment type ID of the enrollment.
     :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
-    :param dict biometricData: The enrollment biometric data, this can be partial data.
+    :param list biometricData: The enrollment biometric data, this can be partial data.
     :param dict biographicData: The enrollment biographic data.
-    :param dict documentData: The enrollment biometric data, this can be partial data.
+    :param list documentData: The enrollment biometric data, this can be partial data.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
@@ -148,7 +148,7 @@ Data Model
       - :todo:`TBD`
 
     * - Document Data
-      - a dictionary (list of names and values) giving the document data of interest for the document services.
+      - The document data of the enrollment.
       - :todo:`TBD`
 
     * - Biometric Data
