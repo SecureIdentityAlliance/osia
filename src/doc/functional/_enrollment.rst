@@ -19,7 +19,7 @@ Services
     :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
     :param dict biometricData: The enrollment biometric data.
-    :param biographicData: The enrollment biographic data.
+    :param dict biographicData: The enrollment biographic data.
     :param dict documentData: The enrollment biometric data.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
