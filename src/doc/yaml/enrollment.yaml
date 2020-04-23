@@ -43,6 +43,15 @@ paths:
       responses:
         '201':
           description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - enrollmentId
+                properties:
+                  enrollmentId:
+                    type: string
         '400':
           description: Bad request
         '403':
@@ -139,11 +148,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    delete:
+                
+  /v1/enrollment/{enrollmentId}/finalize:
+    put:
       tags:
         - Enrollment
-      summary: Delete an enrollment
-      operationId: deleteEnrollment
+      summary: Finalize one enrollment
+      operationId: finalizeEnrollments
       parameters:
         - name: enrollmentId
           in: path
@@ -159,11 +170,11 @@ paths:
             type: string
       responses:
         '204':
-          description: Delete successful
+          description: Update successful
         '400':
           description: Bad request
         '403':
-          description: Delete not allowed
+          description: Update not allowed
         '404':
           description: Unknown record
         '500':
@@ -172,6 +183,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+                
 
   /v1/enrollments:
     post:
@@ -226,6 +238,105 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+                
+  /v1/enrollment/{enrollmentId}/buffer:
+    post:
+      tags:
+        - Enrollment
+      summary: This service is used to send separately the buffers of the images
+      operationId: sendBuffer
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The image of the request
+        required: true
+        content:
+          plain/text:
+            schema:
+              type: string
+              format: byte
+      responses:
+        '201':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - bufferId
+                properties:
+                  enrollmentId:
+                    type: string
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            
+  /v1/enrollment/{enrollmentId}/buffer/{bufferId}:
+    get:
+      tags:
+        - Enrollment
+      summary: This service is used to get the buffer of the images
+      operationId: getBuffer
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: bufferId
+          in: path
+          description: the id of the buffer
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Read successful
+          content:
+            plain/text:
+              schema:
+                description: The image
+                type: string
+                format: byte
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   schemas:
@@ -243,18 +354,131 @@ components:
           description: Error message
           type: string
     Enrollment:
-      description: >-
-        Enrollment entity.
       type: object
       required:
-        - enrollmentTypeId
+        - status
+        - enrollmentType
+        - biometricData
       properties:
-        enrollmentId:
+        encounterId:
           type: string
-          description: The unique id for this enrollment
-        enrollmentTypeId:
+        status:
           type: string
-          description: The enrollment type id for this enrollment
+          enum: [ACTIVE, INACTIVE]
+        enrollmentType:
+          type: string
+          description: Type of the enrollment
+        enrollmentFlags:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          uniqueItems: true
+        requestData:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          uniqueItems: true
+        biographicData:
+          $ref: '#/components/schemas/BiographicData'
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        documentData:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentData'
+    BiographicData:
+      type: object
+      additionalProperties: true
+      example:
+        dateOfBirth: "1985-11-30"
+        gender: M
+        nationality: FRA
+    BiometricData:
+      type: object
+      required:
+        - biometricType
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        image:
+          type: string
+          format: byte
+          description: Base64-encoded image
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+    DocumentPart:
+      type: object
+      properties:
+        pages:
+          type: string
+          description: Number of pages in the document
+        data:
+          type: string
+          format: byte
+          description: Base64-encoded image
+        dataRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+    DocumentData:
+      type: object
+      required:
+        - documentType
+      properties:
+        documentType:
+          $ref: '#/components/schemas/DocumentType'
+        instance:
+          type: string
+          description: Instance of the document
+        documentPart:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentPart'
     Expression:
       type: object
       required:
@@ -277,4 +501,95 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Expression'
+    CompressionType:
+      type: string
+      enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
+    DocumentType:
+      type: string
+      enum:
+        - ID_CARD
+        - Passport
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - IRIS
+        - UNKNOWN
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
    

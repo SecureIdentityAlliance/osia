@@ -2,7 +2,16 @@
 Enrollment Services
 -------------------
 
-
+This interface describes enrollment services in the context of an identity system. It is based on
+the following principles:
+- When enrollment is done in one step, the CreateEnrollment can contain all the data and an additional flag (finalize) to indicate every data was collected.
+- During the process, enrollment structure can be updated. Only the data that changed need to be transferred. Data not included is left unchanged on the server. In the following example, the biographic data is not changed.
+- Adding one document or deleting one document implies that:
+•	The full document list is read (ReadEnrollment)
+•	The document list is altered locally to the enrollment client (add or delete)
+•	The full document list is sent back using the UpdateEnrollment service
+- Images can be passed by value or reference. When passed by value, they are base64-encoded.
+- Existing standards are used whenever possible, for instance preferred image format for biometric data is ISO-19794.
 
 Services
 """"""""
@@ -22,7 +31,7 @@ Services
     :param dict biographicData: The enrollment biographic data.
     :param dict documentData: The enrollment biometric data.
     :param string transactionID: The client generated transactionID.
-    :return: a status indicating success or error.
+    :return: a status indicating success or error and in case of success the enrollment ID.
 
 .. py:function:: readEnrollment(enrollmentID, attributes, transactionID)
     :noindex:
@@ -73,7 +82,7 @@ Services
 
     :param str enrollmentID: The ID of the enrollment.
     :param string transactionID: The client generated transactionID.
-    :return: a status indicating success or error and in case of success the matching enrollment list.
+    :return: a status indicating success or error.
 
 .. py:function:: sendBuffer(enrollmentId, data)
     :noindex:
@@ -85,7 +94,19 @@ Services
     :param str enrollmentID: The ID of the enrollment.
     :param image data: The image of the request.
     :param string transactionID: The client generated transactionID.
-    :return: a status indicating success or error and in case of success the matching enrollment list.
+    :return: a status indicating success or error and in case of success the buffer ID.
+
+.. py:function:: getBuffer(enrollmentId, bufferId, data)
+    :noindex:
+
+    This service is used to get images of buffers.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str enrollmentID: The ID of the enrollment.
+	:param str bufferID: The ID of the buffer.
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error and in case of success the image of the buffer.
 
 Attributes
 """"""
@@ -137,7 +158,8 @@ Data Model
       - fingerprint, portrait, iris
 
     * - Biographic Data
-      - a dictionary (list of names and values) giving the biographic data of interest for the biographic services.
+      - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.
+      - :todo:`TBD`
 	
 	* - Enrollment Flags
       - a dictionary (list of names and values) for custom flags.
@@ -145,7 +167,13 @@ Data Model
 	* - Request data
       - a dictionary (list of names and values) for data related to the enrollment itself (the operator, the station, the data, etc.).
 	  
-      - :todo:`TBD`
+	* - Attributes
+      - a dictionary (list of names and values or *range* of values) describing the attributes to return.
+        Attributes can apply on biographic data, document data, request data, or enrollment flag data.
+	
+	* - Expressions
+      - Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
+	  
 
 ----------
 
