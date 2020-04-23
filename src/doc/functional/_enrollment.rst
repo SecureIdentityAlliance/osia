@@ -6,12 +6,14 @@ This interface describes enrollment services in the context of an identity syste
 the following principles:
 - When enrollment is done in one step, the CreateEnrollment can contain all the data and an additional flag (finalize) to indicate every data was collected.
 - During the process, enrollment structure can be updated. Only the data that changed need to be transferred. Data not included is left unchanged on the server. In the following example, the biographic data is not changed.
-- Adding one document or deleting one document implies that:
-•	The full document list is read (ReadEnrollment)
-•	The document list is altered locally to the enrollment client (add or delete)
-•	The full document list is sent back using the UpdateEnrollment service
 - Images can be passed by value or reference. When passed by value, they are base64-encoded.
 - Existing standards are used whenever possible, for instance preferred image format for biometric data is ISO-19794.
+
+.. admonition:: About documents
+    Adding one document or deleting one document implies that:
+    - The full document list is read (ReadEnrollment)
+    - The document list is altered locally to the enrollment client (add or delete)
+    - The full document list is sent back using the UpdateEnrollment service
 
 Services
 """"""""
@@ -163,17 +165,68 @@ Data Model
 	
 	* - Enrollment Flags
       - a dictionary (list of names and values) for custom flags.
+	  - :todo:`TBD`
 	 
 	* - Request data
       - a dictionary (list of names and values) for data related to the enrollment itself (the operator, the station, the data, etc.).
+	  - :todo:`TBD`
 	  
 	* - Attributes
       - a dictionary (list of names and values or *range* of values) describing the attributes to return.
         Attributes can apply on biographic data, document data, request data, or enrollment flag data.
+	  - :todo:`TBD`
 	
 	* - Expressions
       - Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
-	  
+	  - :todo:`TBD`
 
-----------
+.. uml::
+    :caption: Enrollment Data Model
+    :scale: 50%
 
+    !include "skin.iwsd"
+
+    class Enrollment {
+        string enrollmentID;
+    }
+
+    class BiographicData {
+        string field1;
+        int field2;
+        date field3;
+        ...
+    }
+    Enrollment o- BiographicData
+
+    class BiometricData {
+        byte[] image;
+        URL imageRef;
+    }
+    Enrollment o-- "*" BiometricData
+	
+	class DocumentData {
+        int documentType;
+    }
+    Enrollment o-- "*" DocumentData
+	
+	class DocumentPart {
+        byte[] image;
+        URL imageRef;
+    }
+    DocumentData o-- "*" DocumentPart
+	
+	class RequestData {
+        string field1;
+        int field2;
+        date field3;
+        ...
+    }
+    Enrollment o- RequestData
+	
+	class EnrollmentFlagsData {
+        string field1;
+        int field2;
+        date field3;
+        ...
+    }
+    Enrollment o- EnrollmentFlagsData
