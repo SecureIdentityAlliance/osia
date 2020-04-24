@@ -4,7 +4,8 @@ Enrollment Services
 
 This interface describes enrollment services in the context of an identity system. It is based on
 the following principles:
-- When enrollment is done in one step, the CreateEnrollment can contain all the data and an additional flag (finalize) to indicate every data was collected.
+
+- When enrollment is done in one step, the CreateEnrollment can contain all the data and an additional flag (finalize) to indicate all data was collected.
 - During the process, enrollment structure can be updated. Only the data that changed need to be transferred. Data not included is left unchanged on the server. In the following example, the biographic data is not changed.
 - Images can be passed by value or reference. When passed by value, they are base64-encoded.
 - Existing standards are used whenever possible, for instance preferred image format for biometric data is ISO-19794.
@@ -121,7 +122,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the buffer ID.
 
-.. py:function:: getBuffer(enrollmentId, bufferId, data)
+.. py:function:: getBuffer(enrollmentId, bufferId)
     :noindex:
 
     This service is used to get images of buffers.
@@ -129,7 +130,7 @@ Services
     **Authorization**: :todo:`To be defined`
 
     :param str enrollmentID: The ID of the enrollment.
-	:param str bufferID: The ID of the buffer.
+    :param str bufferID: The ID of the buffer.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the image of the buffer.
 

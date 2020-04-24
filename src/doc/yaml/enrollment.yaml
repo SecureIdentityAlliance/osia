@@ -31,8 +31,8 @@ paths:
             type: string
         - name: finalize
           in: query
-          description: Flag to indicate that data was collected
-          required: true
+          description: Flag to indicate that data was collected (default is false).
+          required: false
           schema:
             type: boolean
         - name: transactionId
@@ -88,7 +88,7 @@ paths:
             type: string
         - name: attributes
           in: query
-          description: The (optional) set of required attributes to retrieve
+          description: The (optional) set of required attributes to retrieve. If not present all attributes will be returned.
           required: false
           schema:
             type: array
@@ -130,8 +130,8 @@ paths:
             type: string
         - name: finalize
           in: query
-          description: Flag to indicate that data was collected
-          required: true
+          description: Flag to indicate that data was collected (default is false).
+          required: false
           schema:
             type: boolean
         - name: transactionId
@@ -175,8 +175,8 @@ paths:
             type: string
         - name: finalize
           in: query
-          description: Flag to indicate that data was collected
-          required: true
+          description: Flag to indicate that data was collected (default is false).
+          required: false
           schema:
             type: boolean
         - name: transactionId
@@ -249,12 +249,6 @@ paths:
       summary: Retrieve a list of enrollments which match passed in search criteria
       operationId: findEnrollments
       parameters:
-        - name: expressions
-          in: query
-          description: The expressions to evaluate.
-          required: true
-          schema:
-            $ref: '#/components/schemas/Expressions'
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -319,10 +313,10 @@ paths:
         description: The image of the request
         required: true
         content:
-          plain/text:
+          application/octet-stream:
             schema:
               type: string
-              format: byte
+              format: binary
       responses:
         '201':
           description: Operation successful
@@ -333,7 +327,7 @@ paths:
                 required:
                   - bufferId
                 properties:
-                  enrollmentId:
+                  bufferId:
                     type: string
         '400':
           description: Bad request
@@ -377,11 +371,11 @@ paths:
         '200':
           description: Read successful
           content:
-            plain/text:
+            application/octet-stream:
               schema:
                 description: The image
                 type: string
-                format: byte
+                format: binary
         '400':
           description: Bad request
         '403':
@@ -417,26 +411,22 @@ components:
         - enrollmentType
         - biometricData
       properties:
-        encounterId:
+        enrollmentId:
           type: string
         status:
           type: string
-          enum: [ACTIVE, INACTIVE]
+          enum: [FINALIZED, IN_PROGRESS]
         enrollmentType:
           type: string
           description: Type of the enrollment
         enrollmentFlags:
           type: array
           items:
-            type: string
-          minItems: 1
-          uniqueItems: true
+            $ref: '#/components/schemas/EnrollmentFlags'
         requestData:
           type: array
           items:
-            type: string
-          minItems: 1
-          uniqueItems: true
+            $ref: '#/components/schemas/RequestData'
         biographicData:
           $ref: '#/components/schemas/BiographicData'
         biometricData:
@@ -447,6 +437,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentData'
+    RequestData:
+      type: object
+      additionalProperties: true
+      example:
+        requestType: "IDCARD_ISSUANCE"
+        deliveryPlace: "paris"
+        other: "other"
+    EnrollmentFlags:
+      type: object
+      additionalProperties: true
+      example:
+        timeout: 3600
+        other: "other"
     BiographicData:
       type: object
       additionalProperties: true
@@ -489,6 +492,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimetype:
+          type: string
+          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -522,6 +528,9 @@ components:
         height:
           type: integer
           description: the height of the image
+        mimetype:
+          type: string
+          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
     DocumentData:
       type: object
       required:
