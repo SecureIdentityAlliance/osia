@@ -18,7 +18,7 @@ the following principles:
 Services
 """"""""
 
-.. py:function:: createEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, transactionID)
+.. py:function:: createEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, finalize, transactionID)
     :noindex:
 
     Insert a new enrollment.
@@ -32,6 +32,7 @@ Services
     :param list biometricData: The enrollment biometric data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data.
+	:param str finalize: Flag to indicate that data was collected.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the enrollment ID.
 
@@ -47,7 +48,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the enrollment data.
 
-.. py:function:: updateEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, transactionID)
+.. py:function:: updateEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, finalize, transactionID)
     :noindex:
 
     Update an enrollment.
@@ -61,6 +62,26 @@ Services
     :param list biometricData: The enrollment biometric data, this can be partial data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data, this can be partial data.
+	:param str finalize: Flag to indicate that data was collected.
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error.
+	
+.. py:function:: partialupdateEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, finalize, transactionID)
+    :noindex:
+
+    Update part of an enrollment. Not all attributes are mandatory. The payload
+    is defined as per :rfc:`7396`.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str enrollmentID: The ID of the enrollment. If the enrollment already exists for the ID an error is returned.
+    :param str enrollmentTypeId: The enrollment type ID of the enrollment.
+    :param dict enrollmentFlags: The enrollment custom flags.
+    :param dict requestData: The enrollment data related to the enrollment itself.
+    :param list biometricData: The enrollment biometric data, this can be partial data.
+    :param dict biographicData: The enrollment biographic data.
+    :param list documentData: The enrollment biometric data, this can be partial data.
+	:param str finalize: Flag to indicate that data was collected.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
@@ -75,7 +96,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the matching enrollment list.
 	
-.. py:function:: finalizeEnrollments(enrollmentID, transactionID)
+.. py:function:: finalizeEnrollment(enrollmentID, transactionID)
     :noindex:
 
     When all the enrollment steps are done, the enrollment client indicates to the enrollment server that all data has been collected and that any further processing can be triggered.

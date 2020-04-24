@@ -29,6 +29,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: finalize
+          in: query
+          description: Flag to indicate that data was collected
+          required: true
+          schema:
+            type: boolean
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -122,6 +128,57 @@ paths:
           required: true
           schema:
             type: string
+        - name: finalize
+          in: query
+          description: Flag to indicate that data was collected
+          required: true
+          schema:
+            type: boolean
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enrollment'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Enrollment
+      summary: Update partially one enrollment
+      description: Update partially an enrollment. Payload content is a partial enrollment object compliant with RFC7396.
+      operationId: partialUpdateEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: finalize
+          in: query
+          description: Flag to indicate that data was collected
+          required: true
+          schema:
+            type: boolean
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -154,7 +211,7 @@ paths:
       tags:
         - Enrollment
       summary: Finalize one enrollment
-      operationId: finalizeEnrollments
+      operationId: finalizeEnrollment
       parameters:
         - name: enrollmentId
           in: path
