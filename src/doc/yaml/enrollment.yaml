@@ -504,30 +504,33 @@ components:
       type: object
       properties:
         pages:
-          type: string
-          description: Number of pages in the document
+          type: array
+          description: The pages included in this part. Can be a single page number, or a list.
+          minItems: 1
+          items:
+            type: integer
         data:
           type: string
           format: byte
-          description: Base64-encoded image
+          description: Base64-encoded data of the document
         dataRef:
           type: string
           format: uri
-          description: URI to an image
-          example: "http://imageserver.com/image?id=00003"
+          description: URI to the data
+          example: "http://server.com/buffer?id=00003"
+        width:
+          type: integer
+          description: the width of the image in pixels
+        height:
+          type: integer
+          description: the height of the image in pixels
         captureDate:
           type: string
           format: date
           example: "2019-05-21"
         captureDevice:
           type: string
-          description: A string identifying the device used to capture the biometric
-        width:
-          type: integer
-          description: the width of the image
-        height:
-          type: integer
-          description: the height of the image
+          description: A string identifying the device used to capture the document part
         mimetype:
           type: string
           description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
@@ -535,14 +538,16 @@ components:
       type: object
       required:
         - documentType
+        - parts
       properties:
         documentType:
           $ref: '#/components/schemas/DocumentType'
         instance:
           type: string
-          description: Instance of the document
-        documentPart:
+          description: "Used to separate two distincts documents of the same type (ex: two passports)"
+        parts:
           type: array
+          minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
     Expression:

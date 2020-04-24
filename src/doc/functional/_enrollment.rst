@@ -191,7 +191,7 @@ Data Model
       - a dictionary (list of names and values) for custom flags.
       - :todo:`TBD`
  
-    * - Request data
+    * - Request Data
       - a dictionary (list of names and values) for data related to the enrollment itself (the operator, the station, the data, etc.).
       - :todo:`TBD`
 
