@@ -32,7 +32,7 @@ Services
     :param list biometricData: The enrollment biometric data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data.
-	:param str finalize: Flag to indicate that data was collected.
+    :param str finalize: Flag to indicate that data was collected.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the enrollment ID.
 
@@ -62,7 +62,7 @@ Services
     :param list biometricData: The enrollment biometric data, this can be partial data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data, this can be partial data.
-	:param str finalize: Flag to indicate that data was collected.
+    :param str finalize: Flag to indicate that data was collected.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 	
@@ -81,7 +81,7 @@ Services
     :param list biometricData: The enrollment biometric data, this can be partial data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data, this can be partial data.
-	:param str finalize: Flag to indicate that data was collected.
+    :param str finalize: Flag to indicate that data was collected.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
