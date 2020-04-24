@@ -1,4 +1,6 @@
 
+.. _chapter-interfaces:
+
 ==========
 Interfaces
 ==========

@@ -12,7 +12,7 @@ Services
 
     Read person attributes.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.read`` or ``cr.person.read``
 
     :param str UIN: The person's UIN
     :param list[str] names: The names of the attributes requested
@@ -45,7 +45,7 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     Match person attributes. This service is used to check the value of attributes without exposing private data.
     The implementation can use a simple comparison or a more advanced technique (for example: phonetic comparison for names)
     
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.match`` or ``cr.person.match``
 
     :param str UIN: The person's UIN
     :param list[(str,str)] attributes: The attributes to match. Each attribute is described with its name and the expected value
@@ -79,7 +79,7 @@ This service is synchronous. It can be used to match attributes in CR or in PR.
     without exposing private data
     The implementation can use a simple comparison or a more advanced technique (for example: phonetic comparison for names)
     
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.verify`` or ``cr.person.verify``
 
     :param str UIN: The person's UIN
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
@@ -112,7 +112,7 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
     Query the persons by a set of attributes. This service is used when the UIN is unknown.
     The implementation can use a simple comparison or a more advanced technique (for example: phonetic comparison for names)
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.read`` or ``cr.person.read``
 
     :param list[(str,str)] attributes: The attributes to be used to find UIN. Each attribute is described with its name and its value
     :return: a list of matching UIN
@@ -145,7 +145,7 @@ This service is synchronous. It can be used to get the UIN of a person.
     This service is proposed as an optimization of a sequence of calls to
     :py:func:`queryPersonUIN` and :py:func:`readPersonAttributes`.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.person.read`` or ``cr.person.read``
 
     :param list[(str,str)] attributes: The attributes to be used to find the persons. Each attribute is described with its name and its value
     :param list[str] names: The names of the attributes requested
@@ -177,7 +177,7 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
 
     Read in a selected format (PDF, image, ...) a document such as a marriage certificate.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``pr.document.read`` or ``cr.document.read``
 
     :param list[str] UIN: The list of UINs for the persons concerned by the document
     :param str documentType: The type of document (birth certificate, etc.)

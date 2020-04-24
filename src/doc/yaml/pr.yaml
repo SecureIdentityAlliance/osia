@@ -4,7 +4,7 @@
 openapi: 3.0.0
 info:
   description: OSIA PR Interface
-  version: 1.1.0
+  version: 1.2.0
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -15,7 +15,6 @@ tags:
   - name: Reference
   - name: Gallery
 servers:
-  - url: http://pr.com/
   - url: https://pr.com/
 paths:
 
@@ -25,6 +24,8 @@ paths:
         - Person
       summary: Create one person
       operationId: createPerson
+      security:
+        - BearerAuth: [pr.person.write]
       parameters:
         - name: personId
           in: path
@@ -61,6 +62,8 @@ paths:
         - Person
       summary: Read one person
       operationId: readPerson
+      security:
+        - BearerAuth: [pr.person.read]
       parameters:
         - name: personId
           in: path
@@ -98,6 +101,8 @@ paths:
         - Person
       summary: Update one person
       operationId: updatePerson
+      security:
+        - BearerAuth: [pr.person.write]
       parameters:
         - name: personId
           in: path
@@ -136,6 +141,8 @@ paths:
         - Person
       summary: Delete a person and all its identities
       operationId: deletePerson
+      security:
+        - BearerAuth: [pr.person.write]
       parameters:
         - name: personId
           in: path
@@ -175,6 +182,8 @@ paths:
         an error is returned and no changes are done.
         If the operation is successful, the person merged is deleted.
       operationId: mergePerson
+      security:
+        - BearerAuth: [pr.person.write]
       parameters:
         - name: personIdTarget
           in: path
@@ -216,6 +225,8 @@ paths:
         - Identity
       summary: Read all the identities of a person
       operationId: readIdentities
+      security:
+        - BearerAuth: [pr.identity.read]
       parameters:
         - name: personId
           in: path
@@ -255,6 +266,8 @@ paths:
         - Identity
       summary: Create one identity and generate its id
       operationId: createIdentity
+      security:
+        - BearerAuth: [pr.identity.write]
       parameters:
         - name: personId
           in: path
@@ -309,6 +322,8 @@ paths:
         Create one new identity for a person. The provided identityId is
         checked for validity and used for the new identity.
       operationId: createIdentityWithId
+      security:
+        - BearerAuth: [pr.identity.write]
       parameters:
         - name: personId
           in: path
@@ -355,6 +370,8 @@ paths:
         - Identity
       summary: Read one identity
       operationId: readIdentity
+      security:
+        - BearerAuth: [pr.identity.read]
       parameters:
         - name: personId
           in: path
@@ -398,6 +415,8 @@ paths:
         - Identity
       summary: Update one identity
       operationId: updateIdentity
+      security:
+        - BearerAuth: [pr.identity.write]
       parameters:
         - name: personId
           in: path
@@ -447,6 +466,8 @@ paths:
       summary: Update partially one identity
       description: Update partially an identity. Payload content is a partial identity object compliant with RFC7396.
       operationId: partialUpdateIdentity
+      security:
+        - BearerAuth: [pr.identity.write]
       parameters:
         - name: personId
           in: path
@@ -496,6 +517,8 @@ paths:
         - Identity
       summary: Delete one identity
       operationId: deleteIdentity
+      security:
+        - BearerAuth: [pr.identity.write]
       parameters:
         - name: personId
           in: path
@@ -537,6 +560,8 @@ paths:
         - Identity
       summary: Change the status of an identity
       operationId: setIdentityStatus
+      security:
+        - BearerAuth: [pr.identity.write]
       parameters:
         - name: personId
           in: path
@@ -582,6 +607,8 @@ paths:
         - Reference
       summary: Define the reference
       operationId: defineReference
+      security:
+        - BearerAuth: [pr.reference.write]
       parameters:
         - name: personId
           in: path
@@ -621,6 +648,8 @@ paths:
         - Reference
       summary: Read the reference
       operationId: readReference
+      security:
+        - BearerAuth: [pr.reference.read]
       parameters:
         - name: personId
           in: path
@@ -661,6 +690,8 @@ paths:
         - Gallery
       summary: Read the ID of all the galleries
       operationId: readGalleries
+      security:
+        - BearerAuth: [pr.gallery.read]
       parameters:
         - name: transactionId
           in: query
@@ -694,6 +725,8 @@ paths:
         - Gallery
       summary: Read the content of one gallery
       operationId: readGalleryContent
+      security:
+        - BearerAuth: [pr.gallery.read]
       parameters:
         - name: galleryId
           in: path
@@ -738,6 +771,11 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object

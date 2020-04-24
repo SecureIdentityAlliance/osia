@@ -4,12 +4,12 @@
 openapi: 3.0.0
 info:
   title: OSIA UIN services
-  version: 1.0.0
+  version: 1.1.0
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 servers:
-  - url: http://server.com/
+  - url: https://uin.com/
 paths:
   /v1/uin:
     post:
@@ -17,6 +17,8 @@ paths:
         Request the generation of a new UIN.
         The request body should contain a list of attributes and their value, formatted as a json dictionary.
       operationId: generateUIN
+      security:
+        - BearerAuth: [uin.generate]
       requestBody:
         description: A set of attributes for the person
         content:
@@ -46,10 +48,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-#      crci_auth:
-#        - generate:uin
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object
