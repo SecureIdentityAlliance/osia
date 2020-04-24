@@ -77,7 +77,7 @@ where:
   - ``read``: for read access to the data represented by the *resource* and managed by the *application*.
   - ``write``: for creating, updating or deleting the data.
   - or another value, for specific actions such as match or verify that need to be
-    distinguished from a general purpose read or write for proper segreggation.
+    distinguished from a general purpose read or write for proper segregation.
 
 Scopes should be less than 20 characters when possible to limit the size of the bearer token.
 
@@ -117,7 +117,7 @@ The following table is a summary of all scopes defined in OSIA.
     -----------------------------------------------------------------------------------
     Generate UIN                        ``uin.generate``
     ----------------------------------- -----------------------------------------------
-    **Enrollment Services**
+    **Enrollment Services** (Work in progress)
     -----------------------------------------------------------------------------------
     Create Enrollment                   ``enroll.write``
     Read Enrollment                     ``enroll.read``
@@ -161,7 +161,7 @@ The following table is a summary of all scopes defined in OSIA.
     Identify                            ``abis.identify``
     Verify                              ``abis.verify``
     ----------------------------------- -----------------------------------------------
-    **Credential Services**
+    **Credential Services** (Work in progress)
     -----------------------------------------------------------------------------------
     Create Credential Request           ``cms.request.write``
     Read Credential Request             ``cms.request.read``
@@ -172,7 +172,7 @@ The following table is a summary of all scopes defined in OSIA.
     Unsuspend Credential                ``cms.credential.write``
     Cancel Credential                   ``cms.credential.write``
     ----------------------------------- -----------------------------------------------
-    **ID Usage**
+    **ID Usage** (Work in progress)
     -----------------------------------------------------------------------------------
     Verify ID                           ``id.verify``
     Identify                            ``id.identify``
