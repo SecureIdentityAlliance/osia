@@ -10,7 +10,9 @@ the following principles:
 - Existing standards are used whenever possible, for instance preferred image format for biometric data is ISO-19794.
 
 .. admonition:: About documents
+
     Adding one document or deleting one document implies that:
+    
     - The full document list is read (ReadEnrollment)
     - The document list is altered locally to the enrollment client (add or delete)
     - The full document list is sent back using the UpdateEnrollment service
@@ -132,7 +134,7 @@ Services
     :return: a status indicating success or error and in case of success the image of the buffer.
 
 Attributes
-""""""
+""""""""""
 
 The "attributes" parameter used in "read" calls is used to provide a set of
 identifiers that limit the amount of data that is returned.
@@ -183,23 +185,23 @@ Data Model
     * - Biographic Data
       - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.
       - :todo:`TBD`
-	
-	* - Enrollment Flags
+
+    * - Enrollment Flags
       - a dictionary (list of names and values) for custom flags.
-	  - :todo:`TBD`
-	 
-	* - Request data
+      - :todo:`TBD`
+ 
+    * - Request data
       - a dictionary (list of names and values) for data related to the enrollment itself (the operator, the station, the data, etc.).
-	  - :todo:`TBD`
-	  
-	* - Attributes
+      - :todo:`TBD`
+
+    * - Attributes
       - a dictionary (list of names and values or *range* of values) describing the attributes to return.
         Attributes can apply on biographic data, document data, request data, or enrollment flag data.
-	  - :todo:`TBD`
-	
-	* - Expressions
+      - :todo:`TBD`
+
+    * - Expressions
       - Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
-	  - :todo:`TBD`
+      - :todo:`TBD`
 
 .. uml::
     :caption: Enrollment Data Model
