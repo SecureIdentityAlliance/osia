@@ -18,16 +18,16 @@ servers:
   - url: https://cms.com/
 paths:
 
-  /v1/credentialRequest/person/{personId}:
+  /v1/credentialRequest/{credentialRequestId}:
     post:
       tags:
         - Credential Request
       summary: Create a request for a credential
       operationId: createCredentialRequest
       parameters:
-        - name: personId
+        - name: credentialRequestId
           in: path
-          description: the id of the person to create the credential request for
+          description: the id of the credential request
           required: true
           schema:
             type: string
@@ -45,10 +45,6 @@ paths:
       responses:
         '201':
           description: Operation successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CredentialRequestId'
         '400':
           description: Bad request
         '403':
@@ -60,7 +56,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /v1/credentialRequest/{credentialRequestId}:
     get:
       tags:
         - Credential Request
@@ -82,8 +77,7 @@ paths:
             items:
               type: string
             example:
-              - surname
-              - familyname
+              - lastname
         - name: transactionId
           in: query
           description: The id of the transaction
@@ -93,7 +87,10 @@ paths:
       responses:
         '200':
           description: Read successful
-          $ref: '#/components/responses/CredentialRequestResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialRequest'
         '400':
           description: Bad request
         '403':
@@ -179,21 +176,12 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /v1/credential:
-    get:
+    post:
       tags:
         - Credential
-      summary: Retrieve a list of credentials that match the passed in search criteria
+      summary: Retrieve a list of credentials that match the given search criteria
       operationId: findCredentials
       parameters:
-        - name: expressions
-          in: query
-          description: The expressions to evaluate. Each expression
-            is described with the attribute's name, the operator
-            (one of ``<``, ``>``, ``=``, ``>=``, ``<=``, ``!=``)
-            and the attribute value.
-          required: true
-          schema:
-            $ref: '#/components/schemas/Expressions'
         - name: attributes
           in: query
           description: The (optional) set of required attributes to retrieve
@@ -208,10 +196,20 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
       responses:
         '200':
           description: Read successful
-          $ref: '#/components/responses/CredentialsResponse'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
         '403':
@@ -255,7 +253,10 @@ paths:
       responses:
         '200':
           description: Read successful
-          $ref: '#/components/responses/CredentialResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
         '403':
@@ -268,7 +269,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    delete:
+    patch:
       tags:
         - Credential
       summary: Cancel a credential
@@ -306,8 +307,8 @@ paths:
     patch:
       tags:
         - Credential
-      summary: (Un)suspend a credential
-      operationId: suspendCredential, unsuspendCredential
+      summary: Suspend a credential
+      operationId: suspendCredential
       parameters:
         - name: credentialId
           in: path
@@ -325,7 +326,97 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SuspendCredential'
+              properties:
+                reason:
+                  type: string
+                  description: the reason for suspension
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credential/{credentialId}/unsuspend:
+    patch:
+      tags:
+        - Credential
+      summary: Unsuspend a credential
+      operationId: unsuspendCredential
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                reason:
+                  type: string
+                  description: the reason for unsuspension
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credential/{credentialId}/cancel:
+    patch:
+      tags:
+        - Credential
+      summary: Cancel a credential
+      operationId: cancelCredential
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                reason:
+                  type: string
+                  description: the reason for cancellation
+
       responses:
         '204':
           description: Update successful
@@ -343,21 +434,12 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /v1/credentialProfile:
-    get:
+    post:
       tags:
         - Credential Profile
-      summary: Retrieve a list of credential profiles that match the passed in search criteria
+      summary: Retrieve a list of credential profiles that match the given search criteria
       operationId: findCredentialProfiles
       parameters:
-        - name: expressions
-          in: query
-          description: The expressions to evaluate. Each expression
-            is described with the attribute's name, the operator
-            (one of ``<``, ``>``, ``=``, ``>=``, ``<=``, ``!=``)
-            and the attribute value.
-          required: true
-          schema:
-            $ref: '#/components/schemas/Expressions'
         - name: attributes
           in: query
           description: The (optional) set of required attributes to retrieve
@@ -372,10 +454,20 @@ paths:
           required: true
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
       responses:
         '200':
           description: Read successful
-          $ref: '#/components/responses/CredentialProfilesResponse'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CredentialProfile'
         '400':
           description: Bad request
         '403':
@@ -391,50 +483,6 @@ paths:
 
 
 components:
-  responses:
-    CredentialRequestResponse:
-      description: The response for a credential request
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/CredentialRequestId'
-              - $ref: '#/components/schemas/PersonId'
-              - $ref: '#/components/schemas/CredentialRequest'      
-
-    CredentialResponse:
-      description: The response for a credential request
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: '#/components/schemas/CredentialId'
-              - $ref: '#/components/schemas/PersonId'
-              - $ref: '#/components/schemas/Credential'
-
-    CredentialsResponse:
-      description: The response for a credential request
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              allOf:
-                - $ref: '#/components/schemas/CredentialId'
-                - $ref: '#/components/schemas/PersonId'
-                - $ref: '#/components/schemas/Credential'
-
-    CredentialProfilesResponse:
-      description: The response for a credential profile
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              allOf:
-                - $ref: '#/components/schemas/CredentialProfileId'
-                - $ref: '#/components/schemas/CredentialProfile'
-
   schemas:
     Error:
       type: object
@@ -450,24 +498,138 @@ components:
           description: Error message
           type: string
 
-    PersonId:
-        type: object
-        properties:
-          personId:
-            type: string
-            description: The unique id of person that the credential request is for
-
-    CredentialRequestId:
+    BiographicData:
       type: object
+      additionalProperties: true
+      example:
+        title: Mr
+        firstName: John
+        lastName: Doo
+        dateOfBirth: "1985-11-30"
+        gender: M
+        nationality: FRA
+        email: john.doo@example.com
+        mobileNumber: 01234567890
+        dn: CN=John Doo, C=FR
+        address1: 11 Rue des Rosiers
+        address2:
+        city: Libourne
+        state:
+        postalcode: '33500'
+        country: France
+
+    BiometricData:
+      type: object
+      required:
+        - biometricType
       properties:
-        credentialRequestId:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        image:
           type: string
-          description: The unique id of this credential request
+          format: byte
+          description: Base64-encoded image
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - PALM
+        - IRIS
+        - UNKNOWN
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
+
+    CompressionType:
+      type: string
+      enum: [NONE, JPEG, JPEG2000, PNG]
 
     CredentialRequest:
       description: A request for a credential
       type: object
       properties:
+        credentialRequestId:
+          type: string
+          description: The unique id of this credential request
         credentialProfileId:
           type: string
           description: The id of the credential profile to request
@@ -483,20 +645,31 @@ components:
           description: May be used to override the default expiry date of the
             requested credential.  This must only be earlier than the default
             expiry, not later.
+        personId:
+          type: string
+          description: The id of the person who is the target of the request
+        biographicData:
+          $ref: '#/components/schemas/BiographicData'
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
       required:
         - credentialProfileId
-
-    CredentialId:
-      type: object
-      properties:
-        credentialId:
-          type: string
-          description: The unique id for this credential
 
     Credential:
       description: A credential
       type: object
       properties:
+        credentialId:
+          type: string
+          description: The unique id for this credential
+        personId:
+          type: string
+          description: The unique id of the person that the credential request is for
+        credentialProfileId:
+          type: string
+          description: The unique id of the credential profile
         issuedDate:
           type: string
           format: date-time
@@ -513,34 +686,38 @@ components:
           type: boolean
           description: Is this credential cancelled
           default: false
-
-    CredentialProfileId:
-      type: object
-      properties:
-        credentialId:
+        type:
           type: string
-          description: The unique id for this credential profile
+          description: the type of credential
+        serialNumber:
+          type: string
+          description: the serial number of the credential
 
     CredentialProfile:
       description: A credential profile
       type: object
       properties:
+        credentialProfileId:
+          type: string
+          description: The unique id for this credential profile
         name:
           type: string
           description: The name of the credential profile
         description:
           type: string
           description: The description of the credential profile
-
-    SuspendCredential:
-      type: object
-      properties:
-        suspended:
-          type: boolean
-        reason:
+        credentialType:
+          description: The type of credential that this profile will issue
           type: string
-          description: the reason for (un)suspension
-
+          enum:
+            - SMARTCARD
+            - VIRTUAL_SMARTCARD
+            - MOBILE
+            - PASSPORT
+            - ID_CARD
+        defaultLifetime:
+          type: integer
+          description: The default number of days that this credential will be considered valid for after issuance.
 
     Expression:
       type: object
