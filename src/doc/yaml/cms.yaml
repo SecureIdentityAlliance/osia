@@ -103,7 +103,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    patch:
+    put:
       tags:
         - Credential Request
       summary: Update a credential request
@@ -304,7 +304,7 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /v1/credential/{credentialId}/suspend:
-    patch:
+    post:
       tags:
         - Credential
       summary: Suspend a credential
@@ -347,7 +347,7 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /v1/credential/{credentialId}/unsuspend:
-    patch:
+    post:
       tags:
         - Credential
       summary: Unsuspend a credential
@@ -390,7 +390,7 @@ paths:
                 $ref: '#/components/schemas/Error'
 
   /v1/credential/{credentialId}/cancel:
-    patch:
+    post:
       tags:
         - Credential
       summary: Cancel a credential
@@ -498,25 +498,86 @@ components:
           description: Error message
           type: string
 
-    BiographicData:
+    Address:
       type: object
+      properties:
+        address1:
+          type: string
+          description: the first line of the address
+        address2:
+          type: string
+          description: the second line of the address
+        city:
+          type: string
+          description: the city of the address
+        state:
+          type: string
+          description: the state of the address
+        postalcode:
+          type: string
+          description: the postal code of the address
+        country:
+          type: string
+          description: the country of the address
       additionalProperties: true
       example:
-        title: Mr
-        firstName: John
-        lastName: Doo
-        dateOfBirth: "1985-11-30"
-        gender: M
-        nationality: FRA
-        email: john.doo@example.com
-        mobileNumber: 01234567890
-        dn: CN=John Doo, C=FR
         address1: 11 Rue des Rosiers
         address2:
         city: Libourne
         state:
         postalcode: '33500'
         country: France
+
+
+    BiographicData:
+      type: object
+      properties:
+        title:
+          type: string
+          description: the title of the person
+          example: Mr
+        firstName:
+          type: string
+          description: the first name of the person
+          example: John
+        lastName:
+          type: string
+          description: the last name of the person
+          example: Doo
+        dateOfBirth:
+          type: string
+          format: date
+          description: the date of birth of the person
+          example: 1985-11-30
+        gender:
+          type: string
+          description: the gender of the person
+          example: M
+        nationality:
+          type: string
+          description: the nationality of the person
+          example: FR
+        email:
+          type: string
+          description: the email address of the person
+          example: john.doo@example.com
+        mobileNumber:
+          type: string
+          description: the mobile phone number of the person
+          example: Mr
+        dn:
+          type: string
+          description: the distinguised name of the person
+          example: CN=John Doo, C=FR
+        address:
+          $ref: '#/components/schemas/Address'
+        priority:
+          type: string
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+      additionalProperties: true
 
     BiometricData:
       type: object
@@ -654,6 +715,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
+        deliveryAddress:
+          $ref: '#/components/schemas/Address'
       required:
         - credentialProfileId
 
