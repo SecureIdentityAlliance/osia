@@ -380,10 +380,10 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Read Credential Request                                                               I
     Update Credential Request                                                             I
     Delete Credential Request                                                             I
-    Read Credential                                                                       I
-    Suspend Credential                                                                    I
-    Unsuspend Credential                                                                  I
-    Cancel Credential                                                                     I
+    Read Credential                                                                       I      U
+    Suspend Credential                                                                    I      U
+    Unsuspend Credential                                                                  I      U
+    Cancel Credential                                                                     I       
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **ID Usage**
     --------------------------------------------------------------------------------------------------
