@@ -4,9 +4,9 @@ master_doc = 'index'
 exclude_patterns = []
 pygments_style = 'colorful'
 project = 'OSIA'
-release = '2.0.0'
+release = '3.0.0'
 author = 'SIA'
-html_context = {'project':'OSIA', 'version':"2.0.0", 'copyright':'SIA'}
+html_context = {'project':'OSIA', 'version':"3.0.0", 'copyright':'SIA'}
 
 numfig = True
 
@@ -124,7 +124,7 @@ latex_elements = {
         {\vspace{0.5cm} \companylogo }
         \vspace{1.5cm}
         \par
-        {\rm\Huge\sffamily\bfseries {\textcolor[rgb]{0.678,0.325,0.537}{Specifications version 2.0.0} } \par}
+        {\rm\Huge\sffamily\bfseries {\textcolor[rgb]{0.678,0.325,0.537}{Specifications version 3.0.0} } \par}
         \vfill
         %% Project logo
         \includegraphics[ width=12cm]{logo2.pdf} \par

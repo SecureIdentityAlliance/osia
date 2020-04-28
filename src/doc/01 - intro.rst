@@ -138,7 +138,7 @@ Revision History
    * - 1.0.0
      - 2018-12
      - First release
-   * - 2.0.0
+   * - 3.0.0
      - 2019-06
      - Second release
 
