@@ -15,15 +15,15 @@ For instance below is the string to reference the *Notification* interface:
 
 Below is the complete list of available interfaces with related version to date:
 
-- OSIA - Notification - v. 2.0.0
-- OSIA - Data Access - v. 2.0.0
-- OSIA - UIN Management - v. 2.0.0
-- OSIA - Enrollment Services - v. 2.0.0
-- OSIA - Identity Management - v. 2.0.0
-- OSIA - Population Registry Services - v. 2.0.0
-- OSIA - Biometrics - v. 2.0.0
-- OSIA - Credential Services - v. 2.0.0
-- OSIA - ID Usage - v. 2.0.0
+- OSIA - Notification - v. 3.0.0
+- OSIA - Data Access - v. 3.0.0
+- OSIA - UIN Management - v. 3.0.0
+- OSIA - Enrollment Services - v. 3.0.0
+- OSIA - Identity Management - v. 3.0.0
+- OSIA - Population Registry Services - v. 3.0.0
+- OSIA - Biometrics - v. 3.0.0
+- OSIA - Credential Services - v. 3.0.0
+- OSIA - ID Usage - v. 3.0.0
 
 This document proposes as well a set of interfaces that could be used by each component (non-prescriptive).
 
