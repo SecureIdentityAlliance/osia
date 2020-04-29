@@ -17,14 +17,15 @@ Enrollment
     .. hlist::
         :columns: 2
 
-        - `createEnrollment <#post--v1-enrollment-enrollmentId>`_
-        - `readEnrollment <#get--v1-enrollment-enrollmentId>`_
-        - `updateEnrollment <#put--v1-enrollment-enrollmentId>`_
-        - `partialUpdateEnrollment <#patch--v1-enrollment-enrollmentId>`_
-        - `finalizeEnrollment <#put--v1-enrollment-enrollmentId-finalize>`_
+        - `createEnrollment <#post--v1-enrollments-enrollmentId>`_
+        - `readEnrollment <#get--v1-enrollments-enrollmentId>`_
+        - `updateEnrollment <#put--v1-enrollments-enrollmentId>`_
+        - `partialUpdateEnrollment <#patch--v1-enrollments-enrollmentId>`_
+        - `finalizeEnrollment <#put--v1-enrollments-enrollmentId-finalize>`_
+        - `deleteEnrollment <#put--v1-enrollments-enrollmentId-delete>`_
         - `findEnrollments <#put--v1-enrollments>`_
-        - `sendBuffer <#delete--v1-enrollment-enrollmentId-buffer>`_
-        - `getBuffer <#post--v1-enrollment-enrollmentId-buffer-bufferId>`_
+        - `sendBuffer <#delete--v1-enrollments-enrollmentId-buffer>`_
+        - `getBuffer <#post--v1-enrollments-enrollmentId-buffer-bufferId>`_
 
 Services
 """"""""

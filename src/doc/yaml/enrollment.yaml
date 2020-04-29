@@ -16,7 +16,7 @@ servers:
   - url: https://enrollment.com/
 paths:
 
-  /v1/enrollment/{enrollmentId}:
+  /v1/enrollments/{enrollmentId}:
     post:
       tags:
         - Enrollment
@@ -206,7 +206,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
                 
-  /v1/enrollment/{enrollmentId}/finalize:
+  /v1/enrollments/{enrollmentId}/finalize:
     put:
       tags:
         - Enrollment
@@ -241,7 +241,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
                 
-
+  /v1/enrollments/{enrollmentId}/delete:
+    post:
+      tags:
+        - Enrollment
+      summary: Delete one enrollment
+      operationId: deleteEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
   /v1/enrollments:
     post:
       tags:
@@ -290,7 +322,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
                 
-  /v1/enrollment/{enrollmentId}/buffer:
+  /v1/enrollments/{enrollmentId}/buffer:
     post:
       tags:
         - Enrollment
@@ -342,7 +374,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
             
-  /v1/enrollment/{enrollmentId}/buffer/{bufferId}:
+  /v1/enrollments/{enrollmentId}/buffer/{bufferId}:
     get:
       tags:
         - Enrollment
@@ -599,6 +631,7 @@ components:
         - UNKNOWN
     DocumentType:
       type: string
+      description: Type of document. Can be extended.
       enum:
         - ID_CARD
         - Passport

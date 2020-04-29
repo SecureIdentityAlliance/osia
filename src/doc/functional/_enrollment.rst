@@ -88,17 +88,6 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
-.. py:function:: findEnrollments(expressions, transactionID)
-    :noindex:
-
-    Retrieve a list of enrollments which match passed in search criteria.
-
-    **Authorization**: :todo:`To be defined`
-
-    :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
-    :param string transactionID: The client generated transactionID.
-    :return: a status indicating success or error and in case of success the matching enrollment list.
-	
 .. py:function:: finalizeEnrollment(enrollmentID, transactionID)
     :noindex:
 
@@ -109,6 +98,28 @@ Services
     :param str enrollmentID: The ID of the enrollment.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
+    
+.. py:function:: delteEnrollment(enrollmentID, transactionID)
+    :noindex:
+
+    Deletes the enrollment
+
+    **Authorization**: :todo:`To be defined`
+
+    :param str enrollmentID: The ID of the enrollment.
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: findEnrollments(expressions, transactionID)
+    :noindex:
+
+    Retrieve a list of enrollments which match passed in search criteria.
+
+    **Authorization**: :todo:`To be defined`
+
+    :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error and in case of success the matching enrollment list.
 
 .. py:function:: sendBuffer(enrollmentId, data)
     :noindex:
