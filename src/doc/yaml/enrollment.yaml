@@ -472,6 +472,7 @@ components:
     RequestData:
       type: object
       additionalProperties: true
+      description: The enrollment data related to the enrollment itself. Can be extended.
       example:
         requestType: "IDCARD_ISSUANCE"
         deliveryPlace: "paris"
@@ -479,12 +480,14 @@ components:
     EnrollmentFlags:
       type: object
       additionalProperties: true
+      description: The enrollment custom flags. Can be extended.
       example:
         timeout: 3600
         other: "other"
     BiographicData:
       type: object
       additionalProperties: true
+      description: The enrollment biographic data. Can be extended.
       example:
         dateOfBirth: "1985-11-30"
         gender: M
