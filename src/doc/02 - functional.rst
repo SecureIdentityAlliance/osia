@@ -556,7 +556,7 @@ Death Use Case
 
    - ``matchPersonAttributes``: to check the exactitude of the subject's attributes as known in the PR
    - ``readPersonAttributes``: to get missing data about the subject's identity that 
-   - ``queryPersonUIN``: to check if the new born is already known to PR or not
+   - ``queryPersonUIN``: to check if the person is already known to PR or not
 
    How the CR will process the request in case of data discrepancy is specific to each CR implementation
    and not in the scope of this document. The CR may implement an internal procedure to create a valid PR record retrospectively.
@@ -569,7 +569,7 @@ Death Use Case
     
 3. Final registration
 
-   When the PR finalizes the status of the subject's person record then the CR may publish this information at its discretion.
+   When the PR finalizes the status of the subject's person record then the CR may publish this information at its discretion. The PR may maintain a list of interested parties who shall be informed of any finalized death status.
    A final certificate of death including the context of this event is typically issued by the CR to the notifier for distribution.
    
 Deduplication Use Case
