@@ -212,7 +212,7 @@ Data Model
       - :todo:`TBD`
 
     * - Expressions
-      - Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
+      - Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``, ``!=``) and the attribute value
       - :todo:`TBD`
 
 .. uml::

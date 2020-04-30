@@ -593,7 +593,7 @@ components:
           type: string
         operator:
           type: string
-          enum: ['<', '>', '=', '>=', '<=']
+          enum: ['<', '>', '=', '>=', '<=', '!=']
         value:
           oneOf:
           - type: string
