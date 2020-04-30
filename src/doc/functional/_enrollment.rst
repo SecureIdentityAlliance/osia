@@ -99,7 +99,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
     
-.. py:function:: delteEnrollment(enrollmentID, transactionID)
+.. py:function:: deleteEnrollment(enrollmentID, transactionID)
     :noindex:
 
     Deletes the enrollment
