@@ -117,17 +117,17 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
-.. py:function:: cancelCredential(credentialID, additionalData, transactionID)
+.. py:function:: revokeCredential(credentialID, additionalData, transactionID)
     :noindex:
 
-    Cancel an issued credential.  For electronic credentials this will revoke any
+    Revoke an issued credential.  For electronic credentials this will revoke any
     PKI certificates that are present.
 
     **Authorization**: :todo:`To be defined`
 
     :param str credentialID: The ID of the credential.
     :param dict additionalData: Additional data relating to the request,
-        e.g. reason for cancelation.
+        e.g. reason for revocation.
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
