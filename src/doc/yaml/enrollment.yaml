@@ -1,0 +1,702 @@
+
+# (c) Secure Identity Alliance
+
+openapi: 3.0.0
+info:
+  description: OSIA Enrollment Interface
+  version: 1.0.0
+  title: OSIA Enrollment Interface
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+tags:
+  - name: Enrollment
+servers:
+  - url: http://enrollment.com/
+  - url: https://enrollment.com/
+paths:
+
+  /v1/enrollments/{enrollmentId}:
+    post:
+      tags:
+        - Enrollment
+      summary: Create one enrollment
+      operationId: createEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: finalize
+          in: query
+          description: Flag to indicate that data was collected (default is false).
+          required: false
+          schema:
+            type: boolean
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enrollment'
+      responses:
+        '201':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - enrollmentId
+                properties:
+                  enrollmentId:
+                    type: string
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      tags:
+        - Enrollment
+      summary: Read one enrollment
+      operationId: readEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve. If not present all attributes will be returned.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - surname
+              - familyname
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Enrollment'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Enrollment
+      summary: Update one enrollment
+      operationId: updateEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: finalize
+          in: query
+          description: Flag to indicate that data was collected (default is false).
+          required: false
+          schema:
+            type: boolean
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enrollment'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - Enrollment
+      summary: Update partially one enrollment
+      description: Update partially an enrollment. Payload content is a partial enrollment object compliant with RFC7396.
+      operationId: partialUpdateEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: finalize
+          in: query
+          description: Flag to indicate that data was collected (default is false).
+          required: false
+          schema:
+            type: boolean
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Enrollment'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /v1/enrollments/{enrollmentId}/finalize:
+    put:
+      tags:
+        - Enrollment
+      summary: Finalize one enrollment
+      operationId: finalizeEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /v1/enrollments/{enrollmentId}/delete:
+    post:
+      tags:
+        - Enrollment
+      summary: Delete one enrollment
+      operationId: deleteEnrollment
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /v1/enrollments:
+    post:
+      tags:
+        - Enrollment
+      summary: Retrieve a list of enrollments which match passed in search criteria
+      operationId: findEnrollments
+      parameters:
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A set of expressions on attributes of the person
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
+            example:
+              - attributeName: firstName
+                operator: "="
+                value: John
+              - attributeName: dateOfBirth
+                operator: "<"
+                value: "1990-12-31"
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                    $ref: '#/components/schemas/Enrollment'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /v1/enrollments/{enrollmentId}/buffer:
+    post:
+      tags:
+        - Enrollment
+      summary: This service is used to send separately the buffers of the images
+      operationId: sendBuffer
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: The image of the request
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '201':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - bufferId
+                properties:
+                  bufferId:
+                    type: string
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            
+  /v1/enrollments/{enrollmentId}/buffer/{bufferId}:
+    get:
+      tags:
+        - Enrollment
+      summary: This service is used to get the buffer of the images
+      operationId: getBuffer
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: bufferId
+          in: path
+          description: the id of the buffer
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/octet-stream:
+              schema:
+                description: The image
+                type: string
+                format: binary
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+    Enrollment:
+      type: object
+      required:
+        - status
+        - enrollmentType
+        - biometricData
+      properties:
+        enrollmentId:
+          type: string
+        status:
+          type: string
+          enum: [FINALIZED, IN_PROGRESS]
+        enrollmentType:
+          type: string
+          description: Type of the enrollment
+        enrollmentFlags:
+          type: array
+          items:
+            $ref: '#/components/schemas/EnrollmentFlags'
+        requestData:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequestData'
+        biographicData:
+          $ref: '#/components/schemas/BiographicData'
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        documentData:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentData'
+    RequestData:
+      type: object
+      additionalProperties: true
+      description: The enrollment data related to the enrollment itself. Can be extended.
+      example:
+        requestType: "IDCARD_ISSUANCE"
+        deliveryPlace: "paris"
+        other: "other"
+    EnrollmentFlags:
+      type: object
+      additionalProperties: true
+      description: The enrollment custom flags. Can be extended.
+      example:
+        timeout: 3600
+        other: "other"
+    BiographicData:
+      type: object
+      additionalProperties: true
+      description: The enrollment biographic data. Can be extended.
+      example:
+        dateOfBirth: "1985-11-30"
+        gender: M
+        nationality: FRA
+    BiometricData:
+      type: object
+      required:
+        - biometricType
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        image:
+          type: string
+          format: byte
+          description: Base64-encoded image
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        mimetype:
+          type: string
+          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+    DocumentPart:
+      type: object
+      properties:
+        pages:
+          type: array
+          description: The pages included in this part. Can be a single page number, or a list.
+          minItems: 1
+          items:
+            type: integer
+        data:
+          type: string
+          format: byte
+          description: Base64-encoded data of the document
+        dataRef:
+          type: string
+          format: uri
+          description: URI to the data
+          example: "http://server.com/buffer?id=00003"
+        width:
+          type: integer
+          description: the width of the image in pixels
+        height:
+          type: integer
+          description: the height of the image in pixels
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the document part
+        mimetype:
+          type: string
+          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
+    DocumentData:
+      type: object
+      required:
+        - documentType
+        - parts
+      properties:
+        documentType:
+          $ref: '#/components/schemas/DocumentType'
+        instance:
+          type: string
+          description: "Used to separate two distincts documents of the same type (ex: two passports)"
+        parts:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/DocumentPart'
+    Expression:
+      type: object
+      required:
+        - attributeName
+        - operator
+        - value
+      properties:
+        attributeName:
+          type: string
+        operator:
+          type: string
+          enum: ['<', '>', '=', '>=', '<=', '!=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+    Expressions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expression'
+    CompressionType:
+      type: string
+      enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
+    DocumentType:
+      type: string
+      description: Type of document. Can be extended.
+      enum:
+        - ID_CARD
+        - Passport
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - IRIS
+        - UNKNOWN
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
+   
