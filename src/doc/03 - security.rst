@@ -117,17 +117,17 @@ The following table is a summary of all scopes defined in OSIA.
     -----------------------------------------------------------------------------------
     Generate UIN                        ``uin.generate``
     ----------------------------------- -----------------------------------------------
-    **Enrollment Services** (Work in progress)
+    **Enrollment Services**
     -----------------------------------------------------------------------------------
     Create Enrollment                   ``enroll.write``
     Read Enrollment                     ``enroll.read``
     Update Enrollment                   ``enroll.write``
+    Partial Update Enrollment           ``enroll.write``
+    Finalize Enrollment                 ``enroll.write``
     Delete Enrollment                   ``enroll.write``
-    Find Enrollment                     ``enroll.read``
-    Create Document Capture             ``enroll.doc.write``
-    Read Document Capture               ``enroll.doc.read``
-    Update Document Capture             ``enroll.doc.write``
-    Delete Document Capture             ``enroll.doc.write``
+    Find Enrollments                    ``enroll.read``
+    Send Buffer                         ``enroll.buf.write``
+    Get Buffer                          ``enroll.buf.read``
     ----------------------------------- -----------------------------------------------
     **Population Registry Services**
     -----------------------------------------------------------------------------------

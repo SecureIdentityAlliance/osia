@@ -22,6 +22,8 @@ paths:
         - Enrollment
       summary: Create one enrollment
       operationId: createEnrollment
+      security:
+        - BearerAuth: [enroll.write]
       parameters:
         - name: enrollmentId
           in: path
@@ -73,6 +75,8 @@ paths:
         - Enrollment
       summary: Read one enrollment
       operationId: readEnrollment
+      security:
+        - BearerAuth: [enroll.read]
       parameters:
         - name: enrollmentId
           in: path
@@ -121,6 +125,8 @@ paths:
         - Enrollment
       summary: Update one enrollment
       operationId: updateEnrollment
+      security:
+        - BearerAuth: [enroll.write]
       parameters:
         - name: enrollmentId
           in: path
@@ -166,6 +172,8 @@ paths:
       summary: Update partially one enrollment
       description: Update partially an enrollment. Payload content is a partial enrollment object compliant with RFC7396.
       operationId: partialUpdateEnrollment
+      security:
+        - BearerAuth: [enroll.write]
       parameters:
         - name: enrollmentId
           in: path
@@ -205,13 +213,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - Enrollment
+      summary: Delete one enrollment
+      operationId: deleteEnrollment
+      security:
+        - BearerAuth: [enroll.write]
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Delete successful
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
                 
+
   /v1/enrollments/{enrollmentId}/finalize:
     put:
       tags:
         - Enrollment
       summary: Finalize one enrollment
       operationId: finalizeEnrollment
+      security:
+        - BearerAuth: [enroll.write]
       parameters:
         - name: enrollmentId
           in: path
@@ -241,45 +286,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
                 
-  /v1/enrollments/{enrollmentId}/delete:
-    post:
-      tags:
-        - Enrollment
-      summary: Delete one enrollment
-      operationId: deleteEnrollment
-      parameters:
-        - name: enrollmentId
-          in: path
-          description: the id of the enrollment
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-      responses:
-        '201':
-          description: Operation successful
-        '400':
-          description: Bad request
-        '403':
-          description: Operation not allowed
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-                
   /v1/enrollments:
     post:
       tags:
         - Enrollment
       summary: Retrieve a list of enrollments which match passed in search criteria
       operationId: findEnrollments
+      security:
+        - BearerAuth: [enroll.read]
       parameters:
         - name: transactionId
           in: query
@@ -328,6 +342,8 @@ paths:
         - Enrollment
       summary: This service is used to send separately the buffers of the images
       operationId: sendBuffer
+      security:
+        - BearerAuth: [enroll.buf.write]
       parameters:
         - name: enrollmentId
           in: path
@@ -380,6 +396,8 @@ paths:
         - Enrollment
       summary: This service is used to get the buffer of the images
       operationId: getBuffer
+      security:
+        - BearerAuth: [enroll.buf.read]
       parameters:
         - name: enrollmentId
           in: path
@@ -422,6 +440,11 @@ paths:
                 $ref: '#/components/schemas/Error'
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object

@@ -67,7 +67,7 @@ The components are defined as follows:
         - History
         - Supporting documents
       - - Recording application
-        - Collecting personal data 
+        - Collecting personal data
 
     * - PR
       - - Alpha
@@ -213,12 +213,12 @@ The following table describes in detail the interfaces and associated services.
     Create Enrollment                  Insert a new enrollment
     Read Enrollment                    Retrieve an enrollment
     Update Enrollment                  Update an enrollment
+    Partial Update Enrollment          Update part of an enrollment
+    Finalize Enrollment                Finalize an enrollment (mark it as completed)
     Delete Enrollment                  Delete an enrollment
-    Find Enrollment                    Retrieve a list of enrollment who match passed in search criteria
-    Create Document Capture            Add a new document for an enrollment
-    Read Document Capture              Retrieve document data
-    Update Document Capture            Update a document for an enrollment
-    Delete Document Capture            Delete a document for an enrollment
+    Find Enrollments                   Retrieve a list of enrollments which match passed in search criteria
+    Send Buffer                        Send a buffer (image, etc.)
+    Get Buffer                         Get a buffer
     --------------------------------- -----------------------------------------------------------------------------------
     **Population Registry Services**
     ---------------------------------------------------------------------------------------------------------------------
@@ -276,16 +276,8 @@ The following table describes in detail the interfaces and associated services.
     Read Credential Profiles           Retrieve the credential profile
     Update Document Val Status         Updates the status of a document validation
     Read Document Val Status           Retrieve the status of a document validation
-    Create Biometric                   Add a new biometric for a person
-    Read Biometric Metadata            Retrieve biometric data
-    Update Biometric                   Update a biometric for a person
-    Delete Biometric                   Delete a biometric for a person
     Update Biometric Val Status        Updates the status of a biometric validation
     Read Biometric Val Status          Retrieve the status of a biometric validation
-    Create Biographic                  Add a new biographic for a person
-    Read Biographic                    Retrieve biographic data
-    Update Biographic                  Update a biographic for a person
-    Delete Biographic                  Delete a biographic for a person
     Update Biographic Val Status       Updates the status of a biographic validation
     Read Biographic Val Status         Retrieve the status of a biographic validation   
     ================================= ===================================================================================   
@@ -335,12 +327,12 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Create Enrollment                     U      I
     Read Enrollment                       U      I
     Update Enrollment                     U      I
+    Partial Update Enrollment             U      I
+    Finalize Enrollment                   U      I
     Delete Enrollment                     U      I
-    Find Enrollment                       U      I
-    Create Document Capture
-    Read Document Capture
-    Update Document Capture
-    Delete Document Capture
+    Find Enrollments                      U      I
+    Send Buffer                           U      I
+    Get Buffer                            U      I
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Population Registry Services**
     --------------------------------------------------------------------------------------------------
@@ -398,16 +390,8 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Read Cred Profiles
     Update Document Val Status
     Read Document Val Status
-    Create Biometric
-    Read Biometric Metadata
-    Update Biometric
-    Delete Biometric
     Update Biometric Val Status
     Read Biometric Val Status
-    Create Biographic
-    Read Biographic
-    Update Biographic
-    Delete Biographic
     Update Biographic Val Status
     Read Biographic Val Status
     =================================  ======= ======= ======= ======= ======= ======= ======= =======

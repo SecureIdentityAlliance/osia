@@ -21,11 +21,11 @@ Enrollment
         - `readEnrollment <#get--v1-enrollments-enrollmentId>`_
         - `updateEnrollment <#put--v1-enrollments-enrollmentId>`_
         - `partialUpdateEnrollment <#patch--v1-enrollments-enrollmentId>`_
+        - `deleteEnrollment <#delete--v1-enrollments-enrollmentId>`_
         - `finalizeEnrollment <#put--v1-enrollments-enrollmentId-finalize>`_
-        - `deleteEnrollment <#put--v1-enrollments-enrollmentId-delete>`_
-        - `findEnrollments <#put--v1-enrollments>`_
-        - `sendBuffer <#delete--v1-enrollments-enrollmentId-buffer>`_
-        - `getBuffer <#post--v1-enrollments-enrollmentId-buffer-bufferId>`_
+        - `findEnrollments <#post--v1-enrollments>`_
+        - `sendBuffer <#post--v1-enrollments-enrollmentId-buffer>`_
+        - `getBuffer <#get--v1-enrollments-enrollmentId-buffer-bufferId>`_
 
 Services
 """"""""

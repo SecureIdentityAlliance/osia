@@ -93,7 +93,7 @@ Services
 
     When all the enrollment steps are done, the enrollment client indicates to the enrollment server that all data has been collected and that any further processing can be triggered.
 
-    **Authorization**: ``enroll.read``
+    **Authorization**: ``enroll.write``
 
     :param str enrollmentID: The ID of the enrollment.
     :param string transactionID: The client generated transactionID.
@@ -104,7 +104,7 @@ Services
 
     Deletes the enrollment
 
-    **Authorization**: ``enroll.doc.write``
+    **Authorization**: ``enroll.write``
 
     :param str enrollmentID: The ID of the enrollment.
     :param string transactionID: The client generated transactionID.
@@ -115,7 +115,7 @@ Services
 
     Retrieve a list of enrollments which match passed in search criteria.
 
-    **Authorization**: ``enroll.doc.read``
+    **Authorization**: ``enroll.read``
 
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
     :param string transactionID: The client generated transactionID.
@@ -126,7 +126,7 @@ Services
 
     This service is used to send separately the buffers of the images. Buffers can be sent any time from the enrollment client prior to the create or update.
 
-    **Authorization**: ``enroll.doc.write``
+    **Authorization**: ``enroll.buf.write``
 
     :param str enrollmentID: The ID of the enrollment.
     :param image data: The image of the request.
@@ -138,7 +138,7 @@ Services
 
     This service is used to get images of buffers.
 
-    **Authorization**: ``enroll.doc.write``
+    **Authorization**: ``enroll.buf.read``
 
     :param str enrollmentID: The ID of the enrollment.
     :param str bufferID: The ID of the buffer.
@@ -238,27 +238,27 @@ Data Model
         URL imageRef;
     }
     Enrollment o-- "*" BiometricData
-	
-	class DocumentData {
+
+    class DocumentData {
         int documentType;
     }
     Enrollment o-- "*" DocumentData
-	
-	class DocumentPart {
+
+    class DocumentPart {
         byte[] image;
         URL imageRef;
     }
     DocumentData o-- "*" DocumentPart
-	
-	class RequestData {
+
+    class RequestData {
         string field1;
         int field2;
         date field3;
         ...
     }
     Enrollment o- RequestData
-	
-	class EnrollmentFlagsData {
+
+    class EnrollmentFlagsData {
         string field1;
         int field2;
         date field3;
