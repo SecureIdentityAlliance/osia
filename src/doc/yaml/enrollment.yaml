@@ -11,8 +11,8 @@ info:
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 tags:
   - name: Enrollment
+  - name: Buffer
 servers:
-  - url: http://enrollment.com/
   - url: https://enrollment.com/
 paths:
 
@@ -339,7 +339,7 @@ paths:
   /v1/enrollments/{enrollmentId}/buffer:
     post:
       tags:
-        - Enrollment
+        - Buffer
       summary: This service is used to send separately the buffers of the images
       operationId: sendBuffer
       security:
@@ -393,7 +393,7 @@ paths:
   /v1/enrollments/{enrollmentId}/buffer/{bufferId}:
     get:
       tags:
-        - Enrollment
+        - Buffer
       summary: This service is used to get the buffer of the images
       operationId: getBuffer
       security:
