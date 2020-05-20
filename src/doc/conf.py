@@ -8,7 +8,7 @@ master_doc = 'index'
 exclude_patterns = []
 pygments_style = 'colorful'
 project = 'OSIA'
-release = '4.0.0'
+release = '4.0.0-DRAFT'
 author = 'SIA'
 
 numfig = True
@@ -26,6 +26,7 @@ rst_prolog = '''
 
 .. |tick|   unicode:: U+2714 .. HEAVY CHECK MARK
 .. |project| replace:: OSIA
+.. |release| replace:: '''+release+'''
 
 .. role:: todo
 

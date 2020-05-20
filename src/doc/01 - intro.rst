@@ -136,10 +136,15 @@ Revision History
      - Date
      - Notes
    * - 1.0.0
-     - 2018-12
+     - 2019-01
      - First release
-   * - 4.0.0
+   * - 2.0.0
      - 2019-06
-     - Second release
-
+     - New name, new logo
+   * - 3.0.0
+     - 2019-11
+     - PR & ABIS interfaces
+   * - 4.0.0
+     - 2020-06
+     - Enrollment & CMS interfaces, Security
 
