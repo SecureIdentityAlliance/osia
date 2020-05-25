@@ -9,14 +9,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="166.29279mm"
+   width="187.67435mm"
    height="65.33374mm"
-   viewBox="0 0 166.29278 65.33374"
+   viewBox="0 0 187.67434 65.33374"
    version="1.1"
    id="svg114388"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="components.svg"
-   inkscape:export-filename="C:\ohe\repo\github\osia\src\doc\images\components.png"
+   sodipodi:docname="components-2.svg"
+   inkscape:export-filename="C:\ohe\repo\github\osia\src\doc\images\components2.png"
    inkscape:export-xdpi="150.06641"
    inkscape:export-ydpi="150.06641">
   <defs
@@ -181,6 +181,14 @@
          id="path113966-1-51"
          inkscape:connector-curvature="0" />
     </clipPath>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath113968-6-7-4">
+      <path
+         d="M 50.797,344.409 H 481.366 V 492.922 H 50.797 Z"
+         id="path113966-1-2-3"
+         inkscape:connector-curvature="0" />
+    </clipPath>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -189,16 +197,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="453.8879"
-     inkscape:cy="116.06173"
+     inkscape:zoom="1.4"
+     inkscape:cx="437.64272"
+     inkscape:cy="108.69927"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1137"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="104"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -222,8 +230,8 @@
      id="layer1"
      transform="translate(-31.09349,-37.547418)">
     <path
-       d="M 31.09349,102.88116 H 197.38627 V 37.547418 H 31.09349 Z"
-       style="fill:#ededed;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35957739"
+       d="M 31.09349,102.88116 H 218.76783 V 37.547418 H 31.09349 Z"
+       style="fill:#ededed;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.38199538"
        id="path113888"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="150.06641"
@@ -474,20 +482,20 @@
        y="48.644337"
        id="text115231-4"><tspan
          sodipodi:role="line"
-         id="tspan115229-8"
          x="132.36182"
          y="48.644337"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px">Third</tspan><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
+         id="tspan115251">Identity</tspan><tspan
          sodipodi:role="line"
          x="132.36182"
          y="52.586262"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-         id="tspan958">Party</tspan><tspan
+         id="tspan1754">Provider</tspan><tspan
          sodipodi:role="line"
          x="132.36182"
          y="56.528183"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-         id="tspan115251">Services</tspan></text>
+         id="tspan1756">Services</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -632,58 +640,8 @@
          y="97.140038"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px">OSIA</tspan></text>
     <g
-       id="g1052"
-       transform="translate(-0.66817381,-0.80180858)">
-      <g
-         style="fill:#ffffff;fill-opacity:1"
-         id="g113962-2"
-         transform="matrix(0.35274412,0,0,-0.30206908,59.406986,225.35009)">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           clip-path="url(#clipPath113968-6)"
-           id="g113964-7">
-          <g
-             style="fill:#ffffff;fill-opacity:1"
-             transform="translate(264.4884,454.3712)"
-             id="g113970-2">
-            <path
-               inkscape:connector-curvature="0"
-               id="path113972-3"
-               style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.86900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-               d="m 0,0 v 34.822 c 0,1.82 1.476,3.296 3.296,3.296 h 47.508 c 1.819,0 3.295,-1.476 3.295,-3.296 L 54.099,0 c 0,-1.82 -1.476,-3.295 -3.295,-3.295 H 3.296 C 1.476,-3.295 0,-1.82 0,0 Z" />
-          </g>
-        </g>
-      </g>
-      <g
-         transform="translate(-13.441038,22.985179)"
-         id="g4752">
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           x="166.28125"
-           y="57.363098"
-           id="text115332"><tspan
-             sodipodi:role="line"
-             id="tspan115330"
-             x="166.28125"
-             y="57.363098"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px">Private sector</tspan></text>
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           x="166.40149"
-           y="59.630947"
-           id="text115336"><tspan
-             sodipodi:role="line"
-             id="tspan115334"
-             x="166.40149"
-             y="59.630947"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;font-size:2.11666656px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke-width:0.26458332px">(banks, telcos, etc.)</tspan></text>
-      </g>
-    </g>
-    <g
        id="g1032"
-       transform="translate(-0.67799222)">
+       transform="translate(-0.67799222,6.3500003)">
       <g
          style="fill:#ffffff;fill-opacity:1"
          id="g113962-2-1"
@@ -706,79 +664,29 @@
       </g>
       <text
          id="text115332-4"
-         y="49.411846"
-         x="153.90927"
+         y="48.882679"
+         x="154.96759"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-           y="49.411846"
-           x="153.90927"
+           y="48.882679"
+           x="154.96759"
            id="tspan115330-5"
            sodipodi:role="line">Identity</tspan><tspan
            id="tspan4848"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-           y="53.706547"
-           x="153.90927"
-           sodipodi:role="line">Provider</tspan></text>
-    </g>
-    <g
-       id="g1023"
-       transform="translate(-0.47846681,-0.40090429)">
-      <g
-         style="fill:#ffffff;fill-opacity:1"
-         id="g113962-2-7"
-         transform="matrix(0.35274412,0,0,-0.30206908,59.217279,209.9821)">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           clip-path="url(#clipPath113968-6-73)"
-           id="g113964-7-85">
-          <g
-             style="fill:#ffffff;fill-opacity:1"
-             transform="translate(264.4884,454.3712)"
-             id="g113970-2-1">
-            <path
-               inkscape:connector-curvature="0"
-               id="path113972-3-6"
-               style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.86900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-               d="m 0,0 v 34.822 c 0,1.82 1.476,3.296 3.296,3.296 h 47.508 c 1.819,0 3.295,-1.476 3.295,-3.296 L 54.099,0 c 0,-1.82 -1.476,-3.295 -3.295,-3.295 H 3.296 C 1.476,-3.295 0,-1.82 0,0 Z" />
-          </g>
-        </g>
-      </g>
-      <g
-         transform="translate(-12.762119,-6.5481039)"
-         id="g4830">
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           x="166.35188"
-           y="70.970711"
-           id="text115332-6"><tspan
-             sodipodi:role="line"
-             id="tspan115330-4"
-             x="166.35188"
-             y="70.970711"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px">Government</tspan></text>
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-           x="166.4294"
-           y="73.238564"
-           id="text115336-7"><tspan
-             sodipodi:role="line"
-             x="166.4294"
-             y="73.238564"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;font-size:2.11666656px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke-width:0.26458332px"
-             id="tspan115362">(social security,</tspan><tspan
-             id="tspan971"
-             sodipodi:role="line"
-             x="166.4294"
-             y="77.02227"
-             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;font-size:2.11666656px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke-width:0.26458332px">tax agency, etc.)</tspan></text>
-      </g>
+           y="53.17738"
+           x="154.96759"
+           sodipodi:role="line">Provider</tspan><tspan
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
+           y="57.472084"
+           x="154.96759"
+           sodipodi:role="line"
+           id="tspan1800">(Card Based)</tspan></text>
     </g>
     <g
        id="g1114"
-       transform="translate(-1.3701637,-6.6145833)">
+       transform="translate(-1.3701637,-0.26458296)">
       <rect
          ry="1.0394346"
          y="52.374088"
@@ -801,7 +709,7 @@
     </g>
     <g
        id="g1152"
-       transform="translate(-0.0708812)">
+       transform="translate(-0.0708812,6.3500003)">
       <g
          transform="translate(-1.2992825,0.73233048)"
          id="g1114-4">
@@ -824,45 +732,293 @@
            y="56.248348"
            x="175.1024"
            id="tspan1144"
-           sodipodi:role="line">Service Provider</tspan></text>
+           sodipodi:role="line">Service Providers</tspan></text>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.93888903px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="57.208324"
+       y="42.775318"
+       id="text984"><tspan
+         sodipodi:role="line"
+         id="tspan982"
+         x="57.208324"
+         y="42.775318"
+         style="font-size:4.93888903px;stroke-width:0.26458332">UC2: Identity Derivation managed by Identity Provider</tspan></text>
+    <g
+       id="g1152-9"
+       transform="translate(22.336231,-1.1932288)">
+      <g
+         transform="translate(-1.2992825,0.73233048)"
+         id="g1114-4-47">
+        <rect
+           style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.30000001;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           id="rect1109-4-9"
+           width="19.324032"
+           height="5.0554318"
+           x="175.05516"
+           y="52.374088"
+           ry="1.0394346" />
+      </g>
+      <text
+         id="text1146-5"
+         y="56.248348"
+         x="175.1024"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"
+           y="56.248348"
+           x="175.1024"
+           id="tspan1144-9"
+           sodipodi:role="line">Service Providers</tspan></text>
     </g>
     <g
-       id="g1114-4-4"
-       transform="matrix(0.91421865,0,0,1.0025305,-28.832657,37.95145)">
+       id="g1114-8"
+       transform="translate(-0.99101953,20.119466)">
       <rect
          ry="1.0394346"
          y="52.374088"
          x="175.05516"
-         height="7.7213802"
-         width="19.397123"
-         id="rect1109-4-4"
+         height="5.0554318"
+         width="19.324032"
+         id="rect1109-2"
          style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.30000001;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
-    <g
-       id="g4752-8"
-       transform="translate(-35.012308,37.013392)">
       <text
-         id="text115332-43"
-         y="56.160385"
-         x="166.8826"
+         id="text115332-4-2-0"
+         y="55.437069"
+         x="176.00961"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          xml:space="preserve"><tspan
-           id="tspan1202"
+           id="tspan4848-5-2"
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-           y="56.160385"
-           x="166.8826"
-           sodipodi:role="line">Trusted Party</tspan></text>
+           y="55.437069"
+           x="176.00961"
+           sodipodi:role="line">Identity HUB</tspan></text>
+    </g>
+    <g
+       id="g1152-2"
+       transform="translate(0.30826047,26.734049)">
+      <g
+         transform="translate(-1.2992825,0.73233048)"
+         id="g1114-4-6">
+        <rect
+           style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.30000001;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           id="rect1109-4-2"
+           width="19.324032"
+           height="5.0554318"
+           x="175.05516"
+           y="52.374088"
+           ry="1.0394346" />
+      </g>
       <text
-         id="text115336-4"
-         y="59.630947"
-         x="166.40149"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         id="text1146-1"
+         y="56.248348"
+         x="175.1024"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
          xml:space="preserve"><tspan
-           id="tspan1210"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;font-size:2.11666656px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke-width:0.26458332px"
-           y="59.630947"
-           x="166.40149"
-           sodipodi:role="line">(gov agencies)</tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"
+           y="56.248348"
+           x="175.1024"
+           id="tspan1144-5"
+           sodipodi:role="line">Service Providers</tspan></text>
+    </g>
+    <g
+       id="g1152-9-3"
+       transform="translate(22.71537,19.19082)">
+      <g
+         transform="translate(-1.2992825,0.73233048)"
+         id="g1114-4-47-5">
+        <rect
+           style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.30000001;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           id="rect1109-4-9-7"
+           width="19.324032"
+           height="5.0554318"
+           x="175.05516"
+           y="52.374088"
+           ry="1.0394346" />
+      </g>
+      <text
+         id="text1146-5-1"
+         y="56.248348"
+         x="175.1024"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"
+           y="56.248348"
+           x="175.1024"
+           id="tspan1144-9-0"
+           sodipodi:role="line">Service Providers</tspan></text>
+    </g>
+    <path
+       d="m 62.312295,96.818782 h -3.474862 v -1.55081 h 3.474862 z"
+       style="fill:#94afd0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277778"
+       id="path114128-6"
+       inkscape:connector-curvature="0" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:12px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="63.418671"
+       y="96.94294"
+       id="text115231-5-4"><tspan
+         sodipodi:role="line"
+         id="tspan115229-9-0"
+         x="63.418671"
+         y="96.94294"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Normal';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px">OpenIDConnect, ISO18013, etc.</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="154.36841"
+       y="87.576538"
+       id="text1926"><tspan
+         sodipodi:role="line"
+         x="154.36841"
+         y="87.576538"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan1932">create</tspan><tspan
+         sodipodi:role="line"
+         x="154.36841"
+         y="89.781403"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan1997">update</tspan><tspan
+         sodipodi:role="line"
+         x="154.36841"
+         y="91.986259"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan1999">delete</tspan><tspan
+         sodipodi:role="line"
+         x="154.36841"
+         y="94.191124"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan2001">suspend</tspan><tspan
+         sodipodi:role="line"
+         x="154.36841"
+         y="96.395981"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan2003">get status</tspan><tspan
+         sodipodi:role="line"
+         x="154.36841"
+         y="98.600845"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan2016">send message</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="131.91777"
+       y="77.784256"
+       id="text1926-0"><tspan
+         sodipodi:role="line"
+         x="131.91777"
+         y="77.784256"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan2018">event notification</tspan><tspan
+         sodipodi:role="line"
+         x="131.91777"
+         y="79.98912"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan2014" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="131.81284"
+       y="59.641457"
+       id="text1926-0-8"><tspan
+         sodipodi:role="line"
+         x="131.81284"
+         y="59.641457"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan2018-0">get card status</tspan><tspan
+         sodipodi:role="line"
+         x="131.81284"
+         y="61.846317"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan2014-9" /></text>
+    <g
+       id="g1032-8"
+       transform="translate(-0.60135641,26.552507)">
+      <g
+         style="fill:#ffffff;fill-opacity:1"
+         id="g113962-2-1-6"
+         transform="matrix(0.35277777,0,0,-0.30167828,59.407919,194.3704)">
+        <g
+           style="fill:#ffffff;fill-opacity:1"
+           clip-path="url(#clipPath113968-6-7-4)"
+           id="g113964-7-8-5">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             transform="translate(264.4884,454.3712)"
+             id="g113970-2-7-6">
+            <path
+               inkscape:connector-curvature="0"
+               id="path113972-3-8-9"
+               style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.86900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+               d="m 0,0 v 34.822 c 0,1.82 1.476,3.296 3.296,3.296 h 47.508 c 1.819,0 3.295,-1.476 3.295,-3.296 L 54.099,0 c 0,-1.82 -1.476,-3.295 -3.295,-3.295 H 3.296 C 1.476,-3.295 0,-1.82 0,0 Z" />
+          </g>
+        </g>
+      </g>
+      <text
+         id="text115332-4-7"
+         y="48.882679"
+         x="154.96759"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         xml:space="preserve"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
+           y="48.882679"
+           x="154.96759"
+           id="tspan115330-5-0"
+           sodipodi:role="line">Identity</tspan><tspan
+           id="tspan4848-57"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
+           y="53.17738"
+           x="154.96759"
+           sodipodi:role="line">Provider</tspan><tspan
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
+           y="57.472084"
+           x="154.96759"
+           sodipodi:role="line"
+           id="tspan1802">(CMS Driven)</tspan></text>
+    </g>
+    <g
+       id="g114064-7"
+       transform="matrix(0,-0.22741568,-0.28751405,0,153.65417,72.441561)">
+      <path
+         d="M 0,0 V 1.82 C 0,3.642 -2.5581307,5.0428479 -4.3801149,5.0457949 L -49.640496,5.119 C -51.46248,5.1219469 -54.099,3.642 -54.099,1.82 V 0 Z"
+         style="fill:#b83899;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="path114066-8"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="csssscc" />
+    </g>
+    <g
+       id="g114064-7-6"
+       transform="matrix(0,-0.2271069,-0.28751406,0,153.57065,52.229301)">
+      <path
+         d="M 0,0 V 1.82 C 0,3.642 -2.4105473,4.9219967 -4.23251,4.9295964 L -49.640496,5.119 C -51.462459,5.1265997 -54.099,3.642 -54.099,1.82 V 0 Z"
+         style="fill:#b83899;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="path114066-8-6"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="csssscc" />
+    </g>
+    <g
+       id="g114064-7-6-5"
+       transform="matrix(0,0.22803322,0.28751406,0,169.58233,64.509924)"
+       style="fill:#94afd0;fill-opacity:1">
+      <path
+         d="M 5.9461115e-8,0 V 1.82 C 5.9461115e-8,3.642 -1.4650542,5.261411 -3.2747022,5.2582553 L -49.813718,5.1770992 C -51.623366,5.1739435 -53.73273,3.642 -53.73273,1.82 V 0 Z"
+         style="fill:#94afd0;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.99660909"
+         id="path114066-8-6-9"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="csssscc" />
+    </g>
+    <g
+       id="g114064-7-6-5-7"
+       transform="matrix(0,0.22803322,0.28751406,0,169.58553,84.764372)"
+       style="fill:#94afd0;fill-opacity:1">
+      <path
+         d="M 0,0 V 1.82 C 0,3.642 -1.4750492,5.2636617 -3.2970243,5.2582553 L -50.226528,5.119 C -52.048503,5.1135936 -54.099,3.642 -54.099,1.82 V 0 Z"
+         style="fill:#94afd0;fill-opacity:1;fill-rule:nonzero;stroke:none"
+         id="path114066-8-6-9-4"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="csssscc" />
     </g>
   </g>
 </svg>

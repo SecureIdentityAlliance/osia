@@ -9,14 +9,14 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="166.29279mm"
+   width="146.64847mm"
    height="65.33374mm"
-   viewBox="0 0 166.29278 65.33374"
+   viewBox="0 0 146.64846 65.333741"
    version="1.1"
    id="svg114388"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
-   sodipodi:docname="components.svg"
-   inkscape:export-filename="C:\ohe\repo\github\osia\src\doc\images\components.png"
+   sodipodi:docname="components-1.svg"
+   inkscape:export-filename="C:\ohe\repo\github\osia\src\doc\images\components1.png"
    inkscape:export-xdpi="150.06641"
    inkscape:export-ydpi="150.06641">
   <defs
@@ -189,16 +189,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="453.8879"
-     inkscape:cy="116.06173"
+     inkscape:zoom="1.979899"
+     inkscape:cx="292.92514"
+     inkscape:cy="119.25027"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
-     inkscape:window-height="1137"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="104"
      inkscape:window-maximized="1"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -222,8 +222,8 @@
      id="layer1"
      transform="translate(-31.09349,-37.547418)">
     <path
-       d="M 31.09349,102.88116 H 197.38627 V 37.547418 H 31.09349 Z"
-       style="fill:#ededed;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35957739"
+       d="M 31.09349,102.88116 H 177.74196 V 37.547418 H 31.09349 Z"
+       style="fill:#ededed;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.33767152"
        id="path113888"
        inkscape:connector-curvature="0"
        inkscape:export-xdpi="150.06641"
@@ -682,46 +682,6 @@
       </g>
     </g>
     <g
-       id="g1032"
-       transform="translate(-0.67799222)">
-      <g
-         style="fill:#ffffff;fill-opacity:1"
-         id="g113962-2-1"
-         transform="matrix(0.35277777,0,0,-0.30167828,59.407919,194.3704)">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           clip-path="url(#clipPath113968-6-7)"
-           id="g113964-7-8">
-          <g
-             style="fill:#ffffff;fill-opacity:1"
-             transform="translate(264.4884,454.3712)"
-             id="g113970-2-7">
-            <path
-               inkscape:connector-curvature="0"
-               id="path113972-3-8"
-               style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.86900002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-               d="m 0,0 v 34.822 c 0,1.82 1.476,3.296 3.296,3.296 h 47.508 c 1.819,0 3.295,-1.476 3.295,-3.296 L 54.099,0 c 0,-1.82 -1.476,-3.295 -3.295,-3.295 H 3.296 C 1.476,-3.295 0,-1.82 0,0 Z" />
-          </g>
-        </g>
-      </g>
-      <text
-         id="text115332-4"
-         y="49.411846"
-         x="153.90927"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-           y="49.411846"
-           x="153.90927"
-           id="tspan115330-5"
-           sodipodi:role="line">Identity</tspan><tspan
-           id="tspan4848"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.82222223px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-           y="53.706547"
-           x="153.90927"
-           sodipodi:role="line">Provider</tspan></text>
-    </g>
-    <g
        id="g1023"
        transform="translate(-0.47846681,-0.40090429)">
       <g
@@ -776,93 +736,42 @@
              style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;font-size:2.11666656px;line-height:100%;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke-width:0.26458332px">tax agency, etc.)</tspan></text>
       </g>
     </g>
-    <g
-       id="g1114"
-       transform="translate(-1.3701637,-6.6145833)">
-      <rect
-         ry="1.0394346"
-         y="52.374088"
-         x="175.05516"
-         height="5.0554318"
-         width="19.324032"
-         id="rect1109"
-         style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.30000001;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" />
-      <text
-         id="text115332-4-2"
-         y="55.437069"
-         x="176.00961"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           id="tspan4848-5"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-           y="55.437069"
-           x="176.00961"
-           sodipodi:role="line">Identity HUB</tspan></text>
-    </g>
-    <g
-       id="g1152"
-       transform="translate(-0.0708812)">
-      <g
-         transform="translate(-1.2992825,0.73233048)"
-         id="g1114-4">
-        <rect
-           style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.30000001;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-           id="rect1109-4"
-           width="19.324032"
-           height="5.0554318"
-           x="175.05516"
-           y="52.374088"
-           ry="1.0394346" />
-      </g>
-      <text
-         id="text1146"
-         y="56.248348"
-         x="175.1024"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-         xml:space="preserve"><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;font-family:Arial;-inkscape-font-specification:'Arial, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332"
-           y="56.248348"
-           x="175.1024"
-           id="tspan1144"
-           sodipodi:role="line">Service Provider</tspan></text>
-    </g>
-    <g
-       id="g1114-4-4"
-       transform="matrix(0.91421865,0,0,1.0025305,-28.832657,37.95145)">
-      <rect
-         ry="1.0394346"
-         y="52.374088"
-         x="175.05516"
-         height="7.7213802"
-         width="19.397123"
-         id="rect1109-4-4"
-         style="fill:#ffffff;fill-opacity:1;stroke:#4f4c4d;stroke-width:0.30000001;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1" />
-    </g>
-    <g
-       id="g4752-8"
-       transform="translate(-35.012308,37.013392)">
-      <text
-         id="text115332-43"
-         y="56.160385"
-         x="166.8826"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           id="tspan1202"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.11666656px;line-height:125%;font-family:Arial;-inkscape-font-specification:'Arial, Bold';text-align:start;writing-mode:lr-tb;text-anchor:start;stroke-width:0.26458332px"
-           y="56.160385"
-           x="166.8826"
-           sodipodi:role="line">Trusted Party</tspan></text>
-      <text
-         id="text115336-4"
-         y="59.630947"
-         x="166.40149"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;line-height:0%;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-         xml:space="preserve"><tspan
-           id="tspan1210"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:condensed;font-size:2.11666656px;line-height:1.25;font-family:Arial;-inkscape-font-specification:'Arial, Bold Condensed';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#707070;fill-opacity:1;stroke-width:0.26458332px"
-           y="59.630947"
-           x="166.40149"
-           sodipodi:role="line">(gov agencies)</tspan></text>
-    </g>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:4.93888903px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="51.010441"
+       y="43.14642"
+       id="text984"><tspan
+         sodipodi:role="line"
+         id="tspan982"
+         x="51.010441"
+         y="43.14642"
+         style="font-size:4.93888903px;stroke-width:0.26458332">UC1: Direct access to database &amp; matching</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="132.38864"
+       y="79.628708"
+       id="text1926"><tspan
+         sodipodi:role="line"
+         id="tspan1924"
+         x="132.38864"
+         y="79.628708"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332">verifyIdentity</tspan><tspan
+         sodipodi:role="line"
+         x="132.38864"
+         y="81.833572"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan1928">identify</tspan><tspan
+         sodipodi:role="line"
+         x="132.38864"
+         y="84.038429"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan1930">readAttributes</tspan><tspan
+         sodipodi:role="line"
+         x="132.38864"
+         y="86.243294"
+         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:1.76388884px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Italic';stroke-width:0.26458332"
+         id="tspan1932">readAttributeSet</tspan></text>
   </g>
 </svg>
