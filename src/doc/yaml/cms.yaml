@@ -1,0 +1,786 @@
+
+# (c) Secure Identity Alliance
+
+openapi: 3.0.0
+info:
+  description: OSIA CMS Interface
+  version: 1.0.0
+  title: OSIA Credential Management System Interface
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+tags:
+  - name: Credential Request
+  - name: Credential
+  - name: Credential Profile
+servers:
+  - url: http://cms.com/
+  - url: https://cms.com/
+paths:
+
+  /v1/credentialRequests/{credentialRequestId}:
+    post:
+      tags:
+        - Credential Request
+      summary: Create a request for a credential
+      operationId: createCredentialRequest
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialRequest'
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    get:
+      tags:
+        - Credential Request
+      summary: Read a credential request
+      operationId: readCredentialRequest
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: attributes
+          in: query
+          description: The (optional) set of attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - lastname
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CredentialRequest'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Credential Request
+      summary: Update a credential request
+      operationId: updateCredentialRequest
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialRequest'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+        - Credential Request
+      summary: Delete a credential request
+      operationId: deleteCredentialRequest
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Delete successful
+        '400':
+          description: Bad request
+        '403':
+          description: Delete not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentials:
+    post:
+      tags:
+        - Credential
+      summary: Retrieve a list of credentials that match the given search criteria
+      operationId: findCredentials
+      parameters:
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Credential'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentials/{credentialId}:
+    get:
+      tags:
+        - Credential
+      summary: Read a credential
+      operationId: readCredential
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Credential'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentials/{credentialId}/suspend:
+    post:
+      tags:
+        - Credential
+      summary: Suspend a credential
+      operationId: suspendCredential
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                reason:
+                  type: string
+                  description: the reason for suspension
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentials/{credentialId}/unsuspend:
+    post:
+      tags:
+        - Credential
+      summary: Unsuspend a credential
+      operationId: unsuspendCredential
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                reason:
+                  type: string
+                  description: the reason for unsuspension
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentials/{credentialId}/revoke:
+    post:
+      tags:
+        - Credential
+      summary: Revoke a credential
+      operationId: revokeCredential
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                reason:
+                  type: string
+                  description: the reason for revocation
+
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentialProfiles:
+    post:
+      tags:
+        - Credential Profile
+      summary: Retrieve a list of credential profiles that match the given search criteria
+      operationId: findCredentialProfiles
+      parameters:
+        - name: attributes
+          in: query
+          description: The (optional) set of required attributes to retrieve
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
+      responses:
+        '200':
+          description: Read successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CredentialProfile'
+        '400':
+          description: Bad request
+        '403':
+          description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+
+    Address:
+      type: object
+      properties:
+        address1:
+          type: string
+          description: the first line of the address
+        address2:
+          type: string
+          description: the second line of the address
+        city:
+          type: string
+          description: the city of the address
+        state:
+          type: string
+          description: the state of the address
+        postalcode:
+          type: string
+          description: the postal code of the address
+        country:
+          type: string
+          description: the country of the address
+      additionalProperties: true
+      example:
+        address1: 11 Rue des Rosiers
+        address2:
+        city: Libourne
+        state:
+        postalcode: '33500'
+        country: France
+
+
+    BiographicData:
+      type: object
+      properties:
+        title:
+          type: string
+          description: the title of the person
+          example: Mr
+        firstName:
+          type: string
+          description: the first name of the person
+          example: John
+        lastName:
+          type: string
+          description: the last name of the person
+          example: Doo
+        dateOfBirth:
+          type: string
+          format: date
+          description: the date of birth of the person
+          example: 1985-11-30
+        gender:
+          type: string
+          description: the gender of the person
+          example: M
+        nationality:
+          type: string
+          description: the nationality of the person
+          example: FR
+        email:
+          type: string
+          description: the email address of the person
+          example: john.doo@example.com
+        mobileNumber:
+          type: string
+          description: the mobile phone number of the person
+          example: Mr
+        dn:
+          type: string
+          description: the distinguised name of the person
+          example: CN=John Doo, C=FR
+        address:
+          $ref: '#/components/schemas/Address'
+        priority:
+          type: string
+          enum:
+            - HIGH
+            - MEDIUM
+            - LOW
+      additionalProperties: true
+
+    BiometricData:
+      type: object
+      required:
+        - biometricType
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        encounterId:
+          type: string
+          description: the id of the encounter
+        image:
+          type: string
+          format: byte
+          description: Base64-encoded image
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - PALM
+        - IRIS
+        - UNKNOWN
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
+
+    CompressionType:
+      type: string
+      enum: [NONE, JPEG, JPEG2000, PNG, INCITS_378, INCITS_379, INCITS_385]
+
+    CredentialRequest:
+      description: A request for a credential
+      type: object
+      properties:
+        credentialRequestId:
+          type: string
+          description: The unique id of this credential request
+        credentialProfileId:
+          type: string
+          description: The id of the credential profile to request
+        validFromDate:
+          type: string
+          format: date-time
+          description: May be used to override the default start date of the
+            requested credential.  This must only be later than the current
+            date, not earlier.
+        validToDate:
+          type: string
+          format: date-time
+          description: May be used to override the default expiry date of the
+            requested credential.  This must only be earlier than the default
+            expiry, not later.
+        personId:
+          type: string
+          description: The id of the person who is the target of the request
+        biographicData:
+          $ref: '#/components/schemas/BiographicData'
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        deliveryAddress:
+          $ref: '#/components/schemas/Address'
+        status:
+          type: string
+          enum:
+            - PENDING
+            - ISSUED
+            - CANCELLED
+            - FAILED
+      required:
+        - credentialProfileId
+        - personId
+        - biographicData
+
+    Credential:
+      description: A credential
+      type: object
+      properties:
+        credentialId:
+          type: string
+          description: The unique id for this credential
+        personId:
+          type: string
+          description: The unique id of the person that the credential request is for
+        credentialProfileId:
+          type: string
+          description: The unique id of the credential profile
+        issuedDate:
+          type: string
+          format: date-time
+          description: The date that this credential was issued
+        expiryDate:
+          type: string
+          format: date-time
+          description: The date that this credential expires
+        suspended:
+          type: boolean
+          description: Is this credential suspended
+          default: false
+        revoked:
+          type: boolean
+          description: Has this credential been revoked
+          default: false
+        type:
+          type: string
+          description: the type of credential
+        serialNumber:
+          type: string
+          description: the serial number of the credential
+
+    CredentialProfile:
+      description: A credential profile
+      type: object
+      properties:
+        credentialProfileId:
+          type: string
+          description: The unique id for this credential profile
+        name:
+          type: string
+          description: The name of the credential profile
+        description:
+          type: string
+          description: The description of the credential profile
+        credentialType:
+          description: The type of credential that this profile will issue
+          type: string
+          enum:
+            - SMARTCARD
+            - VIRTUAL_SMARTCARD
+            - MOBILE
+            - PASSPORT
+            - ID_CARD
+        defaultLifetime:
+          type: integer
+          description: The default number of days that this credential will be considered valid for after issuance.
+
+    Expression:
+      type: object
+      required:
+        - attributeName
+        - operator
+        - value
+      properties:
+        attributeName:
+          type: string
+        operator:
+          type: string
+          enum: ['<', '>', '=', '>=', '<=', '!=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+    Expressions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expression'
+        
