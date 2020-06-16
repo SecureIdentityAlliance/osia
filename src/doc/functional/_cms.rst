@@ -65,7 +65,7 @@ Services
 
     Retrieve a list of credentials that match the passed in search criteria.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.credential.read``
 
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each
         expression is described with the attribute's name, the operator
@@ -136,9 +136,9 @@ Services
 .. py:function:: findCredentialProfiles(expressions, transactionID)
     :noindex:
 
-    Retrieve the data/status of a credential request.
+    Retrieve a list of credential profils that match the passed in search criteria
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``cms.profile.read``
 
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``, ``!=``) and the attribute value
     :param string transactionID: The client generated transactionID.
