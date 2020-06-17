@@ -110,7 +110,8 @@ Services
 .. py:function:: mergeEncounter(personID1, personID2, callback, transactionID, options)
     :noindex:
 
-    Merge two sets of encounters into a single one. Encounter ID are preserved and in case of duplicates
+    Merge two sets of encounters into a single set. Merging a set of *N* encounters with a set of *M* encounters
+    will result in a single set of *N+M* encounters. Encounter ID are preserved and in case of duplicates
     an error is returned and no changes are done.
 
     **Authorization**: ``abis.encounter.write``
