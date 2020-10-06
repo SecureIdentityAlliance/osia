@@ -12,6 +12,8 @@ info:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
       - Force additionalProperties to false when extension is not allowed
+      - rename operationId for create/read buffer
+      - add 404 error when missing
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -79,6 +81,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
@@ -272,6 +276,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
@@ -380,7 +386,7 @@ paths:
       tags:
         - Buffer
       summary: This service is used to send separately the buffers of the images
-      operationId: sendBuffer
+      operationId: createBuffer
       security:
         - BearerAuth: [enroll.buf.write]
       parameters:
@@ -439,7 +445,7 @@ paths:
       tags:
         - Buffer
       summary: This service is used to get the buffer of the images
-      operationId: getBuffer
+      operationId: readBuffer
       security:
         - BearerAuth: [enroll.buf.read]
       parameters:

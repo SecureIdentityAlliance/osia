@@ -121,7 +121,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the matching enrollment list.
 
-.. py:function:: sendBuffer(enrollmentId, data)
+.. py:function:: createBuffer(enrollmentId, data)
     :noindex:
 
     This service is used to send separately the buffers of the images. Buffers can be sent any time from the enrollment client prior to the create or update.
@@ -133,7 +133,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the buffer ID.
 
-.. py:function:: getBuffer(enrollmentId, bufferId)
+.. py:function:: readBuffer(enrollmentId, bufferId)
     :noindex:
 
     This service is used to get images of buffers.
