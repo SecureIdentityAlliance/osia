@@ -78,7 +78,6 @@ Services
     :param str personID1: The ID of the person that will receive new identities
     :param str personID2: The ID of the person that will give its identities. It will be deleted if the move of all identities is successful.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
-    :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success or error.
 
 ----------
@@ -276,8 +275,8 @@ Data Model
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
-        metadata specific to fingerprint, palmprint, portrait or iris.
-      - fingerprint, portrait, iris
+        metadata specific to fingerprint, palmprint, portrait, iris, signature.
+      - fingerprint, portrait, iris, signature
 
     * - Document
       - The document data (images) attached to the identity and used to validate it.

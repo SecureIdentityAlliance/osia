@@ -3,8 +3,17 @@
 
 openapi: 3.0.0
 info:
-  title: OSIA UIN services
-  version: 1.1.0
+  description: |
+    The OSIA UIN Interface.
+
+    Change log:
+    
+    - 1.1.1:
+      - Add error structure on 400 errors
+      - Force additionalProperties to false when extension is not allowed
+
+  title: OSIA UIN Interface
+  version: 1.1.1
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
@@ -38,6 +47,12 @@ paths:
                 type: string
               example:
                 1235567890
+        400:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -67,6 +82,7 @@ components:
           format: int32
         message:
           type: string
+      additionalProperties: false
     Attributes:
       type: object
       additionalProperties:

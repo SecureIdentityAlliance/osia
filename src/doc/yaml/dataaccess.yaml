@@ -3,17 +3,20 @@
 
 openapi: 3.0.0
 info:
-  title: OSIA data access services
-  version: 1.2.0
   description: |
-    The OSIA Data Access interface.
+    The OSIA Data Access Interface.
     
     Change log:
-    
+
+    - 1.2.1:
+      - Add errors 400 and return error details
+      - Force additionalProperties to false when extension is not allowed
     - 1.2.0: addition of security
     - 1.1.0: extended queryPersonUIN/queryPersonList operation to return a list of attributes, and not only a list of UIN
     - 1.0.0: first version proposed in OSIA.
 
+  version: 1.2.1
+  title: OSIA Data Access Interface
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
@@ -105,6 +108,10 @@ paths:
                     
         400:
           description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -165,6 +172,12 @@ paths:
                 dob:
                   code: 1023
                   message: Unknown attribute name
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -219,6 +232,12 @@ paths:
               example:
                 - attributeName: firstName
                   errorCode: 1
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -274,6 +293,12 @@ paths:
                 type: boolean
               example:
                 true
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -341,9 +366,16 @@ paths:
                     items:
                       type: string
                       format: binary
+                additionalProperties: false
               encoding:
                 documents:
                   contentType: application/pdf, image/jpeg, image/png
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -377,6 +409,7 @@ components:
           format: int32
         message:
           type: string
+      additionalProperties: false
     Attributes:
       type: object
       additionalProperties:
@@ -405,6 +438,7 @@ components:
           - type: integer
           - type: number
           - type: boolean
+      additionalProperties: false
     Expressions:
       type: array
       items:
@@ -421,3 +455,5 @@ components:
             format: int32
             enum: [0, 1]
             description: 0=attribute does not exist; 1=attribute exists but does not match
+        additionalProperties: false
+        

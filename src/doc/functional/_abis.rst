@@ -272,7 +272,8 @@ Options
       - Description
 
     * - ``priority``
-      - Priority of the request. Values range from 0 to 9
+      - Priority of the request. Values range from ``0`` to ``9``.
+        ``0`` indicates the lowest priority, ``9`` indicates the highest priority.
     * - ``maxNbCand``
       - The maximum number of candidates to return.
     * - ``threshold``
@@ -328,8 +329,8 @@ Data Model
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
-        metadata specific to fingerprint, palmprint, portrait or iris.
-      - fingerprint, portrait, iris
+        metadata specific to fingerprint, palmprint, portrait, iris or signature.
+      - fingerprint, portrait, iris, signature
 
     * - Candidate
       - Information about a candidate found during an identification

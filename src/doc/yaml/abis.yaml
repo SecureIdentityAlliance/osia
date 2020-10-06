@@ -3,8 +3,22 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA ABIS Interface
-  version: 1.3.0
+  description:  |
+    The OSIA ABIS Interface.
+    
+    Change log:
+    
+    - 1.4.0:
+      - Clarify priority value
+      - Add error structure on 400 errors
+      - Add signature in biometricType
+      - Force additionalProperties to false when extension is not allowed
+    - 1.3.0: addition of security
+    - 1.2.2: Free string for template & quality format - additional prop on score
+    - 1.2.1: Change operation ID
+
+
+  version: 1.4.0
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -41,7 +55,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -71,6 +85,7 @@ paths:
                     type: string
                   encounterId:
                     type: string
+                additionalProperties: false
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -82,6 +97,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -119,6 +138,7 @@ paths:
                           type: string
                         encounterId:
                           type: string
+                      additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -168,7 +188,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -197,6 +217,7 @@ paths:
                     type: string
                   encounterId:
                     type: string
+                additionalProperties: false
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -208,6 +229,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Creation not allowed
         '500':
@@ -244,6 +269,7 @@ paths:
                           type: string
                         encounterId:
                           type: string
+                      additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -288,7 +314,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -312,6 +338,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -402,7 +432,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -431,6 +461,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Creation not allowed
         '500':
@@ -465,6 +499,7 @@ paths:
                           type: string
                         encounterId:
                           type: string
+                      additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -515,7 +550,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -537,6 +572,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -618,7 +657,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -647,6 +686,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -732,7 +775,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -750,6 +793,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -838,7 +885,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -856,6 +903,10 @@ paths:
           description: Merge successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Merge not allowed
         '404':
@@ -958,6 +1009,10 @@ paths:
           description: Status has been updated
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Encounter status update not allowed
         '500':
@@ -1064,7 +1119,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1092,6 +1147,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -1175,7 +1234,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1193,6 +1252,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -1272,7 +1335,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1309,6 +1372,7 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
+              additionalProperties: false
       responses:
         '200':
           description: Request executed. Identification result is returned.
@@ -1329,6 +1393,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Identification not allowed
         '500':
@@ -1413,7 +1481,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1460,6 +1528,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Identification not allowed
         '500':
@@ -1544,7 +1616,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1572,6 +1644,7 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
+              additionalProperties: false
       responses:
         '200':
           description: Verification execution successful
@@ -1588,6 +1661,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ScoreDetail'
+                additionalProperties: false
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -1599,6 +1673,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Unknown record
         '403':
@@ -1639,6 +1717,7 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                      additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -1680,7 +1759,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1713,6 +1792,7 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
+              additionalProperties: false
       responses:
         '200':
           description: Verification execution successful
@@ -1729,6 +1809,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ScoreDetail'
+                additionalProperties: false
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -1740,6 +1821,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Verification not allowed
         '500':
@@ -1778,6 +1863,7 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                      additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -1818,7 +1904,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1842,6 +1928,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '500':
@@ -1919,7 +2009,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1940,6 +2030,7 @@ paths:
                       type: string
                     encounterId:
                       type: string
+                  additionalProperties: false
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -1951,6 +2042,10 @@ paths:
                 example: "123e4567-e89b-12d3-a456-426655440000"
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -1992,6 +2087,7 @@ paths:
                             type: string
                           encounterId:
                             type: string
+                        additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -2027,6 +2123,7 @@ components:
         message:
           description: Error message
           type: string
+      additionalProperties: false
     Encounter:
       type: object
       required:
@@ -2059,6 +2156,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
+      additionalProperties: false
     ContextualData:
       type: object
       additionalProperties: true
@@ -2111,7 +2209,7 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
-        
+      additionalProperties: false
     BiometricComputedData:
       type: object
       required:
@@ -2138,6 +2236,7 @@ components:
           type: string
         algorithm:
           type: string
+      additionalProperties: false
     TemplateFormat:
       type: string
       description: |
@@ -2181,6 +2280,7 @@ components:
         - FACE
         - FINGER
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string
@@ -2271,6 +2371,7 @@ components:
             the relating biometric
           items:
             $ref: '#/components/schemas/ScoreDetail'
+      additionalProperties: false
     ScoreDetail:
       description: |
         Scoring information calculated after a biometric search.

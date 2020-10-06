@@ -191,8 +191,8 @@ Data Model
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
-        metadata specific to fingerprint, palmprint, portrait or iris.
-      - fingerprint, portrait, iris
+        metadata specific to fingerprint, palmprint, portrait, iris or signature.
+      - fingerprint, portrait, iris, signature
 
     * - Biographic Data
       - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.

@@ -3,8 +3,18 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA Enrollment Interface
-  version: 1.0.0
+  description: |
+    The OSIA Enrollment Interface
+
+    Change log:
+    
+    - 1.1.0:
+      - Add error structure on 400 errors
+      - Add additional documentType and open it for extension
+      - Force additionalProperties to false when extension is not allowed
+    - 1.0.0: Initial version
+
+  version: 1.1.0
   title: OSIA Enrollment Interface
   license:
     name: SIA
@@ -60,8 +70,13 @@ paths:
                 properties:
                   enrollmentId:
                     type: string
+                additionalProperties: false
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -110,6 +125,10 @@ paths:
                 $ref: '#/components/schemas/Enrollment'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -156,6 +175,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -203,6 +226,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -239,6 +266,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -275,6 +306,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -325,6 +360,10 @@ paths:
                     $ref: '#/components/schemas/Enrollment'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -377,8 +416,13 @@ paths:
                 properties:
                   bufferId:
                     type: string
+                additionalProperties: false
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -428,6 +472,10 @@ paths:
                 format: binary
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -459,6 +507,7 @@ components:
         message:
           description: Error message
           type: string
+      additionalProperties: false
     Enrollment:
       type: object
       required:
@@ -492,6 +541,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentData'
+      additionalProperties: false
     RequestData:
       type: object
       additionalProperties: true
@@ -558,6 +608,7 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+      additionalProperties: false
     DocumentPart:
       type: object
       properties:
@@ -592,6 +643,7 @@ components:
         mimetype:
           type: string
           description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
+      additionalProperties: false
     DocumentData:
       type: object
       required:
@@ -599,7 +651,12 @@ components:
         - parts
       properties:
         documentType:
-          $ref: '#/components/schemas/DocumentType'
+          type: string
+          description: Type of document.
+          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, OTHER]
+        documentTypeOther:
+          type: string
+          description: Details about the type of document when OTHER is used.
         instance:
           type: string
           description: "Used to separate two distincts documents of the same type (ex: two passports)"
@@ -608,6 +665,7 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+      additionalProperties: false
     Expression:
       type: object
       required:
@@ -626,6 +684,7 @@ components:
           - type: integer
           - type: number
           - type: boolean
+      additionalProperties: false
     Expressions:
       type: array
       items:
@@ -655,18 +714,13 @@ components:
         - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
         - OTHER
         - UNKNOWN
-    DocumentType:
-      type: string
-      description: Type of document. Can be extended.
-      enum:
-        - ID_CARD
-        - Passport
     BiometricType:
       type: string
       enum:
         - FACE
         - FINGER
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string

@@ -3,8 +3,18 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA PR Interface
-  version: 1.2.0
+  description: |
+    The OSIA Population Registry Interface
+
+    Change log:
+    
+    - 1.3.0:
+      - Add error structure on 400 errors
+      - Add additional documentType and open it for extension
+      - Add signature in biometricType
+      - Force additionalProperties to false when extension is not allowed
+
+  version: 1.3.0
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -49,6 +59,10 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -86,6 +100,10 @@ paths:
                 $ref: '#/components/schemas/Person'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -126,6 +144,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -161,6 +183,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -208,6 +234,10 @@ paths:
           description: Merge successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Merge not allowed
         '404':
@@ -251,6 +281,10 @@ paths:
                   $ref: '#/components/schemas/Identity'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '404':
@@ -290,6 +324,7 @@ paths:
                 - type: object
                   required:
                     - status
+                  
       responses:
         '200':
           description: Insertion successful
@@ -302,8 +337,13 @@ paths:
                 properties:
                   identityId:
                     type: string
+                additionalProperties: false
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Insertion not allowed
         '500':
@@ -357,6 +397,10 @@ paths:
           description: Insertion successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Insertion not allowed
         '500':
@@ -400,6 +444,10 @@ paths:
                 $ref: '#/components/schemas/Identity'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -450,6 +498,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -502,6 +554,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -543,6 +599,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -592,6 +652,10 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -633,6 +697,10 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -672,6 +740,10 @@ paths:
                 $ref: '#/components/schemas/Identity'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -710,6 +782,10 @@ paths:
                   type: string
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '500':
@@ -757,8 +833,13 @@ paths:
                       type: string
                     identityId:
                       type: string
+                  additionalProperties: false
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -790,6 +871,7 @@ components:
         message:
           description: Error message
           type: string
+      additionalProperties: false
     Person:
       description: >-
         Person entity.
@@ -807,6 +889,7 @@ components:
         physicalStatus:
           type: string
           enum: [DEAD, ALIVE]
+      additionalProperties: false
     Identity:
       type: object
       properties:
@@ -836,6 +919,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Document'
+      additionalProperties: false
     ContextualData:
       type: object
       additionalProperties: true
@@ -866,7 +950,12 @@ components:
         - parts
       properties:
         documentType:
-          $ref: '#/components/schemas/DocumentType'
+          type: string
+          description: Type of document.
+          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, OTHER]
+        documentTypeOther:
+          type: string
+          description: Details about the type of document when OTHER is used.
         instance:
           type: string
           description: "Used to separate two distincts documents of the same type (ex: two passports)"
@@ -875,6 +964,7 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+      additionalProperties: false
     DocumentPart:
       type: object
       properties:
@@ -908,11 +998,7 @@ components:
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
-    DocumentType:
-      type: string
-      description: Type of document. Can be extended.
-      enum: [ID_CARD, PASSPORT]
-
+      additionalProperties: false
     BiometricData:
       type: object
       required:
@@ -951,6 +1037,7 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+      additionalProperties: false
     BiometricType:
       type: string
       enum:
@@ -958,6 +1045,7 @@ components:
         - FINGER
         - PALM
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string

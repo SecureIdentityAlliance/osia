@@ -3,8 +3,18 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA CMS Interface
-  version: 1.0.0
+  description: |
+    The OSIA Credential Management System Interface.
+    
+    Change log:
+    
+    - 1.1.0:
+      - Add error structure on 400 errors
+      - Add signature in biometricType
+      - Force additionalProperties to false when extension is not allowed
+    - 1.0.0: Initial version
+
+  version: 1.1.0
   title: OSIA Credential Management System Interface
   license:
     name: SIA
@@ -47,6 +57,10 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -93,6 +107,10 @@ paths:
                 $ref: '#/components/schemas/CredentialRequest'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -131,6 +149,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -164,6 +186,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -212,6 +238,10 @@ paths:
                   $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -259,6 +289,10 @@ paths:
                 $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -302,6 +336,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -345,6 +383,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -389,6 +431,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -437,6 +483,10 @@ paths:
                   $ref: '#/components/schemas/CredentialProfile'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -464,7 +514,7 @@ components:
         message:
           description: Error message
           type: string
-
+      additionalProperties: false
     Address:
       type: object
       properties:
@@ -587,6 +637,7 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+      additionalProperties: false
     BiometricType:
       type: string
       enum:
@@ -594,6 +645,7 @@ components:
         - FINGER
         - PALM
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string
@@ -694,6 +746,7 @@ components:
             - ISSUED
             - CANCELLED
             - FAILED
+      additionalProperties: false
       required:
         - credentialProfileId
         - personId
@@ -734,7 +787,7 @@ components:
         serialNumber:
           type: string
           description: the serial number of the credential
-
+      additionalProperties: false
     CredentialProfile:
       description: A credential profile
       type: object
@@ -760,7 +813,7 @@ components:
         defaultLifetime:
           type: integer
           description: The default number of days that this credential will be considered valid for after issuance.
-
+      additionalProperties: false
     Expression:
       type: object
       required:
@@ -779,6 +832,7 @@ components:
           - type: integer
           - type: number
           - type: boolean
+      additionalProperties: false
     Expressions:
       type: array
       items:
