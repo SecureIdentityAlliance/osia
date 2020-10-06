@@ -8,12 +8,13 @@ info:
 
     Change log:
     
-    - 1.1.1:
+    - 1.2.0:
       - Add error structure on 400 errors
       - Force additionalProperties to false when extension is not allowed
+      - Add transactionId as a parameter (mandatory)
 
   title: OSIA UIN Interface
-  version: 1.1.1
+  version: 1.2.0
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
@@ -28,6 +29,13 @@ paths:
       operationId: generateUIN
       security:
         - BearerAuth: [uin.generate]
+      parameters:
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
       requestBody:
         description: A set of attributes for the person
         content:
