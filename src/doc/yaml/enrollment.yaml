@@ -12,8 +12,13 @@ info:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
       - Force additionalProperties to false when extension is not allowed
-      - rename operationId for create/read buffer
-      - add 404 error when missing
+      - Rename operationId for create/read buffer
+      - Add 404 error when missing
+      - Add Digest header in create/read buffer
+      - Support multiple content types for create/read buffer
+      - Remove enrollmentId from the response of createEnrollment
+      - Make the enrollment status optional in create & update operations
+      - Add a contextualData entity to match what exists in population registry
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -61,18 +66,8 @@ paths:
             schema:
               $ref: '#/components/schemas/Enrollment'
       responses:
-        '201':
+        '204':
           description: Operation successful
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - enrollmentId
-                properties:
-                  enrollmentId:
-                    type: string
-                additionalProperties: false
         '400':
           description: Bad request
           content:
@@ -126,7 +121,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Enrollment'
+                allOf:
+                  - $ref: '#/components/schemas/Enrollment'
+                  - type: object
+                    required:
+                      - status
+
         '400':
           description: Bad request
           content:
@@ -363,7 +363,12 @@ paths:
               schema:
                 type: array
                 items:
-                    $ref: '#/components/schemas/Enrollment'
+                    allOf:
+                      - $ref: '#/components/schemas/Enrollment'
+                      - type: object
+                        required:
+                          - status
+
         '400':
           description: Bad request
           content:
@@ -385,7 +390,8 @@ paths:
     post:
       tags:
         - Buffer
-      summary: This service is used to send separately the buffers of the images
+      summary: Create a buffer
+      description: This service is used to send separately the buffers of the images
       operationId: createBuffer
       security:
         - BearerAuth: [enroll.buf.write]
@@ -402,14 +408,27 @@ paths:
           required: true
           schema:
             type: string
+        - name: Digest
+          in: header
+          description: the buffer digest, as defined per RFC 3230.
+          schema:
+            type: string
+          example: "SHA=thvDyvhfIqlvFe+A9MYgxAfm1q5="
+          required: false
       requestBody:
         description: The image of the request
         required: true
         content:
-          application/octet-stream:
+          application/*:
             schema:
               type: string
               format: binary
+              example: ABCDEFG...
+          image/*:
+            schema:
+              type: string
+              format: binary
+              example: ABCDEFG...
       responses:
         '201':
           description: Operation successful
@@ -430,7 +449,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
-          description: Update not allowed
+          description: Operation not allowed
         '404':
           description: Unknown record
         '500':
@@ -444,7 +463,10 @@ paths:
     get:
       tags:
         - Buffer
-      summary: This service is used to get the buffer of the images
+      summary: Read a buffer
+      description: |
+        This service is used to get the buffer of the images.
+        The content type of the response is the content type used when the buffer was created.
       operationId: readBuffer
       security:
         - BearerAuth: [enroll.buf.read]
@@ -470,12 +492,26 @@ paths:
       responses:
         '200':
           description: Read successful
+          headers:
+            Digest:
+              description: the buffer digest, as defined per RFC 3230.
+              schema:
+                type: string
+              example: "SHA=thvDyvhfIqlvFe+A9MYgxAfm1q5="
+              required: false
           content:
-            application/octet-stream:
+            application/*:
               schema:
                 description: The image
                 type: string
                 format: binary
+                example: ABCDEFG...
+            image/*:
+              schema:
+                description: The image
+                type: string
+                format: binary
+                example: ABCDEFG...
         '400':
           description: Bad request
           content:
@@ -517,9 +553,7 @@ components:
     Enrollment:
       type: object
       required:
-        - status
         - enrollmentType
-        - biometricData
       properties:
         enrollmentId:
           type: string
@@ -537,6 +571,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RequestData'
+        contextualData:
+          $ref: '#/components/schemas/ContextualData'
         biographicData:
           $ref: '#/components/schemas/BiographicData'
         biometricData:
@@ -563,6 +599,11 @@ components:
       example:
         timeout: 3600
         other: "other"
+    ContextualData:
+      type: object
+      additionalProperties: true
+      example:
+        enrollmentDate: "2019-01-11"
     BiographicData:
       type: object
       additionalProperties: true

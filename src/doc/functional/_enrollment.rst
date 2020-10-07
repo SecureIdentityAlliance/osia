@@ -21,7 +21,7 @@ the following principles:
 Services
 """"""""
 
-.. py:function:: createEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, finalize, transactionID)
+.. py:function:: createEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, contextualData, biometricData, biographicData, documentData, finalize, transactionID)
     :noindex:
 
     Insert a new enrollment.
@@ -32,12 +32,13 @@ Services
     :param str enrollmentTypeId: The enrollment type ID of the enrollment.
     :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
+    :param dict contextualData: Information about the context of the enrollment
     :param list biometricData: The enrollment biometric data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data.
     :param str finalize: Flag to indicate that data was collected.
     :param string transactionID: The client generated transactionID.
-    :return: a status indicating success or error and in case of success the enrollment ID.
+    :return: a status indicating success or error.
 
 .. py:function:: readEnrollment(enrollmentID, attributes, transactionID)
     :noindex:
@@ -51,7 +52,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the enrollment data.
 
-.. py:function:: updateEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, finalize, transactionID)
+.. py:function:: updateEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, contextualData, biometricData, biographicData, documentData, finalize, transactionID)
     :noindex:
 
     Update an enrollment.
@@ -62,6 +63,7 @@ Services
     :param str enrollmentTypeId: The enrollment type ID of the enrollment.
     :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
+    :param dict contextualData: Information about the context of the enrollment
     :param list biometricData: The enrollment biometric data, this can be partial data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data, this can be partial data.
@@ -69,7 +71,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 	
-.. py:function:: partialupdateEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, biometricData, biographicData, documentData, finalize, transactionID)
+.. py:function:: partialupdateEnrollment(enrollmentID, enrollmentTypeId, enrollmentFlags, requestData, contextualData, biometricData, biographicData, documentData, finalize, transactionID)
     :noindex:
 
     Update part of an enrollment. Not all attributes are mandatory. The payload
@@ -81,6 +83,7 @@ Services
     :param str enrollmentTypeId: The enrollment type ID of the enrollment.
     :param dict enrollmentFlags: The enrollment custom flags.
     :param dict requestData: The enrollment data related to the enrollment itself.
+    :param dict contextualData: Information about the context of the enrollment
     :param list biometricData: The enrollment biometric data, this can be partial data.
     :param dict biographicData: The enrollment biographic data.
     :param list documentData: The enrollment biometric data, this can be partial data.
@@ -121,7 +124,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the matching enrollment list.
 
-.. py:function:: createBuffer(enrollmentId, data)
+.. py:function:: createBuffer(enrollmentId, data, digest)
     :noindex:
 
     This service is used to send separately the buffers of the images. Buffers can be sent any time from the enrollment client prior to the create or update.
@@ -129,21 +132,22 @@ Services
     **Authorization**: ``enroll.buf.write``
 
     :param str enrollmentID: The ID of the enrollment.
-    :param image data: The image of the request.
+    :param image data: The buffer data.
     :param string transactionID: The client generated transactionID.
+    :param string digest: The digest (hash) of the buffer used by the server to check the integrity of the data received.
     :return: a status indicating success or error and in case of success the buffer ID.
 
 .. py:function:: readBuffer(enrollmentId, bufferId)
     :noindex:
 
-    This service is used to get images of buffers.
+    This service is used to get the data of a buffer.
 
     **Authorization**: ``enroll.buf.read``
 
     :param str enrollmentID: The ID of the enrollment.
     :param str bufferID: The ID of the buffer.
     :param string transactionID: The client generated transactionID.
-    :return: a status indicating success or error and in case of success the image of the buffer.
+    :return: a status indicating success or error and in case of success the data of the buffer and a digest.
 
 Attributes
 """"""""""
@@ -163,6 +167,7 @@ that biometric, rather than the actual biometric data.
 
 Transaction ID
 """"""""""""""
+
 The ``transactionID`` is a string provided by the client application to identity
 the request being submitted. It can be used for tracing and debugging.
 
@@ -206,6 +211,10 @@ Data Model
       - a dictionary (list of names and values) for data related to the enrollment itself (the operator, the station, the data, etc.).
       - :todo:`TBD`
 
+    * - Contextual Data
+      - A dictionary (list of names and values) attached to the context of establishing the identity
+      - ``operatorName``, ``enrollmentDate``, etc.
+
     * - Attributes
       - a dictionary (list of names and values or *range* of values) describing the attributes to return.
         Attributes can apply on biographic data, document data, request data, or enrollment flag data.
@@ -225,13 +234,20 @@ Data Model
         string enrollmentID;
     }
 
+    class ContextualData {
+        string operator;
+        date date;
+        ...
+    }
+    Enrollment o- ContextualData
+
     class BiographicData {
         string field1;
         int field2;
         date field3;
         ...
     }
-    Enrollment o- BiographicData
+    BiographicData -o Enrollment
 
     class BiometricData {
         byte[] image;
@@ -256,7 +272,7 @@ Data Model
         date field3;
         ...
     }
-    Enrollment o- RequestData
+    RequestData --o Enrollment
 
     class EnrollmentFlagsData {
         string field1;
@@ -264,4 +280,4 @@ Data Model
         date field3;
         ...
     }
-    Enrollment o- EnrollmentFlagsData
+    EnrollmentFlagsData --o Enrollment
