@@ -13,6 +13,7 @@ info:
       - Add additional documentType and open it for extension
       - Add signature in biometricType
       - Force additionalProperties to false when extension is not allowed
+      - Pagination when accessing gallery content
 
   version: 1.3.0
   title: OSIA Population Registry Interface
@@ -816,6 +817,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: offset
+          in: query
+          description: The offset of the query (first item of the response)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 1000
       responses:
         '200':
           description: Operation successful

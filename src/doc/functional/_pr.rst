@@ -198,7 +198,7 @@ Services
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error, and in case of success a list of gallery ID.
 
-.. py:function:: readGalleryContent(galleryID, transactionID)
+.. py:function:: readGalleryContent(galleryID, transactionID, offset, limit)
     :noindex:
 
     Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
@@ -207,6 +207,8 @@ Services
 
     :param str galleryID: Gallery whose content will be returned.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param int offset: The offset of the query (first item of the response) (optional, default to ``0``)
+    :param int limit: The maximum number of items to return (optional, default to ``1000``)
     :return: a status indicating success or error. In case of success a list of person/identity IDs.
 
 

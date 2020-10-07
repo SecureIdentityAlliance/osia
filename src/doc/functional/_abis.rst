@@ -173,7 +173,7 @@ Services
     :return: a status indicating success, error, or pending operation.
         A list of gallery ID is returned, either synchronously or using the callback.
 
-.. py:function:: readGalleryContent(galleryID, callback, transactionID, options)
+.. py:function:: readGalleryContent(galleryID, callback, transactionID, offset, limit, options)
     :noindex:
 
     Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
@@ -183,6 +183,8 @@ Services
     :param str galleryID: Gallery whose content will be returned.
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param int offset: The offset of the query (first item of the response) (optional, default to ``0``)
+    :param int limit: The maximum number of items to return (optional, default to ``1000``)
     :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         A list of persons/encounters is returned, either synchronously or using the callback.
