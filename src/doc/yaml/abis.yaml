@@ -14,6 +14,7 @@ info:
       - Add signature in biometricType
       - Force additionalProperties to false when extension is not allowed
       - Pagination when accessing gallery content
+      - Add an instance field on BiometricData
     - 1.3.0: addition of security
     - 1.2.2: Free string for template & quality format - additional prop on score
     - 1.2.1: Change operation ID
@@ -1092,6 +1093,12 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/BiometricSubType'
+        - name: instance
+          in: query
+          description: Used to separate two distincts biometric items of the same type and subtype
+          required: false
+          schema:
+            type: string
         - name: templateFormat
           in: query
           description: the format of the template to return
@@ -2193,6 +2200,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         image:
           type: string
           format: byte
@@ -2235,6 +2245,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         template:
           type: string
           format: byte
@@ -2409,4 +2422,7 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
       additionalProperties: true

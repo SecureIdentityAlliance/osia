@@ -20,6 +20,7 @@ info:
       - Make the enrollment status optional in create & update operations
       - Add a contextualData entity to match what exists in population registry
       - Add pagination for findEnrollments
+      - Add an instance field on BiometricData
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -634,6 +635,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         image:
           type: string
           format: byte
