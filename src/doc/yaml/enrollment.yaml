@@ -19,6 +19,7 @@ info:
       - Remove enrollmentId from the response of createEnrollment
       - Make the enrollment status optional in create & update operations
       - Add a contextualData entity to match what exists in population registry
+      - Add pagination for findEnrollments
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -342,6 +343,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: offset
+          in: query
+          description: The offset of the query (first item of the response)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 100
       requestBody:
         description: A set of expressions on attributes of the person
         content:
@@ -357,7 +372,7 @@ paths:
                 value: "1990-12-31"
       responses:
         '200':
-          description: Read successful
+          description: Query successful
           content:
             application/json:
               schema:
@@ -376,9 +391,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
-          description: Read not allowed
-        '404':
-          description: Unknown record
+          description: Query not allowed
         '500':
           description: Unexpected error
           content:

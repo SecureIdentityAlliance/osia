@@ -113,7 +113,7 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
-.. py:function:: findEnrollments(expressions, transactionID)
+.. py:function:: findEnrollments(expressions, offset, limit, transactionID)
     :noindex:
 
     Retrieve a list of enrollments which match passed in search criteria.
@@ -121,6 +121,8 @@ Services
     **Authorization**: ``enroll.read``
 
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
+    :param int offset: The offset of the query (first item of the response) (optional, default to ``0``)
+    :param int limit: The maximum number of items to return (optional, default to ``100``)
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the matching enrollment list.
 

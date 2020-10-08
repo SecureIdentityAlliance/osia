@@ -21,6 +21,22 @@ See :ref:`annex-interface-pr` for the technical details of this interface.
 Services
 """"""""
 
+.. py:function:: findPersons(expressions, group, reference, gallery, offset, limit, transactionID)
+    :noindex:
+
+    Retrieve a list of persons which match passed in search criteria.
+
+    **Authorization**: ``pr.person.read``
+
+    :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
+    :param bool group: Group the results per person and return only personID
+    :param bool reference: Limit the query to the reference identities
+    :param string gallery: A gallery ID used to limit the search
+    :param int offset: The offset of the query (first item of the response) (optional, default to ``0``)
+    :param int limit: The maximum number of items to return (optional, default to ``100``)
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error and in case of success the matching person list.
+
 .. py:function:: createPerson(personID, personData, transactionID)
     :noindex:
 
@@ -245,12 +261,12 @@ Data Model
     * - Identity
       - The attributes describing an identity of a person.
         An identity has a status such as: ``claimed`` (identity not yet validated), ``valid``
-        (the identity is valid), ``invalid`` (the identity is  not valid), ``revoked`` (the identity
+        (the identity is valid), ``invalid`` (the identity is confirmed as not valid), ``revoked`` (the identity
         cannot be used any longer).
 
         An identity can be updated only in the status ``claimed``.
 
-        The allowed transitions for the status are represented below:
+        The proposed transitions for the status are represented below. It can be adapted if needed.
 
         .. uml::
             :scale: 30%
@@ -259,6 +275,7 @@ Data Model
             claimed --> valid
             claimed -->invalid
             valid --> revoked
+            valid -> invalid
 
         The attributes are separated into two categories: the biographic data and the contextual data.
 

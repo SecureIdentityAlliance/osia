@@ -14,6 +14,7 @@ info:
       - Add signature in biometricType
       - Force additionalProperties to false when extension is not allowed
       - Pagination when accessing gallery content
+      - Add a query service, searching on all the identities of a person
 
   version: 1.3.0
   title: OSIA Population Registry Interface
@@ -28,6 +29,104 @@ tags:
 servers:
   - url: https://pr.com/
 paths:
+
+
+  /v1/persons:
+    post:
+      tags:
+        - Person
+      summary: Query for persons
+      description: |
+        Retrieve a list of personId corresponding to the records with one identity matching the criteria.
+
+        By default, all identities are used in the search.
+      operationId: findPersons
+      security:
+        - BearerAuth: [pr.person.read]
+      parameters:
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          description: Group all matching identities of one person and return only the personId
+          required: false
+          schema:
+            type: boolean
+        - name: reference
+          in: query
+          description: Limit the query to the reference identity
+          required: false
+          schema:
+            type: boolean
+        - name: gallery
+          in: query
+          description: Limit the query to the records belonging to this gallery
+          required: false
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: The offset of the query (first item of the response)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 100
+      requestBody:
+        description: A set of expressions on attributes of the person's identity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
+            example:
+              - attributeName: firstName
+                operator: "="
+                value: John
+              - attributeName: dateOfBirth
+                operator: "<"
+                value: "1990-12-31"
+      responses:
+        '200':
+          description: Query successful. If the group parameter was set the identityId is not included in the response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - personId
+                  properties:
+                    personId:
+                      type: string
+                    identityId:
+                      type: string
+                  additionalProperties: false
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Query not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
   /v1/persons/{personId}:
     post:
@@ -1116,3 +1215,26 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
+    Expression:
+      type: object
+      required:
+        - attributeName
+        - operator
+        - value
+      properties:
+        attributeName:
+          type: string
+        operator:
+          type: string
+          enum: ['<', '>', '=', '>=', '<=', '!=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+      additionalProperties: false
+    Expressions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expression'
