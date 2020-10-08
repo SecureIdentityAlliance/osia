@@ -20,7 +20,7 @@ info:
       - Make the enrollment status optional in create & update operations
       - Add a contextualData entity to match what exists in population registry
       - Add pagination for findEnrollments
-      - Add an instance field on BiometricData
+      - Add fields on BiometricData: instance, metadata, comment, missing
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -672,7 +672,26 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
       additionalProperties: false
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
     DocumentPart:
       type: object
       properties:

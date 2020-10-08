@@ -15,7 +15,7 @@ info:
       - Force additionalProperties to false when extension is not allowed
       - Pagination when accessing gallery content
       - Add a query service, searching on all the identities of a person
-      - Add an instance field on BiometricData
+      - Add fields on BiometricData: instance, metadata, comment, missing
 
   version: 1.3.0
   title: OSIA Population Registry Interface
@@ -1155,7 +1155,26 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
       additionalProperties: false
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
     BiometricType:
       type: string
       enum:

@@ -195,10 +195,14 @@ Data Model
 
     * - Biometric Data
       - Digital representation of biometric characteristics.
+      
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait, iris or signature.
+
+        A biometric data can be associated to no image or a partial image if it includes information about
+        the missing items (example: one finger may be amputated on a 4 finger image)
       - fingerprint, portrait, iris, signature
 
     * - Biographic Data
