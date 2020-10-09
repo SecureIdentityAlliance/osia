@@ -759,6 +759,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
@@ -804,6 +806,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:

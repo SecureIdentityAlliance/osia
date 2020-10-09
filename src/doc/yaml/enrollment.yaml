@@ -601,7 +601,7 @@ components:
     RequestData:
       type: object
       additionalProperties: true
-      description: The enrollment data related to the enrollment itself. Can be extended.
+      description: The data describing the request associated to the enrollment (i.e. why the enrollment is done). Can be extended.
       example:
         requestType: "IDCARD_ISSUANCE"
         deliveryPlace: "paris"
@@ -609,7 +609,7 @@ components:
     EnrollmentFlags:
       type: object
       additionalProperties: true
-      description: The enrollment custom flags. Can be extended.
+      description: The enrollment custom flags (i.e. the properties of the enrollment process). Can be extended.
       example:
         timeout: 3600
         other: "other"

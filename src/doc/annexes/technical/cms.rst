@@ -26,6 +26,7 @@ Credential Services
         - `suspendCredential <#post--v1-credentials-credentialId-suspend>`_
         - `unsuspendCredential <#post--v1-credentials-credentialId-unsuspend>`_
         - `revokeCredential <#post--v1-credentials-credentialId-revoke>`_
+        - `setCredentialStatus <#post--v1-credentials-credentialId-status>`_
         - `findCredentialProfiles <#post--v1-credentialProfiles>`_
 
 Services
