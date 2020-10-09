@@ -234,8 +234,6 @@ Data Model
     :caption: Enrollment Data Model
     :scale: 50%
 
-    !include "skin.iwsd"
-
     class Enrollment {
         string enrollmentID;
     }

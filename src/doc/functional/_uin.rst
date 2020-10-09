@@ -24,7 +24,6 @@ This service is synchronous.
     :caption: ``generateUIN`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR

@@ -417,7 +417,6 @@ Birth Use Case
     :caption: Birth Use Case
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     actor "Mother or Father" as parent
     participant "CR" as CR
@@ -510,7 +509,6 @@ and decides to merge them, a notification must be sent.
     :caption: Deduplication Use Case
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "PR" as PR
     participant "CR" as CR
@@ -546,7 +544,6 @@ Bank account opening Use Case
     :caption: Bank account opening Use Case
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     actor "Citizen" as citizen
     actor "Bank attendant" as bank
@@ -582,7 +579,6 @@ Police identity control Use Case
     :caption: Collaborative identity control
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     actor "Citizen" as citizen
     actor "Policeman" as police

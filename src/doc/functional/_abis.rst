@@ -357,8 +357,6 @@ Data Model
     :caption: Biometric Data Model
     :scale: 50%
 
-    !include "skin.iwsd"
-
     class Gallery {
         string galleryID;
     }

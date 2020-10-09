@@ -24,7 +24,6 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     :caption: ``readPersonAttributes`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -57,7 +56,6 @@ This service is synchronous. It can be used to match attributes in CR or in PR.
     :caption: ``matchPersonAttributes`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -91,7 +89,6 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
     :caption: ``verifyPersonAttributes`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -125,7 +122,6 @@ This service is synchronous. It can be used to get the UIN of a person.
     :caption: ``queryPersonUIN`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -161,7 +157,6 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     :caption: ``queryPersonList`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -194,7 +189,6 @@ This service is synchronous. It can be used to get the documents for a person.
     :caption: ``readDocument`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
