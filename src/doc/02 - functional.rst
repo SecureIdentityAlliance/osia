@@ -222,6 +222,7 @@ The following table describes in detail the interfaces and associated services.
     --------------------------------- -----------------------------------------------------------------------------------
     **Population Registry Services**
     ---------------------------------------------------------------------------------------------------------------------
+    Find Persons                       Query for persons, using all the available identities
     Create Person                      Create a new person
     Read Person                        Read the attributes of a person
     Update Person                      Update a person
@@ -263,6 +264,7 @@ The following table describes in detail the interfaces and associated services.
     Suspend Credential                 Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
     Unsuspend Credential               Unsuspend an issued credential. For electronic credentials this will unsuspend any PKI certificates that are present
     Revoke Credential                  Revoke an issued credential. For electronic credentials this will revoke any PKI certificates that are present
+    Set Credential Status              Change the credential status
     Find Credential Profiles           Retrieve a list of credential profils that match the passed in search criteria
     --------------------------------- -----------------------------------------------------------------------------------
     **ID Usage**
@@ -336,6 +338,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Population Registry Services**
     --------------------------------------------------------------------------------------------------
+    Find Persons                                         I
     Create Person                                        I               U                U
     Read Person                                          I               U                U       U
     Update Person                                        I               U                U
@@ -377,6 +380,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Suspend Credential                                                                    I
     Unsuspend Credential                                                                  I
     Revoke Credential                                                                     I
+    Set Credential Status                                                                 I
     Find Credential Profiles                                                              I
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **ID Usage**
