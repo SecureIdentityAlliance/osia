@@ -54,7 +54,7 @@ paths:
               schema:
                 type: string
               example:
-                1235567890
+                '"1235567890"'
         400:
           description: Unexpected error
           content:

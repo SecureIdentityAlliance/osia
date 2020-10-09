@@ -38,6 +38,8 @@ paths:
         - Credential Request
       summary: Create a request for a credential
       operationId: createCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
       parameters:
         - name: credentialRequestId
           in: path
@@ -79,6 +81,8 @@ paths:
         - Credential Request
       summary: Read a credential request
       operationId: readCredentialRequest
+      security:
+        - BearerAuth: [cms.request.read]
       parameters:
         - name: credentialRequestId
           in: path
@@ -130,6 +134,8 @@ paths:
         - Credential Request
       summary: Update a credential request
       operationId: updateCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
       parameters:
         - name: credentialRequestId
           in: path
@@ -172,6 +178,8 @@ paths:
         - Credential Request
       summary: Delete a credential request
       operationId: deleteCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
       parameters:
         - name: credentialRequestId
           in: path
@@ -211,6 +219,8 @@ paths:
         - Credential
       summary: Retrieve a list of credentials that match the given search criteria
       operationId: findCredentials
+      security:
+        - BearerAuth: [cms.credential.read]
       parameters:
         - name: attributes
           in: query
@@ -263,6 +273,8 @@ paths:
         - Credential
       summary: Read a credential
       operationId: readCredential
+      security:
+        - BearerAuth: [cms.credential.read]
       parameters:
         - name: credentialId
           in: path
@@ -314,6 +326,8 @@ paths:
         - Credential
       summary: Suspend a credential
       operationId: suspendCredential
+      security:
+        - BearerAuth: [cms.credential.write]
       parameters:
         - name: credentialId
           in: path
@@ -361,6 +375,8 @@ paths:
         - Credential
       summary: Unsuspend a credential
       operationId: unsuspendCredential
+      security:
+        - BearerAuth: [cms.credential.write]
       parameters:
         - name: credentialId
           in: path
@@ -408,6 +424,8 @@ paths:
         - Credential
       summary: Revoke a credential
       operationId: revokeCredential
+      security:
+        - BearerAuth: [cms.credential.write]
       parameters:
         - name: credentialId
           in: path
@@ -456,6 +474,8 @@ paths:
         - Credential
       summary: Change the status of a credential
       operationId: setCredentialStatus
+      security:
+        - BearerAuth: [cms.credential.write]
       parameters:
         - name: credentialId
           in: path
@@ -514,6 +534,8 @@ paths:
         - Credential Profile
       summary: Retrieve a list of credential profiles that match the given search criteria
       operationId: findCredentialProfiles
+      security:
+        - BearerAuth: [cms.profile.read]
       parameters:
         - name: attributes
           in: query
@@ -562,6 +584,11 @@ paths:
 
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object
@@ -606,7 +633,6 @@ components:
         state:
         postalCode: '33500'
         country: France
-
     BiographicData:
       type: object
       description: The biographic data included in the credential. Can be extended.
@@ -620,7 +646,6 @@ components:
         email: john.doo@example.com
         mobileNumber: +123456789
       additionalProperties: true
-
     BiometricData:
       type: object
       required:
@@ -697,6 +722,7 @@ components:
         presence:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     BiometricType:
       type: string
       enum:

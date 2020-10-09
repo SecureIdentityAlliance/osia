@@ -1179,6 +1179,7 @@ components:
         presence:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     BiometricType:
       type: string
       enum:

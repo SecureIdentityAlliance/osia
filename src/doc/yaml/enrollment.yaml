@@ -692,6 +692,7 @@ components:
         presence:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     DocumentPart:
       type: object
       properties:

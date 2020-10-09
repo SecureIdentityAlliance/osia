@@ -2254,6 +2254,7 @@ components:
         presence:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     BiometricComputedData:
       type: object
       required:
