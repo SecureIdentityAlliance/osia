@@ -9,6 +9,8 @@ info:
     Change log:
     
     - 1.4.0:
+      - Add an entity (PersonIds) to factorize definition of the pair (personId, encounterId)
+      - Allow additional properties in object Candidate.
       - Change path for updateEncounterStatus operation (added /v1)
       - Clarify priority value
       - Add error structure on 400 errors
@@ -94,16 +96,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - personId
-                  - encounterId
-                properties:
-                  personId:
-                    type: string
-                  encounterId:
-                    type: string
-                additionalProperties: false
+                $ref: '#/components/schemas/PersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -147,16 +140,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      required:
-                        - personId
-                        - encounterId
-                      properties:
-                        personId:
-                          type: string
-                        encounterId:
-                          type: string
-                      additionalProperties: false
+                      $ref: '#/components/schemas/PersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -227,15 +211,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - encounterId
-                properties:
-                  personId:
-                    type: string
-                  encounterId:
-                    type: string
-                additionalProperties: false
+                $ref: '#/components/schemas/PersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -279,15 +255,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      required:
-                        - encounterId
-                      properties:
-                        personId:
-                          type: string
-                        encounterId:
-                          type: string
-                      additionalProperties: false
+                      $ref: '#/components/schemas/PersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -466,8 +434,12 @@ paths:
             schema:
               $ref: '#/components/schemas/Encounter'
       responses:
-        '201':
+        '200':
           description: Creation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -511,13 +483,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      properties:
-                        personId:
-                          type: string
-                        encounterId:
-                          type: string
-                      additionalProperties: false
+                      $ref: '#/components/schemas/PersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -2064,16 +2030,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - personId
-                    - encounterId
-                  properties:
-                    personId:
-                      type: string
-                    encounterId:
-                      type: string
-                  additionalProperties: false
+                  $ref: '#/components/schemas/PersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -2121,16 +2078,7 @@ paths:
                     schema:
                       type: array
                       items:
-                        type: object
-                        required:
-                          - personId
-                          - encounterId
-                        properties:
-                          personId:
-                            type: string
-                          encounterId:
-                            type: string
-                        additionalProperties: false
+                        $ref: '#/components/schemas/PersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -2413,6 +2361,11 @@ components:
         dateOfBirthMax: "2019-12-31"
     Candidate:
       type: object
+      description: |
+        Identification of a candidate result of a biometric search.
+
+        This structure can be extended by vendors able to include additional information
+        to the three mandatory properties.
       required:
         - personId
         - rank
@@ -2440,7 +2393,7 @@ components:
             the relating biometric
           items:
             $ref: '#/components/schemas/ScoreDetail'
-      additionalProperties: false
+      additionalProperties: true
     ScoreDetail:
       description: |
         Scoring information calculated after a biometric search.
@@ -2467,3 +2420,14 @@ components:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
       additionalProperties: true
+    PersonIds:
+      type: object
+      required:
+        - personId
+        - encounterId
+      properties:
+        personId:
+          type: string
+        encounterId:
+          type: string
+      additionalProperties: false
