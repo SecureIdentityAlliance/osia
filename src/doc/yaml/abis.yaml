@@ -9,6 +9,7 @@ info:
     Change log:
     
     - 1.4.0:
+      - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
       - Add an entity (PersonIds) to factorize definition of the pair (personId, encounterId)
       - Allow additional properties in object Candidate.
@@ -23,7 +24,8 @@ info:
     - 1.2.2:
       - Allow free string for template & quality format
       - Allow additional properties along with the score
-    - 1.2.1: Change operation ID
+    - 1.2.1:
+      - Change operation ID
     - 1.2.0:
       - Add service 'merge'
       - Add a status in the encounter entity
@@ -97,7 +99,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonIds'
+                $ref: '#/components/schemas/ExtendablePersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -140,7 +142,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/PersonIds'
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -211,7 +213,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonIds'
+                $ref: '#/components/schemas/ExtendablePersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -254,7 +256,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/PersonIds'
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -437,7 +439,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonIds'
+                $ref: '#/components/schemas/ExtendablePersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -480,7 +482,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      $ref: '#/components/schemas/PersonIds'
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -653,6 +655,12 @@ paths:
             schema:
               $ref: '#/components/schemas/Encounter'
       responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtendablePersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -699,9 +707,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: string
-                      enum: [OK]
-                      example: '"OK"'
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -2415,6 +2421,23 @@ components:
         encounterId:
           type: string
       additionalProperties: false
+    ExtendablePersonIds:
+      description: |
+        The IDs of a record (personId and encounterId) extendable with additional
+        properties if needed by an implementation.
+
+        This is used for the response of insert & update operations, when additional
+        properties (such as: quality evaluation, proof of record, etc.) might be returned
+        by the server.
+      required:
+        - personId
+        - encounterId
+      properties:
+        personId:
+          type: string
+        encounterId:
+          type: string
+      additionalProperties: true
     TaskId:
       description: |
         Information about the asynchronous task. Only the taskId is mandatory but
