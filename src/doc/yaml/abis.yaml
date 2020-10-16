@@ -9,6 +9,7 @@ info:
     Change log:
     
     - 1.4.0:
+      - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
       - Add an entity (PersonIds) to factorize definition of the pair (personId, encounterId)
       - Allow additional properties in object Candidate.
       - Change path for updateEncounterStatus operation (added /v1)
@@ -100,12 +101,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned.
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -215,12 +215,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -316,12 +315,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -443,12 +441,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -548,12 +545,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -660,12 +656,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Update successful
         '400':
@@ -768,12 +763,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Delete successful
         '400':
@@ -879,12 +873,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Merge successful
         '400':
@@ -986,12 +979,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Status has been updated
         '400':
@@ -1133,12 +1125,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -1236,12 +1227,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Delete successful
         '400':
@@ -1380,12 +1370,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -1515,12 +1504,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -1660,12 +1648,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -1808,12 +1795,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -1915,12 +1901,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -2034,12 +2019,11 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: '"123e4567-e89b-12d3-a456-426655440000"'
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
           content:
@@ -2431,3 +2415,16 @@ components:
         encounterId:
           type: string
       additionalProperties: false
+    TaskId:
+      description: |
+        Information about the asynchronous task. Only the taskId is mandatory but
+        the implementation is free to return additional details such as: expected
+        duration, URL to monitor the task, etc.
+      type: object
+      required:
+        - taskId
+      properties:
+        taskId:
+          type: string
+          example: '"123e4567-e89b-12d3-a456-426655440000"'
+      additionalProperties: true
