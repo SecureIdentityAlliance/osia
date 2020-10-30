@@ -314,9 +314,9 @@ The interfaces described in the following chapter can be mapped against ID ecosy
      Read Person Attributes                       U      IU               U       IU              U
      Match Person Attributes                      U      IU                       IU              U
      Verify Person Attributes                     U      IU                       IU              U
-     Query Person UIN                             U      IU                       IU
-     Query Person List                                                            U
-     Read Document                                U      IU                       IU
+     Query Person UIN                             U      IU                       IU              U
+     Query Person List                                                            U               U
+     Read Document                                U      IU                       IU              U
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **UIN Management**
     --------------------------------------------------------------------------------------------------
