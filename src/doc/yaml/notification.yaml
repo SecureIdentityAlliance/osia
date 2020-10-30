@@ -3,13 +3,20 @@
 
 openapi: 3.0.0
 info:
-  title: OSIA Notification Interface
-  version: 1.1.0
   description: >
-    Notification service.
+    The OSIA Notification Interface.
     
     Notifications are guaranteed to be delivered at least once. In some situation,
     it is possible they are delivered twice.
+
+    Change log:
+    
+    - 1.1.1:
+      - Add error structure on 400 errors
+      - Force additionalProperties to false when extension is not allowed
+
+  version: 1.1.1
+  title: OSIA Notification Interface
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
@@ -76,6 +83,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Subscription'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Unexpected error
           content:
@@ -175,6 +188,12 @@ paths:
       responses:
         204:
           description: Subscription successfully removed
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
           description: Subscription not found
         500:
@@ -205,7 +224,11 @@ paths:
         200:
           description: Subscription successfully confirmed
         400:
-          description: Invalid token
+          description: Bad request (invalid token)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Unexpected error
           content:
@@ -237,6 +260,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Topic'
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Unexpected error
           content:
@@ -286,6 +315,12 @@ paths:
       responses:
         204:
           description: Topic successfully removed
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
           description: Topic not found
         500:
@@ -326,6 +361,12 @@ paths:
       responses:
         200:
           description: Notification published
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Unexpected error
           content:
@@ -351,7 +392,7 @@ components:
           format: int32
         message:
           type: string
-
+      additionalProperties: false
     Message:
       type: object
       required:
@@ -379,7 +420,7 @@ components:
         timestamp:
           type: string
           format: datetime
-          
+      additionalProperties: false
     Topic:
       type: object
       properties:
@@ -388,7 +429,7 @@ components:
           description: The unique ID of the topic
         name:
           type: string
-    
+      additionalProperties: false
     Subscription:
       type: object
       properties:
@@ -408,3 +449,5 @@ components:
         active:
           type: boolean
           description: Status indicating if the subscription was confirmed or not.
+      additionalProperties: false
+      

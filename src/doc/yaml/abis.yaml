@@ -3,8 +3,45 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA ABIS Interface
-  version: 1.3.0
+  description:  |
+    The OSIA ABIS Interface.
+    
+    Change log:
+    
+    - 1.4.0:
+      - Add an entity (ExtendablePersonIds) used in the response of create & update operations
+      - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
+      - Add an entity (PersonIds) to factorize definition of the pair (personId, encounterId)
+      - Allow additional properties in object Candidate.
+      - Change path for updateEncounterStatus operation (added /v1)
+      - Clarify priority value
+      - Add error structure on 400 errors
+      - Add signature in biometricType
+      - Force additionalProperties to false when extension is not allowed
+      - Pagination when accessing gallery content
+      - Add fields on BiometricData: instance, metadata, comment, missing
+    - 1.3.0: addition of security
+    - 1.2.2:
+      - Allow free string for template & quality format
+      - Allow additional properties along with the score
+    - 1.2.1:
+      - Change operation ID
+    - 1.2.0:
+      - Add service 'merge'
+      - Add a status in the encounter entity
+    - 1.1.0:
+      - Make transactionId mandatory
+      - Add 'encounters' in the path to reduce ambiguities
+      - Rename operationId to a consistent create/read/update/delete scheme
+      - Move gallery in the encounter entity
+      - Add ability to return errors in the callback
+      - Make the gallery mandatory
+      - Rename 'subject' to 'person'
+      - Remove array of encounters in request body for insert and update
+      - Add service 'readAllEncounters'
+    - 1.0.0: Initial version
+
+  version: 1.4.0
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -41,7 +78,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -62,26 +99,21 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - personId
-                  - encounterId
-                properties:
-                  personId:
-                    type: string
-                  encounterId:
-                    type: string
+                $ref: '#/components/schemas/ExtendablePersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned.
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -110,15 +142,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      required:
-                        - personId
-                        - encounterId
-                      properties:
-                        personId:
-                          type: string
-                        encounterId:
-                          type: string
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -168,7 +192,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -189,25 +213,21 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - encounterId
-                properties:
-                  personId:
-                    type: string
-                  encounterId:
-                    type: string
+                $ref: '#/components/schemas/ExtendablePersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Creation not allowed
         '500':
@@ -236,14 +256,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      required:
-                        - encounterId
-                      properties:
-                        personId:
-                          type: string
-                        encounterId:
-                          type: string
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -288,7 +301,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -304,14 +317,17 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -402,7 +418,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -418,19 +434,26 @@ paths:
             schema:
               $ref: '#/components/schemas/Encounter'
       responses:
-        '201':
+        '200':
           description: Creation successful
-        '202':
-          description: |
-            Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/ExtendablePersonIds'
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            An internal task ID is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Creation not allowed
         '500':
@@ -459,12 +482,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: object
-                      properties:
-                        personId:
-                          type: string
-                        encounterId:
-                          type: string
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -515,7 +533,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -529,14 +547,17 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -618,7 +639,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -634,19 +655,28 @@ paths:
             schema:
               $ref: '#/components/schemas/Encounter'
       responses:
-        '202':
-          description: |
-            Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+        '200':
+          description: Operation successful
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/ExtendablePersonIds'
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            An internal task ID is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -677,8 +707,7 @@ paths:
                 content:
                   application/json:
                     schema:
-                      type: string
-                      enum: [OK]
+                      $ref: '#/components/schemas/ExtendablePersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -732,7 +761,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -740,16 +769,19 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -782,6 +814,7 @@ paths:
                     schema:
                       type: string
                       enum: [OK]
+                      example: '"OK"'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -838,7 +871,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -846,16 +879,19 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Merge successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Merge not allowed
         '404':
@@ -888,6 +924,7 @@ paths:
                     schema:
                       type: string
                       enum: [OK]
+                      example: '"OK"'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -903,7 +940,7 @@ paths:
                       schema:
                         $ref: '#/components/schemas/Error'
 
-  /persons/{personId}/encounters/{encounterId}/status:
+  /v1/persons/{personId}/encounters/{encounterId}/status:
     put:
       tags:
         - CRUD
@@ -948,16 +985,19 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Status has been updated
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Encounter status update not allowed
         '500':
@@ -988,6 +1028,7 @@ paths:
                     schema:
                       type: string
                       enum: [OK]
+                      example: '"OK"'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -1036,6 +1077,12 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/BiometricSubType'
+        - name: instance
+          in: query
+          description: Used to separate two distincts biometric items of the same type and subtype
+          required: false
+          schema:
+            type: string
         - name: templateFormat
           in: query
           description: the format of the template to return
@@ -1064,7 +1111,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1084,14 +1131,17 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -1175,7 +1225,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1183,16 +1233,19 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '204':
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -1225,6 +1278,7 @@ paths:
                     schema:
                       type: string
                       enum: [OK]
+                      example: '"OK"'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -1272,7 +1326,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1309,6 +1363,7 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
+              additionalProperties: false
       responses:
         '200':
           description: Request executed. Identification result is returned.
@@ -1321,14 +1376,17 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Identification not allowed
         '500':
@@ -1413,7 +1471,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1452,14 +1510,17 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Identification not allowed
         '500':
@@ -1544,7 +1605,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1572,6 +1633,7 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
+              additionalProperties: false
       responses:
         '200':
           description: Verification execution successful
@@ -1588,17 +1650,21 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ScoreDetail'
+                additionalProperties: false
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '404':
           description: Unknown record
         '403':
@@ -1639,6 +1705,7 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                      additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -1680,7 +1747,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1713,6 +1780,7 @@ paths:
                   type: array
                   items:
                     $ref: '#/components/schemas/BiometricData'
+              additionalProperties: false
       responses:
         '200':
           description: Verification execution successful
@@ -1729,17 +1797,21 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ScoreDetail'
+                additionalProperties: false
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Verification not allowed
         '500':
@@ -1778,6 +1850,7 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/ScoreDetail'
+                      additionalProperties: false
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -1818,7 +1891,7 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
@@ -1834,14 +1907,17 @@ paths:
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '500':
@@ -1919,10 +1995,24 @@ paths:
             example: "http://client.com/callback"
         - name: priority
           in: query
-          description: the request priority
+          description: "the request priority (0: lowest priority; 9: highest priority)"
           required: false
           schema:
             type: integer
+        - name: offset
+          in: query
+          description: The offset of the query (first item of the response)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 1000
       responses:
         '200':
           description: Operation successful
@@ -1931,26 +2021,21 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - personId
-                    - encounterId
-                  properties:
-                    personId:
-                      type: string
-                    encounterId:
-                      type: string
+                  $ref: '#/components/schemas/PersonIds'
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
-            The transaction ID is returned
+            An internal task ID is returned.
           content:
             application/json:
               schema:
-                type: string
-                example: "123e4567-e89b-12d3-a456-426655440000"
+                $ref: '#/components/schemas/TaskId'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -1983,15 +2068,7 @@ paths:
                     schema:
                       type: array
                       items:
-                        type: object
-                        required:
-                          - personId
-                          - encounterId
-                        properties:
-                          personId:
-                            type: string
-                          encounterId:
-                            type: string
+                        $ref: '#/components/schemas/PersonIds'
                   application/error+json:
                     schema:
                       $ref: '#/components/schemas/Error'
@@ -2027,6 +2104,7 @@ components:
         message:
           description: Error message
           type: string
+      additionalProperties: false
     Encounter:
       type: object
       required:
@@ -2059,6 +2137,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
+      additionalProperties: false
     ContextualData:
       type: object
       additionalProperties: true
@@ -2080,6 +2159,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         image:
           type: string
           format: byte
@@ -2111,7 +2193,27 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
-        
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
+      additionalProperties: false
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     BiometricComputedData:
       type: object
       required:
@@ -2122,6 +2224,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         template:
           type: string
           format: byte
@@ -2138,6 +2243,7 @@ components:
           type: string
         algorithm:
           type: string
+      additionalProperties: false
     TemplateFormat:
       type: string
       description: |
@@ -2181,6 +2287,7 @@ components:
         - FACE
         - FINGER
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string
@@ -2244,6 +2351,11 @@ components:
         dateOfBirthMax: "2019-12-31"
     Candidate:
       type: object
+      description: |
+        Identification of a candidate result of a biometric search.
+
+        This structure can be extended by vendors able to include additional information
+        to the three mandatory properties.
       required:
         - personId
         - rank
@@ -2271,6 +2383,7 @@ components:
             the relating biometric
           items:
             $ref: '#/components/schemas/ScoreDetail'
+      additionalProperties: true
     ScoreDetail:
       description: |
         Scoring information calculated after a biometric search.
@@ -2293,4 +2406,48 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
+      additionalProperties: true
+    PersonIds:
+      type: object
+      required:
+        - personId
+        - encounterId
+      properties:
+        personId:
+          type: string
+        encounterId:
+          type: string
+      additionalProperties: false
+    ExtendablePersonIds:
+      description: |
+        The IDs of a record (personId and encounterId) extendable with additional
+        properties if needed by an implementation.
+
+        This is used for the response of insert & update operations, when additional
+        properties (such as: quality evaluation, proof of record, etc.) might be returned
+        by the server.
+      required:
+        - personId
+        - encounterId
+      properties:
+        personId:
+          type: string
+        encounterId:
+          type: string
+      additionalProperties: true
+    TaskId:
+      description: |
+        Information about the asynchronous task. Only the taskId is mandatory but
+        the implementation is free to return additional details such as: expected
+        duration, URL to monitor the task, etc.
+      type: object
+      required:
+        - taskId
+      properties:
+        taskId:
+          type: string
+          example: '"123e4567-e89b-12d3-a456-426655440000"'
       additionalProperties: true

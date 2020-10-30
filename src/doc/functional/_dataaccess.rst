@@ -24,7 +24,6 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     :caption: ``readPersonAttributes`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -57,7 +56,6 @@ This service is synchronous. It can be used to match attributes in CR or in PR.
     :caption: ``matchPersonAttributes`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -91,7 +89,6 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
     :caption: ``verifyPersonAttributes`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -106,7 +103,7 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
 
 -------
 
-.. py:function:: queryPersonUIN(attributes)
+.. py:function:: queryPersonUIN(attributes, offset, limit)
     :noindex:
 
     Query the persons by a set of attributes. This service is used when the UIN is unknown.
@@ -115,6 +112,8 @@ This service is synchronous. It can be used to verify attributes in CR or in PR.
     **Authorization**: ``pr.person.read`` or ``cr.person.read``
 
     :param list[(str,str)] attributes: The attributes to be used to find UIN. Each attribute is described with its name and its value
+    :param int offset: The offset of the query (first item of the response) (optional, default to ``0``)
+    :param int limit: The maximum number of items to return (optional, default to ``100``)
     :return: a list of matching UIN
     
 This service is synchronous. It can be used to get the UIN of a person.
@@ -123,7 +122,6 @@ This service is synchronous. It can be used to get the UIN of a person.
     :caption: ``queryPersonUIN`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -138,7 +136,7 @@ This service is synchronous. It can be used to get the UIN of a person.
 
 -------
 
-.. py:function:: queryPersonList(attributes, names)
+.. py:function:: queryPersonList(attributes, names, offset, limit)
     :noindex:
 
     Query the persons by a list of attributes and their values.
@@ -149,6 +147,8 @@ This service is synchronous. It can be used to get the UIN of a person.
 
     :param list[(str,str)] attributes: The attributes to be used to find the persons. Each attribute is described with its name and its value
     :param list[str] names: The names of the attributes requested
+    :param int offset: The offset of the query (first item of the response) (optional, default to ``0``)
+    :param int limit: The maximum number of items to return (optional, default to ``100``)
     :return: a list of lists of pairs (name,value). In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
 
 This service is synchronous. It can be used to retrieve attributes from CR or from PR.
@@ -157,7 +157,6 @@ This service is synchronous. It can be used to retrieve attributes from CR or fr
     :caption: ``queryPersonList`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR
@@ -190,7 +189,6 @@ This service is synchronous. It can be used to get the documents for a person.
     :caption: ``readDocument`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR

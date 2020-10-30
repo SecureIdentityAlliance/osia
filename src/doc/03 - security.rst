@@ -131,6 +131,7 @@ The following table is a summary of all scopes defined in OSIA.
     ----------------------------------- -----------------------------------------------
     **Population Registry Services**
     -----------------------------------------------------------------------------------
+    Find Persons                        ``pr.person.read``
     Create Person                       ``pr.person.write``
     Read Person                         ``pr.person.read``
     Update Person                       ``pr.person.write``
@@ -172,6 +173,7 @@ The following table is a summary of all scopes defined in OSIA.
     Suspend Credential                  ``cms.credential.write``
     Unsuspend Credential                ``cms.credential.write``
     Revoke Credential                   ``cms.credential.write``
+    Set Credential Status               ``cms.credential.write``
     Find Credential Profiles            ``cms.profile.read``
     ----------------------------------- -----------------------------------------------
     **ID Usage** (Work in progress)

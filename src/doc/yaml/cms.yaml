@@ -3,8 +3,22 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA CMS Interface
-  version: 1.0.0
+  description: |
+    The OSIA Credential Management System Interface.
+    
+    Change log:
+    
+    - 1.1.0:
+      - Add error structure on 400 errors
+      - Add signature in biometricType
+      - Force additionalProperties to false when extension is not allowed
+      - Add fields on BiometricData: instance, metadata, comment, missing, template (needed when inserted in the credential)
+      - Add a requestData entity to group the request of data
+      - Extend the allowed values for the status
+      - Add a service to change the status
+    - 1.0.0: Initial version
+
+  version: 1.1.0
   title: OSIA Credential Management System Interface
   license:
     name: SIA
@@ -24,6 +38,8 @@ paths:
         - Credential Request
       summary: Create a request for a credential
       operationId: createCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
       parameters:
         - name: credentialRequestId
           in: path
@@ -47,6 +63,10 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -61,6 +81,8 @@ paths:
         - Credential Request
       summary: Read a credential request
       operationId: readCredentialRequest
+      security:
+        - BearerAuth: [cms.request.read]
       parameters:
         - name: credentialRequestId
           in: path
@@ -93,6 +115,10 @@ paths:
                 $ref: '#/components/schemas/CredentialRequest'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -108,6 +134,8 @@ paths:
         - Credential Request
       summary: Update a credential request
       operationId: updateCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
       parameters:
         - name: credentialRequestId
           in: path
@@ -131,6 +159,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -146,6 +178,8 @@ paths:
         - Credential Request
       summary: Delete a credential request
       operationId: deleteCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
       parameters:
         - name: credentialRequestId
           in: path
@@ -164,6 +198,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -181,6 +219,8 @@ paths:
         - Credential
       summary: Retrieve a list of credentials that match the given search criteria
       operationId: findCredentials
+      security:
+        - BearerAuth: [cms.credential.read]
       parameters:
         - name: attributes
           in: query
@@ -212,6 +252,10 @@ paths:
                   $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -229,6 +273,8 @@ paths:
         - Credential
       summary: Read a credential
       operationId: readCredential
+      security:
+        - BearerAuth: [cms.credential.read]
       parameters:
         - name: credentialId
           in: path
@@ -259,6 +305,10 @@ paths:
                 $ref: '#/components/schemas/Credential'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -276,6 +326,8 @@ paths:
         - Credential
       summary: Suspend a credential
       operationId: suspendCredential
+      security:
+        - BearerAuth: [cms.credential.write]
       parameters:
         - name: credentialId
           in: path
@@ -302,6 +354,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -319,6 +375,8 @@ paths:
         - Credential
       summary: Unsuspend a credential
       operationId: unsuspendCredential
+      security:
+        - BearerAuth: [cms.credential.write]
       parameters:
         - name: credentialId
           in: path
@@ -345,6 +403,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -362,6 +424,8 @@ paths:
         - Credential
       summary: Revoke a credential
       operationId: revokeCredential
+      security:
+        - BearerAuth: [cms.credential.write]
       parameters:
         - name: credentialId
           in: path
@@ -389,6 +453,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -400,12 +468,74 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/credentials/{credentialId}/status:
+    post:
+      tags:
+        - Credential
+      summary: Change the status of a credential
+      operationId: setCredentialStatus
+      security:
+        - BearerAuth: [cms.credential.write]
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  description: The new status of the credential
+                reason:
+                  type: string
+                  description: The reason for the change of status
+                requester:
+                  type: string
+                  description: The ID/name of the entity requesting the change
+                comment:
+                  type: string
+                  description: A free comment
+              additionalProperties: false
+      responses:
+        '204':
+          description: Operation successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Operation not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /v1/credentialProfiles:
     post:
       tags:
         - Credential Profile
       summary: Retrieve a list of credential profiles that match the given search criteria
       operationId: findCredentialProfiles
+      security:
+        - BearerAuth: [cms.profile.read]
       parameters:
         - name: attributes
           in: query
@@ -437,6 +567,10 @@ paths:
                   $ref: '#/components/schemas/CredentialProfile'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -450,6 +584,11 @@ paths:
 
 
 components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Error:
       type: object
@@ -464,7 +603,7 @@ components:
         message:
           description: Error message
           type: string
-
+      additionalProperties: false
     Address:
       type: object
       properties:
@@ -480,7 +619,7 @@ components:
         state:
           type: string
           description: the state of the address
-        postalcode:
+        postalCode:
           type: string
           description: the postal code of the address
         country:
@@ -492,60 +631,21 @@ components:
         address2:
         city: Libourne
         state:
-        postalcode: '33500'
+        postalCode: '33500'
         country: France
-
-
     BiographicData:
       type: object
-      properties:
-        title:
-          type: string
-          description: the title of the person
-          example: Mr
-        firstName:
-          type: string
-          description: the first name of the person
-          example: John
-        lastName:
-          type: string
-          description: the last name of the person
-          example: Doo
-        dateOfBirth:
-          type: string
-          format: date
-          description: the date of birth of the person
-          example: 1985-11-30
-        gender:
-          type: string
-          description: the gender of the person
-          example: M
-        nationality:
-          type: string
-          description: the nationality of the person
-          example: FR
-        email:
-          type: string
-          description: the email address of the person
-          example: john.doo@example.com
-        mobileNumber:
-          type: string
-          description: the mobile phone number of the person
-          example: Mr
-        dn:
-          type: string
-          description: the distinguised name of the person
-          example: CN=John Doo, C=FR
-        address:
-          $ref: '#/components/schemas/Address'
-        priority:
-          type: string
-          enum:
-            - HIGH
-            - MEDIUM
-            - LOW
+      description: The biographic data included in the credential. Can be extended.
+      example:
+        title: Mr
+        firstName: John
+        lastName: Doo
+        dateOfBirth: "1985-11-30"
+        gender: M
+        nationality: FRA
+        email: john.doo@example.com
+        mobileNumber: +123456789
       additionalProperties: true
-
     BiometricData:
       type: object
       required:
@@ -555,6 +655,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         encounterId:
           type: string
           description: the id of the encounter
@@ -587,6 +690,39 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
+        template:
+          type: string
+          format: byte
+          description: Base64-encoded template
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
+      additionalProperties: false
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     BiometricType:
       type: string
       enum:
@@ -594,6 +730,7 @@ components:
         - FINGER
         - PALM
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string
@@ -654,16 +791,27 @@ components:
       type: string
       enum: [NONE, JPEG, JPEG2000, PNG, INCITS_378, INCITS_379, INCITS_385]
 
-    CredentialRequest:
-      description: A request for a credential
+    RequestData:
       type: object
+      description: The data describing the request itself
+      required:
+        - priority
+        - credentialProfileId
+        - requestType
       properties:
-        credentialRequestId:
+        priority:
           type: string
-          description: The unique id of this credential request
+          enum: [HIGH, MEDIUM, LOW]
         credentialProfileId:
           type: string
           description: The id of the credential profile to request
+        requestType:
+          type: string
+          description: The type of request, e.g. first issuance, renewal, etc.
+          enum: [FIRST_ISSUANCE, RENEWAL, REPLACEMENT, OTHER]
+        requestTypeOther:
+          type: string
+          description: Details about the request type when OTHER is selected
         validFromDate:
           type: string
           format: date-time
@@ -676,6 +824,43 @@ components:
           description: May be used to override the default expiry date of the
             requested credential.  This must only be earlier than the default
             expiry, not later.
+        issuingAuthority:
+          type: string
+        deliveryAddress:
+          $ref: '#/components/schemas/Address'
+        parentCredentialId:
+          type: string
+          description: The ID credential used as a reference, or parent, to build a new one
+      additionalProperties: true
+      example:
+        priority: MEDIUM
+        credentialProfileId: ABC
+        requestType: "FIRST_ISSUANCE"
+        validFromDate: "2020-10-08T18:38:56.085303"
+        validToDate: "2025-10-08T18:38:56.085303"
+        issuingAuthority: OSIA
+        deliveryAddress:
+          address1: 11 Rue des Rosiers
+          city: Libourne
+          postalCode: "33500"
+          country: France
+    CredentialRequest:
+      type: object
+      description: A request for a credential
+      required:
+        - credentialProfileId
+        - personId
+        - biographicData
+        - requestData
+      properties:
+        credentialRequestId:
+          type: string
+          description: The unique id of this credential request
+        status:
+          type: string
+          enum: [PENDING, ISSUED, CANCELLED, FAILED]
+        requestData:
+          $ref: '#/components/schemas/RequestData'
         personId:
           type: string
           description: The id of the person who is the target of the request
@@ -685,27 +870,27 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
-        deliveryAddress:
-          $ref: '#/components/schemas/Address'
-        status:
-          type: string
-          enum:
-            - PENDING
-            - ISSUED
-            - CANCELLED
-            - FAILED
-      required:
-        - credentialProfileId
-        - personId
-        - biographicData
+      additionalProperties: false
 
     Credential:
       description: A credential
       type: object
+      required:
+        - credentialId
+        - status
+        - personId
+        - credentialProfileId
       properties:
         credentialId:
           type: string
           description: The unique id for this credential
+        status:
+          type: string
+          description: The status of the credential
+          enum: [NEW, ACTIVE, SUSPENDED, REVOKED, OTHER]
+        statusOther:
+          type: string
+          description: Details about the status when OTHER is used
         personId:
           type: string
           description: The unique id of the person that the credential request is for
@@ -720,21 +905,10 @@ components:
           type: string
           format: date-time
           description: The date that this credential expires
-        suspended:
-          type: boolean
-          description: Is this credential suspended
-          default: false
-        revoked:
-          type: boolean
-          description: Has this credential been revoked
-          default: false
-        type:
-          type: string
-          description: the type of credential
         serialNumber:
           type: string
           description: the serial number of the credential
-
+      additionalProperties: true
     CredentialProfile:
       description: A credential profile
       type: object
@@ -760,7 +934,7 @@ components:
         defaultLifetime:
           type: integer
           description: The default number of days that this credential will be considered valid for after issuance.
-
+      additionalProperties: false
     Expression:
       type: object
       required:
@@ -779,6 +953,7 @@ components:
           - type: integer
           - type: number
           - type: boolean
+      additionalProperties: false
     Expressions:
       type: array
       items:

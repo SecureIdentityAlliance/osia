@@ -3,8 +3,27 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA Enrollment Interface
-  version: 1.0.0
+  description: |
+    The OSIA Enrollment Interface
+
+    Change log:
+    
+    - 1.1.0:
+      - Add error structure on 400 errors
+      - Add additional documentType and open it for extension
+      - Force additionalProperties to false when extension is not allowed
+      - Rename operationId for create/read buffer
+      - Add 404 error when missing
+      - Add Digest header in create/read buffer
+      - Support multiple content types for create/read buffer
+      - Remove enrollmentId from the response of createEnrollment
+      - Make the enrollment status optional in create & update operations
+      - Add a contextualData entity to match what exists in population registry
+      - Add pagination for findEnrollments
+      - Add fields on BiometricData: instance, metadata, comment, missing
+    - 1.0.0: Initial version
+
+  version: 1.1.0
   title: OSIA Enrollment Interface
   license:
     name: SIA
@@ -49,21 +68,18 @@ paths:
             schema:
               $ref: '#/components/schemas/Enrollment'
       responses:
-        '201':
+        '204':
           description: Operation successful
+        '400':
+          description: Bad request
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - enrollmentId
-                properties:
-                  enrollmentId:
-                    type: string
-        '400':
-          description: Bad request
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
@@ -107,9 +123,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Enrollment'
+                allOf:
+                  - $ref: '#/components/schemas/Enrollment'
+                  - type: object
+                    required:
+                      - status
+
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -156,6 +181,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -203,6 +232,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -239,8 +272,14 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
@@ -275,6 +314,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -301,6 +344,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: offset
+          in: query
+          description: The offset of the query (first item of the response)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 100
       requestBody:
         description: A set of expressions on attributes of the person
         content:
@@ -316,19 +373,26 @@ paths:
                 value: "1990-12-31"
       responses:
         '200':
-          description: Read successful
+          description: Query successful
           content:
             application/json:
               schema:
                 type: array
                 items:
-                    $ref: '#/components/schemas/Enrollment'
+                    allOf:
+                      - $ref: '#/components/schemas/Enrollment'
+                      - type: object
+                        required:
+                          - status
+
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          description: Read not allowed
-        '404':
-          description: Unknown record
+          description: Query not allowed
         '500':
           description: Unexpected error
           content:
@@ -340,8 +404,9 @@ paths:
     post:
       tags:
         - Buffer
-      summary: This service is used to send separately the buffers of the images
-      operationId: sendBuffer
+      summary: Create a buffer
+      description: This service is used to send separately the buffers of the images
+      operationId: createBuffer
       security:
         - BearerAuth: [enroll.buf.write]
       parameters:
@@ -357,14 +422,27 @@ paths:
           required: true
           schema:
             type: string
+        - name: Digest
+          in: header
+          description: the buffer digest, as defined per RFC 3230.
+          schema:
+            type: string
+          example: "SHA=thvDyvhfIqlvFe+A9MYgxAfm1q5="
+          required: false
       requestBody:
         description: The image of the request
         required: true
         content:
-          application/octet-stream:
+          application/*:
             schema:
               type: string
               format: binary
+              example: ABCDEFG...
+          image/*:
+            schema:
+              type: string
+              format: binary
+              example: ABCDEFG...
       responses:
         '201':
           description: Operation successful
@@ -377,10 +455,15 @@ paths:
                 properties:
                   bufferId:
                     type: string
+                additionalProperties: false
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
-          description: Update not allowed
+          description: Operation not allowed
         '404':
           description: Unknown record
         '500':
@@ -394,8 +477,11 @@ paths:
     get:
       tags:
         - Buffer
-      summary: This service is used to get the buffer of the images
-      operationId: getBuffer
+      summary: Read a buffer
+      description: |
+        This service is used to get the buffer of the images.
+        The content type of the response is the content type used when the buffer was created.
+      operationId: readBuffer
       security:
         - BearerAuth: [enroll.buf.read]
       parameters:
@@ -420,14 +506,32 @@ paths:
       responses:
         '200':
           description: Read successful
+          headers:
+            Digest:
+              description: the buffer digest, as defined per RFC 3230.
+              schema:
+                type: string
+              example: "SHA=thvDyvhfIqlvFe+A9MYgxAfm1q5="
+              required: false
           content:
-            application/octet-stream:
+            application/*:
               schema:
                 description: The image
                 type: string
                 format: binary
+                example: ABCDEFG...
+            image/*:
+              schema:
+                description: The image
+                type: string
+                format: binary
+                example: ABCDEFG...
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -459,12 +563,11 @@ components:
         message:
           description: Error message
           type: string
+      additionalProperties: false
     Enrollment:
       type: object
       required:
-        - status
         - enrollmentType
-        - biometricData
       properties:
         enrollmentId:
           type: string
@@ -482,6 +585,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RequestData'
+        contextualData:
+          $ref: '#/components/schemas/ContextualData'
         biographicData:
           $ref: '#/components/schemas/BiographicData'
         biometricData:
@@ -492,10 +597,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentData'
+      additionalProperties: false
     RequestData:
       type: object
       additionalProperties: true
-      description: The enrollment data related to the enrollment itself. Can be extended.
+      description: The data describing the request associated to the enrollment (i.e. why the enrollment is done). Can be extended.
       example:
         requestType: "IDCARD_ISSUANCE"
         deliveryPlace: "paris"
@@ -503,10 +609,15 @@ components:
     EnrollmentFlags:
       type: object
       additionalProperties: true
-      description: The enrollment custom flags. Can be extended.
+      description: The enrollment custom flags (i.e. the properties of the enrollment process). Can be extended.
       example:
         timeout: 3600
         other: "other"
+    ContextualData:
+      type: object
+      additionalProperties: true
+      example:
+        enrollmentDate: "2019-01-11"
     BiographicData:
       type: object
       additionalProperties: true
@@ -524,6 +635,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         image:
           type: string
           format: byte
@@ -558,6 +672,27 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
+      additionalProperties: false
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     DocumentPart:
       type: object
       properties:
@@ -592,6 +727,7 @@ components:
         mimetype:
           type: string
           description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
+      additionalProperties: false
     DocumentData:
       type: object
       required:
@@ -599,7 +735,12 @@ components:
         - parts
       properties:
         documentType:
-          $ref: '#/components/schemas/DocumentType'
+          type: string
+          description: Type of document.
+          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, OTHER]
+        documentTypeOther:
+          type: string
+          description: Details about the type of document when OTHER is used.
         instance:
           type: string
           description: "Used to separate two distincts documents of the same type (ex: two passports)"
@@ -608,6 +749,7 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+      additionalProperties: false
     Expression:
       type: object
       required:
@@ -626,6 +768,7 @@ components:
           - type: integer
           - type: number
           - type: boolean
+      additionalProperties: false
     Expressions:
       type: array
       items:
@@ -655,18 +798,13 @@ components:
         - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
         - OTHER
         - UNKNOWN
-    DocumentType:
-      type: string
-      description: Type of document. Can be extended.
-      enum:
-        - ID_CARD
-        - Passport
     BiometricType:
       type: string
       enum:
         - FACE
         - FINGER
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string

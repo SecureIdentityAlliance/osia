@@ -173,7 +173,7 @@ Services
     :return: a status indicating success, error, or pending operation.
         A list of gallery ID is returned, either synchronously or using the callback.
 
-.. py:function:: readGalleryContent(galleryID, callback, transactionID, options)
+.. py:function:: readGalleryContent(galleryID, callback, transactionID, offset, limit, options)
     :noindex:
 
     Read the content of one gallery, i.e. the IDs of all the records linked to this gallery.
@@ -183,6 +183,8 @@ Services
     :param str galleryID: Gallery whose content will be returned.
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param int offset: The offset of the query (first item of the response) (optional, default to ``0``)
+    :param int limit: The maximum number of items to return (optional, default to ``1000``)
     :param dict options: the processing options. Supported options are ``priority``.
     :return: a status indicating success, error, or pending operation.
         A list of persons/encounters is returned, either synchronously or using the callback.
@@ -272,7 +274,8 @@ Options
       - Description
 
     * - ``priority``
-      - Priority of the request. Values range from 0 to 9
+      - Priority of the request. Values range from ``0`` to ``9``.
+        ``0`` indicates the lowest priority, ``9`` indicates the highest priority.
     * - ``maxNbCand``
       - The maximum number of candidates to return.
     * - ``threshold``
@@ -325,11 +328,15 @@ Data Model
 
     * - Biometric Data
       - Digital representation of biometric characteristics.
+      
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
         All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
-        metadata specific to fingerprint, palmprint, portrait or iris.
-      - fingerprint, portrait, iris
+        metadata specific to fingerprint, palmprint, portrait, iris or signature.
+
+        A biometric data can be associated to no image or a partial image if it includes information about
+        the missing items (example: one finger may be amputated on a 4 finger image)
+      - fingerprint, portrait, iris, signature
 
     * - Candidate
       - Information about a candidate found during an identification
@@ -349,8 +356,6 @@ Data Model
 .. uml::
     :caption: Biometric Data Model
     :scale: 50%
-
-    !include "skin.iwsd"
 
     class Gallery {
         string galleryID;

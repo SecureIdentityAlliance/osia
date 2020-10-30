@@ -3,17 +3,21 @@
 
 openapi: 3.0.0
 info:
-  title: OSIA data access services
-  version: 1.2.0
   description: |
-    The OSIA Data Access interface.
+    The OSIA Data Access Interface.
     
     Change log:
-    
+
+    - 1.3.0:
+      - Add errors 400 and return error details
+      - Force additionalProperties to false when extension is not allowed
+      - Add pagination for query service. limit parameter replaces the max parameter.
     - 1.2.0: addition of security
     - 1.1.0: extended queryPersonUIN/queryPersonList operation to return a list of attributes, and not only a list of UIN
     - 1.0.0: first version proposed in OSIA.
 
+  version: 1.3.0
+  title: OSIA Data Access Interface
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
@@ -61,12 +65,20 @@ paths:
           example:
             - firstName
             - lastName
-        - name: max
+        - name: offset
           in: query
-          description: The maximum number of records to return. Default is 10
+          description: The offset of the query (first item of the response)
           required: false
           schema:
-            type: number
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 100
 
       responses:
         200:
@@ -105,6 +117,10 @@ paths:
                     
         400:
           description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -165,6 +181,12 @@ paths:
                 dob:
                   code: 1023
                   message: Unknown attribute name
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -219,6 +241,12 @@ paths:
               example:
                 - attributeName: firstName
                   errorCode: 1
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -274,6 +302,12 @@ paths:
                 type: boolean
               example:
                 true
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -341,9 +375,16 @@ paths:
                     items:
                       type: string
                       format: binary
+                additionalProperties: false
               encoding:
                 documents:
                   contentType: application/pdf, image/jpeg, image/png
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         401:
           description: Client must be authenticated
         403:
@@ -377,6 +418,7 @@ components:
           format: int32
         message:
           type: string
+      additionalProperties: false
     Attributes:
       type: object
       additionalProperties:
@@ -405,6 +447,7 @@ components:
           - type: integer
           - type: number
           - type: boolean
+      additionalProperties: false
     Expressions:
       type: array
       items:
@@ -421,3 +464,5 @@ components:
             format: int32
             enum: [0, 1]
             description: 0=attribute does not exist; 1=attribute exists but does not match
+        additionalProperties: false
+        

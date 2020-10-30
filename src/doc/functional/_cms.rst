@@ -131,6 +131,22 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
 
+.. py:function:: setCredentialStatus(credentialID, status, reason, requester, comment, transactionID)
+    :noindex:
+
+    Change the status of a credential. This is an extension of the revoke/suspend services,
+    supporting more statuses and transitions.
+
+    **Authorization**: ``cms.credential.write``
+
+    :param str credentialID: The ID of the credential.
+    :param string status: The new status of the credential
+    :param string reason: A text describing the cause of the change of status
+    :param string requester: The client generated transactionID.
+    :param string comment: A free text comment
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error.
+
 ----------
 
 .. py:function:: findCredentialProfiles(expressions, transactionID)
@@ -159,3 +175,94 @@ E.g. For surname/familyname, use OID 2.5.4.4 or id-at-surname.
 Some calls may require new attributes to be defined.  E.g. when
 retrieving biometric data, the caller may only want the meta data about
 that biometric, rather than the actual biometric data.
+
+Data Model
+""""""""""
+
+.. list-table:: Credential Data Model
+    :header-rows: 1
+    :widths: 25 50 25
+
+    * - Type
+      - Description
+      - Example
+
+    * - Credential
+      - The attributes of the credential itself
+
+        The proposed transitions for the status are represented below. It can be adapted if needed.
+
+        .. uml::
+            :scale: 30%
+
+            [*] --> new
+            new --> active: issue
+            active -> suspended: suspend
+            suspended -> active: unsuspend
+            active --> revoked
+            suspended --> revoked
+
+      - ID, status, dates, serial number
+
+    * - Biometric Data
+      - Digital representation of biometric characteristics.
+      
+        All images can be passed by value (image buffer is in the request) or by reference (the address of the
+        image is in the request).
+        All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
+        metadata specific to fingerprint, palmprint, portrait, iris or signature.
+
+        A biometric data can be associated to no image or a partial image if it includes information about
+        the missing items (example: one finger may be amputated on a 4 finger image)
+      - fingerprint, portrait, iris, signature
+
+    * - Biographic Data
+      - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.
+      - first name, last name, date of birth, etc.
+
+    * - Request Data
+      - a dictionary (list of names and values) for data related to the request itself.
+      - Type of credential, action to execute, priority
+
+.. uml::
+    :caption: Credential Data Model
+    :scale: 50%
+
+    class Credential {
+        string credentialID;
+        string status;
+        string personID;
+        string serialNumber;
+        ...
+    }
+
+    class CredentialRequest {
+        string CredentialRequestID;
+        string status;
+        string personID;
+    }
+    CredentialRequest . Credential
+
+    class BiographicData {
+        string firstName;
+        string lastName;
+        date dateOfBirth;
+        ...
+    }
+    BiographicData -o CredentialRequest
+
+    class BiometricData {
+        byte[] image;
+        URL imageRef;
+        byte[] template;
+    }
+    CredentialRequest o-- "*" BiometricData
+
+    class RequestData {
+        string priority;
+        string credentialProfileID;
+        string requestType;
+        ...
+    }
+    RequestData --o CredentialRequest
+

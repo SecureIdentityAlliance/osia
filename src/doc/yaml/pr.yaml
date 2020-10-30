@@ -3,8 +3,21 @@
 
 openapi: 3.0.0
 info:
-  description: OSIA PR Interface
-  version: 1.2.0
+  description: |
+    The OSIA Population Registry Interface
+
+    Change log:
+    
+    - 1.3.0:
+      - Add error structure on 400 errors
+      - Add additional documentType and open it for extension
+      - Add signature in biometricType
+      - Force additionalProperties to false when extension is not allowed
+      - Pagination when accessing gallery content
+      - Add a query service, searching on all the identities of a person
+      - Add fields on BiometricData: instance, metadata, comment, missing
+
+  version: 1.3.0
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -17,6 +30,104 @@ tags:
 servers:
   - url: https://pr.com/
 paths:
+
+
+  /v1/persons:
+    post:
+      tags:
+        - Person
+      summary: Query for persons
+      description: |
+        Retrieve a list of personId corresponding to the records with one identity matching the criteria.
+
+        By default, all identities are used in the search.
+      operationId: findPersons
+      security:
+        - BearerAuth: [pr.person.read]
+      parameters:
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: group
+          in: query
+          description: Group all matching identities of one person and return only the personId
+          required: false
+          schema:
+            type: boolean
+        - name: reference
+          in: query
+          description: Limit the query to the reference identity
+          required: false
+          schema:
+            type: boolean
+        - name: gallery
+          in: query
+          description: Limit the query to the records belonging to this gallery
+          required: false
+          schema:
+            type: string
+        - name: offset
+          in: query
+          description: The offset of the query (first item of the response)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 100
+      requestBody:
+        description: A set of expressions on attributes of the person's identity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Expressions'
+            example:
+              - attributeName: firstName
+                operator: "="
+                value: John
+              - attributeName: dateOfBirth
+                operator: "<"
+                value: "1990-12-31"
+      responses:
+        '200':
+          description: Query successful. If the group parameter was set the identityId is not included in the response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - personId
+                  properties:
+                    personId:
+                      type: string
+                    identityId:
+                      type: string
+                  additionalProperties: false
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Query not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
 
   /v1/persons/{personId}:
     post:
@@ -49,6 +160,10 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '500':
@@ -86,6 +201,10 @@ paths:
                 $ref: '#/components/schemas/Person'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -126,6 +245,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -161,6 +284,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -208,6 +335,10 @@ paths:
           description: Merge successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Merge not allowed
         '404':
@@ -251,6 +382,10 @@ paths:
                   $ref: '#/components/schemas/Identity'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
         '404':
@@ -290,6 +425,7 @@ paths:
                 - type: object
                   required:
                     - status
+                  
       responses:
         '200':
           description: Insertion successful
@@ -302,8 +438,13 @@ paths:
                 properties:
                   identityId:
                     type: string
+                additionalProperties: false
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Insertion not allowed
         '500':
@@ -357,6 +498,10 @@ paths:
           description: Insertion successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Insertion not allowed
         '500':
@@ -400,6 +545,10 @@ paths:
                 $ref: '#/components/schemas/Identity'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -450,6 +599,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -502,6 +655,10 @@ paths:
           description: Update successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Update not allowed
         '404':
@@ -543,6 +700,10 @@ paths:
           description: Delete successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Delete not allowed
         '404':
@@ -592,8 +753,14 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
@@ -633,8 +800,14 @@ paths:
           description: Operation successful
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '404':
+          description: Unknown record
         '500':
           description: Unexpected error
           content:
@@ -672,6 +845,10 @@ paths:
                 $ref: '#/components/schemas/Identity'
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -710,6 +887,10 @@ paths:
                   type: string
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '500':
@@ -740,6 +921,20 @@ paths:
           required: true
           schema:
             type: string
+        - name: offset
+          in: query
+          description: The offset of the query (first item of the response)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: limit
+          in: query
+          description: The maximum number of items to return
+          required: false
+          schema:
+            type: integer
+            default: 1000
       responses:
         '200':
           description: Operation successful
@@ -757,8 +952,13 @@ paths:
                       type: string
                     identityId:
                       type: string
+                  additionalProperties: false
         '400':
           description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
         '404':
@@ -790,6 +990,7 @@ components:
         message:
           description: Error message
           type: string
+      additionalProperties: false
     Person:
       description: >-
         Person entity.
@@ -807,6 +1008,7 @@ components:
         physicalStatus:
           type: string
           enum: [DEAD, ALIVE]
+      additionalProperties: false
     Identity:
       type: object
       properties:
@@ -836,6 +1038,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Document'
+      additionalProperties: false
     ContextualData:
       type: object
       additionalProperties: true
@@ -866,7 +1069,12 @@ components:
         - parts
       properties:
         documentType:
-          $ref: '#/components/schemas/DocumentType'
+          type: string
+          description: Type of document.
+          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, OTHER]
+        documentTypeOther:
+          type: string
+          description: Details about the type of document when OTHER is used.
         instance:
           type: string
           description: "Used to separate two distincts documents of the same type (ex: two passports)"
@@ -875,6 +1083,7 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+      additionalProperties: false
     DocumentPart:
       type: object
       properties:
@@ -908,11 +1117,7 @@ components:
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
-    DocumentType:
-      type: string
-      description: Type of document. Can be extended.
-      enum: [ID_CARD, PASSPORT]
-
+      additionalProperties: false
     BiometricData:
       type: object
       required:
@@ -922,6 +1127,9 @@ components:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
           $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
         image:
           type: string
           format: byte
@@ -951,6 +1159,27 @@ components:
           description: the image resolution (in DPI)
         compression:
           $ref: '#/components/schemas/CompressionType'
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
+      additionalProperties: false
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
     BiometricType:
       type: string
       enum:
@@ -958,6 +1187,7 @@ components:
         - FINGER
         - PALM
         - IRIS
+        - SIGNATURE
         - UNKNOWN
     BiometricSubType:
       type: string
@@ -1013,3 +1243,26 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
+    Expression:
+      type: object
+      required:
+        - attributeName
+        - operator
+        - value
+      properties:
+        attributeName:
+          type: string
+        operator:
+          type: string
+          enum: ['<', '>', '=', '>=', '<=', '!=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+      additionalProperties: false
+    Expressions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Expression'

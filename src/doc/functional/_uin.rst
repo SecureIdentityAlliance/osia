@@ -7,7 +7,7 @@ See :ref:`annex-interface-uin` for the technical details of this interface.
 Services
 """"""""
 
-.. py:function:: generateUIN(attributes)
+.. py:function:: generateUIN(attributes, transactionID)
     :noindex:
 
     Generate a new UIN.
@@ -15,6 +15,7 @@ Services
     **Authorization**: ``uin.generate``
 
     :param list[(str,str)] attributes: A list of pair (attribute name, value) that can be used to allocate a new UIN
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a new UIN or an error if the generation is not possible
 
 This service is synchronous.
@@ -23,7 +24,6 @@ This service is synchronous.
     :caption: ``generateUIN`` Sequence Diagram
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "CR" as CR
     participant "PR" as PR

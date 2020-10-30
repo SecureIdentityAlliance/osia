@@ -17,6 +17,7 @@ Population Registry Management
     .. hlist::
         :columns: 2
 
+        - `findPersons <#post--v1-persons>`_
         - `createPerson <#post--v1-persons-personId>`_
         - `readPerson <#get--v1-persons-personId>`_
         - `updatePerson <#put--v1-persons-personId>`_
