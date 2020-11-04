@@ -4,13 +4,15 @@
 Biometrics
 ----------
 
+This is version :oasversion:`../../yaml/abis.yaml` of this interface.
+
 .. only:: html
 
-    Get the OpenAPI file for this interface: `abis.yaml <../../abis.yaml>`_
+    Get the OpenAPI file: `abis.yaml <../../abis.yaml>`_
 
 .. raw:: latex
 
-    Get the OpenAPI file for this interface: \textattachfile[]{../html/abis.yaml}{abis.yaml}
+    Get the OpenAPI file: \textattachfile[]{../html/abis.yaml}{abis.yaml}
 
 .. sidebar:: Biometrics Services
 

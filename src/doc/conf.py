@@ -157,9 +157,22 @@ latex_elements = {
 'classoptions' : ',english,openany,oneside'
 }
 
+# Custom roles
+import yaml
+from docutils import nodes
+def oasversion_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
+    fn = text
+    env = inliner.document.settings.env
+    rel_fn, fn = env.relfn2path(fn)
+    y = yaml.load(open(fn,'r').read(), Loader=yaml.FullLoader)
+    s = y['info']['version']
+    retnode = nodes.inline(text=s,role=typ.lower(), classes=[typ])
+    return [retnode], []
+
 # Copy images
 import os,shutil,fnmatch
 def setup(app):
+    app.add_role('oasversion', oasversion_role)
     try:
         os.makedirs(app.outdir)
     except:
