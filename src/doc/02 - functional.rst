@@ -50,7 +50,16 @@ The components are defined as follows:
 
 - The *Third Party Services* component.
 
-  :todo:`TBD`
+  This component interfaces with external systems to leverage the identity databases
+  for the benefits of the population.
+  It provides services to authenticate, identify, and access identity attributes for use cases such
+  as KYC.
+  
+- The *Digital Credential Issuance & Distribution System*.
+
+  This component is in charge of the issuance and delivery of the digital credentials built from
+  the identity databases under the control if the CMS.
+  
 
 .. list-table:: Components
     :header-rows: 1
@@ -62,7 +71,7 @@ The components are defined as follows:
       - Functions
       
     * - Enrollment
-      - - Alpha
+      - - Biographic data
         - UIN
         - History
         - Supporting documents
@@ -70,7 +79,7 @@ The components are defined as follows:
         - Collecting personal data
 
     * - PR
-      - - Alpha
+      - - Biographic data
         - UIN
         - History
         - Supporting documents
@@ -78,7 +87,7 @@ The components are defined as follows:
         - Identity Life cycle management
         
     * - UIN Gen
-      - - Alpha
+      - - Biographic data
         - UIN
       - - UIN generation
 
@@ -99,19 +108,26 @@ The components are defined as follows:
         - Workflow
 
     * - CMS
-      - - Alpha
+      - - Biographic data
         - UIN
-        - History
-        - Supporting documents
+        - Biometric data
+        - Credential event history
       - - Credential data storage
         - Credential Life cycle management
         - Credential Production
         - Workflow
-        - SMS and email server
 
     * - Third Party Services
-      - :todo:`TBD`
-      - KYC/auth
+      - - Biographic data/Identity attributes
+        - Biometric data
+      - - Authentication (1:1)
+        - Identification (1:N)
+        - Access to identity attributes
+        
+    * - Digital Credential Issuance & Distribution System
+      -
+      - - Issuance of a digital credential
+        - Delivery of a digital credential
 
 The components are represented on the following diagram:
 
