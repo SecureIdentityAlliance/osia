@@ -11,11 +11,15 @@ info:
 
     Change log:
     
-    - 1.1.1:
+    - 1.2.0:
       - Add error structure on 400 errors
       - Force additionalProperties to false when extension is not allowed
+    - 1.1.0:
+      - Addition of security
+      - Rename operation ID to be consistent with the other services
+    - 1.0.0: Initial version
 
-  version: 1.1.1
+  version: 1.2.0
   title: OSIA Notification Interface
   license:
     name: SIA

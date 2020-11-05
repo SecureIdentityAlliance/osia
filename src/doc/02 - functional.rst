@@ -187,10 +187,6 @@ This chapter describes the following interfaces:
 
   A set of services implemented on top of identity systems to favour third parties consumption of identity data.
 
-- Under discussion
-
-  A set of services under discussion and not yet linked to any specific tag.
-
 The following table describes in detail the interfaces and associated services.
 
 .. table:: Interfaces List
@@ -289,15 +285,6 @@ The following table describes in detail the interfaces and associated services.
     Identify                           Identify a person based on a set of attributes (biometric data, demographics, credential)
     Read Attributes                    Read person attributes
     Read Attributes set                Read person attributes corresponding to a predefined set name
-    --------------------------------- -----------------------------------------------------------------------------------
-    **Under discussion**
-    ---------------------------------------------------------------------------------------------------------------------
-    Update Document Val Status         Updates the status of a document validation
-    Read Document Val Status           Retrieve the status of a document validation
-    Update Biometric Val Status        Updates the status of a biometric validation
-    Read Biometric Val Status          Retrieve the status of a biometric validation
-    Update Biographic Val Status       Updates the status of a biographic validation
-    Read Biographic Val Status         Retrieve the status of a biographic validation   
     ================================= ===================================================================================   
 
 Components vs Interfaces Mapping
@@ -405,15 +392,6 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Identify ID                                                                                   I
     Read Attributes                                                                               I
     Read Attributes set                                                                           I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **Under discussion**
-    --------------------------------------------------------------------------------------------------
-    Update Document Val Status
-    Read Document Val Status
-    Update Biometric Val Status
-    Read Biometric Val Status
-    Update Biographic Val Status
-    Read Biographic Val Status
     =================================  ======= ======= ======= ======= ======= ======= ======= =======
 
 where:

@@ -16,6 +16,12 @@ info:
       - Pagination when accessing gallery content
       - Add a query service, searching on all the identities of a person
       - Add fields on BiometricData: instance, metadata, comment, missing
+    - 1.2.0:
+      - Addition of security
+    - 1.1.0:
+      - Add the merge service
+      - Change the mandatory flag for the status, based on the type of service
+    - 1.0.0: Initial version
 
   version: 1.3.0
   title: OSIA Population Registry Interface
