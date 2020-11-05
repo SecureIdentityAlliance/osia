@@ -203,10 +203,10 @@ def _example(media_type_objects, method=None, endpoint=None, status=None,
                 }
 
         for example in examples.values():
-            # Convert to json.
-            # For a simple string, will add the necessary double quotes
-            example['value'] = json.dumps(
-                example['value'], indent=4, separators=(',', ': '))
+            # According to OpenAPI v3 specs, string examples should be left unchanged
+            if not isinstance(example['value'], str):
+                example['value'] = json.dumps(
+                    example['value'], indent=4, separators=(',', ': '))
 
         for example_name, example in examples.items():
             if 'summary' in example:
@@ -234,7 +234,7 @@ def _example(media_type_objects, method=None, endpoint=None, status=None,
                     yield '{extra_indent}{indent}Authorization: Bearer cn389ncoiwuencr'\
                         .format(**locals())
                 if headers:
-                    for k,v in headers:
+                    for k,v in headers.items():
                         yield '{extra_indent}{indent}{k}: {v}'\
                             .format(**locals())
 
@@ -244,6 +244,10 @@ def _example(media_type_objects, method=None, endpoint=None, status=None,
                     .format(**locals())
                 yield '{extra_indent}{indent}Content-Type: {content_type}' \
                     .format(**locals())
+                if headers:
+                    for k,v in headers.items():
+                        yield '{extra_indent}{indent}{k}: {v}'\
+                            .format(**locals())
 
             if content_type:
                 yield ''
@@ -335,19 +339,21 @@ def _httpresource(endpoint, method, properties, convert, render_examples,
             yield '{indent}{indent}{line}'.format(**locals())
 
     # print request header params
+    headers_ex = {}
     for param in filter(lambda p: p['in'] == 'header', parameters):
         yield indent + ':reqheader {name}:'.format(**param)
+        headers_ex[param['name']] = param.get('example','<VALUE>')
         for line in convert(param.get('description', '')).splitlines():
             yield '{indent}{indent}{line}'.format(**locals())
         if param.get('required', False):
             yield '{indent}{indent}(Required)'.format(**locals())
 
     # print response headers
-    headers_ex = {}
+    headers_res = {}
     for status, response in responses.items():
         for headername, header in response.get('headers', {}).items():
             yield indent + ':resheader {name}:'.format(name=headername)
-            headers_res[headername] = '<VALUE>'
+            headers_res[headername] = header.get('example','<VALUE>')
             for line in convert(header['description']).splitlines():
                 yield '{indent}{indent}{line}'.format(**locals())
 
@@ -371,7 +377,7 @@ def _httpresource(endpoint, method, properties, convert, render_examples,
         # print response example
         for status, response in responses.items():
             for line in _example(
-                    response.get('content', {}), status=status, nb_indent=1):
+                    response.get('content', {}), status=status, nb_indent=1, headers=headers_res):
                 yield line
 
     for cb_name, cb_specs in properties.get('callbacks', {}).items():

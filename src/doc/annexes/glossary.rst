@@ -36,6 +36,12 @@ Glossary
         Managing data including voter rolls, land registry, vehicle registration, passport, residence registry,
         education, health and benefits.
     
+    **Gallery**
+        Group of persons related by a common purpose, designation, or status.
+        Example: a watch list or a set of persons entitled to a certain benefit.
+
+        (Source: ISO-30108-1)
+
     **HTTP Status Codes**
         The HTTP Status Codes are used to indicate the status of the executed operation. The available status codes are
         described by `RFC 7231 <http://tools.ietf.org/html/rfc7231#section-6>`_ and in the

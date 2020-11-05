@@ -222,6 +222,7 @@ The following table describes in detail the interfaces and associated services.
     --------------------------------- -----------------------------------------------------------------------------------
     **Population Registry Services**
     ---------------------------------------------------------------------------------------------------------------------
+    Find Persons                       Query for persons, using all the available identities
     Create Person                      Create a new person
     Read Person                        Read the attributes of a person
     Update Person                      Update a person
@@ -258,10 +259,13 @@ The following table describes in detail the interfaces and associated services.
     Read Credential Request            Retrieve the data/status of a credential request
     Update Credential Request          Update the requested issuance of a secure credential
     Delete Credential Request          Delete/cancel the requested issuance of a secure document / credential
+    Find Credentials                   Retrieve a list of credentials that match the passed in search criteria
     Read Credential                    Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)
     Suspend Credential                 Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
     Unsuspend Credential               Unsuspend an issued credential. For electronic credentials this will unsuspend any PKI certificates that are present
-    Cancel Credential                  Cancel an issued credential. For electronic credentials this will revoke any PKI certificates that are present  
+    Revoke Credential                  Revoke an issued credential. For electronic credentials this will revoke any PKI certificates that are present
+    Set Credential Status              Change the credential status
+    Find Credential Profiles           Retrieve a list of credential profils that match the passed in search criteria
     --------------------------------- -----------------------------------------------------------------------------------
     **ID Usage**
     ---------------------------------------------------------------------------------------------------------------------
@@ -272,8 +276,6 @@ The following table describes in detail the interfaces and associated services.
     --------------------------------- -----------------------------------------------------------------------------------
     **Under discussion**
     ---------------------------------------------------------------------------------------------------------------------
-    List Credential Profiles           Retrieve the list of credential profiles
-    Read Credential Profiles           Retrieve the credential profile
     Update Document Val Status         Updates the status of a document validation
     Read Document Val Status           Retrieve the status of a document validation
     Update Biometric Val Status        Updates the status of a biometric validation
@@ -314,9 +316,9 @@ The interfaces described in the following chapter can be mapped against ID ecosy
      Read Person Attributes                       U      IU               U       IU              U
      Match Person Attributes                      U      IU                       IU              U
      Verify Person Attributes                     U      IU                       IU              U
-     Query Person UIN                             U      IU                       IU
-     Query Person List                                                            U
-     Read Document                                U      IU                       IU
+     Query Person UIN                             U      IU                       IU              U
+     Query Person List                                                            U               U
+     Read Document                                U      IU                       IU              U
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **UIN Management**
     --------------------------------------------------------------------------------------------------
@@ -336,6 +338,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Population Registry Services**
     --------------------------------------------------------------------------------------------------
+    Find Persons                                         I
     Create Person                                        I               U                U
     Read Person                                          I               U                U       U
     Update Person                                        I               U                U
@@ -372,10 +375,13 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Read Credential Request                                                               I
     Update Credential Request                                                             I
     Delete Credential Request                                                             I
+    Find Credentials                                                                      I
     Read Credential                                                                       I
     Suspend Credential                                                                    I
     Unsuspend Credential                                                                  I
-    Cancel Credential                                                                     I
+    Revoke Credential                                                                     I
+    Set Credential Status                                                                 I
+    Find Credential Profiles                                                              I
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **ID Usage**
     --------------------------------------------------------------------------------------------------
@@ -386,8 +392,6 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Under discussion**
     --------------------------------------------------------------------------------------------------
-    List Cred Profiles
-    Read Cred Profiles
     Update Document Val Status
     Read Document Val Status
     Update Biometric Val Status
@@ -413,7 +417,6 @@ Birth Use Case
     :caption: Birth Use Case
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     actor "Mother or Father" as parent
     participant "CR" as CR
@@ -506,7 +509,6 @@ and decides to merge them, a notification must be sent.
     :caption: Deduplication Use Case
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "PR" as PR
     participant "CR" as CR
@@ -542,7 +544,6 @@ Bank account opening Use Case
     :caption: Bank account opening Use Case
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     actor "Citizen" as citizen
     actor "Bank attendant" as bank
@@ -578,7 +579,6 @@ Police identity control Use Case
     :caption: Collaborative identity control
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     actor "Citizen" as citizen
     actor "Policeman" as police

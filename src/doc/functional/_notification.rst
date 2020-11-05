@@ -11,7 +11,6 @@ in the following diagram:
     :caption: Subscription & Notification Process
     :scale: 50%
 
-    !include "skin.iwsd"
     hide footbox
     participant "Emitter" as PR
     participant "Notification\nEngine" as N

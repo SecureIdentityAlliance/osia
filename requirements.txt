@@ -4,21 +4,21 @@ Babel==2.6.0
 beautifulsoup4==4.7.0
 certifi==2018.11.29
 chardet==3.0.4
-cryptography==2.4.2
+cryptography==3.2
 docutils==0.14
 enum34==1.1.6
 # html5lib==0.999999999
 idna==2.8
 imagesize==1.1.0
 ipaddress==1.0.22
-Jinja2==2.10
+Jinja2==2.10.1
 keyring==17.1.1
 keyrings.alt==3.1.1
 lxml==4.2.5
 MarkupSafe==1.1.0
 numpy==1.14.2
 olefile==0.46
-Pillow==6.2.0
+Pillow==7.1.0
 pycrypto==2.6.1
 Pygments==2.3.1
 pyOpenSSL==18.0.0
@@ -34,6 +34,6 @@ sphinx-rtd-theme==0.4.3
 sphinxcontrib-autoprogram==0.1.5
 sphinxcontrib-httpdomain==1.7.0
 sphinxcontrib-plantuml==0.14
-urllib3==1.24.1
+urllib3==1.24.2
 webencodings==0.5.1
 sphinxcontrib-openapi==0.5.0

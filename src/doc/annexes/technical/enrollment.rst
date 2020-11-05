@@ -24,8 +24,8 @@ Enrollment
         - `deleteEnrollment <#delete--v1-enrollments-enrollmentId>`_
         - `finalizeEnrollment <#put--v1-enrollments-enrollmentId-finalize>`_
         - `findEnrollments <#post--v1-enrollments>`_
-        - `sendBuffer <#post--v1-enrollments-enrollmentId-buffer>`_
-        - `getBuffer <#get--v1-enrollments-enrollmentId-buffer-bufferId>`_
+        - `createBuffer <#post--v1-enrollments-enrollmentId-buffer>`_
+        - `readBuffer <#get--v1-enrollments-enrollmentId-buffer-bufferId>`_
 
 Services
 """"""""
