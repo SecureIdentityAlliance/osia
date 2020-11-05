@@ -37,12 +37,12 @@ in the following diagram:
 
     note over N,CR: confirm the address before the subscription is active
 
-    N -> CR: notify(token)
+    N -> CR: confirm(token)
     activate N
     activate CR
-    CR -> N: subscribe_CB(token)
+    N -> CR: subscribe_CB(token)
     activate N #FFBBB
-    N --> CR: ok
+    CR --> N: ok
     deactivate N
     CR --> N: ok
     deactivate CR
