@@ -4,13 +4,15 @@
 Data Access
 -----------
 
+This is version :oasversion:`../../yaml/dataaccess.yaml` of this interface.
+
 .. only:: html
 
-    Get the OpenAPI file for this interface: `dataaccess.yaml <../../dataaccess.yaml>`_
+    Get the OpenAPI file: `dataaccess.yaml <../../dataaccess.yaml>`_
 
 .. raw:: latex
 
-    Get the OpenAPI file for this interface: \textattachfile[]{../html/dataaccess.yaml}{dataaccess.yaml}
+    Get the OpenAPI file: \textattachfile[]{../html/dataaccess.yaml}{dataaccess.yaml}
 
 .. sidebar:: Data Access Services
 

@@ -4,13 +4,15 @@
 Notification
 ------------
 
+This is version :oasversion:`../../yaml/notification.yaml` of this interface.
+
 .. only:: html
 
-    Get the OpenAPI file for this interface: `notification.yaml <../../notification.yaml>`_
+    Get the OpenAPI file: `notification.yaml <../../notification.yaml>`_
 
 .. raw:: latex
 
-    Get the OpenAPI file for this interface: \textattachfile[]{../html/notification.yaml}{notification.yaml}
+    Get the OpenAPI file: \textattachfile[]{../html/notification.yaml}{notification.yaml}
 
 .. sidebar:: Notification Services
 

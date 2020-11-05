@@ -53,7 +53,7 @@ Glossary
 
         Some examples of possible mime type definitions:
 
-        .. code-block:: guess
+        ::
 
             text/plain; charset=utf-8
             application/json

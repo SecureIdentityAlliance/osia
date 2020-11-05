@@ -4,13 +4,15 @@
 Enrollment
 ----------
 
+This is version :oasversion:`../../yaml/enrollment.yaml` of this interface.
+
 .. only:: html
 
-    Get the OpenAPI file for this interface: `enrollment.yaml <../../enrollment.yaml>`_
+    Get the OpenAPI file: `enrollment.yaml <../../enrollment.yaml>`_
 
 .. raw:: latex
 
-    Get the OpenAPI file for this interface: \textattachfile[]{../html/enrollment.yaml}{enrollment.yaml}
+    Get the OpenAPI file: \textattachfile[]{../html/enrollment.yaml}{enrollment.yaml}
 
 .. sidebar:: Enrollment Services
 
