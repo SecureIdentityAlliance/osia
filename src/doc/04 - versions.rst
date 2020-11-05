@@ -7,37 +7,72 @@ OSIA Versions & Referencing
 There will be a version for each interface.
 Each interface can be referenced in tenders as follows:
 
-    ``OSIA - [interface name] v. [version number]``
+    ``OSIA v. [version] - [interface name] v. [version number]``
 
 For instance below is the string to reference the *Notification* interface:
 
-    ``OSIA - Notification v. 1.0.0``
+    ``OSIA v. 2.0 - Notification v. 1.0.0``
 
-Below is the complete list of available interfaces with related version to date:
+Below is the complete list of available interfaces with related versions:
 
-- OSIA - Notification - v. |release|
-- OSIA - Data Access - v. |release|
-- OSIA - UIN Management - v. |release|
-- OSIA - Enrollment Services - v. |release|
-- OSIA - Identity Management - v. |release|
-- OSIA - Population Registry Services - v. |release|
-- OSIA - Biometrics - v. |release|
-- OSIA - Credential Services - v. |release|
-- OSIA - ID Usage - v. |release|
+.. list-table::
+    :header-rows: 2
+    :stub-columns: 1
+    
+    * - OSIA Release
+      - 1.0.0
+      - 2.0.0
+      - 3.0.0
+      - 4.1.0
+      - 5.0.0
+    * - OSIA Release Date
+      - mar-2019
+      - jun-2019
+      - nov-2019
+      - jul-2020
+      - nov-2020
+      
+    * - Notification
+      - .
+      - 1.0.0
+      - 1.0.0
+      - 1.1.0
+      - 1.1.0
+    * - UIN Management
+      - 1.0.0
+      - 1.0.0
+      - 1.0.0
+      - 1.1.0
+      - 1.2.0
+    * - Data Access
+      - 1.0.0
+      - 1.0.0
+      - 1.0.0
+      - 1.1.0
+      - 1.3.0
+    * - Enrollment Services
+      - .
+      - .
+      - .
+      - 1.0.0
+      - 1.1.0
+    * - Population Registry Services
+      - .
+      - .
+      - 1.0.0
+      - 1.2.0
+      - 1.3.0
+    * - Biometrics Services
+      - .
+      - 1.0.0
+      - 1.1.0
+      - 1.3.0
+      - 1.4.0
+    * - Credential Services
+      - .
+      - .
+      - .
+      - 1.0.0
+      - 1.1.0
 
-This document proposes as well a set of interfaces that could be used by each component (non-prescriptive).
-
-As a consequence, it is possible to reference directly that set of interfaces bundled with a given component. 
-It is possible to reference the bundle of these interfaces as follows:
-
-    ``OSIA – [component name] v. [version number]``
-
-For instance for Civil Registry (CR) OSIA proposes the following set of interfaces:
-
-- OSIA - Notifications - v. |release|
-- OSIA - Data Access - v. |release|
-
-Below is the string to reference this set of interfaces linked to CR:
-
-    OSIA – CR v. |release|
 

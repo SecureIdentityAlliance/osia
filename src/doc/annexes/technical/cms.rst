@@ -4,13 +4,15 @@
 Credential Services
 -------------------
 
+This is version :oasversion:`../../yaml/cms.yaml` of this interface.
+
 .. only:: html
 
-    Get the OpenAPI file for this interface: `cms.yaml <../../cms.yaml>`_
+    Get the OpenAPI file: `cms.yaml <../../cms.yaml>`_
 
 .. raw:: latex
 
-    Get the OpenAPI file for this interface: \textattachfile[]{../html/cms.yaml}{cms.yaml}
+    Get the OpenAPI file: \textattachfile[]{../html/cms.yaml}{cms.yaml}
 
 .. sidebar:: Credential Services
 
