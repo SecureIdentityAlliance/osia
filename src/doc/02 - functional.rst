@@ -51,7 +51,7 @@ The components are defined as follows:
 - The *Third Party Services* component.
 
   This component interfaces with external systems to leverage the identity databases
-  for the benefits of the population.
+  for the benefits of individuals.
   It provides services to authenticate, identify, and access identity attributes for use cases such
   as KYC.
   
