@@ -27,7 +27,8 @@ This is version :oasversion:`../../yaml/abis.yaml` of this interface.
         - `updateEncounter <#put--v1-persons-personId-encounters-encounterId>`_
         - `deleteEncounter <#delete--v1-persons-personId-encounters-encounterId>`_
         - `mergeEncounter <#post--v1-persons-personIdTarget-merge-personIdSource>`_
-        - `updateEncounterStatus <#put--persons-personId-encounters-encounterId-status>`_
+        - `updateEncounterStatus <#put--v1-persons-personId-encounters-encounterId-status>`_
+        - `updateEncounterGalleries <#put--v1-persons-personId-encounters-encounterId-galleries>`_
         - `readTemplate <#get--v1-persons-personId-encounters-encounterId-templates>`_
         - `deleteAll <#delete--v1-persons-personId>`_
         - `identify <#post--v1-identify-galleryId>`_

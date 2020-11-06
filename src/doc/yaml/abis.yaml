@@ -20,6 +20,7 @@ info:
       - Force additionalProperties to false when extension is not allowed
       - Pagination when accessing gallery content
       - Add fields on BiometricData: instance, metadata, comment, missing
+      - Add service to update only the galleries of an encounter
     - 1.3.0:
       - Addition of security
     - 1.2.2:
@@ -1024,6 +1025,116 @@ paths:
               requestBody:
                 required: true
                 description: Result of the status update
+                content:
+                  application/json:
+                    schema:
+                      type: string
+                      enum: [OK]
+                      example: '"OK"'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personId}/encounters/{encounterId}/galleries:
+    put:
+      tags:
+        - CRUD
+      summary: Update the galleries of an encounter
+      description: |
+        This service is used to move one encounter from one gallery
+        to another one without updating the full encounter, which maybe
+        resource consuming in a biometric system.
+      operationId: updateEncounterGalleries
+      security:
+        - BearerAuth: [abis.encounter.write]
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+              example: [VIP, CRIMINAL]
+      responses:
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            An internal task ID is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
+        '204':
+          description: Galleries have been updated
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Encounter galleries update not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        updateEncounterGalleriesResponse:
+          '${request.query.callback}':
+            post:
+              summary: Update encounter galleries response callback
+              operationId: updateEncounterGalleriesCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the gallery update
                 content:
                   application/json:
                     schema:
