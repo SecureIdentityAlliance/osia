@@ -47,53 +47,95 @@ well-known internet protocol: OpenID Connect. The relying party benefits from th
 Relying Party API
 """""""""""""""""
 
-.. py:function:: verifyIdentity(UIN, [IDAttribute])
+.. py:function:: verifyIdentity(Identifier, attributeSet)
     :noindex:
 
-    Verify Identity based on UIN and set of Identity Attributes (biometric data, credential, etc.)
+    Verify an Identity based on an identifier (UIN, token…) and a set of Identity Attributes. Verification is strictly
+    matching all provided identity attributes to compute the global Boolean matching result.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: `id.verify`
 
-    :param str UIN: The person's UIN
-    :param list[str] IDAttribute: A list of list of pair (name,value) requested
+    :param str Identifier: The person's Identifier
+    :param list[str] attributeSet: A set of identity attributes associated to the identifier and to be verified by the system
     :return: Y or N
     
     In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
 
-.. py:function:: identify([inIDAttribute], [outIDAttribute])
+.. py:function:: identify(attributeSet, outputAttributeSet)
     :noindex:
 
-    Identify a person based on a set of Identity Attributes (biometric data, credential, etc.)
+    Identify possibly matching identities against an input set of attributes. Returns an array of predefined
+    datasets as described by outputAttributeSet.
 
-    **Authorization**: :todo:`To be defined`
+    Note: This service may be limited to some specific government RPs
 
-    :param list[str] inIDAttribute: A list of list of pair (name,value) requested
-    :param list[str] outIDAttribute: A list of list of attribute names requested
+    **Authorization**: `id.identify`
+
+    :param list[str] attributeSet: A list of pair (name,value) requested
+    :param list[str] outputAttributeSet: An array of attributes requested
     :return: Y or N
     
     In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
 
-.. py:function:: readAttributes(UIN, names)
+.. py:function:: readAttributes(Identifier, outputAttributeSet)
     :noindex:
 
-    Read person attributes.
+    Get a list of identity attributes attached to a given identifier.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: `id.read`
 
-    :param str UIN: The person's UIN
-    :param list[str] names: The names of the attributes requested
-    :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.)
-        the value is replaced with an error
+    :param str Identifier: The person's Identifier
+    :param list[str] outputAttributeSet: defining the identity attributes to be provided back to the caller
+    :return: An array of the requested attributes
 
-.. py:function:: readAttributeSet(UIN, setName)
+    In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
+
+.. py:function:: readAttributeSet(Identifier, AttributeSetName)
     :noindex:
 
-    Read person attributes corresponding to a predefined set name.
+    Get a set of identity attributes as defined by attributeSet, attached to a given identifier.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: `id.set.read`
 
-    :param str UIN: The person's UIN
-    :param str setName: The name of predefined attributes set name
-    :return: a list of pair (name,value). In case of error (unknown attributes, unauthorized access, etc.)
-        the value is replaced with an error
+    :param str Identifier: The person's Identifier
+    :param str attributeSetName: The name of predefined attributes set name
+    :return: An array of the requested attributes
 
+    In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
+
+Attribute set
+"""""""""""""
+
+When identity attributes are exchanged, they are included in an attribute set, possibly containing groups like
+biographic data, biometric data, document data, contact data... This structure is extensible and may be complemented
+with other data groups, and each group may contain any number of attribute name / attribute value pairs.
+
+Attribute set name
+""""""""""""""""""
+
+Attribute sets are by definition structures with variable and optional content, hence it may be useful to pre-agree
+on a given attribute set content and name between two or more systems in a given project scope.
+
+Any string may be used to define an attribute set name, but in the scope of this specification following names are
+reserved and predefined:
+
+.. list-table::
+
+    * - "DEFAULT_SET_01"
+      - Minimum demographic data
+      - | First name
+        | Last name
+        | DoB
+        | Place of birth
+    * - "DEFAULT_SET_02"
+      - Minimum demographic and portrait
+      - Minimum demographic data + portrait
+    * - "DEFAULT_SET_EIDAS"
+      - Set expected to comply with eIDAS pivotal attributes.
+      - :todo:`TBD`
+
+
+Output Attribute set
+""""""""""""""""""""
+
+To specify what identity attributes are expected in return when performing e.g. an identify request or a read attributes.
