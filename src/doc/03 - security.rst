@@ -125,6 +125,7 @@ The following table is a summary of all scopes defined in OSIA.
     Partial Update Enrollment           ``enroll.write``
     Finalize Enrollment                 ``enroll.write``
     Delete Enrollment                   ``enroll.write``
+    Read Enrollment Result              ``enroll.read``
     Find Enrollments                    ``enroll.read``
     Send Buffer                         ``enroll.buf.write``
     Get Buffer                          ``enroll.buf.read``

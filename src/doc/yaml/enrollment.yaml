@@ -21,6 +21,7 @@ info:
       - Add a contextualData entity to match what exists in population registry
       - Add pagination for findEnrollments
       - Add fields on BiometricData: instance, metadata, comment, missing
+      - Add service readEnrollmentResult
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -329,6 +330,82 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
                 
+  /v1/enrollments/{enrollmentId}/results:
+    get:
+      tags:
+        - Enrollment
+      summary: Retrieve the results of the enrollment
+      description: |
+        Retrieve the result(s) of the processing of an enrollment.
+        The results are available only after the finalization of the enrollment.
+      operationId: readEnrollmentResult
+      security:
+        - BearerAuth: [enroll.read]
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: names
+          in: query
+          description: The names of the results to return. If not provided, the server will attempt to return all available results.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example:
+            - UIN
+            - credentialNumber
+      responses:
+        200:
+          description: The requested results found (a value) or a structure indicating the status of this result
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                    oneOf:
+                    - type: string
+                    - type: integer
+                    - type: number
+                    - type: boolean
+                    - $ref: '#/components/schemas/Error'
+                example:
+                    UIN: "123456789"
+                    credentialNumber:
+                      code: 999
+                      message: Production in progress
+                    
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        404:
+          description: No record found
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/enrollments:
     post:
       tags:
@@ -861,3 +938,4 @@ components:
         - LEFT_PROFILE
         - RIGHT_PROFILE
    
+  

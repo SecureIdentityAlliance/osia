@@ -25,6 +25,7 @@ This is version :oasversion:`../../yaml/enrollment.yaml` of this interface.
         - `partialUpdateEnrollment <#patch--v1-enrollments-enrollmentId>`_
         - `deleteEnrollment <#delete--v1-enrollments-enrollmentId>`_
         - `finalizeEnrollment <#put--v1-enrollments-enrollmentId-finalize>`_
+        - `readEnrollmentResult <#get--v1-enrollments-enrollmentId-results>`_
         - `findEnrollments <#post--v1-enrollments>`_
         - `createBuffer <#post--v1-enrollments-enrollmentId-buffer>`_
         - `readBuffer <#get--v1-enrollments-enrollmentId-buffer-bufferId>`_

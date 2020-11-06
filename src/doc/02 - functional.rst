@@ -229,6 +229,7 @@ The following table describes in detail the interfaces and associated services.
     Finalize Enrollment                Finalize an enrollment (mark it as completed)
     Delete Enrollment                  Delete an enrollment
     Find Enrollments                   Retrieve a list of enrollments which match passed in search criteria
+    Read Enrollment Results            Retrieve the result of the processing of the enrollment
     Send Buffer                        Send a buffer (image, etc.)
     Get Buffer                         Get a buffer
     --------------------------------- -----------------------------------------------------------------------------------
@@ -336,6 +337,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Finalize Enrollment                   U      I
     Delete Enrollment                     U      I
     Find Enrollments                      U      I
+    Read Enrollment Results               U      I
     Send Buffer                           U      I
     Get Buffer                            U      I
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------

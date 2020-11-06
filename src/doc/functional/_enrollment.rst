@@ -102,6 +102,19 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error.
     
+.. py:function:: readEnrollmentResult(enrollmentID, transactionID, names)
+    :noindex:
+
+    Retrieve the result(s) of the processing of an enrollment.
+    The results are available only after the finalization of the enrollment.
+
+    **Authorization**: ``enroll.read``
+
+    :param str enrollmentID: The ID of the enrollment.
+    :param string transactionID: The client generated transactionID.
+    :param list[str] names: The names of the results requested
+    :return: a dictionary with a list of (name,value). The value can be replaced with a structure to indicate an error or a result not yet available.
+
 .. py:function:: deleteEnrollment(enrollmentID, transactionID)
     :noindex:
 
