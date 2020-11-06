@@ -102,3 +102,40 @@ Relying Party API
     :return: An array of the requested attributes
 
     In case of error (unknown attributes, unauthorized access, etc.) the value is replaced with an error
+
+Attribute set
+"""""""""""""
+
+When identity attributes are exchanged, they are included in an attribute set, possibly containing groups like
+biographic data, biometric data, document data, contact data... This structure is extensible and may be complemented
+with other data groups, and each group may contain any number of attribute name / attribute value pairs.
+
+Attribute set name
+""""""""""""""""""
+
+Attribute sets are by definition structures with variable and optional content, hence it may be useful to pre-agree
+on a given attribute set content and name between two or more systems in a given project scope.
+
+Any string may be used to define an attribute set name, but in the scope of this specification following names are
+reserved and predefined:
+
+.. list-table::
+
+    * - "DEFAULT_SET_01"
+      - Minimum demographic data
+      - | First name
+        | Last name
+        | DoB
+        | Place of birth
+    * - "DEFAULT_SET_02"
+      - Minimum demographic and portrait
+      - Minimum demographic data + portrait
+    * - "DEFAULT_SET_EIDAS"
+      - Set expected to comply with eIDAS pivotal attributes.
+      - :todo:`TBD`
+
+
+Output Attribute set
+""""""""""""""""""""
+
+To specify what identity attributes are expected in return when performing e.g. an identify request or a read attributes.
