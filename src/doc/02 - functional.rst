@@ -58,7 +58,7 @@ The components are defined as follows:
 - The *Digital Credential Issuance & Distribution System*.
 
   This component is in charge of the issuance and delivery of the digital credentials built from
-  the identity databases under the control if the CMS.
+  the identity databases under the control of the CMS.
   
 
 .. list-table:: Components
