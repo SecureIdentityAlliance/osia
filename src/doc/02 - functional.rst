@@ -485,7 +485,77 @@ Birth Use Case
 Death Use Case
 """"""""""""""
 
-:todo:`To be completed`
+.. uml::
+    :caption: Death Use Case
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+    
+	actor "Authorized Notifier" as notifier
+    participant "CR" as CR
+    participant "PR" as PR
+
+    notifier -> CR
+    activate notifier
+    activate CR
+    activate PR
+
+    group 1. Identify
+        activate PR
+        CR -> PR: queryPersonUIN
+	CR -> PR: matchPersonAttributes(subject attributes)
+        CR -> PR: readPersonAttributes(subject)
+        CR -> CR: Additional checks
+    end
+
+    group 2. Notify Death
+
+        CR -> CR
+        note right: report notification of the death
+        CR -> notifier: Ask to confirm notification
+        CR -> PR: updateIdentity
+        CR -->> notifier: provisional certificate
+    end
+
+    group 3. Registration
+
+
+        CR ->> PR: publish(death,UIN)      
+        PR -> CR: readPersonAttributes(subject)
+        PR -> PR
+        note right: update identity
+        deactivate PR
+    end
+
+        CR -> notifier: full death certificate available
+        deactivate CR
+        destroy notifier
+    end
+
+1. Subject identification checks
+
+   When a death notification is submitted by an authorized party, the CR shall run checks against the data available in the PR using:
+
+   - ``matchPersonAttributes``: to check the exactitude of the subject's attributes as known in the PR
+   - ``readPersonAttributes``: to get missing data about the subject's identity that 
+   - ``queryPersonUIN``: to check if the person is already known to PR or not
+
+   How the CR will process the request in case of data discrepancy is specific to each CR implementation
+   and not in the scope of this document. The CR may implement an internal procedure to create a valid PR record retrospectively.
+
+2. Notification creation
+
+   The first step after the identity checks is to notify the life event status to the PR based on an identified record.
+   At this point the death notification is recorded by not finally registered. Most states implement a waiting period.
+   How the CR will process the death notification is specific to each CR implementation - a provisional certificate is possible.
+
+3. Final registration
+
+   When the PR finalizes the status of the subject's person record then the CR may publish this information at its discretion.
+   The PR may maintain a list of interested parties who shall be informed of any finalized death status.
+   A final certificate of death including the context of this event is typically issued by the CR to the notifier for distribution.
+
 
 Marriage Use Case
 """""""""""""""""
