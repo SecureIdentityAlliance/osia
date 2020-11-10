@@ -528,7 +528,95 @@ How the target of the notification should react is specific to each subsystem.
 ID Card Request Use Case
 """"""""""""""""""""""""
 
-:todo:`To be completed`
+An ID card is one type of credential. The procedures surrounding credential issuance may involve several sub-systems that contribute to the establishment of the applicant identity and the required data for the type of credential.
+This use case assumes a simple starting scenario where the identity is known and can be validated, mostly with data available from a Civil or Population Registry based Identity Provider. These use cases also assume the use of a Credentials Management System (CMS) responsible for the technical personalization and lifecycle management of a credential such as an ID card.
+The use case aims to show how a selection of the CMS API calls can support a typical, use case in relation to CMS usage.
+
+.. uml::
+    :caption: ID Card Request Use Case_1
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+
+
+    actor "Citizen" as citizen
+    participant "Credential Provider" as CR
+    participant "PR" as PR
+    participant "CMS" as CMS
+     
+    citizen -> CR: Lost my ID - please replace
+    activate citizen
+    activate CR
+   
+    
+    group 1. ID Card Check
+	note left: if credential is a card
+        activate PR
+        CR -> PR: queryPersonUIN
+		CR -> PR: matchPersonAttributes(subject attributes)
+        CR -> PR: readPersonAttributes(subject)
+        deactivate PR
+        CR -> citizen: other transactions
+        CR -> CR 
+        note right: ID validation rules
+        
+    end
+    
+    group 2. Alt Suspend Credential
+        
+        CR -> CMS: SuspendCredentialRequest(CredentialID)
+        activate CMS
+        CMS -> CMS
+        note right: e.g. suspend PKI certs
+        CMS -->> CR: confirmation returned (e.g. code204, asynch)
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+        
+    end
+    
+    group 3. Request Credential
+        
+        CR -> CR
+        note right: build perso data payload
+        CR -> CMS: CreateCredentialRequest(payload)
+        CMS -->> CR: CredentialRequestID returned
+       
+        
+    end
+        
+        citizen -> CR: "I just found my lost card"
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+        CMS -> CMS
+        note right: CMS card lifecycle actions\ne.g. auto cancel old card if new issued
+        CMS -> CR: card distribution
+        deactivate CMS
+        CR -> citizen: "Old Card cancelled. Collect new in 1 week"
+		note right: message to citizen by Service Provider
+        
+        citizen -> CR: card collection
+        deactivate CR
+        destroy citizen
+		end
+
+
+1. Identity Checks
+
+   The example scenario assumes a credential provider service such as an ID card provider (National ID, Voter, &c). Such as service may access several OSIA API based components to establish an ID check. In this example the Population Register is used.
+   This example case also assumes that the credential provider holds its own register of credentials issued to its subscribers.
+
+2. Suspend Credential
+
+   In the example above the citizen has lost a card and requests a replacement. The credential provider service first establishes the legitimacy of the citizen identity and the identity of the lost document within its own register. The next likely step in such a use case is to suspend the current credential. This is done using a CMS API call. The CMS confirms this step with a reference. In some use cases the reported lost credential may be cancelled immediately, but this is typically a decision made by the policy of the credential provider. There is an OSIA API call to both either or both requirements to the CMS.
+
+3. Requesting a New Credential
+
+  The credential provider is in this example case responsible for preparing the core document data for the CMS. The CMS itself may further process this data appropriate to the credential type: for example the CMS may be the service that signs this document data electronically.
+  The CMS returns a new request ID to the credential provider service which will enable the provider to query credential production status within the CMS domain.
+  
+  Such a business process might be interrupted by an new event such as the citizen finding her lost card and wishing to cancel the replacement order, perhaps to avoid a replacement fee. Depending on the status returned by the CMS to the credential provider then the credential provider service will act accordingly in informing the citizen whether this is possible. In this case the citizen's card was already replaced by the CMS so the original card is now cancelled. 
+  
+  The CMS on its side is responsible for maintaining a credential profile which can be accessed by the CR at a later point.
+  This use case stops for CMS when the card is distributed to the CR for collection by the citizen.
 
 
 Bank account opening Use Case
