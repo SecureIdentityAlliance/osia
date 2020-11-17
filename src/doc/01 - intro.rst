@@ -188,6 +188,10 @@ Revision History
       - .
       - 1.0.0
       - 1.1.0
-
-
+    * - Relying Party Services
+      - .
+      - .
+      - .
+      - 
+      - 1.0.0
 

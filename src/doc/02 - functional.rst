@@ -300,7 +300,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     =================================  ======= ======= ======= ======= ======= ======= ======= =======
        ..                              **Components**
     ---------------------------------  ---------------------------------------------------------------
-    **Interfaces**                     Enroll  Enroll    PR    UIN Gen  ABIS     CR      CMS    3rd PS
+    **Interfaces**                     Enroll  Enroll    PR    UIN Gen  ABIS     CR      CMS    ID Usage
                                        Clt     Srv
     =================================  ======= ======= ======= ======= ======= ======= ======= =======
     **Notification**

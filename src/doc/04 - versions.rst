@@ -74,5 +74,11 @@ Below is the complete list of available interfaces with related versions:
       - .
       - 1.0.0
       - 1.1.0
+    * - Relying Party Services
+      - .
+      - .
+      - .
+      - 
+      - 1.0.0
 
 

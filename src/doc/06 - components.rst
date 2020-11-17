@@ -55,11 +55,11 @@ The credential management system component MAY implement the following interface
 
 .. include:: functional/_cms.rst
 
-Third Party Services
-====================
+ID Usage
+========
 
-The third party component MAY implement the following interfaces:
+The ID usage component MAY implement the following interfaces:
 
-.. include:: functional/_3rdparty.rst
+.. include:: functional/_idusage.rst
 
 

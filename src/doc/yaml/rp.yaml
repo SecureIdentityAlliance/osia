@@ -1,0 +1,95 @@
+
+# (c) Secure Identity Alliance
+
+openapi: 3.0.0
+info:
+  description: |
+    The OSIA Relying Party Interface.
+
+    Change log:
+    
+    - 1.0.0: Initial version
+
+  title: OSIA Relying Party Interface
+  version: 1.0.0
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+servers:
+  - url: https://rp.com/
+paths:
+  /v1/verify:
+    post:
+      summary: Verify an identity
+      description: |
+        Verify an Identity based on an identifier (UIN, token…) and a set of attributes.
+        Verification is strictly matching all provided identity attributes to compute the
+        global result.
+      operationId: verifyIdentity
+      security:
+        - BearerAuth: [id.verify]
+      parameters:
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: A set of attributes for the person
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attributes'
+            example:
+              firstName: John
+              lastName: Doo
+              dateOfBirth: "1984-11-19"
+      responses:
+        200:
+          description: Matching result
+          content:
+            application/json:
+              schema:
+                type: boolean
+              example:
+                'true'
+        400:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+      additionalProperties: false
+    Attributes:
+      type: object
+      additionalProperties: true
