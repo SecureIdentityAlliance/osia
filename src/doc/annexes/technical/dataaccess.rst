@@ -18,6 +18,7 @@ Data Access
         :columns: 2
 
         - `queryPersonList <#get--v1-persons>`_
+        - `queryPersonUIN <#get--v1-persons>`_
         - `readPersonAttributes <#get--v1-persons-uin>`_
         - `matchPersonAttributes <#post--v1-persons-uin-match>`_
         - `verifyPersonAttributes <#post--v1-persons-uin-verify>`_
