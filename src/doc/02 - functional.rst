@@ -851,6 +851,189 @@ Police identity control Use Case
         note right: display attributes for each candidate
     end
 
+Telco Customer Enrollment with ID document
+""""""""""""""""""""""""""""""""""""""""""
+
+
+.. uml::
+
+
+    :caption: Telco Customer Enrollment with ID document
+
+
+    :scale: 50%
+
+
+    !include "skin.iwsd"
+
+
+    hide footbox
+
+
+	
+	actor "Customer" as user
+	actor "Agent" as agent
+	participant "Telco Enrollment Client" as TC
+	participant "Telco Server" as TS
+	participant "Third Party Services" as TPS
+
+
+	activate user
+	activate agent
+
+	user -> agent: ask for SIM card and present ID doc
+	agent -> TC: UIN, Identity info, live facial portrait, scan & ID of doc
+	activate TC
+		
+
+	TC -> TS: UIN, Identity info, live facial portrait, scan & ID of doc
+	activate TS
+
+	TS -> TPS: checkCredentialDocument(UIN, Doc ID, Name, 1st name, DOB)
+	note right: ID doc authenticity and\nvalidity verification
+	activate TPS
+
+
+	TPS --> TS: ok(proof of verification)
+	deactivate TPS
+
+	TS -> TPS: readCredentialAttributes(Id document ID)
+	note right: Get the credential attributes\nsuch as expiration date
+	activate TPS
+
+	TPS --> TS: (issuing agency, issuing date, expiration date)
+	deactivate TPS
+
+	TS -> TPS: Authenticate Holder of ID doc(Live portrait, UIN, doc ID)
+	note right: Compare person's live face\nagainst credential portrait
+
+	TPS --> TS: ok(proof of verification)
+	deactivate TPS
+
+	TS -> TPS: readAttributes(UIN)
+	activate TPS
+	TPS -> TS: (Name, 1st name, DOC, Place of Birth, &c)
+	note right: Get citizen attributes\nfor easier, error free\nenrollment
+	deactivate TPS
+
+	TS -> TS: new customer registration(identity info and proof of verification)
+
+	TS -> TS: New customer registration (attributes, ID doc scan storage, proofs of verification)
+	TS -> TC: Okfor SIM card(customerID)
+	deactivate TS
+
+	TC -> agent: continue SIM order
+	deactivate TC
+
+	agent -> user: continue SIM order
+	destroy agent
+
+	destroy user
+  end
+
+1. Use case objective
+	This use case allows a telco operator to check a citizen’s ID document and identity. The use case relies on an IDMS to check the authenticity and validity of the ID document presented by the citizen, then to check that he actually is the holder of the document.
+
+2. Pre-conditions
+	The citizen is registered in the IDMS and has a UIN.
+	The citizen has a valid ID document.
+	The citizen presents as a customer to the agent.
+	The IDMS should support authentication token generation to protect against misusage of UIN.
+
+3. Use case description
+	The customer shows his ID document to the Agent. The Agent inputs (possibly by reading an MRZ on the document) the UIN, document ID, name, given name, DOB, and a live facial portrait taken of the citizen.
+	The telco server calls an IDMS API to check if the information of the ID document is coherent and if the document is still valid.
+	The telco server calls an IDMS API to get meta data of the document such as the issuing agency, the issuing date, expiration date, etc.
+	The telco server calls an IDMS API to check if the customer is actually the holder of the document using his live biometric portrait.
+	The telco server calls an IDMS API to get some reliable data of the customer in order to register him.
+
+4. Result
+	The citizen is now identified, authenticated and registered in a customer database and becomes eligible to buy a SIM card.
+	The telco operator can prove regulatory controls have been applied for 'Know Your Customer' compliance.
+
+
+Telco Customer Enrollment with no ID document
+""""""""""""""""""""""""""""""""""""""""""
+A customer applying for a new network SIM card may not be able to present an ID document as part of her application.
+
+.. uml::
+
+
+    :caption: Telco Customer Enrollment with no ID document
+
+    :scale: 50%
+
+    !include "skin.iwsd"
+
+    hide footbox
+
+
+	actor "Customer" as user
+	actor "Agent" as agent
+	participant "Telco Enrollment Client" as TC
+	participant "Telco Server" as TS
+	participant "Third Party Services" as TPS
+
+
+	activate user
+	activate agent
+	user -> agent: in person request for a SIM card
+	agent -> TC: UIN, Identity info, live facial portrait
+	activate TC
+		
+
+	TC -> TS: UIN, Identity info, live facial portrait
+	activate TS
+
+	TS -> TPS: verifyIdentity(UIN, Name, 1st name, DOB, portrait with liveness)
+	note right: Thanks to his UIN\nthe citizen is identifed,\nand thanks to biometrics\nhe is authenticated
+	activate TPS
+
+
+	TPS --> TS: ok(proof of verification)
+	
+
+	TS -> TPS: readAttributes(UIN)
+	note right: Get the identified and\nauthenticated citizen\nattributes
+	activate TPS
+
+	TPS --> TS: ok(Name, 1st name, DOC, Place of Birth, &c)
+	deactivate TPS
+
+	TS -> TS: new customer registration(identity info and proof of verification)
+
+	TS -> TC: ok for SIM card(customer ID)
+	deactivate TS
+
+	TC -> agent: continue SIM order
+	agent -> user: continue SIM order
+	deactivate TC
+
+	destroy agent
+	destroy user
+	end
+
+
+1. Use case objective
+	This use case allows a telco operator to check a citizen’s identity and get his attributes relying on IDMS to check that the biometrics of the citizen matches with his UIN.
+
+2. Pre-conditions
+	The citizen is registered in the IDMS and has a UIN.
+	The citizen biometrics are registered and associated to his UIN.
+	The citizen presents as a customer to the agent.
+	The IDMS should support authentication token generation to protect against misusage of UIN.
+
+3. Use case description
+	The Agent inputs the citizen’s UIN, Name, 1st Name, DOB and takes a live photo portrait of the customer.
+	The telco server calls an IDMS API to check if the customer is actually the citizen corresponding to the given UIN thanks to his live portrait (face biometric matching).
+	The telco server calls an IDMS API to get some reliable data of the customer in order to register him.
+
+4. Result
+	The citizen is now identified, authenticated and registered in a customer database and becomes eligible to buy a SIM card.
+	The telco operator can prove regulatory controls have been applied for 'Know Your Customer' compliance.
+
+
+
 .. rubric:: Footnotes
 
 .. [#] *Handbook on Civil Registration and Vital Statistics Systems: Management, Operation and Maintenance,
