@@ -686,6 +686,97 @@ The use case aims to show how a selection of the CMS API calls can support a typ
   This use case stops for CMS when the card is distributed to the CR for collection by the citizen.
 
 
+ID Card Request Use Case (2)
+""""""""""""""""""""""""
+
+A second ID Request use case shows how the CMS might expose more decisions to the credential providing service. In this case it is the citizen facing provider that controls the cancellation of the lost document, and this is not automated within the CMS component.
+
+.. uml::
+    :caption: ID Card Request Use Case_2
+    :scale: 50%
+
+    !include "skin.iwsd"
+    hide footbox
+
+
+    
+	actor "Citizen" as citizen
+    participant "Credential Provider" as CR
+    participant "PR" as PR
+    participant "CMS" as CMS
+     
+    citizen -> CR: Lost my ID - please replace
+    activate citizen
+    activate CR
+   
+    
+		group 1. ID Card Check
+		note left: if credential is a card
+        activate PR
+        CR -> PR: queryPersonUIN
+		CR -> PR: matchPersonAttributes(subject attributes)
+        CR -> PR: readPersonAttributes(subject)
+        deactivate PR
+        CR -> citizen: other transactions
+        CR -> CR 
+        note right: ID validation rules
+        
+		end
+    
+		group 2. Alt Suspend Credential
+        
+        CR -> CMS: SuspendCredentialRequest(CredentialID)
+        activate CMS
+        CMS -> CMS
+        note right: e.g. suspend PKI certs
+        CMS -->> CR: confirmation returned (e.g. code204, asynch)
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+        
+		end
+    
+		group 3. Request Credential
+        
+        CR -> CR
+        note right: build perso data payload
+        CR -> CMS: CreateCredentialRequest(payload)
+        CMS -->> CR: CredentialRequestID returned
+       
+        
+		end
+        
+        citizen -> CR: "I just found my lost card"
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+        
+		group 4. Alt Cancel Credential
+	
+        CR -> CMS: CancelCredentialRequest(CredentialID)
+		note right: request for lost credential ID
+        CMS -> CMS
+        note right: CMS card lifecycle actions
+        CMS -->> CR: confirmation returned (e.g. code204, asynch)
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+        
+		end
+        note right: option if cancellation \nnot automatic
+        CMS -> CR: card distribution
+        deactivate CMS
+        CR -> citizen: "Old Card cancelled. Collect new in 1 week"
+		note right: message to citizen by Service Provider
+        
+           
+        citizen -> CR: card collection
+        deactivate CR
+        destroy citizen
+		end
+
+1. Alternate API calls
+
+   This second example shows how APIs may be used to flex the control over functions such as credential lifecycle management. This example first makes use of the API to suspend a credential pending production of a replacement; then a second API call is made to the CMS to instruct cancellation of the lost document.
+
+
+
+
+
 Bank account opening Use Case
 """""""""""""""""""""""""""""
 
