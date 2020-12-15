@@ -487,10 +487,7 @@ Death Use Case
 
 :todo:`To be completed`
 
-Marriage Use Case
-"""""""""""""""""
 
-:todo:`To be completed`
 
 Deduplication Use Case
 """"""""""""""""""""""
