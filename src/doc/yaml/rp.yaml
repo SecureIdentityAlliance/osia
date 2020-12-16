@@ -1,83 +1,564 @@
-
 # (c) Secure Identity Alliance
-
 openapi: 3.0.0
 info:
   description: |
-    The OSIA Relying Party Interface.
-
+    The OSIA IDUsage Relying Party Interface
     Change log:
-    
-    - 1.0.0: Initial version
-
-  title: OSIA Relying Party Interface
+    - 1.0.0: Initial draft
   version: 1.0.0
+  title: OSIA IDUsage Interface 1
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 servers:
-  - url: https://rp.com/
+   - url: https://rp.IDUsage.com
+tags:
+  - name: IDUsage
+    description: REST API OSIA interfaces
+
+#--------------------------------------------------------------------------------
 paths:
-  /v1/verify:
+
+  /v1/verify/{identifier}:
     post:
-      summary: Verify an identity
-      description: |
-        Verify an Identity based on an identifier (UIN, token…) and a set of attributes.
-        Verification is strictly matching all provided identity attributes to compute the
-        global result.
-      operationId: verifyIdentity
+      tags:
+        - IDUsage
+      summary: Verify a set of attributes of a person.
+      description: >-
+        Verify an Identity based on an identity identifier (UIN, token…) and a
+        set of Identity Attributes. Verification is strictly matching all
+        provided identity attributes to compute the global Boolean matching
+        result.
+      operationId: verify
       security:
         - BearerAuth: [id.verify]
       parameters:
+        - name: identifier
+          in: path
+          description: person identifier
+          required: true
+          schema:
+            type: string
+          example: "1235567890"
+        - name: identifierType
+          in: query
+          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          required: false
+          schema: 
+            type: string
+          example: "token"
+        - name: verificationProofRequired
+          in: query
+          description: verification proof required on successful verification (default true)
+          required: false
+          schema: 
+            type: boolean
         - name: transactionId
           in: query
-          description: The id of the transaction
+          description: The client specified id of the transaction
           required: true
           schema:
             type: string
       requestBody:
-        description: A set of attributes for the person
+        description: >-
+            A set of identity attributes associated to the identity identifier
+            and to be verified by the system
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Attributes'
-            example:
-              firstName: John
-              lastName: Doo
-              dateOfBirth: "1984-11-19"
+              $ref: "#/components/schemas/AttributeSet"
+        required: true
+    
       responses:
         200:
-          description: Matching result
+          description: Verification execution successful
           content:
             application/json:
               schema:
-                type: boolean
-              example:
-                'true'
+                $ref: '#/components/schemas/ResultVerify'
         400:
-          description: Unexpected error
+          description: 'Bad Request, Validation Errors, ...'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         401:
-          description: Client must be authenticated
+          description: Unauthorized
         403:
-          description: Service forbidden
+          description: Operation not allowed
+        404:
+          description: Identifier not Found
         500:
-          description: Unexpected error
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+                
+  /v1/attributes/{attributeSetName}/{identifier}:
+    get:
+      tags:
+        - IDUsage
+      summary: Read a predefined set of a person's attributes. 
+      description: Note security role must map the requested attributeSetName, e.g. id.DEFAULT_SET_01.read
+      operationId: readAttributeSet
+      security:
+        - BearerAuth: [id.ATTRIBUTESETNAME.read]
+      parameters:
+        - name: attributeSetName
+          in: path
+          description: Predefined attribute set name describing what attributes are to be read. e.g. "DEFAULT_SET_01", "SET_BIOM_01", "EIDAS", ...
+          required: true
+          schema:
+            type: string
+            example: "DEFAULT_SET_01"
+        - name: identifier
+          in: path
+          description: person identifier
+          required: true
+          schema:
+            type: string
+            example: "1235567890"
+        - name: identifierType
+          in: query
+          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          required: false
+          schema: 
+            type: string
+          example: "token"     
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+          
+      responses:
+        200:
+          description: Operation successful, AttributeSet will contain fields as predefined by the attributeSetName and when value is available 
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/AttributeSet'
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            
+  /v1/attributes/{identifier}:
+    post:
+      tags:
+        - IDUsage
+      summary: Read a variable set of a person's attributes.
+      description: Returns value of attributes listed in the request parameter 'OutputAttributeSet'
+      operationId: readAttributes
+      security:
+        - BearerAuth: [id.read]
+      parameters:
+        - name: identifier
+          in: path
+          description: person identifier
+          required: true
+          schema:
+            type: string
+            example: "1235567890"
+        - name: identifierType
+          in: query
+          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          required: false
+          schema: 
+            type: string
+          example: "token"
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+          
+      requestBody:
+        description: >-
+            A description of expected identity attributes  
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OutputAttributeSet"
+        required: true
+
+      responses:
+        200:
+          description: Operation successful, AttributeSet will contain fields as defined by parameter outputAttributeSet and when value is available 
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/AttributeSet'
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /v1/identify:
+    post:
+      tags:
+        - IDUsage
+      summary:  Identify a set of persons matching provided partial attributes
+      description: >-
+        Identify possibly matching identities against an input set of attributes. Returns an array of predefined datasets as described by outputDataSetName.
+        Note this request may be asynchronous if ResultIdentify200 structure doesn't contain attributeSet array but taskID.
+      operationId: identify
+      security:
+        - BearerAuth: [id.identify]
+      parameters:
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+      
+      requestBody:
+        description: >-
+            A set of identity attributes to match and an attributeSetName to use as template for returned matching identities.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdentifyRequest"
+        required: true
+    
+      responses:
+        200:
+          description: Identification request execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResultIdentify'
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Identifier not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /v1/identify/{taskID}:
+    get:
+      tags:
+        - IDUsage
+      summary: Read the result of a previously sent identify request
+      operationId: readIdentifyResult
+      security:
+        - BearerAuth: [id.identify]
+      parameters:
+        - name: taskID
+          in: path
+          description: taskID to get result for.
+          required: true
+          schema:
+            type: string
+          example : "ABCDEFGHIJKLMNO"
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Operation successful, array of AttributeSet is available 
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/ResultGetIdentify'
+        204:
+          description: No content, taskID is valid but identify request is still ongoing, retry later 
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
 
+#--------------------------------------------------------------------------------
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
   schemas:
+    AttributeSet:
+      type: object
+      description: a set of attributes used in verify
+      properties:
+        biographicData:
+          $ref: '#/components/schemas/BiographicData'
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        credentialData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialData'
+        contactData:
+          $ref: '#/components/schemas/ContactData'
+      additionalProperties: false
+      
+    #from pr.yaml (different from cms.yaml as contact data is externalized)
+    BiographicData:
+      type: object
+      additionalProperties: true
+      example:
+        firstName: John
+        lastName: Doo
+        dateOfBirth: "1985-11-30"
+        gender: M
+        nationality: FRA
+    
+    ContactData:
+      type: object
+      additionalProperties: true
+      example:
+        email: John.Doo@osia.com
+        phone1: "555666777"
+        phone2: "555888999"
+        
+    #from pr.yaml (different from cms.yaml - no TemplateFormat)
+    BiometricData:
+      type: object
+      required:
+        - biometricType
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
+        image:
+          type: string
+          format: byte
+          description: Base64-encoded image
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
+      additionalProperties: false
+  
+    #from pr.yaml 
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - PALM
+        - IRIS
+        - SIGNATURE
+        - UNKNOWN
+        
+    #from pr.yaml
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
+  
+    #from pr.yaml (different from cms.yaml)
+    CompressionType:
+      type: string
+      enum: [NONE, JPEG, JPEG2000, PNG]
+
+    #from pr.yaml (different from cms.yaml)
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
+    
+    #renamed from Credential in cms.yaml and removed required fields, and replaced credentialProfileID by credentialType
+    CredentialData:
+      description: A credential
+      type: object
+      #required:
+      #  - credentialId
+      #  - status
+      #  - personId
+      #  - credentialProfileId
+      properties:
+        credentialId:
+          type: string
+          description: The unique id for this credential
+        status:
+          type: string
+          description: The status of the credential
+          enum: [NEW, ACTIVE, SUSPENDED, REVOKED, OTHER]
+        statusOther:
+          type: string
+          description: Details about the status when OTHER is used
+        personId:
+          type: string
+          description: The unique id of the person that the credential request is for
+        credentialType:
+            $ref: '#/components/schemas/CredentialType'
+        issuedDate:
+          type: string
+          format: date
+          description: The date that this credential was issued
+        expiryDate:
+          type: string
+          format: date
+          description: The date that this credential expires
+        serialNumber:
+          type: string
+          description: the serial number of the credential
+      additionalProperties: true
+
+    CredentialType:
+      description: Type of the credential. e.g. "PASSPORT", "ID_CARD", ...
+      type: string
+      example: "ID_CARD"
+    
+    #from pr.yaml
     Error:
       type: object
       required:
@@ -85,11 +566,106 @@ components:
         - message
       properties:
         code:
+          description: Error code
           type: integer
           format: int32
         message:
+          description: Error message
           type: string
       additionalProperties: false
-    Attributes:
+    
+    ResultVerify:
+      description : result of a successful verify request
       type: object
-      additionalProperties: true
+      required:
+        - verificationCode
+        - verificationMessage
+      properties:
+        verificationCode:
+          type: integer
+          format: int64
+        verificationMessage:
+          type: string
+        verificationProof:
+          type: string
+          
+    IdentifyRequest:
+      type: object
+      description: a set of paraeters used in identify
+      required:
+        - attributeSet
+        - outputAttributeSetName
+      properties:
+        attributeSet:
+          $ref: '#/components/schemas/AttributeSet'
+        outputAttributeSetName:
+          description: Attribute set name describing what attributes are to be read. e.g. "DEFAULT_SET_01", "SET_BIOM_01", "EIDAS", ...
+          type: string
+          example: "DEFAULT_SET_01"
+      additionalProperties: false
+
+    OutputAttributeSet:
+      type: object
+      description: A template describing the expected attributes of a readAttributes request
+      properties:
+        outputBiographicData:
+          description : list of BiographicData structure fields to include in the answer
+          type: array
+          items: 
+              type: string
+          example : ["name","firstname"]
+        outputBiometricData:
+          type: array
+          description : an array of expected biometric data & fields
+          items:
+            type: object
+            description : biometric type and subtype, list of BiometricData fields to include in the answer
+            properties:
+              biometricType:
+                $ref: '#/components/schemas/BiometricType'
+              biometricSubType:
+                $ref: '#/components/schemas/BiometricSubType'
+              biometricDataFields:
+                type: array
+                example :  ["image","captureDate"]
+                items: 
+                  type: string
+        outputCredentialData:
+          type: array
+          description : an array of expected credential type & fields
+          items:          
+            type: object
+            description : credential type and list of CredentialData structure fields to include in the answer
+            properties:
+              #TODO : check credential type vs cms.yaml!!
+              credentialType:
+                $ref: '#/components/schemas/CredentialType'
+              credentialDataFields:
+                type: array
+                example :  ["serialNumber","validFromDate","validToDate"]
+                items: 
+                  type: string
+        outputContactData:
+          description : list of ContactData structure fields to include in the answer
+          type: array
+          example : ["phone1","email"]
+          items: 
+              type: string
+              
+      additionalProperties: false
+    
+    ResultIdentify:
+      description : result of a successful identify request. If attributeSets is not present client must call getIdentifyResult with provided taskID to get final identify result.
+      type: object
+      properties:
+        attributeSets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeSet'
+        taskID:
+          type: string
+          
+    ResultGetIdentify:
+      type: array
+      items:
+        $ref: '#/components/schemas/AttributeSet'
