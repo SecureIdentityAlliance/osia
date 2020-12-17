@@ -1062,7 +1062,7 @@ components:
 
     CompressionType:
       type: string
-      enum: [NONE, JPEG, JPEG2000, PNG]
+      enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
 
     DocumentFormatType:
       type: string
@@ -1191,7 +1191,6 @@ components:
       enum:
         - FACE
         - FINGER
-        - PALM
         - IRIS
         - SIGNATURE
         - UNKNOWN

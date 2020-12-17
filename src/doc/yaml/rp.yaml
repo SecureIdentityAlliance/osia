@@ -4,19 +4,18 @@ info:
   description: |
     The OSIA IDUsage Relying Party Interface
     Change log:
-    - 1.0.0: Initial draft
+    - 1.0.0: Initial version
   version: 1.0.0
-  title: OSIA IDUsage Interface 1
+  title: The OSIA IDUsage Relying Party Interface
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
 servers:
-   - url: https://rp.IDUsage.com
+   - url: https://rp.server.com
 tags:
   - name: IDUsage
     description: REST API OSIA interfaces
 
-#--------------------------------------------------------------------------------
 paths:
 
   /v1/verify/{identifier}:
@@ -75,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResultVerify'
+                $ref: '#/components/schemas/VerifyResult'
         400:
           description: 'Bad Request, Validation Errors, ...'
           content:
@@ -233,7 +232,7 @@ paths:
       summary:  Identify a set of persons matching provided partial attributes
       description: >-
         Identify possibly matching identities against an input set of attributes. Returns an array of predefined datasets as described by outputDataSetName.
-        Note this request may be asynchronous if ResultIdentify200 structure doesn't contain attributeSet array but taskID.
+        Note this request may be asynchronous or synchronous.
       operationId: identify
       security:
         - BearerAuth: [id.identify]
@@ -260,7 +259,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResultIdentify'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeSet'
+        202:
+          description: |
+            Request received successfully and correct, result will be available later using the task ID returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
         400:
           description: 'Bad Request, Validation Errors, ...'
           content:
@@ -309,7 +317,9 @@ paths:
           content:
             application/json:
               schema:
-               $ref: '#/components/schemas/ResultGetIdentify'
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeSet'
         204:
           description: No content, taskID is valid but identify request is still ongoing, retry later 
         400:
@@ -331,7 +341,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
-#--------------------------------------------------------------------------------
 components:
   securitySchemes:
     BearerAuth:
@@ -358,7 +367,7 @@ components:
           $ref: '#/components/schemas/ContactData'
       additionalProperties: false
       
-    #from pr.yaml (different from cms.yaml as contact data is externalized)
+    # Different from other interfaces as contact data is externalized
     BiographicData:
       type: object
       additionalProperties: true
@@ -377,7 +386,6 @@ components:
         phone1: "555666777"
         phone2: "555888999"
         
-    #from pr.yaml (different from cms.yaml - no TemplateFormat)
     BiometricData:
       type: object
       required:
@@ -432,18 +440,15 @@ components:
           description: A comment about the biometric data
       additionalProperties: false
   
-    #from pr.yaml 
     BiometricType:
       type: string
       enum:
         - FACE
         - FINGER
-        - PALM
         - IRIS
         - SIGNATURE
         - UNKNOWN
         
-    #from pr.yaml
     BiometricSubType:
       type: string
       enum:
@@ -499,12 +504,10 @@ components:
         - LEFT_PROFILE
         - RIGHT_PROFILE
   
-    #from pr.yaml (different from cms.yaml)
     CompressionType:
       type: string
-      enum: [NONE, JPEG, JPEG2000, PNG]
+      enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
 
-    #from pr.yaml (different from cms.yaml)
     MissingType:
       type: object
       properties:
@@ -515,15 +518,9 @@ components:
           enum: [BANDAGED, AMPUTATED, DAMAGED]
       additionalProperties: false
     
-    #renamed from Credential in cms.yaml and removed required fields, and replaced credentialProfileID by credentialType
     CredentialData:
       description: A credential
       type: object
-      #required:
-      #  - credentialId
-      #  - status
-      #  - personId
-      #  - credentialProfileId
       properties:
         credentialId:
           type: string
@@ -558,7 +555,6 @@ components:
       type: string
       example: "ID_CARD"
     
-    #from pr.yaml
     Error:
       type: object
       required:
@@ -574,7 +570,7 @@ components:
           type: string
       additionalProperties: false
     
-    ResultVerify:
+    VerifyResult:
       description : result of a successful verify request
       type: object
       required:
@@ -591,7 +587,7 @@ components:
           
     IdentifyRequest:
       type: object
-      description: a set of paraeters used in identify
+      description: a set of parameters used in identify
       required:
         - attributeSet
         - outputAttributeSetName
@@ -654,18 +650,16 @@ components:
               
       additionalProperties: false
     
-    ResultIdentify:
-      description : result of a successful identify request. If attributeSets is not present client must call getIdentifyResult with provided taskID to get final identify result.
+    TaskId:
+      description: |
+        Information about the asynchronous result. Only the taskId is mandatory but
+        the implementation is free to return additional details such as: expected
+        duration, URL to monitor the task, etc.
       type: object
+      required:
+        - taskId
       properties:
-        attributeSets:
-          type: array
-          items:
-            $ref: '#/components/schemas/AttributeSet'
-        taskID:
+        taskId:
           type: string
-          
-    ResultGetIdentify:
-      type: array
-      items:
-        $ref: '#/components/schemas/AttributeSet'
+          example: '"123e4567-e89b-12d3-a456-426655440000"'
+      additionalProperties: true
