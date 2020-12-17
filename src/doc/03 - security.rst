@@ -181,7 +181,7 @@ The following table is a summary of all scopes defined in OSIA.
     Verify ID                           ``id.verify``
     Identify                            ``id.identify``
     Read Attributes                     ``id.read``
-    Read Attributes set                 ``id.set.read``
+    Read Attributes set                 ``id.SET_NAME.read``
     =================================== ===============================================
 
 REST Interface Implementation

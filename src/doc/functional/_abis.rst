@@ -23,7 +23,7 @@ the following principles:
 
     If no callback is provided, this indicates that the client wants a synchronous answer, whatever the time it takes.
 
-    If a callback is provided, the server will decide if the processing is done synchronously or asynchronously.
+    If a callback is provided, this indicates that the client wants an asynchronous answer, even if the result is immediately available.
 
 See :ref:`annex-interface-abis` for the technical details of this interface.
 
