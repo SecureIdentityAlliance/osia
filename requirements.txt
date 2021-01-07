@@ -14,7 +14,7 @@ ipaddress==1.0.22
 Jinja2==2.10.1
 keyring==17.1.1
 keyrings.alt==3.1.1
-lxml==4.2.5
+lxml==4.6.2
 MarkupSafe==1.1.0
 numpy==1.14.2
 olefile==0.46
