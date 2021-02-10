@@ -4,7 +4,7 @@ Babel==2.6.0
 beautifulsoup4==4.7.0
 certifi==2018.11.29
 chardet==3.0.4
-cryptography==3.2
+cryptography==3.3.2
 docutils==0.14
 enum34==1.1.6
 # html5lib==0.999999999
