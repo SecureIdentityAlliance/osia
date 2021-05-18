@@ -103,6 +103,7 @@ The following table is a summary of all scopes defined in OSIA.
     List Topics                         ``notif.topic.read``
     Delete Topic                        ``notif.topic.write``
     Publish                             ``notif.topic.publish``
+    Notify                              N/A
     ----------------------------------- -----------------------------------------------
     **Data Access**
     -----------------------------------------------------------------------------------

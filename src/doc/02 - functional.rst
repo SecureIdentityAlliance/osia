@@ -205,7 +205,8 @@ The following table describes in detail the interfaces and associated services.
     Create Topic                       Create a new topic
     List Topics                        List all the existing topics
     Delete Topic                       Delete a topic
-    Publish                            Notify of a new event all systems that subscribed to this topic
+    Publish                            Publish an event to all systems that have subscribed to this topic
+    Notify                             Callback registered during subscription and called when an event is published
     --------------------------------- -----------------------------------------------------------------------------------
     **Data Access**
     ---------------------------------------------------------------------------------------------------------------------
@@ -313,6 +314,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
      List Topics                                         U                U       U       U
      Delete Topic                                        U                U       U       U
      Publish                                             U                U       U       U
+     Notify                                              I                I       I       I
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Data Access**
     --------------------------------------------------------------------------------------------------
