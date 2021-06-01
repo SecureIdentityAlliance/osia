@@ -34,6 +34,6 @@ sphinx-rtd-theme==0.4.3
 sphinxcontrib-autoprogram==0.1.5
 sphinxcontrib-httpdomain==1.7.0
 sphinxcontrib-plantuml==0.14
-urllib3==1.24.2
+urllib3==1.26.5
 webencodings==0.5.1
 sphinxcontrib-openapi==0.5.0
