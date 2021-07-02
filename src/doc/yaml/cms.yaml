@@ -847,7 +847,6 @@ components:
       type: object
       description: A request for a credential
       required:
-        - credentialProfileId
         - personId
         - biographicData
         - requestData
