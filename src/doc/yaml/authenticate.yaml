@@ -1,0 +1,833 @@
+openapi: 3.1.0
+info:
+  title: authenticate
+  version: '1.0'
+  summary: Authenticate an individual
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+  description: Authenticate an individual with the provided information
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /authenticate:
+    parameters: []
+    post:
+      summary: ''
+      operationId: post-authenticate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: Version of this response
+                  responseTime:
+                    type: string
+                    description: ISO 8601
+                  transactionId:
+                    type: string
+                    minLength: 12
+                    maxLength: 50
+                    example: TXN123456789
+                  purpose:
+                    type: string
+                    description: Same value as purpose in the request
+                  factorsVerified:
+                    type: array
+                    description: >-
+                      What are all the factors we verified. So in case the
+                      relying party needs a mandatory factor he can check and
+                      ensure if the authentication contained such a factor.
+                    items:
+                      type: string
+                  consentVerified:
+                    type: boolean
+                    default: false
+                    description: Consent verification was performed or not.
+                  authResult:
+                    type: object
+                    required:
+                      - verified
+                      - tokenId
+                    description: Result of the authentication
+                    properties:
+                      verified:
+                        type: boolean
+                        default: false
+                        description: result of the authentication. A simple boolean
+                      tokenId:
+                        type: string
+                        description: >-
+                          Random Token either specific for this authentication
+                          or specific for an individual & Relying party
+                          combination.
+                        maxLength: 500
+                        minLength: 12
+                      kycCredential:
+                        $ref: '#/components/schemas/Credential'
+                      kycUri:
+                        type: string
+                        description: Link pointing to the KYC data credential
+                  errors:
+                    type: array
+                    description: >-
+                      Error code array. Messages for the repsective errors has
+                      to be transalated as 
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          description: 'unique error code '
+                        message:
+                          type: string
+                          description: description of the error message
+                        language:
+                          type: string
+                          description: ISO 639-2
+                        action:
+                          type: string
+                          description: >-
+                            action that we want the user to make in order to
+                            correct the error.
+                required:
+                  - version
+                  - transactionId
+                  - purpose
+                  - factorsVerified
+                  - consentVerified
+                  - authResult
+              examples:
+                example-1: {}
+      description: To authenticate an individual
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              x-examples:
+                example-1:
+                  context:
+                    id: id object
+                    transactionId: ABC123456723
+                    requestTime: '2016-07-16T19:20:30+5:30'
+                  consent:
+                    type: embedded / linked
+                    data: JWT
+                    schema: ''
+                    signUri: 'http://abc.json.sig'
+                    linkUri: 'http://abc.json'
+                  demographics:
+                    - attribute: name
+                      operator: equals
+                      value: John
+                      lang: ISO 639-1 language code
+                    - attribute: dob
+                      operator: equals
+                      value: John
+                      lang: ISO 639-1 language code
+                  biometrics:
+                    - specVersion: device spec version
+                      data:
+                        digitalId: >-
+                          Digital Id as described in this document signed
+                        deviceServiceVersion: device version
+                        bioType: Finger
+                        bioSubType: UNKNOWN
+                        purpose: Auth
+                        env: Target environment
+                        domainUri: URI of the auth server
+                        bioValue: >-
+                          Encrypted with session key and base64urlencoded
+                          biometric data
+                        transactionId: Unique transaction id
+                        timestamp: Current datetime in ISO format
+                        requestedScore: >-
+                          Floating point number to represent the minimum
+                          required score for the capture
+                        qualityScore: >-
+                          Floating point number representing the score for the
+                          current capture
+                      hash: >-
+                        sha256 in hex format in upper case (previous hash +
+                        sha256 hash of the current biometric ISO data before
+                        encryption)
+                      sessionKey: >-
+                        Session key used for encrypting bioValue, encrypted with
+                        system public key (dynamically selected based on the URI)
+                        and base64urlencoded
+                      thumbprint: >-
+                        SHA256 representation of the certificate (HEX encoded)
+                        that was used for encryption of session key. All texts
+                        to be treated as uppercase without any spaces or hyphens
+                    - specVersion: SBI spec version
+                      data:
+                        digitalId: >-
+                          Digital Id as described in this document signed using
+                          FTM key (SBI 2.0)
+                        deviceServiceVersion: device version
+                        bioType: Finger
+                        bioSubType: Left IndexFinger
+                        purpose: Auth
+                        env: Target environment
+                        domainUri: URI of the auth server
+                        bioValue: >-
+                          Encrypted with session key and base64urlencoded
+                          biometric data
+                        transactionId: Unique transaction id
+                        timestamp: Current datetime in ISO format
+                        requestedScore: >-
+                          Floating point number to represent the minimum
+                          required score for the capture
+                        qualityScore: >-
+                          Floating point number representing the score for the
+                          current capture
+                      hash: >-
+                        sha256 in hex format in upper case (previous hash +
+                        sha256 hash of the current biometric ISO data before
+                        encryption)
+                      sessionKey: >-
+                        Session key used for encrypting bioValue, encrypted with
+                        system public key (dynamically selected based on the URI)
+                        and base64urlencoded
+                      thumbprint: >-
+                        SHA256 representation of the certificate (HEX encoded)
+                        that was used for encryption of session key. All texts
+                        to be treated as uppercase without any spaces or hyphens
+                  authFactors:
+                    - factors: ''
+                      specVersion: ''
+                      data: []
+                    - factors: ''
+                      specVersion: ''
+                      data: []
+              properties:
+                context:
+                  type: object
+                  required:
+                    - id
+                    - transactionId
+                    - requestTime
+                  properties:
+                    id:
+                      type: string
+                      minLength: 1
+                      description: Identity used for authentication
+                    transactionId:
+                      type: string
+                      minLength: 12
+                      maxLength: 50
+                      description: >-
+                        The current transaction id or service request id as per
+                        the relying party
+                    requestTime:
+                      type: string
+                      description: Timestamp in ISO8601
+                      minLength: 12
+                      maxLength: 30
+                    purpose:
+                      type: string
+                      description: >-
+                        Purpose of the authentication request. Not mandatory but
+                        provides a way to ensure people know for what they are
+                        doing it
+                      minLength: 0
+                      maxLength: 256
+                    issuer:
+                      type: string
+                      description: >-
+                        Issuer of this ID. Its optional. Auth can be rejected in
+                        some scenarios if this is not present
+                      minLength: 0
+                      maxLength: 250
+                    type:
+                      type: string
+                      description: >-
+                        Type of the ID. Its optional and auth can not be
+                        rejected if the type is not present.
+                      minLength: 0
+                      maxLength: 150
+                consent:
+                  $ref: '#/components/schemas/Consent'
+                security:
+                  $ref: '#/components/schemas/Encryption'
+                demographics:
+                  type: array
+                  minItems: 1
+                  uniqueItems: true
+                  description: demographic information
+                  items:
+                    $ref: '#/components/schemas/DemoAttribute'
+                biometrics:
+                  type: array
+                  uniqueItems: true
+                  minItems: 1
+                  description: ISO 639-1 or ISO 639-2/
+                  items:
+                    $ref: '#/components/schemas/BiometricData'
+                authFactors:
+                  type: array
+                  uniqueItems: true
+                  minItems: 1
+                  description: Other auth factors that are supported.
+                  items:
+                    $ref: '#/components/schemas/AuthFactor_2'
+                '':
+                  type: string
+              required:
+                - context
+                - consent
+                - security
+                - demographics
+                - biometrics
+                - authFactors
+            examples:
+              Example:
+                value:
+                  context:
+                    id: 8284-8198-7235
+                    transactionId: TXN123456789
+                    requestTime: '2016-07-16T19:20:30+5:30'
+                  consent:
+                    type: linked
+                    schema: 'https://osia.org/schema/consent'
+                    signUri: 'https://osia.org/TXN123456789.sig'
+                    linkUri: 'https://osia.org/TXN123456789.data'
+                  demographics:
+                    - attributeName: name
+                      operator: '='
+                      value: John
+                      lang: eng
+                  biometrics:
+                    - specVersion: '1.0'
+                      data:
+                        captureDevice: string
+                        env: string
+                        deviceServiceVersion: '1.0'
+                        bioType: Finger
+                        bioSubType: Left IndexFinger
+                        purpose: Auth
+                        domainUri: 'http://osia.org'
+                        bioValue: >-
+                          yyy
+                        transactionId: TXN123456789
+                        timestamp: '2016-07-16T19:20:30+5:30'
+                        requestedScore: 65
+                        qualityScore: 90
+                      hash: string
+                      sessionKey: string
+                      thumbprint: string
+                  authFactors:
+                    - factor: string
+                      specVersion: string
+                      data:
+                        - {}
+      parameters:
+        - schema:
+            type: string
+          in: header
+          name: Signature
+          description: JWS signature of the entire http body of the body header..signature
+components:
+  schemas:
+    AuthFactor:
+      title: AuthFactor
+      type: object
+      properties:
+        factor:
+          type: string
+        specVersion:
+          type: string
+        hash:
+          type: string
+        data:
+          type: array
+          items:
+            type: object
+        security:
+          $ref: '#/components/schemas/Encryption'
+      required:
+        - factor
+        - specVersion
+        - data
+    AuthFactor_2:
+      title: AuthFactor
+      type: object
+      properties:
+        factor:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Name of the factor
+        specVersion:
+          type: string
+          minLength: 1
+          maxLength: 5
+          description: Adopted spec version for this factor
+        hash:
+          type: string
+          description: hash value of the data object before encryption
+          minLength: 1
+          maxLength: 512
+        data:
+          type: array
+          description: Free data object as per the factors specification
+          items:
+            type: object
+        security:
+          $ref: '#/components/schemas/Encryption'
+      required:
+        - factor
+        - specVersion
+        - data
+    BiometricData:
+      title: BiometricFactor
+      type: object
+      properties:
+        specVersion:
+          type: string
+          minLength: 1
+          enum:
+            - '0.95'
+            - '1.0'
+        data:
+          type: object
+          description: >-
+            The entire data in this object is encrypted as a single blob and
+            attached here as a string - Refer the SBI Specification
+          properties:
+            captureDevice:
+              $ref: '#/components/schemas/CaptureDevice'
+            deviceServiceVersion:
+              type: string
+              minLength: 1
+              description: 'version of SBI (secure biometric interface) spec driver '
+            bioType:
+              type: string
+              minLength: 1
+              enum:
+                - Face
+                - Finger
+                - Iris
+                - Voice
+                - Palm
+              description: ''
+            bioSubType:
+              type: string
+              minLength: 1
+              enum:
+                - Left IndexFinger
+                - Left MiddleFinger
+                - Left RingFinger
+                - Left LittleFinger
+                - Left Thumb
+                - Right IndexFinger
+                - Right MiddleFinger
+                - Right RingFinger
+                - Right LittleFinger
+                - Right Thumb
+                - UNKNOWN
+                - Left
+                - Right
+            purpose:
+              type: string
+              minLength: 1
+              enum:
+                - Auth
+                - KYC
+                - Registration
+              maxLength: 144
+              description: >-
+                simple string to explain the purpose of the auth. This will be
+                notified to the user
+            env:
+              type: string
+              minLength: 1
+            domainUri:
+              type: string
+              minLength: 1
+              format: uri
+            bioValue:
+              type: string
+              minLength: 1
+            requestedScore:
+              type: number
+              minimum: 0
+              maximum: 100
+            transactionId:
+              type: string
+              minLength: 12
+              maxLength: 50
+              example: ABC123456789
+            timestamp:
+              type: string
+              minLength: 20
+              example: '2016-07-16T19:20:30+5:30'
+            qualityScore:
+              type: number
+              minimum: 0
+              maximum: 100
+          required:
+            - captureDevice
+            - bioType
+            - bioSubType
+            - bioValue
+            - transactionId
+            - timestamp
+        hash:
+          type: string
+          minLength: 1
+        sessionKey:
+          type: string
+          minLength: 1
+        thumbprint:
+          type: string
+          minLength: 1
+      required:
+        - specVersion
+        - hash
+        - sessionKey
+        - thumbprint
+      x-examples: null
+      example-1:
+        env: Target environment
+        purpose: Registration
+        specVersion: Expected SBI spec version
+        timeout: Timeout for registration capture
+        captureTime: Time of capture request in ISO format
+        transactionId: Transaction Id for the current capture
+        bio:
+          - type: Type of the biometric data
+            count: 'Finger/Iris count, in case of face max is set to 1'
+            bioSubType:
+              - Array of subtypes
+            exception:
+              - Finger or Iris to be excluded
+            requestedScore: >-
+              Expected quality score that should match to complete a successful
+              capture.
+            serialNo: Printed Serial Number of the device
+            deviceSubId: Specific device Id
+            previousHash: Hash of the previous block
+      examples:
+        - specVersion: '0.95'
+          data:
+            captureDevice:
+              serialNo: string
+              make: string
+              model: string
+              type: Finger
+              deviceSubType: string
+              deviceProvider: string
+              deviceProviderId: string
+              dateTime: string
+            deviceServiceVersion: string
+            bioType: Face
+            bioSubType: Left IndexFinger
+            purpose: Auth
+            env: string
+            domainUri: 'http://example.com'
+            bioValue: string
+            requestedScore: 0
+            transactionId: ABC123456789
+            timestamp: '2016-07-16T19:20:30+5:30'
+            qualityScore: 0
+          hash: string
+          sessionKey: string
+          thumbprint: string
+    CaptureDevice:
+      description: Digital footprint of the capture device
+      type: object
+      x-examples:
+        example-1:
+          serialNo: Serial number
+          make: Make of the device
+          model: Model of the device
+          type: Type of the biometric device
+          deviceSubType: Subtypes of the biometric device
+          deviceProvider: Device provider name
+          deviceProviderId: Device provider id
+          dateTime: Current datetime in ISO format
+      properties:
+        serialNo:
+          type: string
+          description: >-
+            Serial no of the device, same as whats printed on the device. In
+            case of integrated pls ensure the it can be seen in about device or
+            similar such features. Alpha numeric
+          minLength: 0
+          maxLength: 12
+        make:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Make of the device
+        model:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Model of the device
+        type:
+          type: string
+          minLength: 1
+          enum:
+            - Finger
+            - Iris
+            - Face
+          maxLength: 50
+          description: Type of the device
+        deviceSubType:
+          type: string
+          minLength: 1
+          enum:
+            - Slap
+            - Single
+            - Touchless
+            - Double
+            - Full Frontal
+          maxLength: 50
+          description: Additional mode details of device type. Its a enum
+        deviceProvider:
+          type: string
+          minLength: 1
+          description: Provider name as per the certifcation
+          maxLength: 256
+        deviceProviderId:
+          type: string
+          minLength: 1
+          description: Unique provider id assigned by the certifier
+          maxLength: 50
+        dateTime:
+          type: string
+          minLength: 1
+          description: 'ISO Timestamp of the device '
+          format: date-time
+      required:
+        - serialNo
+        - make
+        - model
+        - type
+        - dateTime
+    Consent:
+      title: Consent
+      type: object
+      description: ''
+      properties:
+        type:
+          type: string
+          minLength: 1
+          enum:
+            - embedded
+            - linked
+            - no-consent
+          example: linked
+          maxLength: 50
+          description: Consent type. Limited the enum values
+        data:
+          type: string
+          minLength: 1
+          description: embedded data in jwt format
+          maxLength: 256
+        schema:
+          type: string
+          format: uri-reference
+          minLength: 1
+          maxLength: 256
+          description: Schema for the consent
+        signUri:
+          type: string
+          minLength: 1
+          format: uri
+          description: signature url. no data of the consent
+          maxLength: 256
+        linkUri:
+          type: string
+          minLength: 1
+          format: uri
+          description: unique link to the content of the consent
+          maxLength: 256
+      required:
+        - type
+    Credential:
+      title: Credential
+      description: Credential
+      type: object
+      x-examples:
+        example-1:
+          issuedTo: mpartner-default-print
+          protectedAttributes: []
+          issuanceDate: '2021-01-20T04:38:41.045Z'
+          credentialSubject:
+            name: james
+            gender: male
+          id: 'http://osia.org/credentials/9178c6ed-6c3d-4be4-9eef-7668ca236c21'
+          type:
+            - VerifiableCredential
+            - OSIAVerifiableCredential
+          consent: ''
+          issuer: 'https://osia.org/issuers/'
+      properties:
+        issuer:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Who has issued this credential.
+        id:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: ID of the credential
+        issuedTo:
+          type: string
+          minLength: 1
+          description: to whom the id is issued to
+          maxLength: 256
+        issuanceDate:
+          type: string
+          minLength: 1
+          format: date-time
+        protectedAttributes:
+          type: array
+          description: Array of atributes that are available in protected form (encrypted).
+          items:
+            type: string
+        credentialSubject:
+          type: object
+          required:
+            - id
+            - idOf
+          description: Subject information for the credential
+          properties:
+            id:
+              type: string
+              minLength: 10
+              maxLength: 50
+              description: id of subject
+            idOf:
+              type: array
+              description: Array of information about the subject
+              items:
+                type: object
+                properties:
+                  attributeName:
+                    type: string
+                    description: Name of the atribute
+                    minLength: 1
+                    maxLength: 256
+                  value:
+                    type: string
+                    minLength: 0
+                    maxLength: 1024
+                    description: >-
+                      Value for the given atribute. Note: It could be encrypted
+                      if the atribute name is part of the protected array.
+                  language:
+                    type: string
+                    minLength: 2
+                    maxLength: 3
+                    description: >-
+                      language in ISO 639-1 format. USe 639-2 only when the code
+                      is not available in 639-1
+        type:
+          type: array
+          description: Array of strings indicating the type of the credential
+          minItems: 1
+          maxItems: 20
+          items:
+            type: string
+            example: '["VerifiableCredential", "AlumniCredential"]'
+            minLength: 1
+            maxLength: 50
+        consent:
+          $ref: '#/components/schemas/Consent'
+        proof:
+          type: object
+          required:
+            - type
+            - created
+            - proofPurpose
+            - verificationMethod
+            - jws
+          description: Credential proof
+          properties:
+            type:
+              type: string
+              minLength: 1
+              maxLength: 10
+              description: Type of the proof
+              enum:
+                - RsaSignature2018
+                - ED25519
+            created:
+              type: string
+              format: date-time
+              description: What was it created
+            proofPurpose:
+              type: string
+              minLength: 0
+              maxLength: 256
+              description: What is the purpose of this proof
+            verificationMethod:
+              type: string
+              minLength: 1
+              maxLength: 256
+              description: URL to the keys
+            jws:
+              type: string
+              description: JWS of the format header..signature
+              minLength: 0
+              maxLength: 10000
+      required:
+        - issuer
+        - id
+        - issuedTo
+        - issuanceDate
+        - protectedAttributes
+        - credentialSubject
+        - type
+        - consent
+        - proof
+    DemoAttribute:
+      title: Demo
+      type: object
+      properties:
+        atributeName:
+          type: string
+          description: 'Name of the atribute. eg name, firstname'
+        value:
+          type: string
+          description: Value for the demographic data
+        language:
+          type: string
+          description: Language of the value ISO 639-1
+      required:
+        - atributeName
+        - value
+    Encryption:
+      title: Encryption
+      type: object
+      properties:
+        sessionKey:
+          type: string
+        thumbprint:
+          type: string
+        algorithm:
+          type: string
+      required:
+        - sessionKey
+        - thumbprint
+      examples:
+        - sessionKey: string
+          thumbprint: string
+          algorithm: string
+  securitySchemes:
+    Authorization:
+      type: openIdConnect
+      openIdConnectUrl: 'https://iam.osia.org/auth/openid-configuration'
+  responses: {}
