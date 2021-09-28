@@ -46,6 +46,7 @@ rst_prolog = '''
             overflow: visible !important;
         }
         
+        tr th.head {background-color: #AD5389; color: white}
     </style>
 
 '''
@@ -104,8 +105,13 @@ latex_elements = {
 
 \\DeclareUnicodeCharacter{2714}{\\Checkmark}
 \\newcommand{\\DUroletodo}[1]{\\colorbox{yellow}{#1} }
+\\usepackage{color}
+\\usepackage{colortbl}
+\\definecolor{tableheader}{rgb}{0.678,0.325,0.537}
 
 ''' + ur'''
+
+\renewcommand*{\sphinxstyletheadfamily}{\cellcolor{tableheader}\sffamily\color{white}}
 
 \newcommand{\companylogo}{
 \includegraphics [ width=3.5cm] {logo.pdf}

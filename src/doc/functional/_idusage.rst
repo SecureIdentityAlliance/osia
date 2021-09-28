@@ -120,7 +120,11 @@ Any string may be used to define an attribute set name, but in the scope of this
 reserved and predefined:
 
 .. list-table::
+    :header-rows: 1
 
+    * - Name
+      - Description
+      - Data Included
     * - "DEFAULT_SET_01"
       - Minimum demographic data
       - | First name
