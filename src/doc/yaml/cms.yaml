@@ -628,9 +628,9 @@ components:
       additionalProperties: true
       example:
         address1: 11 Rue des Rosiers
-        address2:
+        address2: '1st floor'
         city: Libourne
-        state:
+        state: 'Gironde'
         postalCode: '33500'
         country: France
     BiographicData:
