@@ -4,7 +4,7 @@
 UIN Management
 --------------
 
-This is version :oasversion:`../../yaml/uin.yaml` of this interface.
+This is version :openapi:version:`../../yaml/uin.yaml` of this interface.
 
 .. only:: html
 
@@ -14,8 +14,13 @@ This is version :oasversion:`../../yaml/uin.yaml` of this interface.
 
     Get the OpenAPI file: \textattachfile[]{../html/uin.yaml}{uin.yaml}
 
+.. sidebar:: UIN Management
+
+    .. openapi:toc:: ../../yaml/uin.yaml
+
 Services
 """"""""
 .. openapi:: ../../yaml/uin.yaml
     :examples:
-
+    :group:
+    :group_examples:

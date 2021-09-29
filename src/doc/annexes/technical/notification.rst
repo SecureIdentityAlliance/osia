@@ -4,7 +4,7 @@
 Notification
 ------------
 
-This is version :oasversion:`../../yaml/notification.yaml` of this interface.
+This is version :openapi:version:`../../yaml/notification.yaml` of this interface.
 
 .. only:: html
 
@@ -16,25 +16,14 @@ This is version :oasversion:`../../yaml/notification.yaml` of this interface.
 
 .. sidebar:: Notification Services
 
-    .. hlist::
-        :columns: 2
-
-        - `create_topic <#post--v1-topics>`_
-        - `list_topics <#get--v1-topics>`_
-        - `delete_topic <#delete--v1-topics-uuid>`_
-        - `publish <#post--v1-topics-uuid-publish>`_
-        - `subscribe <#post--v1-subscriptions>`_
-        - `list_subscription <#get--v1-subscriptions>`_
-        - `unsubscribe <#delete--v1-subscriptions-uuid>`_
-        - `confirm <#get--v1-subscriptions-confirm>`_
-        - :ref:`notify <notify_URL>`
+    .. openapi:toc:: ../../yaml/notification.yaml
 
 Services
 """"""""
-
 .. openapi:: ../../yaml/notification.yaml
     :examples:
     :group:
+    :group_examples:
 
 Receiver
 ''''''''

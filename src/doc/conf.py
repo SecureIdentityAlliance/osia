@@ -109,7 +109,10 @@ latex_elements = {
 \\usepackage{colortbl}
 \\definecolor{tableheader}{rgb}{0.678,0.325,0.537}
 
-''' + ur'''
+\\usepackage{makeidx}
+\\usepackage[columns=1]{idxlayout}
+
+''' + r'''
 
 \renewcommand*{\sphinxstyletheadfamily}{\cellcolor{tableheader}\sffamily\color{white}}
 
@@ -137,12 +140,12 @@ latex_elements = {
         {\vspace{0.5cm} \companylogo }
         \vspace{1.5cm}
         \par
-        {\rm\Huge\sffamily\bfseries {\textcolor[rgb]{0.678,0.325,0.537}{Specifications version '''+release+ur'''} } \par}
+        {\rm\Huge\sffamily\bfseries {\textcolor[rgb]{0.678,0.325,0.537}{Specifications version '''+release+r'''} } \par}
         \vfill
         %% Project logo
         \includegraphics[ width=12cm]{logo2.pdf} \par
         \vfill
-        \small {\textcolor[rgb]{0.678,0.325,0.537}{\textcopyright Secure Identity Alliance, '''+str(datetime.date.today().year)+ur''' } }
+        \small {\textcolor[rgb]{0.678,0.325,0.537}{\textcopyright Secure Identity Alliance, '''+str(datetime.date.today().year)+r''' } }
     \end{center}    
         
     \par
@@ -163,22 +166,9 @@ latex_elements = {
 'classoptions' : ',english,openany,oneside'
 }
 
-# Custom roles
-import yaml
-from docutils import nodes
-def oasversion_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
-    fn = text
-    env = inliner.document.settings.env
-    rel_fn, fn = env.relfn2path(fn)
-    y = yaml.load(open(fn,'r').read(), Loader=yaml.FullLoader)
-    s = y['info']['version']
-    retnode = nodes.inline(text=s,role=typ.lower(), classes=[typ])
-    return [retnode], []
-
 # Copy images
 import os,shutil,fnmatch
 def setup(app):
-    app.add_role('oasversion', oasversion_role)
     try:
         os.makedirs(app.outdir)
     except:
@@ -186,14 +176,3 @@ def setup(app):
     for root, dirs, files in os.walk(os.path.join(app.srcdir,'images')):
         for f in fnmatch.filter(files,"*.pdf"):
             shutil.copy(os.path.join(root,f),app.outdir)
-
-# Temporary patch of sphinxcontrib.openapi (waiting for merge of PR)
-import sys,os
-sys.path.append(os.path.split(__file__)[0])
-import _openapi30
-from sphinxcontrib.openapi import openapi30
-
-openapi30._parse_schema =     _openapi30._parse_schema
-openapi30._example =          _openapi30._example
-openapi30._httpresource =     _openapi30._httpresource
-openapi30.openapihttpdomain = _openapi30.openapihttpdomain

@@ -4,7 +4,7 @@
 Enrollment
 ----------
 
-This is version :oasversion:`../../yaml/enrollment.yaml` of this interface.
+This is version :openapi:version:`../../yaml/enrollment.yaml` of this interface.
 
 .. only:: html
 
@@ -16,27 +16,18 @@ This is version :oasversion:`../../yaml/enrollment.yaml` of this interface.
 
 .. sidebar:: Enrollment Services
 
-    .. hlist::
-        :columns: 2
-
-        - `createEnrollment <#post--v1-enrollments-enrollmentId>`_
-        - `readEnrollment <#get--v1-enrollments-enrollmentId>`_
-        - `updateEnrollment <#put--v1-enrollments-enrollmentId>`_
-        - `partialUpdateEnrollment <#patch--v1-enrollments-enrollmentId>`_
-        - `deleteEnrollment <#delete--v1-enrollments-enrollmentId>`_
-        - `finalizeEnrollment <#put--v1-enrollments-enrollmentId-finalize>`_
-        - `findEnrollments <#post--v1-enrollments>`_
-        - `createBuffer <#post--v1-enrollments-enrollmentId-buffer>`_
-        - `readBuffer <#get--v1-enrollments-enrollmentId-buffer-bufferId>`_
+    .. openapi:toc:: ../../yaml/enrollment.yaml
 
 Services
 """"""""
 .. openapi:: ../../yaml/enrollment.yaml
     :examples:
     :group:
+    :group_examples:
+    :entities:
 
 Data Model
 """"""""""
 
-:todo:`To be completed`
+.. openapi:model:: ../../yaml/enrollment.yaml
 

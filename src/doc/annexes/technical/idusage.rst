@@ -7,7 +7,7 @@ ID Usage Services
 Relying Party Services
 """"""""""""""""""""""
 
-This is version :oasversion:`../../yaml/rp.yaml` of this interface.
+This is version :openapi:version:`../../yaml/rp.yaml` of this interface.
 
 .. only:: html
 
@@ -17,15 +17,20 @@ This is version :oasversion:`../../yaml/rp.yaml` of this interface.
 
     Get the OpenAPI file: \textattachfile[]{../html/rp.yaml}{rp.yaml}
 
-Services
-''''''''
+.. sidebar:: Relying Party Services
 
+    .. openapi:toc:: ../../yaml/rp.yaml
+
+Services
+""""""""
 .. openapi:: ../../yaml/rp.yaml
     :examples:
+    :group:
+    :group_examples:
+    :entities:
 
 Data Model
 """"""""""
 
-:todo:`To be completed`
-
+.. openapi:model:: ../../yaml/rp.yaml
 
