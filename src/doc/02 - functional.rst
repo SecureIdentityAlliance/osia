@@ -760,6 +760,89 @@ This second example shows how APIs may be used to flex the control over function
 lifecycle management. This example first makes use of the API to suspend a credential pending
 production of a replacement; then a second API call is made to the CMS to instruct cancellation of the lost document.
 
+Credentials Issuance Use Case
+"""""""""""""""""""""""""""""
+
+This use case describes an example of interaction between the different OSIA components
+to capture identity data, generate a UIN, process the identity data and issue both a 
+physical and digital credential.
+
+This use case also demonstrates what a middleware could do when connected to multiple OSIA compatible systems.
+In this example the middleware is acting as an enrollment server, scheduling all the processing when
+the data collection is finalized.
+
+This use case was implemented for demonstrating OSIA and is presented in this `video <https://www.youtube.com/watch?v=U8mWKxIOiaE>`_.
+
+.. uml::
+    :caption: Credentials Issuance Use Case
+    :scale: 50%
+
+    hide footbox
+    actor "Citizen" as citizen
+    participant "Enrollment Station" as ENR
+    participant "Middleware" as MW
+    participant "PR" as PR
+    participant "ABIS" as ABIS
+    participant "CMS1" as CMS1
+    participant "CMS2" as CMS2
+     
+    citizen -> ENR: biographics
+    activate citizen
+    activate ENR
+    citizen -> ENR: documents
+    citizen -> ENR: face
+    citizen -> ENR: fingerprints
+    citizen -> ENR: ok
+    deactivate citizen
+
+    ENR -> MW: createEnrollment(collected data)
+    activate MW
+    MW --> ENR: 201
+    deactivate ENR
+
+    MW -> MW: generate identity id
+
+    MW -> PR++: generateUIN()
+    return UIN
+
+    MW -> PR++: createPerson(UIN)
+    return 201
+    MW -> PR++: createIdentityWithId(UIN, identityId, biographics, documents)
+    return 201
+
+    MW -> ABIS++: createEncounter(UIN, identityId, face, fingerprints)
+    return 200
+
+    MW -> CMS1: createCredentialRequest(UIN, identityId, biographics, face, fingerprints, type=Physical)
+    activate CMS1
+    CMS1 --> MW: 201
+
+    MW -> CMS2: createCredentialRequest(UIN, identityId, biographics, face, fingerprints, type=Digital)
+    activate CMS2
+    CMS2 --> MW: 201
+    deactivate MW
+
+    ... Later ...
+
+    CMS1 -> citizen: physical credential
+    activate citizen
+    deactivate CMS1
+
+    CMS2 -> citizen: digital credential
+    deactivate CMS2
+    deactivate citizen
+
+The main steps are:
+
+#. The citizen interacts with the enrollment station to provide the biographic data, the supporting document
+   images, a portrait and a set of fingerprints.
+#. When all the data is collected, the full data set if pushed to the middleware using the OSIA ``createEnrollment`` service.
+#. Backend processing includes:
+
+   - interactions with the population registry to generate a UIN and insert the collected data,
+   - interaction with the ABIS to insert the face and fingerprints,
+   - interactions with multiple Credential Management System to request the issuance of different types of credentials.
+
 Bank account opening Use Case
 """""""""""""""""""""""""""""
 
