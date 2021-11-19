@@ -2290,6 +2290,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -2344,6 +2345,7 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
+      example: RIGHT_INDEX
     Filter:
       type: object
       additionalProperties: true
@@ -2377,6 +2379,7 @@ components:
           description: >-
             the score of the candidate in relation to other candidates for
             the same biometric identification operation
+          example: 3500
         scoreList:
           type: array
           description: >-
@@ -2401,6 +2404,7 @@ components:
           type: number
           format: float
           description: the score
+          example: 3500
         encounterId:
           type: string
         biometricType:
