@@ -443,7 +443,7 @@ paths:
         200:
           description: |
             The requested status found (a value) for each data name, or nothing if the data is not yet available.
-            Proposed list of status is: NOT_STARTED, IN_PROGRESS, SUSPENDED, FINISHED, REJECTED.
+            Proposed list of status is: NOT_STARTED, IN_PROGRESS, SUSPENDED, FINISHED, REJECTED
           content:
             application/json:
               schema:
