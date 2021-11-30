@@ -4,7 +4,7 @@
 Notification
 ------------
 
-This is version :oasversion:`../../yaml/notification.yaml` of this interface.
+This is version :openapi:version:`../../yaml/notification.yaml` of this interface.
 
 .. only:: html
 
@@ -16,24 +16,77 @@ This is version :oasversion:`../../yaml/notification.yaml` of this interface.
 
 .. sidebar:: Notification Services
 
-    .. hlist::
-        :columns: 2
-
-        - `create_topic <#post--v1-topics>`_
-        - `list_topics <#get--v1-topics>`_
-        - `delete_topic <#delete--v1-topics-uuid>`_
-        - `publish <#post--v1-topics-uuid-publish>`_
-        - `subscribe <#post--v1-subscriptions>`_
-        - `list_subscription <#get--v1-subscriptions>`_
-        - `unsubscribe <#delete--v1-subscriptions-uuid>`_
-        - `confirm <#get--v1-subscriptions-confirm>`_
+    .. openapi:toc:: ../../yaml/notification.yaml
 
 Services
 """"""""
-
 .. openapi:: ../../yaml/notification.yaml
     :examples:
     :group:
+    :group_examples:
+
+Receiver
+''''''''
+.. _notify_URL:
+
+.. http:post:: notify_URL
+    :synopsis: Notify service receiving the events
+
+    :reqheader message-type: the type of the message (Required)
+    :reqheader subscription-id: the unique ID of the subscription
+    :reqheader message-id: the unique ID of the message (Required)
+    :reqheader topic-id: the unique ID of the topic (Required)
+    :status 200: Message received and processed.
+    :status 500: Unexpected error
+
+**Example request (Subscription Confirmation):**
+
+.. sourcecode:: http
+
+    POST notify_URL HTTP/1.1
+    Host: example.com
+    Content-Type: application/json
+    Message-Type: SubscriptionConfirmation
+    Subscription-Id: XXX
+    Message-Id: YYY
+    Topic-ID: ZZZ
+
+    {
+        "type": "SubscriptionConfirmation",
+        "token": "string",
+        "topic": "string",
+        "message": "string",
+        "messageId": "string",
+        "subject": "string",
+        "confirmURL": "https://example.com",
+        "timestamp": "string"
+    }
+
+**Example request (Event):**
+
+.. sourcecode:: http
+
+    POST notify_URL HTTP/1.1
+    Host: example.com
+    Content-Type: application/json
+    Message-Type: Notification
+    Message-Id: YYY
+    Topic-ID: ZZZ
+
+    {"key": "data"}
+
+**Example response:**
+
+.. sourcecode:: http
+
+    HTTP/1.1 500 Internal Server Error
+    Content-Type: application/json
+
+    {
+        "code": 1,
+        "message": "string"
+    }
+
 
 Notification Message
 """"""""""""""""""""

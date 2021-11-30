@@ -144,7 +144,7 @@ Revision History
       - jun-2019
       - nov-2019
       - jul-2020
-      - nov-2020
+      - dec-2020
       
     * - Notification
       - .
@@ -188,6 +188,10 @@ Revision History
       - .
       - 1.0.0
       - 1.1.0
-
-
+    * - Relying Party Services
+      - .
+      - .
+      - .
+      - 
+      - 1.0.0
 

@@ -13,4 +13,4 @@ Technical Specifications
     pr
     abis
     cms
-    3rdparty
+    idusage

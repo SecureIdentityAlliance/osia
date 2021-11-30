@@ -4,7 +4,7 @@
 Data Access
 -----------
 
-This is version :oasversion:`../../yaml/dataaccess.yaml` of this interface.
+This is version :openapi:version:`../../yaml/dataaccess.yaml` of this interface.
 
 .. only:: html
 
@@ -16,21 +16,14 @@ This is version :oasversion:`../../yaml/dataaccess.yaml` of this interface.
 
 .. sidebar:: Data Access Services
 
-    .. hlist::
-        :columns: 2
-
-        - `queryPersonList <#get--v1-persons>`_
-        - `readPersonAttributes <#get--v1-persons-uin>`_
-        - `matchPersonAttributes <#post--v1-persons-uin-match>`_
-        - `verifyPersonAttributes <#post--v1-persons-uin-verify>`_
-        - `readDocument <#get--v1-persons-uin-document>`_
+    .. openapi:toc:: ../../yaml/dataaccess.yaml
 
 Services
 """"""""
-
 .. openapi:: ../../yaml/dataaccess.yaml
     :examples:
     :group:
+    :group_examples:
 
 Data Model
 """"""""""

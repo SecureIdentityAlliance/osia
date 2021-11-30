@@ -17,7 +17,6 @@ Below is the complete list of available interfaces with related versions:
 
 .. list-table::
     :header-rows: 2
-    :stub-columns: 1
     
     * - OSIA Release
       - 1.0.0
@@ -30,49 +29,55 @@ Below is the complete list of available interfaces with related versions:
       - jun-2019
       - nov-2019
       - jul-2020
-      - nov-2020
+      - dec-2020
       
-    * - Notification
+    * - **Notification**
       - .
       - 1.0.0
       - 1.0.0
       - 1.1.0
       - 1.2.0
-    * - UIN Management
+    * - **UIN Management**
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
       - 1.2.0
-    * - Data Access
+    * - **Data Access**
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
       - 1.3.0
-    * - Enrollment Services
+    * - **Enrollment Services**
       - .
       - .
       - .
       - 1.0.0
       - 1.1.0
-    * - Population Registry Services
+    * - **Population Registry Services**
       - .
       - .
       - 1.0.0
       - 1.2.0
       - 1.3.0
-    * - Biometrics Services
+    * - **Biometrics Services**
       - .
       - 1.0.0
       - 1.1.0
       - 1.3.0
       - 1.4.0
-    * - Credential Services
+    * - **Credential Services**
       - .
       - .
       - .
       - 1.0.0
       - 1.1.0
+    * - **Relying Party Services**
+      - .
+      - .
+      - .
+      - 
+      - 1.0.0
 
 

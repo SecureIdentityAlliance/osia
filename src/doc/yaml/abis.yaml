@@ -7,7 +7,9 @@ info:
     The OSIA ABIS Interface.
     
     Change log:
-    
+
+    - 1.5.0:
+      - Add service to update only the galleries of an encounter    
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -20,7 +22,6 @@ info:
       - Force additionalProperties to false when extension is not allowed
       - Pagination when accessing gallery content
       - Add fields on BiometricData: instance, metadata, comment, missing
-      - Add service to update only the galleries of an encounter
     - 1.3.0:
       - Addition of security
     - 1.2.2:
@@ -2401,6 +2402,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -2455,6 +2457,7 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
+      example: RIGHT_INDEX
     Filter:
       type: object
       additionalProperties: true
@@ -2488,6 +2491,7 @@ components:
           description: >-
             the score of the candidate in relation to other candidates for
             the same biometric identification operation
+          example: 3500
         scoreList:
           type: array
           description: >-
@@ -2512,6 +2516,7 @@ components:
           type: number
           format: float
           description: the score
+          example: 3500
         encounterId:
           type: string
         biometricType:
