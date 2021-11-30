@@ -92,7 +92,7 @@ The following table is a summary of all scopes defined in OSIA.
     
     =================================== ===============================================
     **Services**                        **Scope**
-    ----------------------------------- -----------------------------------------------
+    =================================== ===============================================
     **Notification**
     -----------------------------------------------------------------------------------
     Subscribe                           ``notif.sub.write``
@@ -103,6 +103,7 @@ The following table is a summary of all scopes defined in OSIA.
     List Topics                         ``notif.topic.read``
     Delete Topic                        ``notif.topic.write``
     Publish                             ``notif.topic.publish``
+    Notify                              N/A
     ----------------------------------- -----------------------------------------------
     **Data Access**
     -----------------------------------------------------------------------------------
@@ -182,7 +183,7 @@ The following table is a summary of all scopes defined in OSIA.
     Verify ID                           ``id.verify``
     Identify                            ``id.identify``
     Read Attributes                     ``id.read``
-    Read Attributes set                 ``id.set.read``
+    Read Attributes set                 ``id.SET_NAME.read``
     =================================== ===============================================
 
 REST Interface Implementation

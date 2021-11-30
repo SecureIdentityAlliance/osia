@@ -21,4 +21,4 @@ The chapter below describes the specifications of all OSIA interfaces and relate
 
 .. include:: functional/_cms.rst
 
-.. include:: functional/_3rdparty.rst
+.. include:: functional/_idusage.rst

@@ -26,7 +26,7 @@ in the following diagram:
 
     note over N,CR: Then a system can subscribe for events published on that topic
 
-    CR -> N: subscribe(topic,URL)
+    CR -> N: subscribe(topic,notify_URL)
     activate CR
     activate N
     N --> CR: id
@@ -37,7 +37,7 @@ in the following diagram:
 
     note over N,CR: confirm the address before the subscription is active
 
-    N -> CR: subscribe_CB(message)
+    N -> CR: notify(message)
     activate N
     activate CR
     CR -> N: confirm(token)
@@ -60,7 +60,7 @@ in the following diagram:
     ...
 
     loop subscriptions
-      N -> CR: subscribe_CB(message)
+      N -> CR: notify(message)
       activate CR
       CR --> N: ok
       deactivate CR
@@ -175,6 +175,18 @@ This service is synchronous.
     :return: N/A
 
 This service is asynchronous (systems that subscribed on this topic are notified asynchronously).
+
+For the Receiver
+''''''''''''''''
+
+.. py:function:: notify(message)
+    :noindex:
+
+    Receive an event published by a publisher.
+    This service needs to be registered through the subscription process.
+
+    :param str message: The message itself (a string buffer)
+    :return: N/A
 
 Dictionaries
 """"""""""""

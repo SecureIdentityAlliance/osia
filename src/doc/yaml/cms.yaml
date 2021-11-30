@@ -628,9 +628,9 @@ components:
       additionalProperties: true
       example:
         address1: 11 Rue des Rosiers
-        address2:
+        address2: '1st floor'
         city: Libourne
-        state:
+        state: 'Gironde'
         postalCode: '33500'
         country: France
     BiographicData:
@@ -728,7 +728,6 @@ components:
       enum:
         - FACE
         - FINGER
-        - PALM
         - IRIS
         - SIGNATURE
         - UNKNOWN
@@ -789,7 +788,7 @@ components:
 
     CompressionType:
       type: string
-      enum: [NONE, JPEG, JPEG2000, PNG, INCITS_378, INCITS_379, INCITS_385]
+      enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
 
     RequestData:
       type: object
@@ -848,7 +847,6 @@ components:
       type: object
       description: A request for a credential
       required:
-        - credentialProfileId
         - personId
         - biographicData
         - requestData

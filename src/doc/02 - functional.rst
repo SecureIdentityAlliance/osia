@@ -51,14 +51,14 @@ The components are defined as follows:
 - The *Third Party Services* component.
 
   This component interfaces with external systems to leverage the identity databases
-  for the benefits of the population.
+  for the benefits of individuals.
   It provides services to authenticate, identify, and access identity attributes for use cases such
   as KYC.
   
 - The *Digital Credential Issuance & Distribution System*.
 
   This component is in charge of the issuance and delivery of the digital credentials built from
-  the identity databases under the control if the CMS.
+  the identity databases under the control of the CMS.
   
 
 .. list-table:: Components
@@ -195,7 +195,7 @@ The following table describes in detail the interfaces and associated services.
     
     ================================= ===================================================================================
     **Services**                       **Description**
-    --------------------------------- -----------------------------------------------------------------------------------
+    ================================= ===================================================================================
     **Notification**
     ---------------------------------------------------------------------------------------------------------------------
     Subscribe                          Subscribe a URL to receive notifications sent to one topic
@@ -205,7 +205,8 @@ The following table describes in detail the interfaces and associated services.
     Create Topic                       Create a new topic
     List Topics                        List all the existing topics
     Delete Topic                       Delete a topic
-    Publish                            Notify of a new event all systems that subscribed to this topic
+    Publish                            Publish an event to all systems that have subscribed to this topic
+    Notify                             Callback registered during subscription and called when an event is published
     --------------------------------- -----------------------------------------------------------------------------------
     **Data Access**
     ---------------------------------------------------------------------------------------------------------------------
@@ -301,7 +302,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     =================================  ======= ======= ======= ======= ======= ======= ======= =======
        ..                              **Components**
     ---------------------------------  ---------------------------------------------------------------
-    **Interfaces**                     Enroll  Enroll    PR    UIN Gen  ABIS     CR      CMS    3rd PS
+    **Interfaces**                     Enroll  Enroll    PR    UIN Gen  ABIS     CR      CMS    ID Usage
                                        Clt     Srv
     =================================  ======= ======= ======= ======= ======= ======= ======= =======
     **Notification**
@@ -314,6 +315,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
      List Topics                                         U                U       U       U
      Delete Topic                                        U                U       U       U
      Publish                                             U                U       U       U
+     Notify                                              I                I       I       I
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
     **Data Access**
     --------------------------------------------------------------------------------------------------
@@ -487,12 +489,70 @@ Birth Use Case
 Death Use Case
 """"""""""""""
 
-:todo:`To be completed`
+.. uml::
+    :caption: Death Use Case
+    :scale: 50%
 
-Marriage Use Case
-"""""""""""""""""
+    hide footbox
+    
+    actor "Authorized Notifier" as notifier
+    participant "CR" as CR
+    participant "PR" as PR
 
-:todo:`To be completed`
+    notifier -> CR
+    activate notifier
+    activate CR
+    activate PR
+
+    group 1. Identify
+        CR -> PR: queryPersonUIN
+        CR -> PR: matchPersonAttributes(subject attributes)
+        CR -> PR: readPersonAttributes(subject)
+        CR -> CR: Additional checks
+    end
+
+    group 2. Notify Death
+        CR -> CR
+        note right: report notification of the death
+        CR -> notifier: Ask to confirm notification
+        CR -> PR: updateIdentity
+        CR -->> notifier: provisional certificate
+    end
+
+    group 3. Registration
+        CR ->> PR: publish(death,UIN)      
+        PR -> CR: readPersonAttributes(subject)
+        PR -> PR
+        note right: update identity
+    end
+
+    CR -> notifier: full death certificate available
+    deactivate PR
+    deactivate CR
+    destroy notifier
+
+1. Subject identification checks
+
+   When a death notification is submitted by an authorized party, the CR shall run checks against the data available in the PR using:
+
+   - ``matchPersonAttributes``: to check the exactitude of the subject's attributes as known in the PR
+   - ``readPersonAttributes``: to get missing data about the subject's identity that 
+   - ``queryPersonUIN``: to check if the person is already known to PR or not
+
+   How the CR will process the request in case of data discrepancy is specific to each CR implementation
+   and not in the scope of this document. The CR may implement an internal procedure to create a valid PR record retrospectively.
+
+2. Notification creation
+
+   The first step after the identity checks is to notify the life event status to the PR based on an identified record.
+   At this point the death notification is recorded by not finally registered. Most states implement a waiting period.
+   How the CR will process the death notification is specific to each CR implementation - a provisional certificate is possible.
+
+3. Final registration
+
+   When the PR finalizes the status of the subject's person record then the CR may publish this information at its discretion.
+   The PR may maintain a list of interested parties who shall be informed of any finalized death status.
+   A final certificate of death including the context of this event is typically issued by the CR to the notifier for distribution.
 
 Deduplication Use Case
 """"""""""""""""""""""
@@ -527,11 +587,263 @@ and decides to merge them, a notification must be sent.
   
 How the target of the notification should react is specific to each subsystem.
 
-ID Card Request Use Case
-""""""""""""""""""""""""
+ID Card Request Use Case (1)
+""""""""""""""""""""""""""""
 
-:todo:`To be completed`
+An ID card is one type of credential. The procedures surrounding credential issuance may involve
+several sub-systems that contribute to the establishment of the applicant identity and the required data for the type of credential.
 
+This use case assumes a simple starting scenario where the identity is known and can be validated,
+mostly with data available from a Civil or Population Registry based Identity Provider.
+These use cases also assume the use of a Credentials Management System (CMS) responsible for the
+technical personalization and lifecycle management of a credential such as an ID card.
+
+The use case aims to show how a selection of the CMS API calls can support a typical, use case in relation to CMS usage.
+
+.. uml::
+    :caption: ID Card Request Use Case (1)
+    :scale: 50%
+
+    hide footbox
+    actor "Citizen" as citizen
+    participant "Credential Provider" as CR
+    participant "PR" as PR
+    participant "CMS" as CMS
+     
+    citizen -> CR: Lost my ID - please replace
+    activate citizen
+    activate CR
+   
+    
+    group 1. ID Card Check
+        note left: if credential is a card
+        activate PR
+        CR -> PR: queryPersonUIN
+        CR -> PR: matchPersonAttributes(subject attributes)
+        CR -> PR: readPersonAttributes(subject)
+        deactivate PR
+        CR -> citizen: other transactions
+        CR -> CR 
+        note right: ID validation rules
+    end
+    
+    group 2. Alt Suspend Credential
+        CR -> CMS: SuspendCredentialRequest(CredentialID)
+        activate CMS
+        CMS -> CMS
+        note right: e.g. suspend PKI certs
+        CMS -->> CR: confirmation returned (e.g. code204, asynch)
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+    end
+    
+    group 3. Request Credential
+        CR -> CR
+        note right: build perso data payload
+        CR -> CMS: CreateCredentialRequest(payload)
+        CMS -->> CR: CredentialRequestID returned
+    end
+    
+    citizen -> CR: "I just found my lost card"
+    CR -> CMS: ReadCredentialRequest(RequestID get status)
+    CMS -> CMS
+    note right: CMS card lifecycle actions\ne.g. auto cancel old card if new issued
+    CMS -> CR: card distribution
+    deactivate CMS
+    CR -> citizen: "Old Card cancelled. Collect new in 1 week"
+    note right: message to citizen by Service Provider
+    
+    citizen -> CR: card collection
+    deactivate CR
+    destroy citizen
+
+1. Identity Checks
+
+   The example scenario assumes a credential provider service such as an ID card provider (National ID, Voter, &c).
+   Such as service may access several OSIA API based components to establish an ID check. In this example the Population Register is used.
+   This example case also assumes that the credential provider holds its own register of credentials issued to its subscribers.
+
+2. Suspend Credential
+
+   In the example above the citizen has lost a card and requests a replacement. The credential provider service
+   first establishes the legitimacy of the citizen identity and the identity of the lost document within its own register.
+   The next likely step in such a use case is to suspend the current credential. This is done using a CMS API call.
+   The CMS confirms this step with a reference. In some use cases the reported lost credential may be cancelled immediately,
+   but this is typically a decision made by the policy of the credential provider. There is an OSIA API call to both either or both requirements to the CMS.
+
+3. Requesting a New Credential
+
+   The credential provider is in this example case responsible for preparing the core document data for the CMS.
+   The CMS itself may further process this data appropriate to the credential type: for example the CMS may be
+   the service that signs this document data electronically.
+   The CMS returns a new request ID to the credential provider service which will enable the provider to query credential production status within the CMS domain.
+  
+   Such a business process might be interrupted by an new event such as the citizen finding her lost card and
+   wishing to cancel the replacement order, perhaps to avoid a replacement fee. Depending on the status returned
+   by the CMS to the credential provider then the credential provider service will act accordingly in informing
+   the citizen whether this is possible. In this case the citizen's card was already replaced by the CMS so the
+   original card is now cancelled. 
+  
+   The CMS on its side is responsible for maintaining a credential profile which can be accessed by the CR at a later point.
+   This use case stops for CMS when the card is distributed to the CR for collection by the citizen.
+
+
+ID Card Request Use Case (2)
+""""""""""""""""""""""""""""
+
+A second ID Request use case shows how the CMS might expose more decisions to the credential providing service.
+In this case it is the citizen facing provider that controls the cancellation of the lost document,
+and this is not automated within the CMS component.
+
+.. uml::
+    :caption: ID Card Request Use Case (2)
+    :scale: 50%
+
+    hide footbox
+    actor "Citizen" as citizen
+    participant "Credential Provider" as CR
+    participant "PR" as PR
+    participant "CMS" as CMS
+     
+    citizen -> CR: Lost my ID - please replace
+    activate citizen
+    activate CR
+    
+    group 1. ID Card Check
+        note left: if credential is a card
+        activate PR
+        CR -> PR: queryPersonUIN
+        CR -> PR: matchPersonAttributes(subject attributes)
+        CR -> PR: readPersonAttributes(subject)
+        deactivate PR
+        CR -> citizen: other transactions
+        CR -> CR 
+        note right: ID validation rules
+    end
+    
+    group 2. Alt Suspend Credential
+        CR -> CMS: SuspendCredentialRequest(CredentialID)
+        activate CMS
+        CMS -> CMS
+        note right: e.g. suspend PKI certs
+        CMS -->> CR: confirmation returned (e.g. code204, asynch)
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+    end
+    
+    group 3. Request Credential
+        CR -> CR
+        note right: build perso data payload
+        CR -> CMS: CreateCredentialRequest(payload)
+        CMS -->> CR: CredentialRequestID returned
+    end
+
+    citizen -> CR: "I just found my lost card"
+    CR -> CMS: ReadCredentialRequest(RequestID get status)
+        
+    group 4. Alt Cancel Credential
+        CR -> CMS: CancelCredentialRequest(CredentialID)
+        note right: request for lost credential ID
+        CMS -> CMS
+        note right: CMS card lifecycle actions
+        CMS -->> CR: confirmation returned (e.g. code204, asynch)
+        CR -> CMS: ReadCredentialRequest(RequestID get status)
+    end
+
+    note right: option if cancellation \nnot automatic
+    CMS -> CR: card distribution
+    deactivate CMS
+    CR -> citizen: "Old Card cancelled. Collect new in 1 week"
+    note right: message to citizen by Service Provider
+
+    citizen -> CR: card collection
+    deactivate CR
+    destroy citizen
+
+This second example shows how APIs may be used to flex the control over functions such as credential
+lifecycle management. This example first makes use of the API to suspend a credential pending
+production of a replacement; then a second API call is made to the CMS to instruct cancellation of the lost document.
+
+Credentials Issuance Use Case
+"""""""""""""""""""""""""""""
+
+This use case describes an example of interaction between the different OSIA components
+to capture identity data, generate a UIN, process the identity data and issue both a 
+physical and digital credential.
+
+This use case also demonstrates what a middleware could do when connected to multiple OSIA compatible systems.
+In this example the middleware is acting as an enrollment server, scheduling all the processing when
+the data collection is finalized.
+
+This use case was implemented for demonstrating OSIA and is presented in this `video <https://www.youtube.com/watch?v=U8mWKxIOiaE>`_.
+
+.. uml::
+    :caption: Credentials Issuance Use Case
+    :scale: 50%
+
+    hide footbox
+    actor "Citizen" as citizen
+    participant "Enrollment Station" as ENR
+    participant "Middleware" as MW
+    participant "PR" as PR
+    participant "ABIS" as ABIS
+    participant "CMS1" as CMS1
+    participant "CMS2" as CMS2
+     
+    citizen -> ENR: biographics
+    activate citizen
+    activate ENR
+    citizen -> ENR: documents
+    citizen -> ENR: face
+    citizen -> ENR: fingerprints
+    citizen -> ENR: ok
+    deactivate citizen
+
+    ENR -> MW: createEnrollment(collected data)
+    activate MW
+    MW --> ENR: 201
+    deactivate ENR
+
+    MW -> MW: generate identity id
+
+    MW -> PR++: generateUIN()
+    return UIN
+
+    MW -> PR++: createPerson(UIN)
+    return 201
+    MW -> PR++: createIdentityWithId(UIN, identityId, biographics, documents)
+    return 201
+
+    MW -> ABIS++: createEncounter(UIN, identityId, face, fingerprints)
+    return 200
+
+    MW -> CMS1: createCredentialRequest(UIN, identityId, biographics, face, fingerprints, type=Physical)
+    activate CMS1
+    CMS1 --> MW: 201
+
+    MW -> CMS2: createCredentialRequest(UIN, identityId, biographics, face, fingerprints, type=Digital)
+    activate CMS2
+    CMS2 --> MW: 201
+    deactivate MW
+
+    ... Later ...
+
+    CMS1 -> citizen: physical credential
+    activate citizen
+    deactivate CMS1
+
+    CMS2 -> citizen: digital credential
+    deactivate CMS2
+    deactivate citizen
+
+The main steps are:
+
+#. The citizen interacts with the enrollment station to provide the biographic data, the supporting document
+   images, a portrait and a set of fingerprints.
+#. When all the data is collected, the full data set if pushed to the middleware using the OSIA ``createEnrollment`` service.
+#. Backend processing includes:
+
+   - interactions with the population registry to generate a UIN and insert the collected data,
+   - interaction with the ABIS to insert the face and fingerprints,
+   - interactions with multiple Credential Management System to request the issuance of different types of credentials.
 
 Bank account opening Use Case
 """""""""""""""""""""""""""""
@@ -566,7 +878,6 @@ Bank account opening Use Case
     end
     deactivate citizen
     deactivate bank
-
  
 Police identity control Use Case
 """"""""""""""""""""""""""""""""
@@ -606,6 +917,193 @@ Police identity control Use Case
         usage -> police : List of attributes values
         note right: display attributes for each candidate
     end
+
+Telco Customer Enrollment with ID document
+""""""""""""""""""""""""""""""""""""""""""
+
+.. uml::
+    :caption: Telco Customer Enrollment with ID document
+    :scale: 30%
+
+    hide footbox
+    
+    actor "Customer" as user
+    actor "Agent" as agent
+    participant "Telco Enrollment Client" as TC
+    participant "Telco Server" as TS
+    participant "Third Party Services" as TPS
+
+
+    activate user
+    activate agent
+
+    user -> agent: ask for SIM card and present ID doc
+    agent -> TC: UIN, Identity info, live facial portrait, scan & ID of doc
+    activate TC
+        
+
+    TC -> TS: UIN, Identity info, live facial portrait, scan & ID of doc
+    activate TS
+
+    TS -> TPS: checkCredentialDocument(UIN, Doc ID, Name, 1st name, DOB)
+    note right: ID doc authenticity and\nvalidity verification
+    activate TPS
+
+
+    TPS --> TS: ok(proof of verification)
+    deactivate TPS
+
+    TS -> TPS: readCredentialAttributes(Id document ID)
+    note right: Get the credential attributes\nsuch as expiration date
+    activate TPS
+
+    TPS --> TS: (issuing agency, issuing date, expiration date)
+    deactivate TPS
+
+    TS -> TPS: Authenticate Holder of ID doc(Live portrait, UIN, doc ID)
+    note right: Compare person's live face\nagainst credential portrait
+
+    TPS --> TS: ok(proof of verification)
+    deactivate TPS
+
+    TS -> TPS: readAttributes(UIN)
+    activate TPS
+    TPS -> TS: (Name, 1st name, DOC, Place of Birth, &c)
+    note right: Get citizen attributes\nfor easier, error free\nenrollment
+    deactivate TPS
+
+    TS -> TS: new customer registration(identity info and proof of verification)
+
+    TS -> TS: New customer registration (attributes, ID doc scan storage, proofs of verification)
+    TS -> TC: Okfor SIM card(customerID)
+    deactivate TS
+
+    TC -> agent: continue SIM order
+    deactivate TC
+
+    agent -> user: continue SIM order
+    destroy agent
+
+    destroy user
+
+1. Use case objective
+
+   This use case allows a telco operator to check a citizen’s ID document and identity.
+   
+   The use case relies on an IDMS to check the authenticity and validity of the ID document
+   presented by the citizen, then to check that he actually is the holder of the document.
+
+2. Pre-conditions
+
+   The citizen is registered in the IDMS and has a UIN.
+   
+   The citizen has a valid ID document.
+   
+   The citizen presents as a customer to the agent.
+   
+   The IDMS should support authentication token generation to protect against misusage of UIN.
+
+3. Use case description
+
+   The customer shows his ID document to the Agent. The Agent inputs (possibly by reading an MRZ on the document)
+   the UIN, document ID, name, given name, DOB, and a live facial portrait taken of the citizen.
+   
+   The telco server calls an IDMS API to check if the information of the ID document is coherent and if the document is still valid.
+   
+   The telco server calls an IDMS API to get meta data of the document such as the issuing agency, the issuing date, expiration date, etc.
+   
+   The telco server calls an IDMS API to check if the customer is actually the holder of the document using his live biometric portrait.
+   
+   The telco server calls an IDMS API to get some reliable data of the customer in order to register him.
+
+4. Result
+
+   The citizen is now identified, authenticated and registered in a customer database and becomes eligible to buy a SIM card.
+   
+   The telco operator can prove regulatory controls have been applied for 'Know Your Customer' compliance.
+
+
+Telco Customer Enrollment with no ID document
+"""""""""""""""""""""""""""""""""""""""""""""
+
+A customer applying for a new network SIM card may not be able to present an ID document as part of her application.
+
+.. uml::
+    :caption: Telco Customer Enrollment with no ID document
+    :scale: 50%
+
+    hide footbox
+    actor "Customer" as user
+    actor "Agent" as agent
+    participant "Telco Enrollment Client" as TC
+    participant "Telco Server" as TS
+    participant "Third Party Services" as TPS
+
+    activate user
+    activate agent
+    user -> agent: in person request for a SIM card
+    agent -> TC: UIN, Identity info, live facial portrait
+    activate TC
+
+    TC -> TS: UIN, Identity info, live facial portrait
+    activate TS
+
+    TS -> TPS: verifyIdentity(UIN, Name, 1st name, DOB, portrait with liveness)
+    note right: Thanks to his UIN\nthe citizen is identifed,\nand thanks to biometrics\nhe is authenticated
+    activate TPS
+
+    TPS --> TS: ok(proof of verification)
+
+    TS -> TPS: readAttributes(UIN)
+    note right: Get the identified and\nauthenticated citizen\nattributes
+    activate TPS
+
+    TPS --> TS: ok(Name, 1st name, DOC, Place of Birth, &c)
+    deactivate TPS
+
+    TS -> TS: new customer registration(identity info and proof of verification)
+
+    TS -> TC: ok for SIM card(customer ID)
+    deactivate TS
+
+    TC -> agent: continue SIM order
+    agent -> user: continue SIM order
+    deactivate TC
+
+    destroy agent
+    destroy user
+
+
+1. Use case objective
+
+   This use case allows a telco operator to check a citizen’s identity and get his attributes
+   relying on IDMS to check that the biometrics of the citizen matches with his UIN.
+
+2. Pre-conditions
+
+   The citizen is registered in the IDMS and has a UIN.
+   
+   The citizen biometrics are registered and associated to his UIN.
+   
+   The citizen presents as a customer to the agent.
+   
+   The IDMS should support authentication token generation to protect against misusage of UIN.
+
+3. Use case description
+
+   The Agent inputs the citizen’s UIN, Name, 1st Name, DOB and takes a live photo portrait of the customer.
+   
+   The telco server calls an IDMS API to check if the customer is actually the citizen corresponding to
+   the given UIN thanks to his live portrait (face biometric matching).
+   
+   The telco server calls an IDMS API to get some reliable data of the customer in order to register him.
+
+4. Result
+
+   The citizen is now identified, authenticated and registered in a customer database and becomes eligible to buy a SIM card.
+   
+   The telco operator can prove regulatory controls have been applied for 'Know Your Customer' compliance.
+
 
 .. rubric:: Footnotes
 
