@@ -12,6 +12,7 @@ info:
       - Change date to date-time
       - Add the encounterId to biometricData
       - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -598,7 +599,10 @@ components:
         serialNumber:
           type: string
           description: the serial number of the credential
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
 
     CredentialType:
       description: Type of the credential. e.g. "PASSPORT", "ID_CARD", ...
@@ -712,4 +716,7 @@ components:
         taskId:
           type: string
           example: '"123e4567-e89b-12d3-a456-426655440000"'
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false

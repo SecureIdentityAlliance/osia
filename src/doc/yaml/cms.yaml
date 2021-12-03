@@ -11,6 +11,7 @@ info:
     - 1.2.0:
       - Change date to date-time
       - Add the impressionType, mimeType to biometricData
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -628,7 +629,10 @@ components:
         country:
           type: string
           description: the country of the address
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
       example:
         address1: 11 Rue des Rosiers
         address2: '1st floor'
@@ -647,7 +651,7 @@ components:
         gender: M
         nationality: FRA
         email: john.doo@example.com
-        mobileNumber: +123456789
+        mobileNumber: "+123456789"
       additionalProperties: true
     BiometricData:
       type: object
@@ -860,7 +864,10 @@ components:
         parentCredentialId:
           type: string
           description: The ID credential used as a reference, or parent, to build a new one
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
       example:
         priority: MEDIUM
         credentialProfileId: ABC
@@ -936,7 +943,10 @@ components:
         serialNumber:
           type: string
           description: the serial number of the credential
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     CredentialProfile:
       description: A credential profile
       type: object

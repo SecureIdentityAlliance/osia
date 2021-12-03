@@ -14,6 +14,7 @@ info:
       - Mark the encounterId as readOnly, add it to biometricData
       - Add mimeType, template, templateFormat to biometricData
       - rename scoreList to scores in identification result
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -2381,12 +2382,6 @@ components:
         algorithm:
           type: string
       additionalProperties: false
-    TemplateFormat:
-      type: string
-      description: |
-        Format of the template.
-        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
-        Can be extended to include additional proprietary template format
     QualityFormat:
       type: string
       description: |
@@ -2523,7 +2518,10 @@ components:
             the relating biometric
           items:
             $ref: '#/components/schemas/ScoreDetail'
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     ScoreDetail:
       description: |
         Scoring information calculated after a biometric search.
@@ -2550,7 +2548,10 @@ components:
         instance:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     PersonIds:
       type: object
       required:
@@ -2578,7 +2579,10 @@ components:
           type: string
         encounterId:
           type: string
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     TaskId:
       description: |
         Information about the asynchronous task. Only the taskId is mandatory but
@@ -2591,4 +2595,7 @@ components:
         taskId:
           type: string
           example: '"123e4567-e89b-12d3-a456-426655440000"'
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
