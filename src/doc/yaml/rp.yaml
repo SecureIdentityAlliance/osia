@@ -50,7 +50,7 @@ paths:
           example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -130,7 +130,7 @@ paths:
             example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -187,7 +187,7 @@ paths:
             example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
