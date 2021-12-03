@@ -14,6 +14,7 @@ info:
       - Change date to date-time
       - Mark the identityId as readOnly, add it to biometricData
       - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - replace format with mimeType in documents
     - 1.3.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -1077,10 +1078,6 @@ components:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
 
-    DocumentFormatType:
-      type: string
-      enum: [NONE, JPEG, PNG, PDF]
-
     Document:
       type: object
       required:
@@ -1127,8 +1124,9 @@ components:
         height:
           type: integer
           description: the height of the image in pixels
-        format:
-          $ref: '#/components/schemas/DocumentFormatType'
+        mimeType:
+          type: string
+          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
         captureDate:
           type: string
           format: date-time

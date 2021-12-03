@@ -734,6 +734,9 @@ components:
         height:
           type: integer
           description: the height of the image in pixels
+        mimeType:
+          type: string
+          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
         captureDate:
           type: string
           format: date-time
@@ -741,9 +744,6 @@ components:
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
-        mimetype:
-          type: string
-          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
       additionalProperties: false
     DocumentData:
       type: object
