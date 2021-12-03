@@ -439,7 +439,7 @@ components:
           type: integer
         mimeType:
           type: string
-          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
