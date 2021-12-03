@@ -13,6 +13,7 @@ info:
       - Change date to date-time
       - Mark the encounterId as readOnly, add it to biometricData
       - Add mimeType, template, templateFormat to biometricData
+      - rename scoreList to scores in identification result
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -2515,7 +2516,7 @@ components:
             the score of the candidate in relation to other candidates for
             the same biometric identification operation
           example: 3500
-        scoreList:
+        scores:
           type: array
           description: >-
             a list of comparison score(s) and optionally the type and subtype of
