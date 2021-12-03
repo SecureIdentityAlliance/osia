@@ -8,6 +8,8 @@ info:
 
     Change log:
     
+    - 1.2.0:
+      - Remove array for enrollmentFlags and requestData
     - 1.1.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -578,13 +580,9 @@ components:
           type: string
           description: Type of the enrollment
         enrollmentFlags:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnrollmentFlags'
+          $ref: '#/components/schemas/EnrollmentFlags'
         requestData:
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestData'
+          $ref: '#/components/schemas/RequestData'
         contextualData:
           $ref: '#/components/schemas/ContextualData'
         biographicData:
@@ -604,7 +602,11 @@ components:
       description: The data describing the request associated to the enrollment (i.e. why the enrollment is done). Can be extended.
       example:
         requestType: "IDCARD_ISSUANCE"
-        deliveryPlace: "paris"
+        deliveryAddress:
+          address1: 11 Rue des Rosiers
+          city: Libourne
+          postalCode: "33500"
+          country: France
         other: "other"
     EnrollmentFlags:
       type: object
