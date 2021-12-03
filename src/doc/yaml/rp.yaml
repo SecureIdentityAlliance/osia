@@ -1,11 +1,18 @@
+
 # (c) Secure Identity Alliance
+
 openapi: 3.0.0
 info:
   description: |
     The OSIA IDUsage Relying Party Interface
+    
     Change log:
+
+    - 1.1.0:
+      - Change date to date-time
     - 1.0.0: Initial version
-  version: 1.0.0
+
+  version: 1.1.0
   title: The OSIA IDUsage Relying Party Interface
   license:
     name: SIA
@@ -409,8 +416,8 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
@@ -539,12 +546,12 @@ components:
             $ref: '#/components/schemas/CredentialType'
         issuedDate:
           type: string
-          format: date
-          description: The date that this credential was issued
+          format: date-time
+          description: The date and time that this credential was issued
         expiryDate:
           type: string
-          format: date
-          description: The date that this credential expires
+          format: date-time
+          description: The date and time that this credential expires
         serialNumber:
           type: string
           description: the serial number of the credential
