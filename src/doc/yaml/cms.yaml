@@ -10,6 +10,7 @@ info:
     
     - 1.2.0:
       - Change date to date-time
+      - Add the impressionType, mimeType to biometricData
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -679,6 +680,8 @@ components:
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
         width:
           type: integer
           description: the width of the image
@@ -687,6 +690,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimeType:
+          type: string
+          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -725,6 +731,28 @@ components:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
       additionalProperties: false
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
     BiometricType:
       type: string
       enum:
