@@ -15,6 +15,7 @@ info:
       - Add mimeType, template, templateFormat to biometricData
       - rename scoreList to scores in identification result
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -2336,6 +2337,16 @@ components:
           description: Base64-encoded template
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
       additionalProperties: false
     TemplateFormat:
       type: string
@@ -2377,9 +2388,9 @@ components:
           description: Quality, as a number, of the biometric
         qualityFormat:
           $ref: '#/components/schemas/QualityFormat'
-        vendor:
-          type: string
         algorithm:
+          type: string
+        vendor:
           type: string
       additionalProperties: false
     QualityFormat:

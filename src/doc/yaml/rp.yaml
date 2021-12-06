@@ -14,6 +14,7 @@ info:
       - Add the impressionType, mimeType, template, templateFormat to biometricData
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
       - add credentialNumber, issuingAuthority, issuingPlace to the credential
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -463,6 +464,16 @@ components:
           description: Base64-encoded template
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
       additionalProperties: false
     TemplateFormat:
       type: string
@@ -470,6 +481,12 @@ components:
         Format of the template.
         One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
         Can be extended to include additional proprietary template format
+    QualityFormat:
+      type: string
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
     ImpressionType:
       type: string
       enum:

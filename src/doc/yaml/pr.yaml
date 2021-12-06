@@ -15,6 +15,7 @@ info:
       - Mark the identityId as readOnly, add it to biometricData
       - Add the impressionType, mimeType, template, templateFormat to biometricData
       - replace format with mimeType in documents
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
     - 1.3.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -1201,6 +1202,16 @@ components:
           description: Base64-encoded template
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
       additionalProperties: false
     TemplateFormat:
       type: string
@@ -1208,6 +1219,12 @@ components:
         Format of the template.
         One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
         Can be extended to include additional proprietary template format
+    QualityFormat:
+      type: string
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
     MissingType:
       type: object
       properties:
