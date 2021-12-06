@@ -8,6 +8,11 @@ info:
 
     Change log:
     
+    - 1.2.0:
+      - Remove array for enrollmentFlags and requestData
+      - Change date to date-time
+      - change mimetype to mimeType (upper case)
+      - Add , template, templateFormat to biometricData
     - 1.1.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -23,7 +28,7 @@ info:
       - Add fields on BiometricData: instance, metadata, comment, missing
     - 1.0.0: Initial version
 
-  version: 1.1.0
+  version: 1.2.0
   title: OSIA Enrollment Interface
   license:
     name: SIA
@@ -578,13 +583,9 @@ components:
           type: string
           description: Type of the enrollment
         enrollmentFlags:
-          type: array
-          items:
-            $ref: '#/components/schemas/EnrollmentFlags'
+          $ref: '#/components/schemas/EnrollmentFlags'
         requestData:
-          type: array
-          items:
-            $ref: '#/components/schemas/RequestData'
+          $ref: '#/components/schemas/RequestData'
         contextualData:
           $ref: '#/components/schemas/ContextualData'
         biographicData:
@@ -604,7 +605,11 @@ components:
       description: The data describing the request associated to the enrollment (i.e. why the enrollment is done). Can be extended.
       example:
         requestType: "IDCARD_ISSUANCE"
-        deliveryPlace: "paris"
+        deliveryAddress:
+          address1: 11 Rue des Rosiers
+          city: Libourne
+          postalCode: "33500"
+          country: France
         other: "other"
     EnrollmentFlags:
       type: object
@@ -649,8 +654,8 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
@@ -664,9 +669,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
-        mimetype:
+        mimeType:
           type: string
-          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -683,7 +688,19 @@ components:
         comment:
           type: string
           description: A comment about the biometric data
+        template:
+          type: string
+          format: byte
+          description: Base64-encoded template
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
       additionalProperties: false
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
     MissingType:
       type: object
       properties:
@@ -717,16 +734,16 @@ components:
         height:
           type: integer
           description: the height of the image in pixels
+        mimeType:
+          type: string
+          description: the nature and format of the document. The mime type definitions should be in compliance with RFC 6838.
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
-        mimetype:
-          type: string
-          description: the nature and format of a document. The mime type definitions should be in compliance with RFC 6838.
       additionalProperties: false
     DocumentData:
       type: object

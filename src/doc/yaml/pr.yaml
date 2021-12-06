@@ -8,6 +8,13 @@ info:
 
     Change log:
     
+    - 1.4.0:
+      - Add an identityType in the identity object
+      - rename documents in documentData in the identity object
+      - Change date to date-time
+      - Mark the identityId as readOnly, add it to biometricData
+      - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - replace format with mimeType in documents
     - 1.3.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -23,7 +30,7 @@ info:
       - Change the mandatory flag for the status, based on the type of service
     - 1.0.0: Initial version
 
-  version: 1.3.0
+  version: 1.4.0
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -1017,8 +1024,15 @@ components:
       additionalProperties: false
     Identity:
       type: object
+      required:
+        - status
+        - identityId
+        - identityType
       properties:
         identityId:
+          type: string
+          readOnly: true
+        identityType:
           type: string
         status:
           type: string
@@ -1040,7 +1054,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
-        documents:
+        documentData:
           type: array
           items:
             $ref: '#/components/schemas/Document'
@@ -1063,10 +1077,6 @@ components:
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
-
-    DocumentFormatType:
-      type: string
-      enum: [NONE, JPEG, PNG, PDF]
 
     Document:
       type: object
@@ -1114,12 +1124,13 @@ components:
         height:
           type: integer
           description: the height of the image in pixels
-        format:
-          $ref: '#/components/schemas/DocumentFormatType'
+        mimeType:
+          type: string
+          description: the nature and format of the document. The mime type definitions should be in compliance with RFC 6838.
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
@@ -1136,6 +1147,9 @@ components:
         instance:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
+        identityId:
+          type: string
+          readOnly: true
         image:
           type: string
           format: byte
@@ -1147,11 +1161,13 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
         width:
           type: integer
           description: the width of the image
@@ -1160,6 +1176,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimeType:
+          type: string
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -1176,7 +1195,19 @@ components:
         comment:
           type: string
           description: A comment about the biometric data
+        template:
+          type: string
+          format: byte
+          description: Base64-encoded template
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
       additionalProperties: false
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
     MissingType:
       type: object
       properties:
@@ -1186,6 +1217,28 @@ components:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
       additionalProperties: false
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
     BiometricType:
       type: string
       enum:

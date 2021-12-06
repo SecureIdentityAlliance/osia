@@ -1,11 +1,21 @@
+
 # (c) Secure Identity Alliance
+
 openapi: 3.0.0
 info:
   description: |
     The OSIA IDUsage Relying Party Interface
+    
     Change log:
+
+    - 1.1.0:
+      - Change date to date-time
+      - Add the encounterId to biometricData
+      - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
     - 1.0.0: Initial version
-  version: 1.0.0
+
+  version: 1.1.0
   title: The OSIA IDUsage Relying Party Interface
   license:
     name: SIA
@@ -41,7 +51,7 @@ paths:
           example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -121,7 +131,7 @@ paths:
             example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -178,7 +188,7 @@ paths:
             example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -398,6 +408,9 @@ components:
         instance:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
+        encounterId:
+          type: string
+          readOnly: true
         image:
           type: string
           format: byte
@@ -409,11 +422,13 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
         width:
           type: integer
           description: the width of the image
@@ -422,6 +437,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimeType:
+          type: string
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -438,8 +456,41 @@ components:
         comment:
           type: string
           description: A comment about the biometric data
+        template:
+          type: string
+          format: byte
+          description: Base64-encoded template
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
       additionalProperties: false
-  
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
     BiometricType:
       type: string
       enum:
@@ -539,16 +590,19 @@ components:
             $ref: '#/components/schemas/CredentialType'
         issuedDate:
           type: string
-          format: date
-          description: The date that this credential was issued
+          format: date-time
+          description: The date and time that this credential was issued
         expiryDate:
           type: string
-          format: date
-          description: The date that this credential expires
+          format: date-time
+          description: The date and time that this credential expires
         serialNumber:
           type: string
           description: the serial number of the credential
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
 
     CredentialType:
       description: Type of the credential. e.g. "PASSPORT", "ID_CARD", ...
@@ -662,4 +716,7 @@ components:
         taskId:
           type: string
           example: '"123e4567-e89b-12d3-a456-426655440000"'
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false

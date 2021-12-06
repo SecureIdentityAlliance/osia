@@ -8,6 +8,10 @@ info:
     
     Change log:
     
+    - 1.2.0:
+      - Change date to date-time
+      - Add the impressionType, mimeType to biometricData
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -18,7 +22,7 @@ info:
       - Add a service to change the status
     - 1.0.0: Initial version
 
-  version: 1.1.0
+  version: 1.2.0
   title: OSIA Credential Management System Interface
   license:
     name: SIA
@@ -625,7 +629,10 @@ components:
         country:
           type: string
           description: the country of the address
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
       example:
         address1: 11 Rue des Rosiers
         address2: '1st floor'
@@ -644,7 +651,7 @@ components:
         gender: M
         nationality: FRA
         email: john.doo@example.com
-        mobileNumber: +123456789
+        mobileNumber: "+123456789"
       additionalProperties: true
     BiometricData:
       type: object
@@ -672,11 +679,13 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
         width:
           type: integer
           description: the width of the image
@@ -685,6 +694,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimeType:
+          type: string
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -723,6 +735,28 @@ components:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
       additionalProperties: false
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
     BiometricType:
       type: string
       enum:
@@ -830,13 +864,16 @@ components:
         parentCredentialId:
           type: string
           description: The ID credential used as a reference, or parent, to build a new one
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
       example:
         priority: MEDIUM
         credentialProfileId: ABC
         requestType: "FIRST_ISSUANCE"
-        validFromDate: "2020-10-08T18:38:56.085303"
-        validToDate: "2025-10-08T18:38:56.085303"
+        validFromDate: "2020-10-08T18:38:56Z"
+        validToDate: "2025-10-08T18:38:56Z"
         issuingAuthority: OSIA
         deliveryAddress:
           address1: 11 Rue des Rosiers
@@ -898,15 +935,18 @@ components:
         issuedDate:
           type: string
           format: date-time
-          description: The date that this credential was issued
+          description: The date and time that this credential was issued
         expiryDate:
           type: string
           format: date-time
-          description: The date that this credential expires
+          description: The date and time that this credential expires
         serialNumber:
           type: string
           description: the serial number of the credential
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     CredentialProfile:
       description: A credential profile
       type: object

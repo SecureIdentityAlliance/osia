@@ -9,7 +9,12 @@ info:
     Change log:
 
     - 1.5.0:
-      - Add service to update only the galleries of an encounter    
+      - Add service to update only the galleries of an encounter
+      - Change date to date-time
+      - Mark the encounterId as readOnly, add it to biometricData
+      - Add mimeType, template, templateFormat to biometricData
+      - rename scoreList to scores in identification result
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -44,7 +49,7 @@ info:
       - Add service 'readAllEncounters'
     - 1.0.0: Initial version
 
-  version: 1.4.0
+  version: 1.5.0
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -2222,11 +2227,13 @@ components:
       type: object
       required:
         - status
+        - encounterId
         - encounterType
         - biometricData
       properties:
         encounterId:
           type: string
+          readOnly: true
         status:
           type: string
           enum: [ACTIVE, INACTIVE]
@@ -2275,6 +2282,9 @@ components:
         instance:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
+        encounterId:
+          type: string
+          readOnly: true
         image:
           type: string
           format: byte
@@ -2286,8 +2296,8 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
@@ -2301,6 +2311,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimeType:
+          type: string
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -2317,7 +2330,19 @@ components:
         comment:
           type: string
           description: A comment about the biometric data
+        template:
+          type: string
+          format: byte
+          description: Base64-encoded template
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
       additionalProperties: false
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
     MissingType:
       type: object
       properties:
@@ -2357,12 +2382,6 @@ components:
         algorithm:
           type: string
       additionalProperties: false
-    TemplateFormat:
-      type: string
-      description: |
-        Format of the template.
-        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
-        Can be extended to include additional proprietary template format
     QualityFormat:
       type: string
       description: |
@@ -2492,14 +2511,17 @@ components:
             the score of the candidate in relation to other candidates for
             the same biometric identification operation
           example: 3500
-        scoreList:
+        scores:
           type: array
           description: >-
             a list of comparison score(s) and optionally the type and subtype of
             the relating biometric
           items:
             $ref: '#/components/schemas/ScoreDetail'
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     ScoreDetail:
       description: |
         Scoring information calculated after a biometric search.
@@ -2526,7 +2548,10 @@ components:
         instance:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     PersonIds:
       type: object
       required:
@@ -2554,7 +2579,10 @@ components:
           type: string
         encounterId:
           type: string
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
     TaskId:
       description: |
         Information about the asynchronous task. Only the taskId is mandatory but
@@ -2567,4 +2595,7 @@ components:
         taskId:
           type: string
           example: '"123e4567-e89b-12d3-a456-426655440000"'
-      additionalProperties: true
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
