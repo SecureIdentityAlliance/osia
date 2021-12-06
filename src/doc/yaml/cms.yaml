@@ -12,8 +12,10 @@ info:
       - Change date to date-time
       - Add the impressionType, mimeType to biometricData
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
-      - add credentialNumber, issuingAuthority, issuingPlace to the credential
+      - Add credentialNumber, issuingAuthority, issuingPlace to the credential
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - Add fields credentialNumber and deliveryOffice to requestData
+      - Add field credentialIds to credentialRequest
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -875,8 +877,17 @@ components:
           description: May be used to override the default expiry date of the
             requested credential.  This must only be earlier than the default
             expiry, not later.
+        credentialNumber:
+          type: string
+          description: |
+            Number to be used for the new credentials created.
+            It can be used for example when requesting a digital credential sharing the same
+            number with a physical credential, or when the number is not created by the issuance system.
         issuingAuthority:
           type: string
+        deliveryOffice:
+          type: string
+          description: Single code or name identifying the office when the credential has to be delivered
         deliveryAddress:
           $ref: '#/components/schemas/Address'
         parentCredentialId:
@@ -923,6 +934,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
+        credentialIds:
+          type: array
+          description: The id of the credentials created for this request.
+          items:
+            type: string
+            description: The unique id of the credential
+          readOnly: true
       additionalProperties: false
 
     Credential:
