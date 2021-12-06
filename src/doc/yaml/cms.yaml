@@ -12,6 +12,7 @@ info:
       - Change date to date-time
       - Add the impressionType, mimeType to biometricData
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
+      - add credentialNumber, issuingAuthority, issuingPlace to the credential
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -926,6 +927,9 @@ components:
         statusOther:
           type: string
           description: Details about the status when OTHER is used
+        credentialNumber:
+          type: string
+          description: "The number attached to the credential (ex: passport number)"
         personId:
           type: string
           description: The unique id of the person that the credential request is for
@@ -943,6 +947,12 @@ components:
         serialNumber:
           type: string
           description: the serial number of the credential
+        issuingAuthority:
+          type: string
+          description: "The authority issuing the credential (ex: the Ministry of Interior)"
+        issuingPlace:
+          type: string
+          description: "The place where the credential was issued (ex: Paris)"
         others:
           type: object
           additionalProperties: true
