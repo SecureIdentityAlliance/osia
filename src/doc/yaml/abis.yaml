@@ -19,6 +19,7 @@ info:
       - The value 'ALL' is used in searches to represent a search against all the galleries.
       - New service identifyFromEncounterId (identify using a single encounter present in the database)
       - Use the taskId in the callbacks
+      - New service moveEncounter
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -979,6 +980,127 @@ paths:
               requestBody:
                 required: true
                 description: Result of the merge
+                content:
+                  application/json:
+                    schema:
+                      type: string
+                      enum: [OK]
+                      example: '"OK"'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+
+  /v1/persons/{personIdTarget}/move/{personIdSource}/encounters/{encounterId}:
+    post:
+      tags:
+        - CRUD
+      summary: Move one encounter
+      description: |
+        Move one encounter from the source person to the target person.
+        Encounter ID is preserved and in case of duplicate an error is returned and no changes are done.
+      operationId: moveEncounter
+      security:
+        - BearerAuth: [abis.encounter.write]
+      parameters:
+        - name: personIdTarget
+          in: path
+          description: the id of the person receiving the encounter
+          required: true
+          schema:
+            type: string
+        - name: personIdSource
+          in: path
+          description: the id of the person giving the encounter
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: priority
+          in: query
+          description: "the request priority (0: lowest priority; 9: highest priority)"
+          required: false
+          schema:
+            type: integer
+      responses:
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            An internal task ID is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
+        '204':
+          description: Move successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Move not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        mergeResponse:
+          '${request.query.callback}':
+            post:
+              summary: Merge two persons response callback
+              operationId: moveEncounterCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the move
                 content:
                   application/json:
                     schema:
