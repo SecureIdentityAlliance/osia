@@ -17,6 +17,8 @@ info:
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - The value 'ALL' is used in searches to represent a search against all the galleries.
+      - New service identifyFromEncounterId (identify using a single encounter present in the database)
+      - Use the taskId in the callbacks
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -146,6 +148,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the creation
@@ -260,6 +268,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the creation
@@ -360,6 +374,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -486,6 +506,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the creation
@@ -590,6 +616,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -711,6 +743,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the update
@@ -814,6 +852,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -926,6 +970,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the merge
@@ -1028,6 +1078,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -1139,6 +1195,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -1287,6 +1349,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Biometric computed data
@@ -1391,6 +1459,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the deletion
@@ -1427,7 +1501,7 @@ paths:
       parameters:
         - name: galleryId
           in: path
-          description: the id of the gallery. **The special value 'ALL' is used when the search is done against all galleries.**
+          description: the id of the gallery. **The special value 'ALL' is used when the search is done against all galleries**
           required: true
           schema:
             type: string
@@ -1530,6 +1604,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the identification (list of candidate)
@@ -1566,7 +1646,7 @@ paths:
       parameters:
         - name: galleryId
           in: path
-          description: the id of the gallery. **The special value 'ALL' is used when the search is done against all galleries.**
+          description: the id of the gallery. **The special value 'ALL' is used when the search is done against all galleries**
           required: true
           schema:
             type: string
@@ -1664,6 +1744,158 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the identification (list of candidate)
+                content:
+                  application/json:
+                    schema:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Candidate'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+
+  /v1/identify/{galleryId}/{personId}/encounters/{encounterId}:
+    post:
+      tags:
+        - Search
+      summary: Biometric identification based on an existing encounter
+      description: Identification based on an existing encounter from one gallery
+      operationId: identifyFromEncounterId
+      security:
+        - BearerAuth: [abis.identify]
+      parameters:
+        - name: galleryId
+          in: path
+          description: the id of the gallery. **The special value 'ALL' is used when the search is done against all galleries**
+          required: true
+          schema:
+            type: string
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: priority
+          in: query
+          description: "the request priority (0: lowest priority; 9: highest priority)"
+          required: false
+          schema:
+            type: integer
+        - name: maxNbCand
+          in: query
+          description: the maximum number of candidates
+          required: false
+          schema:
+            type: integer
+        - name: threshold
+          in: query
+          description: the algorithm threshold
+          required: false
+          schema:
+            type: number
+        - name: accuracyLevel
+          in: query
+          description: the accuracy level expected for this request
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref:  '#/components/schemas/Filter'
+      responses:
+        '200':
+          description: Request executed. Identification result is returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Candidate'
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            An internal task ID is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Identification not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        identifyResponse:
+          '${request.query.callback}':
+            post:
+              summary: Biometric identification based on existing data response callback
+              operationId: identifyFromEncounterIdCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the identification (list of candidate)
@@ -1700,7 +1932,7 @@ paths:
       parameters:
         - name: galleryId
           in: path
-          description: the id of the gallery. **The special value 'ALL' is used when the verification is done against all galleries.**
+          description: the id of the gallery. **The special value 'ALL' is used when the verification is done against all galleries**
           required: true
           schema:
             type: string
@@ -1808,6 +2040,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -1955,6 +2193,12 @@ paths:
                   description: The id of the transaction
                   schema:
                     type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
               requestBody:
                 required: true
                 description: Result of the verification
@@ -2059,6 +2303,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -2179,6 +2429,12 @@ paths:
                   in: query
                   required: true
                   description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
                   schema:
                     type: string
               requestBody:
@@ -2608,7 +2864,7 @@ components:
       properties:
         taskId:
           type: string
-          example: '"123e4567-e89b-12d3-a456-426655440000"'
+          example: '123e4567-e89b-12d3-a456-426655440000'
         others:
           type: object
           additionalProperties: true
