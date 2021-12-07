@@ -16,7 +16,7 @@ info:
       - rename scoreList to scores in identification result
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
-      - The value 'ALL' is now a reserved value for the gallery. It is used in searches to represent a search against all the galleries.
+      - The value 'ALL' is used in searches to represent a search against all the galleries.
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -1098,7 +1098,7 @@ paths:
           application/json:
             schema:
               type: array
-              description: List of the new galleries for this encounter. The value 'ALL' is reserved and must not be used in the list.
+              description: List of the new galleries for this encounter.
               items:
                 type: string
               example: [VIP, CRIMINAL]
@@ -2096,7 +2096,7 @@ paths:
       parameters:
         - name: galleryId
           in: path
-          description: the id of the gallery. The value 'ALL' is reserved and must not be used.
+          description: the id of the gallery.
           required: true
           schema:
             type: string
@@ -2245,7 +2245,7 @@ components:
           description: Type of the encounter
         galleries:
           type: array
-          description: The list of galleries for this encounter. The value 'ALL' is reserved and must not be used in the list.
+          description: The list of galleries for this encounter.
           items:
             type: string
           minItems: 1
