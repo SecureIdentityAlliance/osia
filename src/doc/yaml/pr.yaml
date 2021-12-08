@@ -8,6 +8,18 @@ info:
 
     Change log:
     
+    - 1.4.0:
+      - Add an identityType in the identity object
+      - rename documents in documentData in the identity object
+      - Change date to date-time
+      - Mark the identityId as readOnly, add it to biometricData
+      - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - replace format with mimeType in documents
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - New service moveIdentity
+      - Mark some fields (ID, etc.) as readOnly
+      - Rename entity Document as DocumentData
+      - Add FORM in possible document type
     - 1.3.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -23,7 +35,7 @@ info:
       - Change the mandatory flag for the status, based on the type of service
     - 1.0.0: Initial version
 
-  version: 1.3.0
+  version: 1.4.0
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -721,6 +733,64 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /v1/persons/{personIdTarget}/move/{personIdSource}/identities/{identityId}:
+    post:
+      tags:
+        - Identity
+      summary: Move one identity
+      description: |
+        Move one identity from the source person to the target person.
+        Identity ID is preserved and in case of duplicate
+        an error is returned and no changes are done.
+        The source person is not deleted, even if it was the only identity of this person.
+      operationId: moveIdentity
+      security:
+        - BearerAuth: [pr.identity.write]
+      parameters:
+        - name: personIdTarget
+          in: path
+          description: the id of the person receiving the identity
+          required: true
+          schema:
+            type: string
+        - name: personIdSource
+          in: path
+          description: the id of the person giving the identity
+          required: true
+          schema:
+            type: string
+        - name: identityId
+          in: path
+          description: the id of the identity
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Move successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Move not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/persons/{personId}/identities/{identityId}/status:
     put:
       tags:
@@ -1008,6 +1078,7 @@ components:
         personId:
           type: string
           description: The unique id for this person
+          readOnly: true
         status:
           type: string
           enum: [ACTIVE, INACTIVE]
@@ -1017,12 +1088,20 @@ components:
       additionalProperties: false
     Identity:
       type: object
+      required:
+        - status
+        - identityId
+        - identityType
       properties:
         identityId:
+          type: string
+          readOnly: true
+        identityType:
           type: string
         status:
           type: string
           enum: [CLAIMED, VALID, INVALID, REVOKED]
+          readOnly: true
         galleries:
           type: array
           items:
@@ -1040,10 +1119,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
-        documents:
+        documentData:
           type: array
           items:
-            $ref: '#/components/schemas/Document'
+            $ref: '#/components/schemas/DocumentData'
       additionalProperties: false
     ContextualData:
       type: object
@@ -1052,6 +1131,7 @@ components:
         enrollmentDate: "2019-01-11"
     BiographicData:
       type: object
+      description: The set of biographic data.
       additionalProperties: true
       example:
         firstName: John
@@ -1063,21 +1143,16 @@ components:
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
 
-    DocumentFormatType:
-      type: string
-      enum: [NONE, JPEG, PNG, PDF]
-
-    Document:
+    DocumentData:
       type: object
       required:
         - documentType
         - parts
       properties:
         documentType:
-          type: string
-          description: Type of document.
-          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, OTHER]
+          $ref: '#/components/schemas/DocumentType'
         documentTypeOther:
           type: string
           description: Details about the type of document when OTHER is used.
@@ -1090,6 +1165,11 @@ components:
           items:
             $ref: '#/components/schemas/DocumentPart'
       additionalProperties: false
+    DocumentType:
+      type: string
+      description: Type of document.
+      enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, FORM, OTHER]
+      example: FORM
     DocumentPart:
       type: object
       properties:
@@ -1114,12 +1194,13 @@ components:
         height:
           type: integer
           description: the height of the image in pixels
-        format:
-          $ref: '#/components/schemas/DocumentFormatType'
+        mimeType:
+          type: string
+          description: the nature and format of the document. The mime type definitions should be in compliance with RFC 6838.
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
@@ -1136,6 +1217,10 @@ components:
         instance:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
+        identityId:
+          type: string
+          description: the id of the identity owner of this biometric
+          readOnly: true
         image:
           type: string
           format: byte
@@ -1147,11 +1232,13 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
         width:
           type: integer
           description: the width of the image
@@ -1160,6 +1247,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimeType:
+          type: string
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -1176,7 +1266,35 @@ components:
         comment:
           type: string
           description: A comment about the biometric data
+        template:
+          type: string
+          format: byte
+          description: Base64-encoded template
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
       additionalProperties: false
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
+    QualityFormat:
+      type: string
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
     MissingType:
       type: object
       properties:
@@ -1186,6 +1304,28 @@ components:
           type: string
           enum: [BANDAGED, AMPUTATED, DAMAGED]
       additionalProperties: false
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
     BiometricType:
       type: string
       enum:
@@ -1194,6 +1334,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -1248,6 +1389,7 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
+      example: RIGHT_INDEX
     Expression:
       type: object
       required:

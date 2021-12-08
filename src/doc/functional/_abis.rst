@@ -144,7 +144,7 @@ Services
         In case of success, a list of template data is returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: setEncounterStatus(personID, encounterID, status, transactionID)
+.. py:function:: updateEncounterStatus(personID, encounterID, status, transactionID)
     :noindex:
 
     Set an encounter status.
@@ -157,6 +157,21 @@ Services
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :return: a status indicating success or error.
 
+.. py:function:: updateEncounterGalleries(personID, encounterID, galleries, transactionID)
+    :noindex:
+
+    Update the galleries of an encounter.
+    This service is used to move one encounter from one gallery
+    to another one without updating the full encounter, which maybe
+    resource consuming in a biometric system.
+
+    **Authorization**: ``abis.encounter.write``
+
+    :param str personID: The ID of the person.
+    :param str encounterID: The encounter ID.
+    :param list[str] galleries: The new list of galleries for this encounter.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :return: a status indicating success or error.
 
 ----------
 
@@ -227,12 +242,31 @@ Services
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
+.. py:function:: identify(galleryID, filter, personID, encounterID, callback, transactionID, options)
+    :noindex:
+
+    Identify a person using biometrics data of an encounter existing in the system and filters on biographic or
+    contextual data. This may include multiple operations, including manual operations.
+
+    **Authorization**: ``abis.verify``
+
+    :param str galleryID: Search only in this gallery.
+    :param dict filter: The input data (filters and biometric data)
+    :param personID: the person ID
+    :param encounterID: the encounter ID
+    :param callback: The address of a service to be called when the result is available.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``,
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A list of candidates is returned, either synchronously or using the callback.
+
 .. py:function:: verify(galleryID, personID, biometricData, callback, transactionID, options)
     :noindex:
 
     Verify an identity using biometrics data.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.verify``
 
     :param str galleryID: Search only in this gallery. If the person does not belong to this gallery,
         an error is returned.
@@ -251,7 +285,7 @@ Services
 
     Verify that two sets of biometrics data correspond to the same person.
 
-    **Authorization**: :todo:`To be defined`
+    **Authorization**: ``abis.verify``
 
     :param biometricData1: The first set of biometric data
     :param biometricData2: The second set of biometric data

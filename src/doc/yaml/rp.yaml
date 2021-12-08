@@ -1,11 +1,24 @@
+
 # (c) Secure Identity Alliance
+
 openapi: 3.0.0
 info:
   description: |
     The OSIA IDUsage Relying Party Interface
+    
     Change log:
+
+    - 1.1.0:
+      - Change date to date-time
+      - Add the encounterId to biometricData
+      - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
+      - add credentialNumber, issuingAuthority, issuingPlace to the credential
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - Mark some fields (ID, etc.) as readOnly
     - 1.0.0: Initial version
-  version: 1.0.0
+
+  version: 1.1.0
   title: The OSIA IDUsage Relying Party Interface
   license:
     name: SIA
@@ -41,7 +54,7 @@ paths:
           example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -121,7 +134,7 @@ paths:
             example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -178,7 +191,7 @@ paths:
             example: "1235567890"
         - name: identifierType
           in: query
-          description: Type of identifier (default "uin", "token", "documentNumber", ...)
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
           required: false
           schema: 
             type: string
@@ -367,9 +380,9 @@ components:
           $ref: '#/components/schemas/ContactData'
       additionalProperties: false
       
-    # Different from other interfaces as contact data is externalized
     BiographicData:
       type: object
+      description: The set of biographic data.
       additionalProperties: true
       example:
         firstName: John
@@ -398,6 +411,10 @@ components:
         instance:
           type: string
           description: Used to separate two distincts biometric items of the same type and subtype
+        encounterId:
+          type: string
+          description: the id of the encounter owner of this biometric
+          readOnly: true
         image:
           type: string
           format: byte
@@ -409,11 +426,13 @@ components:
           example: "http://imageserver.com/image?id=00003"
         captureDate:
           type: string
-          format: date
-          example: "2019-05-21"
+          format: date-time
+          example: "2019-05-21T12:00:00Z"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
         width:
           type: integer
           description: the width of the image
@@ -422,6 +441,9 @@ components:
           description: the height of the image
         bitdepth:
           type: integer
+        mimeType:
+          type: string
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
         resolution:
           type: integer
           description: the image resolution (in DPI)
@@ -438,8 +460,57 @@ components:
         comment:
           type: string
           description: A comment about the biometric data
+        template:
+          type: string
+          format: byte
+          description: Base64-encoded template
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
       additionalProperties: false
-  
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
+    QualityFormat:
+      type: string
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
     BiometricType:
       type: string
       enum:
@@ -448,7 +519,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
-        
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -503,10 +574,12 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
-  
+      example: RIGHT_INDEX
+
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
 
     MissingType:
       type: object
@@ -525,13 +598,19 @@ components:
         credentialId:
           type: string
           description: The unique id for this credential
+          readOnly: true
         status:
           type: string
           description: The status of the credential
           enum: [NEW, ACTIVE, SUSPENDED, REVOKED, OTHER]
+          readOnly: true
         statusOther:
           type: string
           description: Details about the status when OTHER is used
+          readOnly: true
+        credentialNumber:
+          type: string
+          description: "The number attached to the credential (ex: passport number)"
         personId:
           type: string
           description: The unique id of the person that the credential request is for
@@ -539,16 +618,25 @@ components:
             $ref: '#/components/schemas/CredentialType'
         issuedDate:
           type: string
-          format: date
-          description: The date that this credential was issued
+          format: date-time
+          description: The date and time that this credential was issued
         expiryDate:
           type: string
-          format: date
-          description: The date that this credential expires
+          format: date-time
+          description: The date and time that this credential expires
         serialNumber:
           type: string
           description: the serial number of the credential
-      additionalProperties: true
+        issuingAuthority:
+          type: string
+          description: "The authority issuing the credential (ex: the Ministry of Interior)"
+        issuingPlace:
+          type: string
+          description: "The place where the credential was issued (ex: Paris)"
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
 
     CredentialType:
       description: Type of the credential. e.g. "PASSPORT", "ID_CARD", ...
@@ -609,7 +697,7 @@ components:
           type: array
           items: 
               type: string
-          example : ["name","firstname"]
+          example : ["firstName","lastname"]
         outputBiometricData:
           type: array
           description : an array of expected biometric data & fields
@@ -661,5 +749,8 @@ components:
       properties:
         taskId:
           type: string
-          example: '"123e4567-e89b-12d3-a456-426655440000"'
-      additionalProperties: true
+          example: '123e4567-e89b-12d3-a456-426655440000'
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false

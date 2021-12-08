@@ -88,7 +88,7 @@ The following table is a summary of all scopes defined in OSIA.
 
 .. table:: Scopes List
     :class: longtable
-    :widths: 50 80
+    :widths: 80 80
     
     =================================== ===============================================
     **Services**                        **Scope**
@@ -140,6 +140,7 @@ The following table is a summary of all scopes defined in OSIA.
     Update Person                       ``pr.person.write``
     Delete Person                       ``pr.person.write``
     Merge Persons                       ``pr.person.write``
+    Move Identity                       ``pr.identity.write``
     Create Identity                     ``pr.identity.write``
     Read Identity                       ``pr.identity.read``
     Update Identity                     ``pr.identity.write``
@@ -157,8 +158,10 @@ The following table is a summary of all scopes defined in OSIA.
     Read Encounter                      ``abis.encounter.read``
     Update Encounter                    ``abis.encounter.write``
     Delete Encounter                    ``abis.encounter.write``
-    Merge Encounter                     ``abis.encounter.write``
-    Set Encounter Status                ``abis.encounter.write``
+    Merge Encounters                    ``abis.encounter.write``
+    Move Encounter                      ``abis.encounter.write``
+    Update Encounter Status             ``abis.encounter.write``
+    Update Encounter Galleries          ``abis.encounter.write``
     Read Template                       ``abis.encounter.read``
     Read Galleries                      ``abis.gallery.read``
     Read Gallery content                ``abis.gallery.read``

@@ -423,7 +423,7 @@ components:
           description: URL to visit to confirm the subscription to a topic
         timestamp:
           type: string
-          format: datetime
+          format: date-time
       additionalProperties: false
     Topic:
       type: object
