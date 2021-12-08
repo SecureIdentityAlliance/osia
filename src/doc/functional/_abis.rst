@@ -242,6 +242,25 @@ Services
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
+.. py:function:: identify(galleryID, filter, personID, encounterID, callback, transactionID, options)
+    :noindex:
+
+    Identify a person using biometrics data of an encounter existing in the system and filters on biographic or
+    contextual data. This may include multiple operations, including manual operations.
+
+    **Authorization**: ``abis.verify``
+
+    :param str galleryID: Search only in this gallery.
+    :param dict filter: The input data (filters and biometric data)
+    :param personID: the person ID
+    :param encounterID: the encounter ID
+    :param callback: The address of a service to be called when the result is available.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``,
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+    :return: a status indicating success, error, or pending operation.
+        A list of candidates is returned, either synchronously or using the callback.
+
 .. py:function:: verify(galleryID, personID, biometricData, callback, transactionID, options)
     :noindex:
 
