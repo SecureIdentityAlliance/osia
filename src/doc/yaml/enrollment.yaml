@@ -598,6 +598,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentData'
+        biometricDataHash:
+          type: string
+          description: |
+            Digest of the hash of all the biometricData hashes.
+            This hash is used to check the integrity of the full set of biometric data.
+        documentDataHash:
+          type: string
+          description: |
+            Digest of the hash of all the documentData hashes.
+            This hash is used to check the integrity of the full set of document data.
       additionalProperties: false
     RequestData:
       type: object
@@ -694,6 +704,8 @@ components:
           description: Base64-encoded template
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
+        securityData:
+          $ref: '#/components/schemas/SecurityData'
       additionalProperties: false
     TemplateFormat:
       type: string
@@ -744,6 +756,8 @@ components:
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
+        securityData:
+          $ref: '#/components/schemas/SecurityData'
       additionalProperties: false
     DocumentData:
       type: object
@@ -754,18 +768,30 @@ components:
         documentType:
           type: string
           description: Type of document.
-          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, OTHER]
+          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, CONSENT, OTHER]
         documentTypeOther:
           type: string
           description: Details about the type of document when OTHER is used.
         instance:
           type: string
           description: "Used to separate two distincts documents of the same type (ex: two passports)"
+        documentIdentifier:
+          type: string
+          description: The document identifier (passport number, etc.)
+        others:
+          type: object
+          additionalProperties: true
+          description: Additional information describing this document
         parts:
           type: array
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+        hash:
+          type: string
+          description: |
+            Digest of the hash of all the parts.
+            This hash is used to check the integrity of the full document data.
       additionalProperties: false
     Expression:
       type: object
@@ -778,7 +804,7 @@ components:
           type: string
         operator:
           type: string
-          enum: ['<', '>', '=', '>=', '<=', '!=']
+          enum: ['<', '>', '=', '>=', '<=', '!=', '~', 'like']
         value:
           oneOf:
           - type: string
@@ -878,3 +904,22 @@ components:
         - LEFT_PROFILE
         - RIGHT_PROFILE
    
+    SecurityData:
+      type: object
+      properties:
+        sessionKey:
+          type: string
+          description: |
+            Symetric key used to encrypt a buffer.
+            This key is encrypted with the system public key identified by publicKeyId
+        publicKeyId:
+          type: string
+          description: |
+            SHA256 representation or ID of the system public key
+            used for encryption of the sessionKey
+        hash:
+          type: string
+          description: |
+            Digest of the attached buffer, either a HMAC-SHA-256 or a SHA256 digest
+            signed with the private key of the creator of the data.
+            This hash used to check the integrity of the data.
