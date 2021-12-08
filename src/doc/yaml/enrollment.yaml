@@ -12,7 +12,13 @@ info:
       - Remove array for enrollmentFlags and requestData
       - Change date to date-time
       - change mimetype to mimeType (upper case)
-      - Add , template, templateFormat to biometricData
+      - Add template, templateFormat to biometricData
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - Mark some fields (ID, etc.) as readOnly
+      - Add FORM in possible document type
+      - Add security information for signing and encrypting data
+      - Add some files in DocumentData
+      - Add new operators in query expressions
     - 1.1.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -576,9 +582,11 @@ components:
       properties:
         enrollmentId:
           type: string
+          readOnly: true
         status:
           type: string
           enum: [FINALIZED, IN_PROGRESS]
+          readOnly: true
         enrollmentType:
           type: string
           description: Type of the enrollment
@@ -614,13 +622,13 @@ components:
       additionalProperties: true
       description: The data describing the request associated to the enrollment (i.e. why the enrollment is done). Can be extended.
       example:
-        requestType: "IDCARD_ISSUANCE"
+        priority: MEDIUM
+        requestType: "FIRST_ISSUANCE"
         deliveryAddress:
           address1: 11 Rue des Rosiers
           city: Libourne
           postalCode: "33500"
           country: France
-        other: "other"
     EnrollmentFlags:
       type: object
       additionalProperties: true
@@ -635,9 +643,11 @@ components:
         enrollmentDate: "2019-01-11"
     BiographicData:
       type: object
+      description: The set of biographic data.
       additionalProperties: true
-      description: The enrollment biographic data. Can be extended.
       example:
+        firstName: John
+        lastName: Doo
         dateOfBirth: "1985-11-30"
         gender: M
         nationality: FRA
@@ -704,6 +714,16 @@ components:
           description: Base64-encoded template
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
         securityData:
           $ref: '#/components/schemas/SecurityData'
       additionalProperties: false
@@ -713,6 +733,12 @@ components:
         Format of the template.
         One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
         Can be extended to include additional proprietary template format
+    QualityFormat:
+      type: string
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
     MissingType:
       type: object
       properties:
@@ -766,9 +792,7 @@ components:
         - parts
       properties:
         documentType:
-          type: string
-          description: Type of document.
-          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, CONSENT, OTHER]
+          $ref: '#/components/schemas/DocumentType'
         documentTypeOther:
           type: string
           description: Details about the type of document when OTHER is used.
@@ -793,6 +817,11 @@ components:
             Digest of the hash of all the parts.
             This hash is used to check the integrity of the full document data.
       additionalProperties: false
+    DocumentType:
+      type: string
+      description: Type of document.
+      enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, FORM, CONSENT, OTHER]
+      example: FORM
     Expression:
       type: object
       required:
@@ -819,6 +848,7 @@ components:
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
     ImpressionType:
       type: string
       enum:
@@ -849,6 +879,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -903,6 +934,7 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
+      example: RIGHT_INDEX
    
     SecurityData:
       type: object
@@ -923,3 +955,4 @@ components:
             Digest of the attached buffer, either a HMAC-SHA-256 or a SHA256 digest
             signed with the private key of the creator of the data.
             This hash used to check the integrity of the data.
+

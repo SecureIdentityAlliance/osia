@@ -13,6 +13,9 @@ info:
       - Add the encounterId to biometricData
       - Add the impressionType, mimeType, template, templateFormat to biometricData
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
+      - add credentialNumber, issuingAuthority, issuingPlace to the credential
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - Mark some fields (ID, etc.) as readOnly
     - 1.0.0: Initial version
 
   version: 1.1.0
@@ -377,9 +380,9 @@ components:
           $ref: '#/components/schemas/ContactData'
       additionalProperties: false
       
-    # Different from other interfaces as contact data is externalized
     BiographicData:
       type: object
+      description: The set of biographic data.
       additionalProperties: true
       example:
         firstName: John
@@ -410,6 +413,7 @@ components:
           description: Used to separate two distincts biometric items of the same type and subtype
         encounterId:
           type: string
+          description: the id of the encounter owner of this biometric
           readOnly: true
         image:
           type: string
@@ -462,6 +466,16 @@ components:
           description: Base64-encoded template
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
       additionalProperties: false
     TemplateFormat:
       type: string
@@ -469,6 +483,12 @@ components:
         Format of the template.
         One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
         Can be extended to include additional proprietary template format
+    QualityFormat:
+      type: string
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
     ImpressionType:
       type: string
       enum:
@@ -499,7 +519,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
-        
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -554,10 +574,12 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
-  
+      example: RIGHT_INDEX
+
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
 
     MissingType:
       type: object
@@ -576,13 +598,19 @@ components:
         credentialId:
           type: string
           description: The unique id for this credential
+          readOnly: true
         status:
           type: string
           description: The status of the credential
           enum: [NEW, ACTIVE, SUSPENDED, REVOKED, OTHER]
+          readOnly: true
         statusOther:
           type: string
           description: Details about the status when OTHER is used
+          readOnly: true
+        credentialNumber:
+          type: string
+          description: "The number attached to the credential (ex: passport number)"
         personId:
           type: string
           description: The unique id of the person that the credential request is for
@@ -599,6 +627,12 @@ components:
         serialNumber:
           type: string
           description: the serial number of the credential
+        issuingAuthority:
+          type: string
+          description: "The authority issuing the credential (ex: the Ministry of Interior)"
+        issuingPlace:
+          type: string
+          description: "The place where the credential was issued (ex: Paris)"
         others:
           type: object
           additionalProperties: true
@@ -663,7 +697,7 @@ components:
           type: array
           items: 
               type: string
-          example : ["name","firstname"]
+          example : ["firstName","lastname"]
         outputBiometricData:
           type: array
           description : an array of expected biometric data & fields
@@ -715,7 +749,7 @@ components:
       properties:
         taskId:
           type: string
-          example: '"123e4567-e89b-12d3-a456-426655440000"'
+          example: '123e4567-e89b-12d3-a456-426655440000'
         others:
           type: object
           additionalProperties: true
