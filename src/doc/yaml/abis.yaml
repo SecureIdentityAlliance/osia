@@ -20,6 +20,7 @@ info:
       - New service identifyFromEncounterId (identify using a single encounter present in the database)
       - Use the taskId in the callbacks
       - New service moveEncounter
+      - Mark some fields (ID, etc.) as readOnly
     - 1.4.0:
       - Add an entity (ExtendablePersonIds) used in the response of create & update operations
       - Make 202 response more standard: returns an object with at least a taskId, additional properties allowed
@@ -2618,6 +2619,7 @@ components:
         status:
           type: string
           enum: [ACTIVE, INACTIVE]
+          readOnly: true
         encounterType:
           type: string
           description: Type of the encounter

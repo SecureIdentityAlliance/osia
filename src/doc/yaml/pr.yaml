@@ -17,6 +17,7 @@ info:
       - replace format with mimeType in documents
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - New service moveIdentity
+      - Mark some fields (ID, etc.) as readOnly
     - 1.3.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -1075,6 +1076,7 @@ components:
         personId:
           type: string
           description: The unique id for this person
+          readOnly: true
         status:
           type: string
           enum: [ACTIVE, INACTIVE]
@@ -1097,6 +1099,7 @@ components:
         status:
           type: string
           enum: [CLAIMED, VALID, INVALID, REVOKED]
+          readOnly: true
         galleries:
           type: array
           items:

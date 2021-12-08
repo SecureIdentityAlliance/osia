@@ -16,6 +16,7 @@ info:
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - Add fields credentialNumber and deliveryOffice to requestData
       - Add field credentialIds to credentialRequest
+      - Mark some fields (ID, etc.) as readOnly
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -887,7 +888,7 @@ components:
           type: string
         deliveryOffice:
           type: string
-          description: Single code or name identifying the office when the credential has to be delivered
+          description: Single code or name identifying the office where the credential has to be delivered
         deliveryAddress:
           $ref: '#/components/schemas/Address'
         parentCredentialId:
@@ -920,6 +921,7 @@ components:
         credentialRequestId:
           type: string
           description: The unique id of this credential request
+          readOnly: true
         status:
           type: string
           enum: [PENDING, ISSUED, CANCELLED, FAILED]
@@ -955,13 +957,16 @@ components:
         credentialId:
           type: string
           description: The unique id for this credential
+          readOnly: true
         status:
           type: string
           description: The status of the credential
           enum: [NEW, ACTIVE, SUSPENDED, REVOKED, OTHER]
+          readOnly: true
         statusOther:
           type: string
           description: Details about the status when OTHER is used
+          readOnly: true
         credentialNumber:
           type: string
           description: "The number attached to the credential (ex: passport number)"

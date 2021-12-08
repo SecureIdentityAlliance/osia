@@ -14,6 +14,7 @@ info:
       - change mimetype to mimeType (upper case)
       - Add template, templateFormat to biometricData
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - Mark some fields (ID, etc.) as readOnly
     - 1.1.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -577,9 +578,11 @@ components:
       properties:
         enrollmentId:
           type: string
+          readOnly: true
         status:
           type: string
           enum: [FINALIZED, IN_PROGRESS]
+          readOnly: true
         enrollmentType:
           type: string
           description: Type of the enrollment
