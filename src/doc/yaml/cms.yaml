@@ -647,17 +647,14 @@ components:
         country: France
     BiographicData:
       type: object
-      description: The biographic data included in the credential. Can be extended.
+      description: The set of biographic data.
+      additionalProperties: true
       example:
-        title: Mr
         firstName: John
         lastName: Doo
         dateOfBirth: "1985-11-30"
         gender: M
         nationality: FRA
-        email: john.doo@example.com
-        mobileNumber: "+123456789"
-      additionalProperties: true
     BiometricData:
       type: object
       required:
@@ -672,7 +669,7 @@ components:
           description: Used to separate two distincts biometric items of the same type and subtype
         encounterId:
           type: string
-          description: the id of the encounter
+          description: the id of the encounter owner of this biometric
         image:
           type: string
           format: byte
@@ -786,6 +783,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -840,10 +838,12 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
+      example: RIGHT_INDEX
 
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
 
     RequestData:
       type: object

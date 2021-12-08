@@ -380,9 +380,9 @@ components:
           $ref: '#/components/schemas/ContactData'
       additionalProperties: false
       
-    # Different from other interfaces as contact data is externalized
     BiographicData:
       type: object
+      description: The set of biographic data.
       additionalProperties: true
       example:
         firstName: John
@@ -413,6 +413,7 @@ components:
           description: Used to separate two distincts biometric items of the same type and subtype
         encounterId:
           type: string
+          description: the id of the encounter owner of this biometric
           readOnly: true
         image:
           type: string
@@ -518,7 +519,7 @@ components:
         - IRIS
         - SIGNATURE
         - UNKNOWN
-        
+      example: FINGER
     BiometricSubType:
       type: string
       enum:
@@ -573,10 +574,12 @@ components:
         - PORTRAIT
         - LEFT_PROFILE
         - RIGHT_PROFILE
-  
+      example: RIGHT_INDEX
+
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
 
     MissingType:
       type: object
@@ -694,7 +697,7 @@ components:
           type: array
           items: 
               type: string
-          example : ["name","firstname"]
+          example : ["firstName","lastname"]
         outputBiometricData:
           type: array
           description : an array of expected biometric data & fields
@@ -746,7 +749,7 @@ components:
       properties:
         taskId:
           type: string
-          example: '"123e4567-e89b-12d3-a456-426655440000"'
+          example: '123e4567-e89b-12d3-a456-426655440000'
         others:
           type: object
           additionalProperties: true

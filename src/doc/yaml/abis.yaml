@@ -2646,9 +2646,10 @@ components:
       type: object
       additionalProperties: true
       example:
-        date: "2019-01-11"
+        enrollmentDate: "2019-01-11"
     BiographicData:
       type: object
+      description: The set of biographic data.
       additionalProperties: true
       example:
         dateOfBirth: "1985-11-30"
@@ -2668,6 +2669,7 @@ components:
           description: Used to separate two distincts biometric items of the same type and subtype
         encounterId:
           type: string
+          description: the id of the encounter owner of this biometric
           readOnly: true
         image:
           type: string
@@ -2785,6 +2787,7 @@ components:
     CompressionType:
       type: string
       enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
     ImpressionType:
       type: string
       enum:
@@ -2979,7 +2982,7 @@ components:
       additionalProperties: false
     TaskId:
       description: |
-        Information about the asynchronous task. Only the taskId is mandatory but
+        Information about the asynchronous result. Only the taskId is mandatory but
         the implementation is free to return additional details such as: expected
         duration, URL to monitor the task, etc.
       type: object
