@@ -17,6 +17,7 @@ info:
       - Add fields credentialNumber and deliveryOffice to requestData
       - Add field credentialIds to credentialRequest
       - Mark some fields (ID, etc.) as readOnly
+      - Rename entity Credential as CredentialData
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -258,7 +259,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Credential'
+                  $ref: '#/components/schemas/CredentialData'
         '400':
           description: Bad request
           content:
@@ -311,7 +312,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Credential'
+                $ref: '#/components/schemas/CredentialData'
         '400':
           description: Bad request
           content:
@@ -945,7 +946,7 @@ components:
           readOnly: true
       additionalProperties: false
 
-    Credential:
+    CredentialData:
       description: A credential
       type: object
       required:

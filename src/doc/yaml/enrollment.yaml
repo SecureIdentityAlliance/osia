@@ -15,6 +15,7 @@ info:
       - Add template, templateFormat to biometricData
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - Mark some fields (ID, etc.) as readOnly
+      - Add FORM in possible document type
     - 1.1.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -774,9 +775,7 @@ components:
         - parts
       properties:
         documentType:
-          type: string
-          description: Type of document.
-          enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, OTHER]
+          $ref: '#/components/schemas/DocumentType'
         documentTypeOther:
           type: string
           description: Details about the type of document when OTHER is used.
@@ -789,6 +788,11 @@ components:
           items:
             $ref: '#/components/schemas/DocumentPart'
       additionalProperties: false
+    DocumentType:
+      type: string
+      description: Type of document.
+      enum: [ID_CARD, PASSPORT, INVOICE, BIRTH_CERTIFICATE, FORM, OTHER]
+      example: FORM
     Expression:
       type: object
       required:
