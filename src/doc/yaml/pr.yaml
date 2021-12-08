@@ -438,11 +438,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/Identity'
-                - type: object
-                  required:
-                    - status
+              $ref: '#/components/schemas/Identity'
                   
       responses:
         '200':
@@ -506,11 +502,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/Identity'
-                - type: object
-                  required:
-                    - status
+              $ref: '#/components/schemas/Identity'
       responses:
         '201':
           description: Insertion successful
@@ -607,11 +599,7 @@ paths:
         content:
           application/json:
             schema:
-              allOf:
-                - $ref: '#/components/schemas/Identity'
-                - type: object
-                  required:
-                    - status
+              $ref: '#/components/schemas/Identity'
       responses:
         '204':
           description: Update successful
@@ -1101,9 +1089,9 @@ components:
         status:
           type: string
           enum: [CLAIMED, VALID, INVALID, REVOKED]
-          readOnly: true
         galleries:
           type: array
+          description: The list of galleries for this object.
           items:
             type: string
           minItems: 1

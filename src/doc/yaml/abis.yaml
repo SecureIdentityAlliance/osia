@@ -2619,13 +2619,12 @@ components:
         status:
           type: string
           enum: [ACTIVE, INACTIVE]
-          readOnly: true
         encounterType:
           type: string
           description: Type of the encounter
         galleries:
           type: array
-          description: The list of galleries for this encounter.
+          description: The list of galleries for this object.
           items:
             type: string
           minItems: 1
