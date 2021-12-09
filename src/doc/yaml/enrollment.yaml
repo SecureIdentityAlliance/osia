@@ -131,11 +131,7 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: '#/components/schemas/Enrollment'
-                  - type: object
-                    required:
-                      - status
+                $ref: '#/components/schemas/Enrollment'
 
         '400':
           description: Bad request
@@ -387,11 +383,7 @@ paths:
               schema:
                 type: array
                 items:
-                    allOf:
-                      - $ref: '#/components/schemas/Enrollment'
-                      - type: object
-                        required:
-                          - status
+                  $ref: '#/components/schemas/Enrollment'
 
         '400':
           description: Bad request
@@ -575,7 +567,8 @@ components:
     Enrollment:
       type: object
       required:
-        - enrollmentType
+        - enrollmentId
+        - status
       properties:
         enrollmentId:
           type: string
