@@ -47,10 +47,10 @@ Services
         e.g. credential lifetime if overriding default, delivery addresses, etc.
     :return: a status indicating success or error.
 
-.. py:function:: deleteCredentialRequest(credentialRequestID, transactionID)
+.. py:function:: cancelCredentialRequest(credentialRequestID, transactionID)
     :noindex:
 
-    Delete/cancel the requested issuance of a secure credential.
+    Cancel the requested issuance of a secure credential.
 
     **Authorization**: ``cms.request.write``
 

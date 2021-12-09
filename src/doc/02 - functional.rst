@@ -274,7 +274,7 @@ The following table describes in detail the interfaces and associated services.
     Create Credential Request          Request issuance of a secure credential
     Read Credential Request            Retrieve the data/status of a credential request
     Update Credential Request          Update the requested issuance of a secure credential
-    Delete Credential Request          Delete/cancel the requested issuance of a secure document / credential
+    Cancel Credential Request          Cancel the requested issuance of a secure credential
     Find Credentials                   Retrieve a list of credentials that match the passed in search criteria
     Read Credential                    Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)
     Suspend Credential                 Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
@@ -385,7 +385,7 @@ The interfaces described in the following chapter can be mapped against ID ecosy
     Create Credential Request                                                             I
     Read Credential Request                                                               I
     Update Credential Request                                                             I
-    Delete Credential Request                                                             I
+    Cancel Credential Request                                                             I
     Find Credentials                                                                      I
     Read Credential                                                                       I
     Suspend Credential                                                                    I

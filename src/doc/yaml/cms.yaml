@@ -18,6 +18,7 @@ info:
       - Add field credentialIds to credentialRequest
       - Mark some fields (ID, etc.) as readOnly
       - Rename entity Credential as CredentialData
+      - Remove deleteCredentialRequest and replace it with cancelCredentialRequest
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -183,11 +184,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-    delete:
+  /v1/credentialRequests/{credentialRequestId}/cancel:
+    post:
       tags:
         - Credential Request
-      summary: Delete a credential request
-      operationId: deleteCredentialRequest
+      summary: Cancel a credential request
+      operationId: cancelCredentialRequest
       security:
         - BearerAuth: [cms.request.write]
       parameters:
@@ -205,7 +207,7 @@ paths:
             type: string
       responses:
         '204':
-          description: Delete successful
+          description: Cancel successful
         '400':
           description: Bad request
           content:
@@ -213,7 +215,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
-          description: Delete not allowed
+          description: Cancel not allowed
         '404':
           description: Unknown record
         '500':
