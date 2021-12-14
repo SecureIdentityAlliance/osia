@@ -857,8 +857,8 @@ components:
         - requestType
       properties:
         priority:
-          type: string
-          enum: [HIGH, MEDIUM, LOW]
+          type: integer
+          description: "the request priority (0: lowest priority; 9: highest priority)"
         credentialProfileId:
           type: string
           description: The id of the credential profile to request
@@ -902,7 +902,7 @@ components:
           additionalProperties: true
       additionalProperties: false
       example:
-        priority: MEDIUM
+        priority: 1
         credentialProfileId: ABC
         requestType: "FIRST_ISSUANCE"
         validFromDate: "2020-10-08T18:38:56Z"

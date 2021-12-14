@@ -259,7 +259,7 @@ Data Model
     CredentialRequest o-- "*" BiometricData
 
     class RequestData {
-        string priority;
+        int priority;
         string credentialProfileID;
         string requestType;
         ...
