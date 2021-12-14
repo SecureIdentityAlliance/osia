@@ -13,7 +13,7 @@ info:
       - rename documents in documentData in the identity object
       - Change date to date-time
       - Mark the identityId as readOnly, add it to biometricData
-      - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - Add the impressionType, mimeType, template, templateRef, templateFormat to biometricData
       - replace format with mimeType in documents
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - New service moveIdentity
@@ -1258,6 +1258,11 @@ components:
           type: string
           format: byte
           description: Base64-encoded template
+        templateRef:
+          type: string
+          format: uri
+          description: URI to the template when it is managed in a dedicated data server
+          example: "http://dataserver.com/template?id=00014"
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
         quality:

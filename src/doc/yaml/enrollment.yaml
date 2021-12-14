@@ -12,7 +12,7 @@ info:
       - Remove array for enrollmentFlags and requestData
       - Change date to date-time
       - change mimetype to mimeType (upper case)
-      - Add template, templateFormat to biometricData
+      - Add template, templateRef, templateFormat to biometricData
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - Mark some fields (ID, etc.) as readOnly
       - Add FORM in possible document type
@@ -692,6 +692,11 @@ components:
           type: string
           format: byte
           description: Base64-encoded template
+        templateRef:
+          type: string
+          format: uri
+          description: URI to the template when it is managed in a dedicated data server
+          example: "http://dataserver.com/template?id=00014"
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
         quality:

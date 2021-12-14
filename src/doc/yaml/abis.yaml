@@ -12,7 +12,7 @@ info:
       - Add service to update only the galleries of an encounter
       - Change date to date-time
       - Mark the encounterId as readOnly, add it to biometricData
-      - Add mimeType, template, templateFormat to biometricData
+      - Add mimeType, template, templateRef, templateFormat to biometricData
       - rename scoreList to scores in identification result
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
@@ -2719,6 +2719,11 @@ components:
           type: string
           format: byte
           description: Base64-encoded template
+        templateRef:
+          type: string
+          format: uri
+          description: URI to the template when it is managed in a dedicated data server
+          example: "http://dataserver.com/template?id=00014"
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
         quality:
