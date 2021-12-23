@@ -154,11 +154,13 @@ Revision History
       - 1.0.0
       - 1.1.0
       - 1.2.0
+      - 1.2.0
     * - UIN Management
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
+      - 1.2.0
       - 1.2.0
     * - Data Access
       - 1.0.0
@@ -166,11 +168,13 @@ Revision History
       - 1.0.0
       - 1.1.0
       - 1.3.0
+      - 1.3.0
     * - Enrollment Services
       - .
       - .
       - .
       - 1.0.0
+      - 1.1.0
       - 1.1.0
     * - Population Registry Services
       - .
@@ -178,11 +182,13 @@ Revision History
       - 1.0.0
       - 1.2.0
       - 1.3.0
+      - 1.3.0
     * - Biometrics Services
       - .
       - 1.0.0
       - 1.1.0
       - 1.3.0
+      - 1.4.0
       - 1.4.0
     * - Credential Services
       - .
@@ -190,10 +196,12 @@ Revision History
       - .
       - 1.0.0
       - 1.1.0
+      - 1.1.0
     * - Relying Party Services
       - .
       - .
       - .
-      - 
+      - .
+      - 1.0.0
       - 1.0.0
 

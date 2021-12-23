@@ -39,11 +39,13 @@ Below is the complete list of available interfaces with related versions:
       - 1.0.0
       - 1.1.0
       - 1.2.0
+      - 1.2.0
     * - **UIN Management**
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
+      - 1.2.0
       - 1.2.0
     * - **Data Access**
       - 1.0.0
@@ -51,11 +53,13 @@ Below is the complete list of available interfaces with related versions:
       - 1.0.0
       - 1.1.0
       - 1.3.0
+      - 1.3.0
     * - **Enrollment Services**
       - .
       - .
       - .
       - 1.0.0
+      - 1.1.0
       - 1.1.0
     * - **Population Registry Services**
       - .
@@ -63,11 +67,13 @@ Below is the complete list of available interfaces with related versions:
       - 1.0.0
       - 1.2.0
       - 1.3.0
+      - 1.3.0
     * - **Biometrics Services**
       - .
       - 1.0.0
       - 1.1.0
       - 1.3.0
+      - 1.4.0
       - 1.4.0
     * - **Credential Services**
       - .
@@ -75,11 +81,13 @@ Below is the complete list of available interfaces with related versions:
       - .
       - 1.0.0
       - 1.1.0
+      - 1.1.0
     * - **Relying Party Services**
       - .
       - .
       - .
-      - 
+      - .
+      - 1.0.0
       - 1.0.0
 
 
