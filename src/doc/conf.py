@@ -8,7 +8,7 @@ master_doc = 'index'
 exclude_patterns = []
 pygments_style = 'colorful'
 project = 'OSIA'
-release = '6.1.0-DRAFT'
+release = '6.0.0'
 author = 'SIA'
 
 numfig = True
