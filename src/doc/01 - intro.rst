@@ -139,12 +139,14 @@ Revision History
       - 3.0.0
       - 4.1.0
       - 5.0.0
+      - 6.0.0
     * - OSIA Release Date
       - mar-2019
       - jun-2019
       - nov-2019
       - jul-2020
       - dec-2020
+      - dec-2021
       
     * - Notification
       - .
