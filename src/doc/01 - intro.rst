@@ -129,9 +129,8 @@ Code samples highlighted in blocks appear like that:
 Revision History
 ----------------
 
-.. list-table:: OSIA Services Versions
+.. list-table:: Revision History
     :header-rows: 2
-    :stub-columns: 1
     
     * - OSIA Release
       - 1.0.0
@@ -148,60 +147,59 @@ Revision History
       - dec-2020
       - dec-2021
       
-    * - Notification
+    * - **Notification**
       - .
       - 1.0.0
       - 1.0.0
       - 1.1.0
       - 1.2.0
       - 1.2.0
-    * - UIN Management
+    * - **UIN Management**
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
       - 1.2.0
       - 1.2.0
-    * - Data Access
+    * - **Data Access**
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
       - 1.3.0
       - 1.3.0
-    * - Enrollment Services
+    * - **Enrollment Services**
       - .
       - .
       - .
       - 1.0.0
       - 1.1.0
-      - 1.1.0
-    * - Population Registry Services
+      - 1.2.0
+    * - **Population Registry Services**
       - .
       - .
       - 1.0.0
       - 1.2.0
       - 1.3.0
-      - 1.3.0
-    * - Biometrics Services
+      - 1.4.0
+    * - **Biometrics Services**
       - .
       - 1.0.0
       - 1.1.0
       - 1.3.0
       - 1.4.0
-      - 1.4.0
-    * - Credential Services
+      - 1.5.0
+    * - **Credential Services**
       - .
       - .
       - .
       - 1.0.0
       - 1.1.0
+      - 1.2.0
+    * - **Relying Party Services**
+      - .
+      - .
+      - .
+      - .
+      - 1.0.0
       - 1.1.0
-    * - Relying Party Services
-      - .
-      - .
-      - .
-      - .
-      - 1.0.0
-      - 1.0.0
-
