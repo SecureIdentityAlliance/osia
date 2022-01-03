@@ -11,7 +11,7 @@ info:
     - 1.1.0:
       - Change date to date-time
       - Add the encounterId to biometricData
-      - Add the impressionType, mimeType, template, templateFormat to biometricData
+      - Add the impressionType, mimeType, template, templateRef, templateFormat to biometricData
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
       - add credentialNumber, issuingAuthority, issuingPlace to the credential
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
@@ -464,6 +464,11 @@ components:
           type: string
           format: byte
           description: Base64-encoded template
+        templateRef:
+          type: string
+          format: uri
+          description: URI to the template when it is managed in a dedicated data server
+          example: "http://dataserver.com/template?id=00014"
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
         quality:
