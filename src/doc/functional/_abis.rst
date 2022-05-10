@@ -124,6 +124,24 @@ Services
     :return: a status indicating success, error, or pending operation.
         In case of pending operation, the result will be sent later.
 
+.. py:function:: moveEncounter(personID1, personID2, encounterID, callback, transactionID, options)
+    :noindex:
+
+    Move one single encounter from one person to another person.
+    Encounter ID is preserved and in case of duplicates
+    an error is returned and no changes are done.
+
+    **Authorization**: ``abis.encounter.write``
+
+    :param str personID1: The ID of the person that will receive the encounter
+    :param str personID2: The ID of the person that will give one encounter
+    :param str encounterID: the ID of the encounter in personID2 that will be moved in personID1.
+    :param callback: The address of a service to be called when the result is available.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``.
+    :return: a status indicating success, error, or pending operation.
+        In case of pending operation, the result will be sent later.
+
 .. py:function:: readTemplate(personID, encounterID, biometricType, biometricSubType, templateFormat, qualityFormat, callback, transactionID, options)
     :noindex:
 
