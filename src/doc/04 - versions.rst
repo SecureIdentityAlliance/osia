@@ -15,7 +15,7 @@ For instance below is the string to reference the *Notification* interface:
 
 Below is the complete list of available interfaces with related versions:
 
-.. list-table::
+.. list-table:: OSIA Services Versions
     :header-rows: 2
     
     * - OSIA Release
@@ -60,34 +60,34 @@ Below is the complete list of available interfaces with related versions:
       - .
       - 1.0.0
       - 1.1.0
-      - 1.1.0
+      - 1.2.0
     * - **Population Registry Services**
       - .
       - .
       - 1.0.0
       - 1.2.0
       - 1.3.0
-      - 1.3.0
+      - 1.4.0
     * - **Biometrics Services**
       - .
       - 1.0.0
       - 1.1.0
       - 1.3.0
       - 1.4.0
-      - 1.4.0
+      - 1.5.0
     * - **Credential Services**
       - .
       - .
       - .
       - 1.0.0
       - 1.1.0
-      - 1.1.0
+      - 1.2.0
     * - **Relying Party Services**
       - .
       - .
       - .
       - .
       - 1.0.0
-      - 1.0.0
+      - 1.1.0
 
 

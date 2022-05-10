@@ -12,7 +12,7 @@ info:
       - Remove array for enrollmentFlags and requestData
       - Change date to date-time
       - change mimetype to mimeType (upper case)
-      - Add template, templateFormat to biometricData
+      - Add template, templateRef, templateFormat to biometricData
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - Mark some fields (ID, etc.) as readOnly
       - Add FORM in possible document type
@@ -579,7 +579,7 @@ components:
           readOnly: true
         enrollmentType:
           type: string
-          description: Type of the enrollment
+          description: "Type of the enrollment (example: citizen, resident, etc.)"
         enrollmentFlags:
           $ref: '#/components/schemas/EnrollmentFlags'
         requestData:
@@ -602,7 +602,7 @@ components:
       additionalProperties: true
       description: The data describing the request associated to the enrollment (i.e. why the enrollment is done). Can be extended.
       example:
-        priority: MEDIUM
+        priority: 1
         requestType: "FIRST_ISSUANCE"
         deliveryAddress:
           address1: 11 Rue des Rosiers
@@ -692,6 +692,11 @@ components:
           type: string
           format: byte
           description: Base64-encoded template
+        templateRef:
+          type: string
+          format: uri
+          description: URI to the template when it is managed in a dedicated data server
+          example: "http://dataserver.com/template?id=00014"
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
         quality:

@@ -13,12 +13,13 @@ info:
       - Add the impressionType, mimeType to biometricData
       - Do not mix fixed properties and additional properties, use a subobject for the additional properties
       - Add credentialNumber, issuingAuthority, issuingPlace to the credential
-      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - Add quality, qualityFormat, algorithm, vendor, templateRef fields to biometricData
       - Add fields credentialNumber and deliveryOffice to requestData
       - Add field credentialIds to credentialRequest
       - Mark some fields (ID, etc.) as readOnly
       - Rename entity Credential as CredentialData
       - Remove deleteCredentialRequest and replace it with cancelCredentialRequest
+      - Change the type of priority from string to integer to be consistent with other OSIA interfaces
     - 1.1.0:
       - Add error structure on 400 errors
       - Add signature in biometricType
@@ -722,6 +723,11 @@ components:
           type: string
           format: byte
           description: Base64-encoded template
+        templateRef:
+          type: string
+          format: uri
+          description: URI to the template when it is managed in a dedicated data server
+          example: "http://dataserver.com/template?id=00014"
         templateFormat:
           $ref: '#/components/schemas/TemplateFormat'
         quality:
@@ -857,8 +863,8 @@ components:
         - requestType
       properties:
         priority:
-          type: string
-          enum: [HIGH, MEDIUM, LOW]
+          type: integer
+          description: "the request priority (0: lowest priority; 9: highest priority)"
         credentialProfileId:
           type: string
           description: The id of the credential profile to request
@@ -902,7 +908,7 @@ components:
           additionalProperties: true
       additionalProperties: false
       example:
-        priority: MEDIUM
+        priority: 1
         credentialProfileId: ABC
         requestType: "FIRST_ISSUANCE"
         validFromDate: "2020-10-08T18:38:56Z"
