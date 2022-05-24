@@ -8,6 +8,8 @@ info:
 
     Change log:
     
+    - 1.4.1:
+      - Add missing values in BiometricSubType
     - 1.4.0:
       - Add an identityType in the identity object
       - rename documents in documentData in the identity object
@@ -35,7 +37,7 @@ info:
       - Change the mandatory flag for the status, based on the type of service
     - 1.0.0: Initial version
 
-  version: 1.4.0
+  version: 1.4.1
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -1359,6 +1361,7 @@ components:
         - LEFT_OTHER
         - RIGHT_INTERDIGITAL
         - RIGHT_THENAR
+        - RIGHT_HYPOTHENAR
         - LEFT_INTERDIGITAL
         - LEFT_THENAR
         - LEFT_HYPOTHENAR
@@ -1378,6 +1381,7 @@ components:
         - EYE_UNDEF
         - EYE_RIGHT
         - EYE_LEFT
+        - EYE_BOTH
         
         - PORTRAIT
         - LEFT_PROFILE

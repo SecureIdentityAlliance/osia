@@ -8,6 +8,8 @@ info:
     
     Change log:
     
+    - 1.2.1:
+      - Add missing values in BiometricSubType
     - 1.2.0:
       - Change date to date-time
       - Add the impressionType, mimeType to biometricData
@@ -30,7 +32,7 @@ info:
       - Add a service to change the status
     - 1.0.0: Initial version
 
-  version: 1.2.0
+  version: 1.2.1
   title: OSIA Credential Management System Interface
   license:
     name: SIA
@@ -824,6 +826,7 @@ components:
         - LEFT_OTHER
         - RIGHT_INTERDIGITAL
         - RIGHT_THENAR
+        - RIGHT_HYPOTHENAR
         - LEFT_INTERDIGITAL
         - LEFT_THENAR
         - LEFT_HYPOTHENAR
@@ -843,6 +846,7 @@ components:
         - EYE_UNDEF
         - EYE_RIGHT
         - EYE_LEFT
+        - EYE_BOTH
         
         - PORTRAIT
         - LEFT_PROFILE

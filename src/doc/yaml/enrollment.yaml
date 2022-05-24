@@ -8,6 +8,8 @@ info:
 
     Change log:
     
+    - 1.2.1:
+      - Add missing values in BiometricSubType
     - 1.2.0:
       - Remove array for enrollmentFlags and requestData
       - Change date to date-time
@@ -31,7 +33,7 @@ info:
       - Add fields on BiometricData: instance, metadata, comment, missing
     - 1.0.0: Initial version
 
-  version: 1.2.0
+  version: 1.2.1
   title: OSIA Enrollment Interface
   license:
     name: SIA
@@ -880,6 +882,7 @@ components:
         - LEFT_OTHER
         - RIGHT_INTERDIGITAL
         - RIGHT_THENAR
+        - RIGHT_HYPOTHENAR
         - LEFT_INTERDIGITAL
         - LEFT_THENAR
         - LEFT_HYPOTHENAR
@@ -899,6 +902,7 @@ components:
         - EYE_UNDEF
         - EYE_RIGHT
         - EYE_LEFT
+        - EYE_BOTH
         
         - PORTRAIT
         - LEFT_PROFILE

@@ -8,6 +8,8 @@ info:
     
     Change log:
 
+    - 1.5.1:
+      - Add missing values in BiometricSubType
     - 1.5.0:
       - Add service to update only the galleries of an encounter
       - Change date to date-time
@@ -55,7 +57,7 @@ info:
       - Add service 'readAllEncounters'
     - 1.0.0: Initial version
 
-  version: 1.5.0
+  version: 1.5.1
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -2854,6 +2856,7 @@ components:
         - LEFT_OTHER
         - RIGHT_INTERDIGITAL
         - RIGHT_THENAR
+        - RIGHT_HYPOTHENAR
         - LEFT_INTERDIGITAL
         - LEFT_THENAR
         - LEFT_HYPOTHENAR
@@ -2873,6 +2876,7 @@ components:
         - EYE_UNDEF
         - EYE_RIGHT
         - EYE_LEFT
+        - EYE_BOTH
         
         - PORTRAIT
         - LEFT_PROFILE
