@@ -183,15 +183,15 @@ Data Model
 
     * - Type
       - Description
-      - Example
+      - Example(s)
 
     * - Enrollment
-      - Set of person data which are captured.
-      - :todo:`TBD`
+      - The full set of data which are captured for one purpose.
+      - N/A
 
     * - Document Data
-      - The document data of the enrollment.
-      - :todo:`TBD`
+      - The documents used as an element of proof for part of the enrollment data.
+      - Birth certificate, invoice.
 
     * - Biometric Data
       - Digital representation of biometric characteristics.
@@ -206,29 +206,30 @@ Data Model
       - fingerprint, portrait, iris, signature
 
     * - Biographic Data
-      - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.
-      - :todo:`TBD`
+      - A dictionary (list of names and values) giving the biographic data of the identity
+      - ``firstName``, ``lastName``, ``dateOfBirth``, etc.
 
     * - Enrollment Flags
-      - a dictionary (list of names and values) for custom flags.
-      - :todo:`TBD`
+      - a dictionary (list of names and values) for custom flags controlling the enrollment process.
+      - maximum time allowed to finish the enrollment, etc.
  
     * - Request Data
-      - a dictionary (list of names and values) for data related to the enrollment itself (the operator, the station, the data, etc.).
-      - :todo:`TBD`
+      - a dictionary (list of names and values) for data related to the process initiated by the enrollment.
+      - type of request, priority of execution, type of credential to produce, etc.
 
     * - Contextual Data
-      - A dictionary (list of names and values) attached to the context of establishing the identity
+      - A dictionary (list of names and values) for data related to the enrollment itself
       - ``operatorName``, ``enrollmentDate``, etc.
 
     * - Attributes
-      - a dictionary (list of names and values or *range* of values) describing the attributes to return.
+      - Generic name for any information collected during an enrollment.
         Attributes can apply on biographic data, document data, request data, or enrollment flag data.
-      - :todo:`TBD`
+      - ``firstName``, ``lastName``, ``enrollmentDate``, etc.
 
     * - Expressions
-      - Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``, ``!=``) and the attribute value
-      - :todo:`TBD`
+      - An expression combines an attribute's name, an operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``, ``!=``) and a value.
+        It is used in search services.
+      - ``firstName=John``
 
 .. uml::
     :caption: Enrollment Data Model

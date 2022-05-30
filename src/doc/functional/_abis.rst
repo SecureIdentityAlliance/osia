@@ -353,11 +353,11 @@ Data Model
     * - Gallery
       - A group of persons related by a common purpose, designation, or status.
         A person can belong to multiple galleries.
-      - :todo:`TBD`
+      - ``VIP``, ``Wanted``, etc.
 
     * - Person
       - Person who is known to an identity assurance system.
-      - :todo:`TBD`
+      - N/A
 
     * - Encounter
       - Event in which the client application interacts with a person resulting in data being
@@ -367,16 +367,17 @@ Data Model
         An encounter has a status indicating if this encounter is used in the biometric searches. Allowed values
         are ``active`` or ``inactive``.
 
-      - :todo:`TBD`
+      - N/A
 
     * - Biographic Data
-      - a dictionary (list of names and values) giving the biographic data of interest for the biometric services.
-      - :todo:`TBD`
+      - A dictionary (list of names and values) giving the biographic data of interest for the biometric services.
+        This should be as limited as possible.
+      - ``gender``, ``region``, ``yearOfBirth``
 
     * - Filters
-      - a dictionary (list of names and values or *range* of values) describing the filters during a search.
+      - A dictionary (list of names and values or *range* of values) describing the filters during a search.
         Filters can apply on biographic data, contextual data or encounter type.
-      - :todo:`TBD`
+      - ``gender``, ``yearOfBirthMin``, ``yearOfBirthMax``
 
     * - Biometric Data
       - Digital representation of biometric characteristics.
@@ -392,13 +393,13 @@ Data Model
 
     * - Candidate
       - Information about a candidate found during an identification
-      - :todo:`TBD`
+      - ``personId``
 
     * - CandidateScore
       - Detailed information about a candidate found during an identification. It includes
         the score for the biometrics used. It can also be extended with proprietary information to better describe
         the matching result (for instance: rotation needed to align the probe and the candidate)
-      - :todo:`TBD`
+      - ``3000``
 
     * - Template
       - A computed buffer corresponding to a biometric and allowing the comparison of biometrics.

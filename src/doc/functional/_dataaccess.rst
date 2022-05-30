@@ -81,7 +81,7 @@ This service is synchronous. It can be used to match attributes in CR or in PR.
 
     :param str UIN: The person's UIN
     :param list[(str,str,str)] expressions: The expressions to evaluate. Each expression is described with the attribute's name, the operator (one of ``<``, ``>``, ``=``, ``>=``, ``<=``) and the attribute value
-    :return: A *Yes* if all expressions are true, a *No* if one expression is false, a *Unknown* if :todo:`To be defined`
+    :return: A *Yes* if all expressions are true, a *No* if one expression is false.
     
 This service is synchronous. It can be used to verify attributes in CR or in PR.
 
@@ -212,52 +212,40 @@ As an example, below there is a list of attributes/documents that each component
     * - Attribute Name
       - In CR
       - In PR
-      - Description
       
     * - UIN
       - |tick|
       - |tick|
-      -
     * - first name
       - |tick|
       - |tick|
-      -
     * - last name
       - |tick|
       - |tick|
-      -
     * - spouse name
       - |tick|
       - |tick|
-      -
     * - date of birth
       - |tick|
       - |tick|
-      -
     * - place of birth
       - |tick|
       - |tick|
-      -
     * - gender
       - |tick|
       - |tick|
-      -
     * - date of death
       - |tick|
       - |tick|
-      -
     * - place of death
       - |tick|
-      -
       -
     * - reason of death
       - |tick|
       -
-      -
     * - status
       -
       - |tick|
-      - Example: missing, wanted, dead, etc.
 
 .. list-table:: Certificate Attributes
     :header-rows: 1
@@ -265,27 +253,21 @@ As an example, below there is a list of attributes/documents that each component
     * - Attribute Name
       - In CR
       - In PR
-      - Description
 
     * - officer name
       - |tick|
       -
-      -
     * - number
       - |tick|
-      -
       -
     * - date
       - |tick|
       -
-      -
     * - place
       - |tick|
       -
-      -
     * - type
       - |tick|
-      -
       -
 
 .. list-table:: Union Attributes
@@ -294,27 +276,21 @@ As an example, below there is a list of attributes/documents that each component
     * - Attribute Name
       - In CR
       - In PR
-      - Description
 
     * - date of union
       - |tick|
       -
-      -
     * - place of union
       - |tick|
-      -
       -
     * - conjoint1 UIN
       - |tick|
       -
-      -
     * - conjoint2 UIN
       - |tick|
       -
-      -
     * - date of divorce
       - |tick|
-      -
       -
 
 .. list-table:: Filiation Attributes
@@ -323,27 +299,19 @@ As an example, below there is a list of attributes/documents that each component
     * - Attribute Name
       - In CR
       - In PR
-      - Description
 
     * - parent1 UIN
       - |tick|
       -
-      -
     * - parent2 UIN
       - |tick|
-      -
       -
 
 .. list-table:: Document Type
     :header-rows: 1
     
     * - Document Type
-      - Description
       
     * - birth certificate
-      - :todo:`To be completed`
     * - death certificate
-      - :todo:`To be completed`
-
     * - marriage certificate
-      - :todo:`To be completed`
