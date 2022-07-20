@@ -10,6 +10,7 @@ info:
     
     - 1.4.1:
       - Add missing values in BiometricSubType
+      - Use HTTP code 409 in case of conflict of ID in create/move operations
     - 1.4.0:
       - Add an identityType in the identity object
       - rename documents in documentData in the identity object
@@ -186,6 +187,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '409':
+          description: Creation not allowed, personId already exists
         '500':
           description: Unexpected error
           content:
@@ -326,7 +329,7 @@ paths:
       summary: Merge two persons
       description: |
         Merge two person records into a single one. Identity ID are preserved and in case of duplicates
-        an error is returned and no changes are done.
+        an error 409 is returned and no changes are done.
         If the operation is successful, the person merged is deleted.
       operationId: mergePerson
       security:
@@ -361,6 +364,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Merge not allowed
+        '409':
+          description: Creation not allowed, conflict of identityId
         '404':
           description: Unknown record
         '500':
@@ -516,6 +521,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Insertion not allowed
+        '409':
+          description: Creation not allowed, identityId already exists
         '500':
           description: Unexpected error
           content:
@@ -731,7 +738,7 @@ paths:
       description: |
         Move one identity from the source person to the target person.
         Identity ID is preserved and in case of duplicate
-        an error is returned and no changes are done.
+        an error 409 is returned and no changes are done.
         The source person is not deleted, even if it was the only identity of this person.
       operationId: moveIdentity
       security:
@@ -774,6 +781,8 @@ paths:
           description: Move not allowed
         '404':
           description: Unknown record
+        '409':
+          description: Operation not allowed, conflict of identityId
         '500':
           description: Unexpected error
           content:

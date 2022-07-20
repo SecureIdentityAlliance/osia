@@ -10,6 +10,7 @@ info:
 
     - 1.5.1:
       - Add missing values in BiometricSubType
+      - Use HTTP code 409 in case of conflict of ID in create/move operations
     - 1.5.0:
       - Add service to update only the galleries of an encounter
       - Change date to date-time
@@ -419,7 +420,7 @@ paths:
         Create one encounter in the person identified by his/her id.
         If the person does not yet exist, it is created automatically.
         
-        If the encounter already exists, an error 403 is returned.
+        If the encounter already exists, an error 409 is returned.
       operationId: createEncounter
       security:
         - BearerAuth: [abis.encounter.write]
@@ -489,7 +490,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
-          description: Creation not allowed
+          description: Operation not allowed
+        '409':
+          description: Creation not allowed, encounterId already exists
         '500':
           description: Unexpected error
           content:
@@ -896,7 +899,7 @@ paths:
       description: |
         Merge two sets of encounters into a single set. Merging a set of *N* encounters with a set of *M* encounters
         will result in a single set of *N+M* encounters. Encounter ID are preserved and in case of duplicates
-        an error is returned and no changes are done.
+        an error 409 is returned and no changes are done.
       operationId: mergeEncounter
       security:
         - BearerAuth: [abis.encounter.write]
@@ -951,7 +954,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
-          description: Merge not allowed
+          description: Operation not allowed
+        '409':
+          description: Merge not allowed, conflict of encounterId
         '404':
           description: Unknown record
         '500':
@@ -1011,7 +1016,7 @@ paths:
       summary: Move one encounter
       description: |
         Move one encounter from the source person to the target person.
-        Encounter ID is preserved and in case of duplicate an error is returned and no changes are done.
+        Encounter ID is preserved and in case of duplicate an error 409 is returned and no changes are done.
       operationId: moveEncounter
       security:
         - BearerAuth: [abis.encounter.write]
@@ -1072,7 +1077,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '403':
-          description: Move not allowed
+          description: Operation not allowed
+        '409':
+          description: Move not allowed, conflict with the encounterId
         '404':
           description: Unknown record
         '500':
@@ -1709,6 +1716,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Identification not allowed
+        '404':
+          description: Unknown gallery
         '500':
           description: Unexpected error
           content:
@@ -1849,6 +1858,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Identification not allowed
+        '404':
+          description: Unknown person or gallery
         '500':
           description: Unexpected error
           content:
@@ -1995,6 +2006,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Identification not allowed
+        '404':
+          description: Unknown person, gallery or encounter
         '500':
           description: Unexpected error
           content:
@@ -2144,7 +2157,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '404':
-          description: Unknown record
+          description: Unknown person or gallery
         '403':
           description: Verification not allowed
         '500':
