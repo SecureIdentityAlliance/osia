@@ -7,3 +7,4 @@ Annexes
     glossary
     dataformat
     technical/index
+    license
