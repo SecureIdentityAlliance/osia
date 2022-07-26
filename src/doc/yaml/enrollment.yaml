@@ -19,6 +19,7 @@ info:
       - Add quality, qualityFormat, algorithm, vendor fields to biometricData
       - Mark some fields (ID, etc.) as readOnly
       - Add FORM in possible document type
+      - Add service readEnrollmentProcessingStatus and readEnrollmentProcessingData
     - 1.1.0:
       - Add error structure on 400 errors
       - Add additional documentType and open it for extension
@@ -403,6 +404,145 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
                 
+  /v1/enrollments/{enrollmentId}/processing/status:
+    get:
+      tags:
+        - Enrollment
+      summary: Retrieve the status of the processing of the enrollment
+      description: |
+        Retrieve the status of the processing of the enrollment.
+        The status is available only after the finalization of the enrollment.
+      operationId: readEnrollmentProcessingStatus
+      security:
+        - BearerAuth: [enroll.proc.status]
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: names
+          in: query
+          description: The names of the processings to consider. If not provided, the server will attempt to return all available status.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example:
+            - UIN generation
+            - credential issuance
+      responses:
+        200:
+          description: |
+            The requested status found (a value) for each processing name, or nothing if the status is not yet available.
+            Proposed list of status is: NOT_STARTED, IN_PROGRESS, SUSPENDED, FINISHED, REJECTED
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: '#/components/schemas/ProcessingStatusType'
+                example:
+                    UIN generation: FINISHED
+                    credential issuance: IN_PROGRESS
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        404:
+          description: No record found
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/enrollments/{enrollmentId}/processing/data:
+    get:
+      tags:
+        - Enrollment
+      summary: Retrieve the data of the processing of the enrollment
+      description: |
+        Retrieve the data of the processing of an enrollment.
+        The data is available only after the finalization of the enrollment and is available
+        only to priviledged users.
+      operationId: readEnrollmentProcessingData
+      security:
+        - BearerAuth: [enroll.proc.data]
+      parameters:
+        - name: enrollmentId
+          in: path
+          description: the id of the enrollment
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: names
+          in: query
+          description: The names of the data to return. If not provided, the server will attempt to return all available data.
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+          style: form
+          explode: true
+          example:
+            - UIN generation
+            - credential issuance
+      responses:
+        200:
+          description: The requested data found (a value or object) for each data name, or nothing if the data is not yet available
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                example:
+                    UIN generation: "123456789"
+                    credential issuance:
+                      credentialNumber: 88FR978662
+        400:
+          description: Invalid parameter
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Client must be authenticated
+        403:
+          description: Service forbidden
+        404:
+          description: No record found
+        500:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/enrollments/{enrollmentId}/buffer:
     post:
       tags:
@@ -909,4 +1049,8 @@ components:
         - LEFT_PROFILE
         - RIGHT_PROFILE
       example: RIGHT_INDEX
+
+    ProcessingStatusType:
+      type: string
+      enum: [NOT_STARTED, IN_PROGRESS, SUSPENDED, FINISHED, REJECTED]
 

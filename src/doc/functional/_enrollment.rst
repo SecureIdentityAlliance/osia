@@ -126,6 +126,32 @@ Services
     :param string transactionID: The client generated transactionID.
     :return: a status indicating success or error and in case of success the matching enrollment list.
 
+.. py:function:: readEnrollmentProcessingStatus(enrollmentID, transactionID, names)
+    :noindex:
+
+    Retrieve the status of the processing of an enrollment.
+    The status is available only after the finalization of the enrollment.
+
+    **Authorization**: ``enroll.proc.status``
+
+    :param str enrollmentID: The ID of the enrollment.
+    :param string transactionID: The client generated transactionID.
+    :param list[str] names: The names of the status requested
+    :return: a dictionary of names and status. The name is the processing and the value is the status.
+
+.. py:function:: readEnrollmentProcessingData(enrollmentID, transactionID, names)
+    :noindex:
+
+    Retrieve the data resulting of the processing of an enrollment.
+    The data is available only after the finalization of the enrollment.
+
+    **Authorization**: ``enroll.proc.data``
+
+    :param str enrollmentID: The ID of the enrollment.
+    :param string transactionID: The client generated transactionID.
+    :param list[str] names: The names of the data requested
+    :return: a dictionary of names and data. The name is the processing and the value is the data if available.
+
 .. py:function:: createBuffer(enrollmentId, data, digest)
     :noindex:
 
