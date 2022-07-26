@@ -13,10 +13,13 @@ For instance below is the string to reference the *Notification* interface:
 
     ``OSIA v. 2.0 - Notification v. 1.0.0``
 
-Below is the complete list of available interfaces with related versions:
+Below is the complete list of available interfaces with related versions.
 
-.. list-table:: OSIA Services Versions
+Versions published by of Secure Identity Alliance GEIE, located in Paris, France:
+
+.. list-table:: OSIA Services Versions (Old Licence)
     :header-rows: 2
+    :widths: 30 10 10 10 10 10 10
     
     * - OSIA Release
       - 1.0.0
@@ -25,7 +28,6 @@ Below is the complete list of available interfaces with related versions:
       - 4.1.0
       - 5.0.0
       - 6.0.0
-      - 6.1.0
     * - OSIA Release Date
       - mar-2019
       - jun-2019
@@ -33,13 +35,11 @@ Below is the complete list of available interfaces with related versions:
       - jul-2020
       - dec-2020
       - dec-2021
-      - jul-2022
     * - **Notification**
       - .
       - 1.0.0
       - 1.0.0
       - 1.1.0
-      - 1.2.0
       - 1.2.0
       - 1.2.0
     * - **UIN Management**
@@ -49,13 +49,11 @@ Below is the complete list of available interfaces with related versions:
       - 1.1.0
       - 1.2.0
       - 1.2.0
-      - 1.2.0
     * - **Data Access**
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
-      - 1.3.0
       - 1.3.0
       - 1.3.0
     * - **Enrollment Services**
@@ -65,7 +63,6 @@ Below is the complete list of available interfaces with related versions:
       - 1.0.0
       - 1.1.0
       - 1.2.0
-      - 1.2.1
     * - **Population Registry Services**
       - .
       - .
@@ -73,7 +70,6 @@ Below is the complete list of available interfaces with related versions:
       - 1.2.0
       - 1.3.0
       - 1.4.0
-      - 1.4.1
     * - **Biometrics Services**
       - .
       - 1.0.0
@@ -81,7 +77,6 @@ Below is the complete list of available interfaces with related versions:
       - 1.3.0
       - 1.4.0
       - 1.5.0
-      - 1.5.1
     * - **Credential Services**
       - .
       - .
@@ -89,7 +84,6 @@ Below is the complete list of available interfaces with related versions:
       - 1.0.0
       - 1.1.0
       - 1.2.0
-      - 1.2.1
     * - **Relying Party Services**
       - .
       - .
@@ -97,5 +91,31 @@ Below is the complete list of available interfaces with related versions:
       - .
       - 1.0.0
       - 1.1.0
-      - 1.1.1
 
+Versions published by Secure Identity Alliance ASBL, located in Brussels, Belgium,
+under a new licence named the "OSIA License".
+
+.. list-table:: OSIA Services Versions (New Licence)
+    :header-rows: 2
+    :widths: 30 10
+    
+    * - OSIA Release
+      - 6.1.0
+    * - OSIA Release Date
+      - aug-2022
+    * - **Notification**
+      - 1.2.0
+    * - **UIN Management**
+      - 1.2.0
+    * - **Data Access**
+      - 1.3.0
+    * - **Enrollment Services**
+      - 1.2.1
+    * - **Population Registry Services**
+      - 1.4.1
+    * - **Biometrics Services**
+      - 1.5.1
+    * - **Credential Services**
+      - 1.2.1
+    * - **Relying Party Services**
+      - 1.1.1
