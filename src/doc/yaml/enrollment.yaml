@@ -10,6 +10,7 @@ info:
     
     - 1.2.1:
       - Add missing values in BiometricSubType
+      - Use HTTP code 409 in case of conflict of ID in create operations
     - 1.2.0:
       - Remove array for enrollmentFlags and requestData
       - Change date to date-time
@@ -88,8 +89,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
-        '404':
-          description: Unknown record
+        '409':
+          description: Creation not allowed, enrollmentId already exists
         '500':
           description: Unexpected error
           content:

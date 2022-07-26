@@ -10,6 +10,7 @@ info:
     
     - 1.2.1:
       - Add missing values in BiometricSubType
+      - Use HTTP code 409 in case of conflict of ID in create operations
     - 1.2.0:
       - Change date to date-time
       - Add the impressionType, mimeType to biometricData
@@ -83,6 +84,8 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Operation not allowed
+        '409':
+          description: Creation not allowed, credentialRequestId already exists
         '500':
           description: Unexpected error
           content:
