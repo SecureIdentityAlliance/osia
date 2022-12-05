@@ -94,6 +94,64 @@ The following table maps the interfaces described in chapter 5 – Interfaces ag
     Finalize Enrollment                   U      I
     Delete Enrollment                     U      I
     Find Enrollments                      U      I
-
+    Send Buffer                           U      I
+    Get Buffer                            U      I
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- ----------------------
+    **Population Registry Services**
+    -----------------------------------------------------------------------------------------------------------------
+    Find Persons                                         I
+    Create Person                                        I               U                U
+    Read Person                                          I               U                U       U
+    Update Person                                        I               U                U
+    Delete Person                                        I               U                U
+    Merge Persons                                        I               U
+    Move Identity                                        I               U
+    Create Identity                                      I
+    Read Identity                                        I
+    Update Identity                                      I
+    Partial Update Identity                              I
+    Delete Identity                                      I
+    Set Identity Status                                  I
+    Define Reference                                     I
+    Read Reference                                       I
+    Read Galleries                                       I
+    Read Gallery Content                                 I
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- ----------------------
+    **Biometrics**
+    -----------------------------------------------------------------------------------------------------------------
+    Create Encounter                             U       U                I
+    Read Encounter                               U       U                I                      U
+    Update Encounter                             U       U                I
+    Delete Encounter                             U       U                I
+    Merge Encounters                                     U                I
+    Move Encounters                                      U                I
+    Update Encounter Status                      U       U                I
+    Update Encounter Galleries                   U       U                I
+    Read Template                                U       U                I
+    Read Galleries
+    Read Gallery Content                         U       U                I
+    Identify                                     U                        I                      U
+    Verify                                       U                        I                      U
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- ----------------------
+    **Credential Services**
+    -----------------------------------------------------------------------------------------------------------------
+    Create Credential Request                                                             I
+    Read Credential Request                                                               I
+    Update Credential Request                                                             I
+    Cancel Credential Request                                                             I
+    Find Credentials                                                                      I
+    Read Credential                                                                       I
+    Suspend Credential                                                                    I
+    Unsuspend Credential                                                                  I
+    Revoke Credential                                                                     I
+    Set Credential Status                                                                 I
+    Find Credential Profiles                                                              I
+    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- ----------------------
+    **ID Usage**
+    -----------------------------------------------------------------------------------------------------------------
+    Verify ID                                                                                     I
+    Identify ID                                                                                   I
+    Read Attributes                                                                               I
+    Read Attributes set                                                                           I
     =================================  ======= ======= ======= ======= ======= ======= ======= ======================
 
