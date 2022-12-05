@@ -11,6 +11,6 @@
     03 - security
     04 - versions
     05 - interfaces
-    06 - components
+    06 - building blocks
     annexes/index
 
