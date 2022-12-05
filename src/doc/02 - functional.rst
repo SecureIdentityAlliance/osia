@@ -2,140 +2,63 @@
 Functional View
 ===============
 
-Components: Standardized Definition and Scope
+Building Blocks: Standardized Definition and Scope
 ---------------------------------------------
 
-OSIA provides seamless interconnection between multiple components part of the identity ecosystem.
+OSIA provides seamless interconnection between multiple building blocks part of the identity ecosystem. The building blocks are defined as follows:
 
-The components are defined as follows:
+-  The *Enrollment* component.
 
-- The *Enrollment* component.
+    Enrollment is defined as a system to register biographic and/or biometric data of individuals. It is composed of enrollment client and server.
 
-  Enrollment is defined as a system to register biographic and
-  biometric data of individuals.
+- The *Population Registry* (PR) component.
 
-- The *Population Registry* (PR) component.
+    PR is defined as "an individualized data system, that is, a mechanism of continuous recording, or of coordinated linkage, of selected information pertaining to each member of the resident population of a country in such a way to provide the possibility of determining up-to-date information concerning the size and characteristics of that population at selected time intervals. The population register is the product of a continuous process, in which notifications of certain events, which may have been recorded originally in different administrative systems, are automatically linked on a current basis. A. method and sources of updating should cover all changes so that the characteristics of individuals in the register remain current. Because of the nature of a population register, its organization, and also its operation, must have a legal basis." [#]_
 
-  Population registry is defined as "an individualized data system, that is, a mechanism of continuous recording,
-  or of coordinated linkage, of selected information pertaining to each member of the resident population
-  of a country in such a way to provide the possibility of determining up-to-date information concerning
-  the size and characteristics of that population at selected time intervals. The population register is
-  the product of a continuous process, in which notifications of certain events, which may have been
-  recorded originally in different administrative systems, are automatically linked on a current basis.
-  A. method and sources of updating should cover all changes so that the characteristics of individuals in the
-  register remain current. Because of the nature of a population register, its organization, and also
-  its operation, must have a legal basis." [#]_
+- The *UIN Generator* component.
 
-- The *UIN Generator* component.
+    UIN generator is defined as a system to generate and manage unique identifiers.
 
-  UIN generator is defined as a system to generate and manage unique identifiers.
+-  The *Automated Biometric Identification System* (ABIS) component.
 
-- The *Automated Biometric Identification System* (ABIS) component.
+    ABIS is defined as a system to detect the identity of an individual when it is unknown, or to verify the individual’s identity when it is provided, through biometrics.
 
-  An ABIS is defined as a *system to detect
-  the identity of an individual when it is unknown, or to verify the individual's identity when it is
-  provided, through biometrics*.
+- The *Civil Registry* (CR) component.
 
-- The *Civil Registry* (CR) component.
+    CR is defined as "the continuous, permanent, compulsory and universal recording of the occurrence and characteristics of vital events pertaining to the population, as provided through decree or regulation is accordance with the legal requirement in each country. Civil registration is carried out primarily for the purpose of establishing the documents provided by the law." [#]_
 
-  Civil registration is defined as "the continuous, permanent, compulsory and universal recording of the occurrence
-  and characteristics of vital events pertaining to the population, as provided through decree or regulation
-  is accordance with the legal requirement in each country.
-  Civil registration is carried out primarily for the purpose of establishing the documents provided by the law." [#]_
+- The *Credential Management System* (CMS) component.
 
-- The *Credential Management System* (CMS) component.
+    CMS is defined as a system to manage the production, issuance and lifecycle management of credentials such as ID Cards, passports, driving licenses, digital ID/DTC/driving license, etc. It does not manage the usage of the issued credentials and related user account data (see Identity Provider)
 
-  CMS is defined as a system to manage the production and
-  issuance of credentials such as ID Cards, passports, driving licenses, digital ID, etc.
+- The *Third Party Services* component.
 
-- The *Third Party Services* component.
+    Third Party Services is defined as a system that interfaces with external components that need to leverage identity databases for verification purposes. It provides services to biometrically authenticate, identify, and access identity attributes for use cases such as Know Your Customer (KYC).
 
-  This component interfaces with external systems to leverage the identity databases
-  for the benefits of individuals.
-  It provides services to authenticate, identify, and access identity attributes for use cases such
-  as KYC.
-  
-- The *Digital Credential Issuance & Distribution System*.
+- The *Identity Provider* building block.
 
-  This component is in charge of the issuance and delivery of the digital credentials built from
-  the identity databases under the control of the CMS.
-  
+    Identity Provider is defined as a system that creates, maintains, and manages credentials e.g. login/password and provides authentication services to relying applications within a federation or distributed network. Identity providers offer user authentication as a service.
 
-.. list-table:: Components
-    :header-rows: 1
-    :widths: 30 30 30
-    
+.. note::
 
-    * - ID Ecosystem Component
-      - Data
-      - Functions
-      
-    * - Enrollment
-      - - Biographic data
-        - UIN
-        - History
-        - Supporting documents
-      - - Recording application
-        - Collecting personal data
+   Unlike all the rest of the building blocks, the Identity Provider building block is not expected to implement OSIA interfaces but rather to consume them.
 
-    * - PR
-      - - Biographic data
-        - UIN
-        - History
-        - Supporting documents
-      - - Identity attributes storage
-        - Identity Life cycle management
-        
-    * - UIN Gen
-      - - Biographic data
-        - UIN
-      - - UIN generation
+- The Digital Credential Issuance & Distribution System.
 
-    * - ABIS
-      - - UIN
-        - Biometric data (images and templates)
-      - - Authentication (1:1)
-        - Identification (1:N)
-        - Quality control and adjudication
+    Digital Credential Issuance & Distribution System is defined as a system in charge of the issuance and delivery of the digital credentials built within the identity databases under the control of the CMS. 
 
-    * - CR
-      - - Events
-        - UIN
-        - History
-        - Supporting documents
-      - - Events storage
-        - Certificate production
-        - Workflow
+.. note::
 
-    * - CMS
-      - - Biographic data
-        - UIN
-        - Biometric data
-        - Credential event history
-      - - Credential data storage
-        - Credential Life cycle management
-        - Credential Production
-        - Workflow
+   Digital Credential Issuance & Distribution System building block is out of scope for the current version of OSIA specification v6.1.0.
 
-    * - Third Party Services
-      - - Biographic data/Identity attributes
-        - Biometric data
-      - - Authentication (1:1)
-        - Identification (1:N)
-        - Access to identity attributes
-        
-    * - Digital Credential Issuance & Distribution System
-      -
-      - - Issuance of a digital credential
-        - Delivery of a digital credential
-
-The components are represented on the following diagram:
+The building blocks are represented on the following diagram:
 
 .. figure:: images/components.*
     :width: 100%
 
-    Components identified as part of the identity ecosystem
-    
+    Building Blocks identified as part of the identity ecosystem   
+
+For more information on the functionalities for each building block and on the interfaces that each building block is recommended to implement, please refer to chapter 6 – Building blocks.
 
 Interfaces
 ----------
@@ -152,8 +75,8 @@ This chapter describes the following interfaces:
 
   The design is based on the following assumptions:
 
-  #. All persons recorded in a registry have a UIN. The UIN can be used as a key to access person data for all records.
-     Please note that the UIN is the same throughout all registries (see Chapter 3 - Security & Privacy).
+  #. All persons recorded in a registry have a UIN that is considered a key to access the person’s data for all records.
+     Please note that the UIN does not have to be the same throughout all registries (see Chapter 3 - Security & Privacy for more information).
   #. The registries (civil, population, or other) are considered as centralized systems that are connected.
      If one registry is architectured in a decentralized way, one of its component must be centralized, connected to the network, 
      and in charge of the exchanges with the other registries.
@@ -291,121 +214,6 @@ The following table describes in detail the interfaces and associated services.
     Read Attributes set                Read person attributes corresponding to a predefined set name
     ================================= ===================================================================================   
 
-Components vs Interfaces Mapping
---------------------------------
-
-The interfaces described in the following chapter can be mapped against ID ecosystem components as per the table below:
-
-.. table:: Components vs Interfaces Mapping
-    :class: longtable
-    :widths: 30 10 10 10 10 10 10 10 10
-    
-
-    =================================  ======= ======= ======= ======= ======= ======= ======= =======
-       ..                              **Components**
-    ---------------------------------  ---------------------------------------------------------------
-    **Interfaces**                     Enroll  Enroll    PR    UIN Gen  ABIS     CR      CMS    ID Usage
-                                       Clt     Srv
-    =================================  ======= ======= ======= ======= ======= ======= ======= =======
-    **Notification**
-    --------------------------------------------------------------------------------------------------
-     Subscribe                                           U                U       U       U
-     List Subscription                                   U                U       U       U
-     Unsubscribe                                         U                U       U       U
-     Confirm                                             U                U       U       U
-     Create Topic                                        U                U       U       U
-     List Topics                                         U                U       U       U
-     Delete Topic                                        U                U       U       U
-     Publish                                             U                U       U       U
-     Notify                                              I                I       I       I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **Data Access**
-    --------------------------------------------------------------------------------------------------
-     Read Person Attributes                       U      IU               U       IU              U
-     Match Person Attributes                      U      IU                       IU              U
-     Verify Person Attributes                     U      IU                       IU              U
-     Query Person UIN                             U      IU                       IU              U
-     Query Person List                                                            U               U
-     Read Document                                U      IU                       IU              U
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **UIN Management**
-    --------------------------------------------------------------------------------------------------
-     Generate UIN                                         U       I               U
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **Enrollment Services**
-    --------------------------------------------------------------------------------------------------
-    Create Enrollment                     U      I
-    Read Enrollment                       U      I
-    Update Enrollment                     U      I
-    Partial Update Enrollment             U      I
-    Finalize Enrollment                   U      I
-    Delete Enrollment                     U      I
-    Find Enrollments                      U      I
-    Send Buffer                           U      I
-    Get Buffer                            U      I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **Population Registry Services**
-    --------------------------------------------------------------------------------------------------
-    Find Persons                                         I
-    Create Person                                        I               U                U
-    Read Person                                          I               U                U       U
-    Update Person                                        I               U                U
-    Delete Person                                        I               U                U
-    Merge Persons                                        I               U
-    Move Identity                                        I               U
-    Create Identity                                      I
-    Read Identity                                        I
-    Update Identity                                      I
-    Partial Update Identity                              I
-    Delete Identity                                      I
-    Set Identity Status                                  I
-    Define Reference                                     I
-    Read Reference                                       I
-    Read Galleries                                       I
-    Read Gallery Content                                 I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **Biometrics**
-    --------------------------------------------------------------------------------------------------
-    Create Encounter                             U       U                I
-    Read Encounter                               U       U                I                      U
-    Update Encounter                             U       U                I
-    Delete Encounter                             U       U                I
-    Merge Encounters                                     U                I
-    Move Encounters                                      U                I
-    Update Encounter Status                      U       U                I
-    Update Encounter Galleries                   U       U                I
-    Read Template                                U       U                I
-    Read Galleries
-    Read Gallery Content                         U       U                I
-    Identify                                     U                        I                      U
-    Verify                                       U                        I                      U
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **Credential Services**
-    --------------------------------------------------------------------------------------------------
-    Create Credential Request                                                             I
-    Read Credential Request                                                               I
-    Update Credential Request                                                             I
-    Cancel Credential Request                                                             I
-    Find Credentials                                                                      I
-    Read Credential                                                                       I
-    Suspend Credential                                                                    I
-    Unsuspend Credential                                                                  I
-    Revoke Credential                                                                     I
-    Set Credential Status                                                                 I
-    Find Credential Profiles                                                              I
-    ---------------------------------  ------- ------- ------- ------- ------- ------- ------- -------
-    **ID Usage**
-    --------------------------------------------------------------------------------------------------
-    Verify ID                                                                                     I
-    Identify ID                                                                                   I
-    Read Attributes                                                                               I
-    Read Attributes set                                                                           I
-    =================================  ======= ======= ======= ======= ======= ======= ======= =======
-
-where:
-
-- ``I`` is used when a service is implemented (provided) by a component
-- ``U`` is used when a service is used (consumed) by a component
 
 Use Cases - How to Use |project|
 --------------------------------
