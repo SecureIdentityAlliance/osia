@@ -22,27 +22,39 @@ The Enrollment building block is composed of enrolment client and enrolment serv
 
 .. image:: images/enrollment_client.png
 
+Enrollment Client overview and description of its high level functionalities
+
 .. image:: images/enrollment_server.png
+
+Enrollment Server overview and description of its high level functionalities
 
 Biometric System (ABIS)
 """""""""""""""""""""""
 
 .. image:: images/abis.png
 
+ABIS overview and description of its high level functionalities
+
 Population Registry (PR)
 """"""""""""""""""""""""
 
 .. image:: images/population_registry.png
+
+Population Registry overview and description of its high level functionalities
 
 Credential Management System (CMS)
 """"""""""""""""""""""""""""""""""
 
 .. image:: images/credential_management_system.png
 
+Credential Management System overview and description of its high level functionalities
+
 Third Party Services
 """"""""""""""""""""
 
 .. image:: images/third_party_services.png
+
+Third Party Service overview and description of its high level functionalities
 
 Mapping Building Blocks vs Interfaces
 -------------------------------------
