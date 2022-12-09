@@ -28,7 +28,6 @@ Versions published by of Secure Identity Alliance GEIE, located in Paris, France
       - 4.1.0
       - 5.0.0
       - 6.0.0
-      - 6.1.0
     * - OSIA Release Date
       - mar-2019
       - jun-2019
@@ -36,13 +35,11 @@ Versions published by of Secure Identity Alliance GEIE, located in Paris, France
       - jul-2020
       - dec-2020
       - dec-2021
-      - dec-2022
     * - **Notification**
       - .
       - 1.0.0
       - 1.0.0
       - 1.1.0
-      - 1.2.0
       - 1.2.0
       - 1.2.0
     * - **UIN Management**
@@ -52,13 +49,11 @@ Versions published by of Secure Identity Alliance GEIE, located in Paris, France
       - 1.1.0
       - 1.2.0
       - 1.2.0
-      - 1.2.0
     * - **Data Access**
       - 1.0.0
       - 1.0.0
       - 1.0.0
       - 1.1.0
-      - 1.3.0
       - 1.3.0
       - 1.3.0
     * - **Enrollment Services**
@@ -68,14 +63,12 @@ Versions published by of Secure Identity Alliance GEIE, located in Paris, France
       - 1.0.0
       - 1.1.0
       - 1.2.0
-      - 1.2.0
     * - **Population Registry Services**
       - .
       - .
       - 1.0.0
       - 1.2.0
       - 1.3.0
-      - 1.4.0
       - 1.4.0
     * - **Biometrics Services**
       - .
@@ -84,7 +77,6 @@ Versions published by of Secure Identity Alliance GEIE, located in Paris, France
       - 1.3.0
       - 1.4.0
       - 1.5.0
-      - 1.5.0
     * - **Credential Services**
       - .
       - .
@@ -92,14 +84,12 @@ Versions published by of Secure Identity Alliance GEIE, located in Paris, France
       - 1.0.0
       - 1.1.0
       - 1.2.0
-      - 1.2.0
     * - **Relying Party Services**
       - .
       - .
       - .
       - .
       - 1.0.0
-      - 1.1.0
       - 1.1.0
 
 Versions published by Secure Identity Alliance ASBL, located in Brussels, Belgium,
