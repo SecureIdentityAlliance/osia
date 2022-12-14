@@ -13,7 +13,7 @@ consumption of identity data. The services can be classified in three sets:
   management system and verify the individual’s identity. In this way, external relying parties can quickly and
   easily verify individuals based on their government issued ID attributes.
 
-  .. admonition:: Use case applications: telco enrolment
+  .. admonition:: Use case applications: telco enrollment
 
       The RP API enables a telco operator to check an individual’s identity when applying for a service contract.
       The telco relies on the government to confirm that the attributes submitted by the individual match against

@@ -18,7 +18,7 @@ The following section describes the high level functionalities that each buildin
 Enrollment 
 """"""""""
 
-The Enrollment building block is composed of enrolment client and enrolment server.
+The Enrollment building block is composed of enrollment client and enrollment server.
 
 .. image:: images/enrollment_client.png
 

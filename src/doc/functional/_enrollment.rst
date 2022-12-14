@@ -177,7 +177,7 @@ the request being submitted. It can be used for tracing and debugging.
 Data Model
 """"""""""
 
-.. list-table:: Enrolment Data Model
+.. list-table:: Enrollment Data Model
     :header-rows: 1
     :widths: 25 50 25
 

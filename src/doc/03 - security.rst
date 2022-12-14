@@ -323,7 +323,7 @@ The Data Controller should be able to justify why specific items of PII need to 
 against the subject’s wishes, and when there is no reason for retention then the automated
 purging of unnecessary data is generally recommended.
 
-*An example impact of this for API usage is where an enrolment client holds enrollee data
+*An example impact of this for API usage is where an enrollment client holds enrollee data
 until receiving a response via the API from the enrollment server to the effect that any
 client stored data can be deleted. The Data Processor operating the client is responsible
 to ensure this deletion is systematically applied. Typically this may be done with a
@@ -402,7 +402,7 @@ An API usually indicates that the use or status of data is changing, so it shoul
 be considered. Passing PII over an API requires that the consent covers the scope of this
 data sharing.
 
-*An example of this situation might be where an enrolment system captures biometric data
+*An example of this situation might be where an enrollment system captures biometric data
 to be loaded to a credential using an API. The Data Controller later decides that the
 same captured data will be passed via a new API to a biometric matching system.
 Both the Data Controller and Processor might find that they are processing this data
