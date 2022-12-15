@@ -5,42 +5,68 @@ Functional View
 Building Blocks: Standardized Definition and Scope
 --------------------------------------------------
 
-OSIA provides seamless interconnection between multiple building blocks part of the identity ecosystem. The building blocks are defined as follows:
+OSIA provides seamless interconnection between multiple building blocks part of the identity ecosystem.
+The building blocks are defined as follows:
 
--  The *Enrollment* component.
-    Enrollment is defined as a system to register biographic and/or biometric data of individuals. It is composed of enrollment client and server.
+- The *Enrollment* component.
 
-- The *Population Registry* (PR) component.
-    PR is defined as "an individualized data system, that is, a mechanism of continuous recording, or of coordinated linkage, of selected information pertaining to each member of the resident population of a country in such a way to provide the possibility of determining up-to-date information concerning the size and characteristics of that population at selected time intervals. The population register is the product of a continuous process, in which notifications of certain events, which may have been recorded originally in different administrative systems, are automatically linked on a current basis. A. method and sources of updating should cover all changes so that the characteristics of individuals in the register remain current. Because of the nature of a population register, its organization, and also its operation, must have a legal basis." [#]_
+  Enrollment is defined as a system to register biographic and/or biometric data of individuals.
+  It is composed of enrollment client and server.
 
-- The *UIN Generator* component.
-    UIN generator is defined as a system to generate and manage unique identifiers.
+- The *Population Registry* (PR) component.
 
--  The *Automated Biometric Identification System* (ABIS) component.
-    ABIS is defined as a system to detect the identity of an individual when it is unknown, or to verify the individual’s identity when it is provided, through biometrics.
+  PR is defined as "an individualized data system, that is, a mechanism of continuous recording, or of coordinated linkage, of selected information pertaining to each member of the resident population of a country in such a way to provide the possibility of determining up-to-date information concerning the size and characteristics of that population at selected time intervals. The population register is the product of a continuous process, in which notifications of certain events, which may have been recorded originally in different administrative systems, are automatically linked on a current basis. A. method and sources of updating should cover all changes so that the characteristics of individuals in the register remain current. Because of the nature of a population register, its organization, and also its operation, must have a legal basis." [#]_
 
-- The *Civil Registry* (CR) component.
-    CR is defined as "the continuous, permanent, compulsory and universal recording of the occurrence and characteristics of vital events pertaining to the population, as provided through decree or regulation is accordance with the legal requirement in each country. Civil registration is carried out primarily for the purpose of establishing the documents provided by the law." [#]_
+- The *UIN Generator* component.
 
-- The *Credential Management System* (CMS) component.
-    CMS is defined as a system to manage the production, issuance and lifecycle management of credentials such as ID Cards, passports, driving licenses, digital ID/DTC/driving license, etc. It does not manage the usage of the issued credentials and related user account data (see Identity Provider)
+  UIN generator is defined as a system to generate and manage unique identifiers.
 
-- The *Third Party Services* component.
-    Third Party Services is defined as a system that interfaces with external components that need to leverage identity databases for verification purposes. It provides services to biometrically authenticate, identify, and access identity attributes for use cases such as Know Your Customer (KYC).
+- The *Automated Biometric Identification System* (ABIS) component.
 
-- The *Identity Provider* building block.
-    Identity Provider is defined as a system that creates, maintains, and manages credentials e.g. login/password and provides authentication services to relying applications within a federation or distributed network. Identity providers offer user authentication as a service.
+  ABIS is defined as a system to detect the identity of an individual when it is unknown,
+  or to verify the individual's identity when it is provided, through biometrics.
+
+- The *Civil Registry* (CR) component.
+
+  CR is defined as "the continuous, permanent, compulsory and universal recording of the occurrence
+  and characteristics of vital events pertaining to the population, as provided through decree or
+  regulation is accordance with the legal requirement in each country. Civil registration is
+  carried out primarily for the purpose of establishing the documents provided by the law." [#]_
+
+- The *Credential Management System* (CMS) component.
+
+  CMS is defined as a system to manage the production, issuance and lifecycle management of
+  credentials such as ID Cards, passports, driving licenses, digital ID/DTC/driving license, etc.
+  It does not manage the usage of the issued credentials and related user account data (see Identity Provider)
+
+- The *Third Party Services* component.
+
+  Third Party Services is defined as a system that interfaces with external components that
+  need to leverage identity databases for verification purposes. It provides services to
+  biometrically authenticate, identify, and access identity attributes for use cases such as
+  Know Your Customer (KYC).
+
+- The *Identity Provider* building block.
+
+  Identity Provider is defined as a system that creates, maintains, and manages credentials
+  e.g. login/password and provides authentication services to relying applications within a
+  federation or distributed network. Identity providers offer user authentication as a service.
+
+- The *Digital Credential Issuance & Distribution System*.
+
+  Digital Credential Issuance & Distribution System is defined as a system in charge of
+  the issuance and delivery of the digital credentials built within the identity databases
+  under the control of the CMS. 
 
 .. note::
 
-   Unlike all the rest of the building blocks, the Identity Provider building block is not expected to implement OSIA interfaces but rather to consume them.
-
-- The *Digital Credential Issuance & Distribution System*.
-    Digital Credential Issuance & Distribution System is defined as a system in charge of the issuance and delivery of the digital credentials built within the identity databases under the control of the CMS. 
+   Unlike all the rest of the building blocks, the Identity Provider building block is not
+   expected to implement OSIA interfaces but rather to consume them.
 
 .. note::
 
-   Digital Credential Issuance & Distribution System building block is out of scope for the current version of OSIA specification v6.1.0.
+   Digital Credential Issuance & Distribution System building block is out of scope for the
+   current version of OSIA specification v6.1.0.
 
 The building blocks are represented on the following diagram:
 
