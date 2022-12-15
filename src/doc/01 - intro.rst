@@ -23,56 +23,90 @@ For government policy makers tasked with implementing national identification sy
 The OSIA Initiative
 -------------------
 
-Launched by the not-for-profit Secure Identity Alliance, *Open Standard Identity APIs* (OSIA) is an initiative created for the public good to address vendor lock-in problem.
+Launched by the not-for-profit Secure Identity Alliance, *Open Standard Identity APIs* (OSIA) is an
+initiative created for the public good to address vendor lock-in problem.
 
-OSIA addresses the vendor lock-in concern by providing a simple, open standards-based connectivity layer between all key building blocks within the national identity ecosystem.
+OSIA addresses the vendor lock-in concern by providing a simple, open standards-based connectivity
+layer between all key building blocks within the national identity ecosystem.
 
 OSIA scope is as follows:
 
-**1. Build a common understanding of the functional scope for identity systems building blocks** – NON PRESCRIPTIVE
-    OSIA’s first step has been to formalize the definitions, scope, and main functionalities of each building block within the identity management system.
+1. **Build a common understanding of the functional scope for identity systems building blocks** - NON PRESCRIPTIVE
 
-**2. Create a set of standardized interfaces and data dictionary** – PRESCRIPTIVE
-    For this core piece of work, OSIA is focused on developing the set of interfaces and standardized data dictionary needed to connect the multiple identity system building blocks and ensure seamless interactions via pre-defined services.
-    It is then down to each government to define and implement the interaction processes between individual building blocks (which in turn determines which interfaces are associated with each building block), according to local laws and regulations.
+   OSIA's first step has been to formalize the definitions, scope, and main functionalities of each
+   building block within the identity management system.
 
-With OSIA, governments are free to select the building blocks they need, from the suppliers they choose – without fear of lock in.
+2. **Create a set of standardized interfaces and data dictionary** - PRESCRIPTIVE
 
-And because OSIA operates at the interface layer, interoperability is assured without the need to rearchitect environments or rebuild solutions from the ground up. ID ecosystem building blocks are simply swapped in and out as the use case demands – from best-of-breed options already available on the market.
+   For this core piece of work, OSIA is focused on developing the set of interfaces and standardized
+   data dictionary needed to connect the multiple identity system building blocks and ensure seamless
+   interactions via pre-defined services.
 
-This real-world approach dramatically reduces operational and financial risk, increases the effectiveness of existing identity ecosystems, and rapidly moves government initiatives from proof of concept to live environments.
+   It is then down to each government to define and implement the interaction processes between individual
+   building blocks (which in turn determines which interfaces are associated with each building block),
+   according to local laws and regulations.
+
+With OSIA, governments are free to select the building blocks they need, from the suppliers they choose - without fear of lock in.
+
+And because OSIA operates at the interface layer, interoperability is assured without the need to
+rearchitect environments or rebuild solutions from the ground up. ID ecosystem building blocks are
+simply swapped in and out as the use case demands - from best-of-breed options already available on the market.
+
+This real-world approach dramatically reduces operational and financial risk, increases the effectiveness
+of existing identity ecosystems, and rapidly moves government initiatives from proof of concept to live environments.
 
 OSIA Benefits
 -------------
 
-The OSIA initiative offers a wide range of benefits to implementers of national ID management solutions. 
+The OSIA initiative offers a wide range of benefits to implementers of national ID management solutions.
 
 1. **Unleash market innovation**
 
-   OSIA establishes the conditions that support an equal marketplace and makes it possible for the wider identity community to collaborate in new ways.
+   OSIA establishes the conditions that support an equal marketplace and makes it possible for the wider
+   identity community to collaborate in new ways.
 
-    * Create a marketplace where all vendors can compete equally: OSIA operates at the interface layer and does not define – or therefore favor - any technology at the building block layer (which is typically where the differentiation among vendors takes place).
+    * Create a marketplace where all vendors can compete equally: OSIA operates at the interface layer
+      and does not define - or therefore favor - any technology at the building block layer
+      (which is typically where the differentiation among vendors takes place).
 
-    * Support the emergence of new local market models featuring local suppliers and SMEs: Like the Open Banking revolution, OSIA exposes high performing standardized interfaces that enable new use cases and market offers – from the simple to the complex.
+    * Support the emergence of new local market models featuring local suppliers and SMEs:
+      Like the Open Banking revolution, OSIA exposes high performing standardized interfaces that
+      enable new use cases and market offers - from the simple to the complex.
 
-    * Ensure product(s) compatibility after Mergers & Acquisitions: Market consolidation can often lead to major products being put into maintenance – leaving governments with little choice but to replace these. With OSIA, whatever the status of a product, it will continue to be interoperable with new offers.
+    * Ensure product(s) compatibility after Mergers & Acquisitions: Market consolidation can often
+      lead to major products being put into maintenance - leaving governments with little choice
+      but to replace these. With OSIA, whatever the status of a product, it will continue to be
+      interoperable with new offers.
 
 2. **Enable identity as a service**
 
-   OSIA empowers governments to build new inclusive eGovernment solutions that give citizens ease of access to public services or trusted digital ID schemes that extend the use of citizen ID into other online areas - such as banking and payments.
+   OSIA empowers governments to build new inclusive eGovernment solutions that give citizens ease of
+   access to public services or trusted digital ID schemes that extend the use of citizen ID into
+   other online areas - such as banking and payments.
 
-    * Driving digital ID market growth: OSIA facilitates the link between sovereign identity management solutions and digital identity solutions, like mobile ID, by standardizing the ad hoc interfaces that decouple providers of the ID management solution and the digital ID solution.
+    * Driving digital ID market growth: OSIA facilitates the link between sovereign identity management
+      solutions and digital identity solutions, like mobile ID, by standardizing the ad hoc interfaces
+      that decouple providers of the ID management solution and the digital ID solution.
 
-    * Reducing fraud within siloed databases/multiple ID systems: OSIA enables the secure and controlled flow of data and services, like ID deduplication and authentication, across multiple foundational and functional registries – even where these registries are run by separate ministries and government agencies.
+    * Reducing fraud within siloed databases/multiple ID systems: OSIA enables the secure and
+      controlled flow of data and services, like ID deduplication and authentication, across multiple
+      foundational and functional registries - even where these registries are run by separate
+      ministries and government agencies.
 
-Governments are able to reduce public sector payroll fraud, leakage in social benefits, fraud associated with tax filing and ensure the integrity of the electoral process.
+   Governments are able to reduce public sector payroll fraud, leakage in social benefits, fraud associated
+   with tax filing and ensure the integrity of the electoral process.
 
 3. **Address integrator/vendor lock-in**
 
-   OSIA enables governments to exert full control over their sovereign identity systems. So, they can pursue their national development agendas - without any fear of integrator/ vendor lock-in. Governments are no longer forced to implement a wall-to-wall solution from a single vendor and will not encounter compatibility difficulties when evolving their existing legacy solutions. They can:
+   OSIA enables governments to exert full control over their sovereign identity systems. So, they can
+   pursue their national development agendas - without any fear of integrator/ vendor lock-in.
+   Governments are no longer forced to implement a wall-to-wall solution from a single vendor and
+   will not encounter compatibility difficulties when evolving their existing legacy solutions.
+   They can:
 
     * Implement multi-vendor programs by mixing selected building blocks from different suppliers.
-    * Extend legacy solutions or replace legacy building blocks(s) with a new building block(s) from a different supplier(s).
+    * Extend legacy solutions or replace legacy building blocks(s) with a new building block(s)
+      from a different supplier(s).
 
 Diffusion, Audience, and Access
 -------------------------------

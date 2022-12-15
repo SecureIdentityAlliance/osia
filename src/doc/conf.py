@@ -47,6 +47,11 @@ rst_prolog = '''
         }
         
         tr th.head {background-color: #AD5389; color: white}
+
+        li p {
+            margin-top: 3px;
+        }
+
     </style>
 
 '''
