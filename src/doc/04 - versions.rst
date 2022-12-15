@@ -15,11 +15,11 @@ For instance below is the string to reference the *Notification* interface:
 
 Below is the complete list of available interfaces with related versions.
 
-Versions published by of Secure Identity Alliance GEIE, located in Paris, France:
+Versions published by Secure Identity Alliance GEIE, located in Paris, France:
 
 .. list-table:: OSIA Services Versions (Old Licence)
     :header-rows: 2
-    :widths: 30 10 10 10 10 10 10 10
+    :widths: 30 10 10 10 10 10 10
     
     * - OSIA Release
       - 1.0.0

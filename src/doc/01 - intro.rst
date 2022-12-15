@@ -16,6 +16,7 @@ The lack of vendor and technology neutrality and its consequences becomes appare
 For government policy makers tasked with implementing national identification systems, vendor lock-in is now one of their biggest concerns.
 
 .. figure:: images/vendorlockin.*
+    :width: 40%
 
     The dependency challenge
 
