@@ -1,4 +1,6 @@
 
+.. _chapter-func-view:
+
 Functional View
 ===============
 

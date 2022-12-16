@@ -4,11 +4,11 @@
 UIN Management
 --------------
 
-This is version :openapi:version:`../../yaml/uin.yaml` of this interface.
+This is version :openapi:version:`../yaml/uin.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `uin.yaml <../../uin.yaml>`_
+    Get the OpenAPI file: `uin.yaml <../uin.yaml>`_
 
 .. raw:: latex
 
@@ -16,11 +16,11 @@ This is version :openapi:version:`../../yaml/uin.yaml` of this interface.
 
 .. sidebar:: UIN Management
 
-    .. openapi:toc:: ../../yaml/uin.yaml
+    .. openapi:toc:: ../yaml/uin.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/uin.yaml
+.. openapi:: ../yaml/uin.yaml
     :examples:
     :group:
     :group_examples:

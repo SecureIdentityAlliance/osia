@@ -7,11 +7,11 @@ ID Usage Services
 Relying Party Services
 """"""""""""""""""""""
 
-This is version :openapi:version:`../../yaml/rp.yaml` of this interface.
+This is version :openapi:version:`../yaml/rp.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `rp.yaml <../../rp.yaml>`_
+    Get the OpenAPI file: `rp.yaml <../rp.yaml>`_
 
 .. raw:: latex
 
@@ -19,11 +19,11 @@ This is version :openapi:version:`../../yaml/rp.yaml` of this interface.
 
 .. sidebar:: Relying Party Services
 
-    .. openapi:toc:: ../../yaml/rp.yaml
+    .. openapi:toc:: ../yaml/rp.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/rp.yaml
+.. openapi:: ../yaml/rp.yaml
     :examples:
     :group:
     :group_examples:
@@ -32,5 +32,5 @@ Services
 Data Model
 """"""""""
 
-.. openapi:model:: ../../yaml/rp.yaml
+.. openapi:model:: ../yaml/rp.yaml
 

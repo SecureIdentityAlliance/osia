@@ -4,11 +4,11 @@
 Notification
 ------------
 
-This is version :openapi:version:`../../yaml/notification.yaml` of this interface.
+This is version :openapi:version:`../yaml/notification.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `notification.yaml <../../notification.yaml>`_
+    Get the OpenAPI file: `notification.yaml <../notification.yaml>`_
 
 .. raw:: latex
 
@@ -16,11 +16,11 @@ This is version :openapi:version:`../../yaml/notification.yaml` of this interfac
 
 .. sidebar:: Notification Services
 
-    .. openapi:toc:: ../../yaml/notification.yaml
+    .. openapi:toc:: ../yaml/notification.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/notification.yaml
+.. openapi:: ../yaml/notification.yaml
     :examples:
     :group:
     :group_examples:

@@ -1,4 +1,6 @@
 
+.. _chapter-intro:
+
 Introduction
 ============
 
@@ -130,12 +132,14 @@ This document aims at:
 
 This document is structured as follows:
 
-* Chapter 1 Introduction: This chapter introduces the problem statement and the OSIA initiative.
-* Chapter 2 Functional View: This chapter provides an overview of OSIA interfaces and how they can be mapped against the various identity ecosystem building blocks. Finally, the chapter describes a series of use cases where different OSIA interfaces are implemented between multiple identity ecosystem building blocks.
-* Chapter 3 Security and Privacy: This chapter lists a set of Privacy and Security features embedded in OSIA interfaces specifications.
-* Chapter 4 OSIA Versions and Referencing: This chapter describes the way OSIA interfaces can be referenced in documents and tenders.
-* Chapter 5 Interfaces: This chapter describes the specifications of all OSIA interfaces.
-* Chapter 6 Building Blocks: This chapter describes OSIA interfaces that each building block of the identity ecosystem may implement.
+* Chapter 1 :ref:`chapter-intro`: This chapter introduces the problem statement and the OSIA initiative.
+* Chapter 2 :ref:`chapter-func-view`: This chapter provides an overview of OSIA interfaces and how they can be mapped against the various identity ecosystem building blocks. Finally, the chapter describes a series of use cases where different OSIA interfaces are implemented between multiple identity ecosystem building blocks.
+* Chapter 3 :ref:`chapter-security`: This chapter lists a set of Privacy and Security features embedded in OSIA interfaces specifications.
+* Chapter 4 :ref:`osia-versions-ref`: This chapter describes the way OSIA interfaces can be referenced in documents and tenders.
+* Chapter 5 :ref:`chapter-interfaces`: This chapter describes the specifications of all OSIA interfaces.
+* Chapter 6 :ref:`chapter-bb`: This chapter describes OSIA interfaces that each building block of the identity ecosystem may implement.
+* Chapter 7 :ref:`chapter-tech-specs`: This chapter describes the technical specifications for all OSIA interfaces.
+* Chapter 8 :ref:`chapter-annexes`: This chapter describes the glossary, data format and license that covers OSIA specifications.
 
 Convention and Typographical Rules
 ----------------------------------

@@ -4,11 +4,11 @@
 Enrollment
 ----------
 
-This is version :openapi:version:`../../yaml/enrollment.yaml` of this interface.
+This is version :openapi:version:`../yaml/enrollment.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `enrollment.yaml <../../enrollment.yaml>`_
+    Get the OpenAPI file: `enrollment.yaml <../enrollment.yaml>`_
 
 .. raw:: latex
 
@@ -16,11 +16,11 @@ This is version :openapi:version:`../../yaml/enrollment.yaml` of this interface.
 
 .. sidebar:: Enrollment Services
 
-    .. openapi:toc:: ../../yaml/enrollment.yaml
+    .. openapi:toc:: ../yaml/enrollment.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/enrollment.yaml
+.. openapi:: ../yaml/enrollment.yaml
     :examples:
     :group:
     :group_examples:
@@ -29,5 +29,5 @@ Services
 Data Model
 """"""""""
 
-.. openapi:model:: ../../yaml/enrollment.yaml
+.. openapi:model:: ../yaml/enrollment.yaml
 

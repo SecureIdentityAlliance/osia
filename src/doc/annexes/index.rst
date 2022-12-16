@@ -1,4 +1,6 @@
 
+.. _chapter-annexes:
+
 Annexes
 =======
 
@@ -6,5 +8,4 @@ Annexes
 
     glossary
     dataformat
-    technical/index
     license

@@ -4,11 +4,11 @@
 Biometrics
 ----------
 
-This is version :openapi:version:`../../yaml/abis.yaml` of this interface.
+This is version :openapi:version:`../yaml/abis.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `abis.yaml <../../abis.yaml>`_
+    Get the OpenAPI file: `abis.yaml <../abis.yaml>`_
 
 .. raw:: latex
 
@@ -16,11 +16,11 @@ This is version :openapi:version:`../../yaml/abis.yaml` of this interface.
 
 .. sidebar:: Biometrics Services
 
-    .. openapi:toc:: ../../yaml/abis.yaml
+    .. openapi:toc:: ../yaml/abis.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/abis.yaml
+.. openapi:: ../yaml/abis.yaml
     :examples:
     :group:
     :group_examples:
@@ -29,5 +29,5 @@ Services
 Data Model
 """"""""""
 
-.. openapi:model:: ../../yaml/abis.yaml
+.. openapi:model:: ../yaml/abis.yaml
 

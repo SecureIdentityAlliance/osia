@@ -4,11 +4,11 @@
 Data Access
 -----------
 
-This is version :openapi:version:`../../yaml/dataaccess.yaml` of this interface.
+This is version :openapi:version:`../yaml/dataaccess.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `dataaccess.yaml <../../dataaccess.yaml>`_
+    Get the OpenAPI file: `dataaccess.yaml <../dataaccess.yaml>`_
 
 .. raw:: latex
 
@@ -16,11 +16,11 @@ This is version :openapi:version:`../../yaml/dataaccess.yaml` of this interface.
 
 .. sidebar:: Data Access Services
 
-    .. openapi:toc:: ../../yaml/dataaccess.yaml
+    .. openapi:toc:: ../yaml/dataaccess.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/dataaccess.yaml
+.. openapi:: ../yaml/dataaccess.yaml
     :examples:
     :group:
     :group_examples:

@@ -1,4 +1,6 @@
 
+.. _chapter-bb:
+
 ===============
 Building Blocks
 ===============
@@ -33,7 +35,7 @@ The Enrollment building block is composed of enrollment client and enrollment se
 Biometric System (ABIS)
 """""""""""""""""""""""
 
-.. image:: images/abis.png
+.. figure:: images/abis.png
 
     ABIS overview and description of its high level functionalities
 

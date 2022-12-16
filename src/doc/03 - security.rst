@@ -1,4 +1,6 @@
 
+.. _chapter-security:
+
 Security & Privacy
 ==================
 

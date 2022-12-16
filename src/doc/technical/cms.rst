@@ -4,11 +4,11 @@
 Credential Services
 -------------------
 
-This is version :openapi:version:`../../yaml/cms.yaml` of this interface.
+This is version :openapi:version:`../yaml/cms.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `cms.yaml <../../cms.yaml>`_
+    Get the OpenAPI file: `cms.yaml <../cms.yaml>`_
 
 .. raw:: latex
 
@@ -16,11 +16,11 @@ This is version :openapi:version:`../../yaml/cms.yaml` of this interface.
 
 .. sidebar:: Credential Services
 
-    .. openapi:toc:: ../../yaml/cms.yaml
+    .. openapi:toc:: ../yaml/cms.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/cms.yaml
+.. openapi:: ../yaml/cms.yaml
     :examples:
     :group:
     :group_examples:
@@ -29,5 +29,5 @@ Services
 Data Model
 """"""""""
 
-.. openapi:model:: ../../yaml/cms.yaml
+.. openapi:model:: ../yaml/cms.yaml
 

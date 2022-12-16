@@ -4,11 +4,11 @@
 Population Registry Management
 ------------------------------
 
-This is version :openapi:version:`../../yaml/pr.yaml` of this interface.
+This is version :openapi:version:`../yaml/pr.yaml` of this interface.
 
 .. only:: html
 
-    Get the OpenAPI file: `pr.yaml <../../pr.yaml>`_
+    Get the OpenAPI file: `pr.yaml <../pr.yaml>`_
 
 .. raw:: latex
 
@@ -16,11 +16,11 @@ This is version :openapi:version:`../../yaml/pr.yaml` of this interface.
 
 .. sidebar:: Population Registry Services
 
-    .. openapi:toc:: ../../yaml/pr.yaml
+    .. openapi:toc:: ../yaml/pr.yaml
 
 Services
 """"""""
-.. openapi:: ../../yaml/pr.yaml
+.. openapi:: ../yaml/pr.yaml
     :examples:
     :group:
     :group_examples:
@@ -29,4 +29,4 @@ Services
 Data Model
 """"""""""
 
-.. openapi:model:: ../../yaml/pr.yaml
+.. openapi:model:: ../yaml/pr.yaml
