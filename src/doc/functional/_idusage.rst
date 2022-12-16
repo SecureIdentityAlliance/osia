@@ -10,17 +10,18 @@ consumption of identity data. The services can be classified in three sets:
   The purpose of the Relying Party (RP) API is to extend the use of government-issued identity to registered
   third party services. The individual will submit their ID attributes to the relying party in order to enroll
   for, or access, a particular service. The relying party will leverage the RP API to access the identity
-  management system and verify the individual’s identity. In this way, external relying parties can quickly and
+  management system and verify the individual's identity. In this way, external relying parties can quickly and
   easily verify individuals based on their government issued ID attributes.
 
   .. admonition:: Use case applications: telco enrollment
 
-      The RP API enables a telco operator to check an individual’s identity when applying for a service contract.
+      The RP API enables a telco operator to check an individual's identity when applying for a service contract.
       The telco relies on the government to confirm that the attributes submitted by the individual match against
       the data held in the database therefore being able to confidently identify the new subscriber. This scenario
       can be replicated across multiple sectors including banking and finance.
 
 - Digital Credential Management API: delegating digital issuance to third parties
+  (out of scope for the specification v6.1.0)
 
   The purpose of the Digital Credential Management (DCM) API is to enable external
   wallet providers to manage government issued digital credentials distribution,
@@ -37,7 +38,7 @@ consumption of identity data. The services can be classified in three sets:
 - Federation API: user-initiated attributes sharing
 
   The purpose of the federation API is to enable the user to share their attributes with a chosen relying party using
-  well-known internet protocol: OpenID Connect. The relying party benefits from the government’s verified attributes.
+  well-known internet protocol: OpenID Connect. The relying party benefits from the government's verified attributes.
 
   .. admonition:: Use case applications: on-line registration to gambling website
 
@@ -127,19 +128,36 @@ reserved and predefined:
       - Data Included
     * - "DEFAULT_SET_01"
       - Minimum demographic data
-      - | First name
-        | Last name
-        | DoB
-        | Place of birth
+      - - First name
+        - Last name
+        - DoB
+        - Place of birth
     * - "DEFAULT_SET_02"
       - Minimum demographic and portrait
       - Minimum demographic data + portrait
     * - "DEFAULT_SET_EIDAS"
-      - Set expected to comply with eIDAS pivotal attributes.
-      - :todo:`TBD`
+      - Set expected to comply with eIDAS pivotal attributes [#]_.
+      - Mandatory attributes:
+
+        - First name
+        - Last name
+        - DoB
+        - Identifier 
+
+        Optional attributes:
+
+        - Birth name 
+        - Place of birth 
+        - Gender
+        - Current address
+
 
 
 Output Attribute set
 """"""""""""""""""""
 
 To specify what identity attributes are expected in return when performing e.g. an identify request or a read attributes.
+
+
+.. [#] `eIDAS SAML Attribute Profile <https://ec.europa.eu/cefdigital/wiki/download/attachments/82773108/eidas_saml_attribute_profile_v1.0_2.pdf?version=1&modificationDate=1497252920317&api=v2>`_
+

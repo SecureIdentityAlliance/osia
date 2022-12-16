@@ -52,6 +52,14 @@ rst_prolog = '''
             margin-top: 3px;
         }
 
+        dl.py.function {
+            margin-top: 20px;
+        }
+
+        dl dd p {
+            margin: 0px;
+        }
+
     </style>
 
 '''

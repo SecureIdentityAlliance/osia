@@ -135,7 +135,7 @@ This document is structured as follows:
 * Chapter 3 Security and Privacy: This chapter lists a set of Privacy and Security features embedded in OSIA interfaces specifications.
 * Chapter 4 OSIA Versions and Referencing: This chapter describes the way OSIA interfaces can be referenced in documents and tenders.
 * Chapter 5 Interfaces: This chapter describes the specifications of all OSIA interfaces.
-* Chapter 6 Building blocks: This chapter describes OSIA interfaces that each building block of the identity ecosystem may implement.
+* Chapter 6 Building Blocks: This chapter describes OSIA interfaces that each building block of the identity ecosystem may implement.
 
 Convention and Typographical Rules
 ----------------------------------
