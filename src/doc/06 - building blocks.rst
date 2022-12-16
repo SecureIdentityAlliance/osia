@@ -10,6 +10,8 @@ This chapter does not define high level functionalities for the following buildi
 * Digital Credential Issuance & Distribution System because this building block is out of scope for the current version of OSIA specification v6.1.0.
 * Identity Provider because this building block is not expected to implement OSIA interfaces but rather to consume them.
 
+.. _chapter-bb-func:
+
 Building Blocks High Level Functionalities
 ------------------------------------------
 
@@ -20,46 +22,60 @@ Enrollment
 
 The Enrollment building block is composed of enrollment client and enrollment server.
 
-.. image:: images/enrollment_client.png
+.. figure:: images/enrollment_client.*
 
-Enrollment Client overview and description of its high level functionalities
+    Enrollment Client overview and description of its high level functionalities
 
-.. image:: images/enrollment_server.png
+.. figure:: images/enrollment_server.*
 
-Enrollment Server overview and description of its high level functionalities
+    Enrollment Server overview and description of its high level functionalities
 
 Biometric System (ABIS)
 """""""""""""""""""""""
 
 .. image:: images/abis.png
 
-ABIS overview and description of its high level functionalities
+    ABIS overview and description of its high level functionalities
 
 Population Registry (PR)
 """"""""""""""""""""""""
 
-.. image:: images/population_registry.png
+.. figure:: images/population_registry.*
 
-Population Registry overview and description of its high level functionalities
+    Population Registry overview and description of its high level functionalities
+
+Civil Registry (CR)
+"""""""""""""""""""
+
+.. figure:: images/civil_registry.*
+
+    Civil Registry overview and description of its high level functionalities
 
 Credential Management System (CMS)
 """"""""""""""""""""""""""""""""""
 
-.. image:: images/credential_management_system.png
+.. figure:: images/credential_management_system.*
 
-Credential Management System overview and description of its high level functionalities
+    Credential Management System overview and description of its high level functionalities
 
 Third Party Services
 """"""""""""""""""""
 
-.. image:: images/third_party_services.png
+.. figure:: images/third_party_services.*
 
-Third Party Service overview and description of its high level functionalities
+    Third Party Service overview and description of its high level functionalities
+
+UIN Generator
+"""""""""""""
+
+.. figure:: images/UIN_generator.*
+
+    UIN Generator overview and description of its high level functionalities
 
 Mapping Building Blocks vs Interfaces
 -------------------------------------
 
-The following table maps the interfaces described in chapter 5 – Interfaces against the building blocks described in section 6.1 - Building Blocks High Level Functionalities.
+The following table maps the interfaces described in :ref:`chapter-interfaces` against the building blocks described in :ref:`chapter-bb-func`.
 
 .. table:: Mapping Building Blocks vs Interfaces Mapping
     :class: longtable

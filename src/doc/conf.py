@@ -60,6 +60,11 @@ rst_prolog = '''
             margin: 0px;
         }
 
+        figcaption p {
+            text-align: center !important;
+        }
+
+
     </style>
 
 '''
