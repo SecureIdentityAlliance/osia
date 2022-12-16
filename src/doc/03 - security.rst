@@ -172,7 +172,7 @@ The following table is a summary of all scopes defined in OSIA.
     Set Credential Status               ``cms.credential.write``
     Find Credential Profiles            ``cms.profile.read``
     ----------------------------------- -----------------------------------------------
-    **ID Usage** (Work in progress)
+    **ID Usage**
     -----------------------------------------------------------------------------------
     Verify ID                           ``id.verify``
     Identify                            ``id.identify``
@@ -228,7 +228,7 @@ The protection of PII data is a central design concern for all identity based sy
 
 PII data does not recognize geographical boundaries; it moves across systems and jurisdictions.
 Similarly, the OSIA initiative is not geographically limited. OSIA takes its strong reference
-point from the European Union’s GDPR regulation because this is considered by many as a best
+point from the European Union's GDPR regulation because this is considered by many as a best
 practice approach. GDPR anticipates the possible adverse consequences from the mobility of PII
 whether inside or outside the EU.
 
@@ -429,7 +429,7 @@ OSIA API to support the retrieval of personal attribute data to meet this demand
 What should OSIA API implementors do to prepare for safe PII?
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-1. Appoint someone as the organization’s own GDPR or PII data expert. Someone who understands
+1. Appoint someone as the organization's own GDPR or PII data expert. Someone who understands
    the Data Controller business requirements, and knows the technologies likely to be used for
    data processing.
 2. GDPR is a good example of best practice in PII Management, but it is vital to understand
