@@ -22,15 +22,14 @@ This is version :openapi:version:`../yaml/rp.yaml` of this interface.
     .. openapi:toc:: ../yaml/rp.yaml
 
 Services
-""""""""
+''''''''
 .. openapi:: ../yaml/rp.yaml
     :examples:
-    :group:
     :group_examples:
     :entities:
 
 Data Model
-""""""""""
+''''''''''
 
 .. openapi:model:: ../yaml/rp.yaml
 
