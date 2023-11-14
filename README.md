@@ -38,8 +38,7 @@ You can read the latest version on https://osia.readthedocs.io/en/latest/
 To build it yourself, prepare your environment:
 
 ```
-pip install Sphinx
-pip install sphinxcontrib-httpdomain sphinxcontrib-plantuml sc-oa
+pip install Sphinx Pillow sphinxcontrib-httpdomain sphinxcontrib-plantuml sc-oa
 ```
 
 UML diagrams are built with PlantUML and Java 8. They must be installed separately.
