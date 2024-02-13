@@ -17,6 +17,7 @@ This is version :openapi:version:`../yaml/cms.yaml` of this interface.
 .. sidebar:: Credential Services
 
     .. openapi:toc:: ../yaml/cms.yaml
+        :nb_columns: 1
 
 Services
 """"""""

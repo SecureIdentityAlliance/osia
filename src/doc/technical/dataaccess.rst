@@ -17,6 +17,7 @@ This is version :openapi:version:`../yaml/dataaccess.yaml` of this interface.
 .. sidebar:: Data Access Services
 
     .. openapi:toc:: ../yaml/dataaccess.yaml
+        :nb_columns: 1
 
 Services
 """"""""

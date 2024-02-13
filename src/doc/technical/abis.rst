@@ -17,6 +17,7 @@ This is version :openapi:version:`../yaml/abis.yaml` of this interface.
 .. sidebar:: Biometrics Services
 
     .. openapi:toc:: ../yaml/abis.yaml
+        :nb_columns: 1
 
 Services
 """"""""

@@ -17,6 +17,7 @@ This is version :openapi:version:`../yaml/pr.yaml` of this interface.
 .. sidebar:: Population Registry Services
 
     .. openapi:toc:: ../yaml/pr.yaml
+        :nb_columns: 1
 
 Services
 """"""""

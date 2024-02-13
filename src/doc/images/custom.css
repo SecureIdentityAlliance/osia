@@ -1,10 +1,36 @@
 div.document {
-    width: 100%;
-    max-width: 1520px;
+    width: 95%;
+    max-width: none;
+}
+
+body {
+    font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
+}
+
+pre {
+    font-family: "Fira Mono", Consolas, Menlo, Monaco, "Courier New", Courier, monospace;
+    font-variant-ligatures: no-common-ligatures;
+}
+
+div.body h1, div.body h2, div.body h3, div.body h4, div.body h5, div.body h6,
+div.sphinxsidebar h1, div.sphinxsidebar h2, div.sphinxsidebar h3, div.sphinxsidebar input {
+    font-family: "Roboto", Corbel, Avenir, "Lucida Grande", "Lucida Sans", sans-serif;
+}
+
+div.bodywrapper {
+    margin: 0 0 0 300px;
+}
+
+div.sphinxsidebar {
+    width: 300px;
+}
+
+aside.sidebar {
+    width: 20%;
 }
 
 div.body {
-    max-width: 1280px;
+    max-width: none;
 }
 
 div.body p, ol > li, div.body td {

@@ -17,6 +17,7 @@ This is version :openapi:version:`../yaml/enrollment.yaml` of this interface.
 .. sidebar:: Enrollment Services
 
     .. openapi:toc:: ../yaml/enrollment.yaml
+        :nb_columns: 1
 
 Services
 """"""""

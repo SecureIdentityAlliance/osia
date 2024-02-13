@@ -17,6 +17,7 @@ This is version :openapi:version:`../yaml/notification.yaml` of this interface.
 .. sidebar:: Notification Services
 
     .. openapi:toc:: ../yaml/notification.yaml
+        :nb_columns: 1
 
 Services
 """"""""

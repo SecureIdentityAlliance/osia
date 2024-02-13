@@ -17,6 +17,7 @@ This is version :openapi:version:`../yaml/uin.yaml` of this interface.
 .. sidebar:: UIN Management
 
     .. openapi:toc:: ../yaml/uin.yaml
+        :nb_columns: 1
 
 Services
 """"""""

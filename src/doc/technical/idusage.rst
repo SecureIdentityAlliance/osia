@@ -20,6 +20,7 @@ This is version :openapi:version:`../yaml/rp.yaml` of this interface.
 .. sidebar:: Relying Party Services
 
     .. openapi:toc:: ../yaml/rp.yaml
+        :nb_columns: 1
 
 Services
 ''''''''
