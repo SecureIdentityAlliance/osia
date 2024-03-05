@@ -168,9 +168,6 @@ The "attributes" parameter used in "read" calls is used to provide a set of
 identifiers that limit the amount of data that is returned.
 It is often the case that the whole data set is not required, but instead,
 a subset of that data.
-@@ -128,7 +128,7 @@ attributes to retrieve.
-
-E.g. For surname/familyname, use OID 2.5.4.4 or id-at-surname.
 
 Some calls may require new attributes to be defined.  E.g. when
 retrieving biometric data, the caller may only want the meta data about
