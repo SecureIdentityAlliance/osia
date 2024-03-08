@@ -8,6 +8,10 @@ info:
     
     Change log:
 
+    - 1.6.0:
+      - Added methods to manage asychronous responses (callbacks):
+        - New Get Response Status method
+        - New Retrigger Response method
     - 1.5.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -58,7 +62,7 @@ info:
       - Add service 'readAllEncounters'
     - 1.0.0: Initial version
 
-  version: 1.5.1
+  version: 1.6.0
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -2598,6 +2602,96 @@ paths:
                     application/json:
                       schema:
                         $ref: '#/components/schemas/Error'
+
+  /v1/tasks/{taskId}/status:
+    get:
+      tags:
+        - Task
+      summary: Read the execution status of an asynchronous transaction
+      operationId: readTaskStatus
+      security:
+        - BearerAuth: [abis.task.read]
+      parameters:
+        - name: taskId
+          in: path
+          description: id of the task of an asynchronous call
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Read successful. Asynchronous service execution status may be: 
+             -PENDING: service execution still in progress
+             -RESPONSE_SCHEDULED: service execution finished (successfully or with error), result will be returned by callback
+             -RESPONSE_ERROR: service execution finished (successfully or with error) but sending the result by callback failed (after max retries). No new attempt is planned except if a retrigger is requested using the redeliverTaskResult operation.
+             -RESPONSE_RETRY: service execution finished (successfully or with error) but sending the result by callback failed and a new attempt is planned (retriggering requested through redeliverTaskResult)
+             -COMPLETED: service execution finished and result was delivered successfully.
+          content:
+            application/json:
+              schema:
+                type: string
+                enum: [PENDING, RESPONSE_SCHEDULED, RESPONSE_ERROR, RESPONSE_RETRY, COMPLETED]
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Operation not allowed
+        '404':
+          description: Unknown task
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+                
+  /v1/tasks/{taskId}/redeliver:
+    post:
+      tags:
+        - Task
+      summary: Trigger a new attempt to send a result by callback
+      description: |
+        Try to retrigger an asynchronous callback when:
+        - transaction is asynchronous
+        - response was never received, possibly because max retries was reached
+        - result is still available
+      operationId: redeliverTaskResult
+      security:
+        - BearerAuth: [abis.task.update]
+      parameters:
+        - name: taskId
+          in: path
+          description: id of the task of an asynchronous call
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: |
+            Retrigger successfully taken into account.
+            The callback will be called when the result is available.
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Invalid Operation (example: transaction is not Asynchronous, or result not/no more available)
+        '403':
+          description: Operation not allowed
+        '404':
+          description: Unknown task (never existed or removed e.g. after purge)
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   securitySchemes:
