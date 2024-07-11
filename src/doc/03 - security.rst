@@ -51,8 +51,7 @@ Securing OSIA services is implemented with the following principles:
 .. warning::
 
     Bearer tokens are sensitive and subject to security issues if not handled properly. Please refer to
-    `JSON Web Token Best Current Practices <https://tools.ietf.org/id/draft-ietf-oauth-jwt-bcp-02.html>`_
-    for advice on proper implementation.
+    :rfc:`8725` for *JSON Web Token Best Current Practices* and advice on proper implementation.
     
 Rules
 """""

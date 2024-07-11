@@ -25,6 +25,8 @@ References
         - HTTP Semantics. June 2022. URL: https://www.rfc-editor.org/rfc/rfc9110
       * - [RFC9457]
         - Problem Details for HTTP APIs. URL: https://www.rfc-editor.org/rfc/rfc9457.html
+      * - [RFC8725]
+        - JSON Web Token Best Current Practices. URL: https://www.rfc-editor.org/rfc/rfc8725
       * - [ISO8601]
         - ISO/TC 154, Date and time - Representations for information interchange, URL: https://www.iso.org/standard/70907.html
       * - [JPEG/ISO10918-1]
