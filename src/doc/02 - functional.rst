@@ -242,6 +242,10 @@ Below are a set of examples of how OSIA interfaces could be implemented in vario
 Birth Use Case
 """"""""""""""
 
+This example demonstrates how the Civil Registry and the Population Registry can interact to
+perform a birth registration leading to both a birth certificate and the creation of a new record
+in the Population Registry.
+
 .. uml::
     :caption: Birth Use Case
     :scale: 50%
@@ -275,7 +279,7 @@ Birth Use Case
     end
     
     group 3. Notification
-        CR ->> PR: publish(birth,UIN)
+        CR -->> PR: event(birth,UIN)
         deactivate CR
 
         ...
@@ -285,7 +289,10 @@ Birth Use Case
         PR -> CR: readPersonAttributes(mother)
         PR -> CR: readPersonAttributes(father)
         PR -> PR
-        note right: create/update identities
+        note right
+          create person
+          create/update identities
+        end note
         deactivate PR
     end
   
@@ -311,14 +318,17 @@ Birth Use Case
    As part of the birth registration, it is the responsibility of the CR to notify other systems, including the PR,
    of this event using:
    
-   - ``publish``: to send a *birth* along with the new ``UIN``.
+   - ``publish``: to send a *birth* event along with the new ``UIN``.
    
-   The PR, upon reception of the birth event, will update the identity registry with this new identity using:
+   The PR, upon reception of the birth event, will create a new person and a new identity in its registry using:
     
    - ``readPersonAttributes``: to get the attributes of interest to the PR for the parents if relevant and the new child.
 
 Death Use Case
 """"""""""""""
+
+This example demonstrates how the Civil Registry and the Population Registry can interact to
+perform a death registration.
 
 .. uml::
     :caption: Death Use Case
@@ -344,23 +354,28 @@ Death Use Case
 
     group 2. Notify Death
         CR -> CR
-        note right: report notification of the death
-        CR -> notifier: Ask to confirm notification
-        CR -> PR: updateIdentity
+        CR -->> PR: event(death,UIN)
+        note right: report death declaration
+        PR -> PR: updateIdentity
+        note right: suspend identity
         CR -->> notifier: provisional certificate
+        CR -> notifier: Ask to confirm notification
     end
 
     group 3. Registration
-        CR ->> PR: publish(death,UIN)      
+        notifier -> CR: confirm
+        CR -> CR
+        CR -->> PR: event(death,UIN)
+        note right: report death confirmation
         PR -> CR: readPersonAttributes(subject)
         PR -> PR
-        note right: update identity
+        note right: update person & identity
+        CR -> notifier: full death certificate available
     end
 
-    CR -> notifier: full death certificate available
     deactivate PR
     deactivate CR
-    destroy notifier
+    deactivate notifier
 
 1. Subject identification checks
 
@@ -376,13 +391,13 @@ Death Use Case
 2. Notification creation
 
    The first step after the identity checks is to notify the life event status to the PR based on an identified record.
-   At this point the death notification is recorded by not finally registered. Most states implement a waiting period.
+   At this point the death notification is recorded but not finally registered. Most states implement a waiting period.
    How the CR will process the death notification is specific to each CR implementation - a provisional certificate is possible.
 
 3. Final registration
 
-   When the PR finalizes the status of the subject's person record then the CR may publish this information at its discretion.
-   The PR may maintain a list of interested parties who shall be informed of any finalized death status.
+   When the CR finalizes the status of the subject's person record then the CR may publish this information to
+   a list of interested parties who shall be informed of any finalized death status.
    A final certificate of death including the context of this event is typically issued by the CR to the notifier for distribution.
 
 Deduplication Use Case
@@ -646,6 +661,9 @@ This use case was implemented for demonstrating OSIA and is presented in this `v
     MW -> ABIS++: createEncounter(UIN, identityId, face, fingerprints)
     return 200
 
+    MW --> MW: validate request
+    note right: not implemented in the demonstration
+
     MW -> CMS1: createCredentialRequest(UIN, identityId, biographics, face, fingerprints, type=Physical)
     activate CMS1
     CMS1 --> MW: 201
@@ -674,6 +692,8 @@ The main steps are:
 
    - interactions with the population registry to generate a UIN and insert the collected data,
    - interaction with the ABIS to insert the face and fingerprints,
+   - in a full system, data would need to be validated before process can continue, for example to make sure the person
+     does not yet exist in the system,
    - interactions with multiple Credential Management System to request the issuance of different types of credentials.
 
 Bank account opening Use Case
