@@ -8,6 +8,8 @@ info:
     
     Change log:
 
+    - 1.6.0:
+      - Add structure for image encryption and data integrity
     - 1.5.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -58,7 +60,7 @@ info:
       - Add service 'readAllEncounters'
     - 1.0.0: Initial version
 
-  version: 1.5.1
+  version: 1.6.0
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -2620,6 +2622,40 @@ components:
           description: Error message
           type: string
       additionalProperties: false
+    Encryption:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [JWE, PKCS7]
+      additionalProperties: false
+    Integrity:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [JWS, PKCS7]
+        scope:
+          type: string
+        alg:
+          description: Hash algorithm used to calculate hash and/or hashEnc
+          type: string
+          enum:  [SHA256, SHA384, SHA512]
+        hash:
+          description: Hash calculated from the attributes listed in scope
+          type: string
+        hashEnc:
+          description: Hash calculated from the attributes listed in scope, after encryption
+          type: string
+        signature:
+          description: the signature, in detached mode (i.e. signed data not included). Compact format for JWS and PEM format for PKCS7.
+          type: string
+        signatureRef:
+          type: string
+          format: uri
+          description: URI to the signature data
+          example: "http://objectserver.com/signature?id=00003"
+      additionalProperties: false
     Encounter:
       type: object
       required:
@@ -2655,6 +2691,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
+        integrity:
+          $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     ContextualData:
       type: object
@@ -2664,6 +2702,9 @@ components:
     BiographicData:
       type: object
       description: The set of biographic data.
+      properties:
+        integrity:
+          $ref: '#/components/schemas/Integrity'
       additionalProperties: true
       example:
         dateOfBirth: "1985-11-30"
@@ -2751,6 +2792,10 @@ components:
           type: string
         vendor:
           type: string
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     TemplateFormat:
       type: string

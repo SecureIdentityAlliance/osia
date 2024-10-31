@@ -9,6 +9,8 @@ References
         - Key words for use in RFCs to Indicate Requirement Levels. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119
       * - [RFC3230]
         - Instance Digests in HTTP. January 2002. URL: https://www.rfc-editor.org/rfc/rfc3230
+      * - [RFC5652]
+        - Cryptographic Message Syntax (CMS). September 2009. URL: https://www.rfc-editor.org/rfc/rfc5652
       * - [RFC6750]
         - The OAuth 2.0 Authorization Framework: Bearer Token Usage. October 2012. URL: https://www.rfc-editor.org/rfc/rfc6750
       * - [RFC6838]
@@ -19,6 +21,10 @@ References
         - Hypertext Transfer Protocol (HTTP/1.1): Semantics and Content. June 2014. URL: https://www.rfc-editor.org/rfc/rfc7231
       * - [RFC7396]
         - JSON Merge Patch. October 2014. URL: https://www.rfc-editor.org/rfc/rfc7396
+      * - [RFC7515]
+        - JSON Web Signature (JWS). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7515
+      * - [RFC7516]
+        - JSON Web Encryption (JWE). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7516
       * - [RFC7519]
         - JSON Web Token (JWT). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7519
       * - [RFC9110]
