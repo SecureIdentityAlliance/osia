@@ -9,6 +9,8 @@ References
         - Key words for use in RFCs to Indicate Requirement Levels. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119
       * - [RFC3230]
         - Instance Digests in HTTP. January 2002. URL: https://www.rfc-editor.org/rfc/rfc3230
+      * - [RFC3339]
+        - Date and Time on the Internet: Timestamps. July 2002. URL: https://www.rfc-editor.org/rfc/rfc3339
       * - [RFC5652]
         - Cryptographic Message Syntax (CMS). September 2009. URL: https://www.rfc-editor.org/rfc/rfc5652
       * - [RFC6750]
