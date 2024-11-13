@@ -9,7 +9,7 @@ info:
     Change log:
 
     - 1.6.0:
-      - Add structure for image encryption and data integrity
+      - Add structures for image encryption and data integrity
     - 1.5.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -2631,6 +2631,10 @@ components:
       additionalProperties: false
     Integrity:
       type: object
+      required:
+        - type
+        - scope
+        - alg
       properties:
         type:
           type: string
@@ -2647,6 +2651,10 @@ components:
         hashEnc:
           description: Hash calculated from the attributes listed in scope, after encryption
           type: string
+        expiration:
+          description: Validity timestamp
+          format: date-time
+          example: "2034-11-13T13:27:00+01:00"
         signature:
           description: the signature, in detached mode (i.e. signed data not included). Compact format for JWS and PEM format for PKCS7.
           type: string
@@ -2654,7 +2662,7 @@ components:
           type: string
           format: uri
           description: URI to the signature data
-          example: "http://objectserver.com/signature?id=00003"
+          example: "https://objectserver.com/signature?id=00003"
       additionalProperties: false
     Encounter:
       type: object
