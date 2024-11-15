@@ -2653,6 +2653,7 @@ components:
           type: string
         expiration:
           description: Validity timestamp
+          type: string
           format: date-time
           example: "2034-11-13T13:27:00+01:00"
         signature:
