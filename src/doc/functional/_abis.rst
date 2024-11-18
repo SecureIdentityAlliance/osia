@@ -91,6 +91,29 @@ Services
         In case of success, the person ID and the encounter ID are returned.
         In case of pending operation, the result will be sent later.
 
+.. py:function:: partialUpdateEncounter(personID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, transactionID, options)
+    :noindex:
+
+    Update partially an encounter. Not all attributes are mandatory. The payload
+    is defined as per :rfc:`7396`.
+
+    **Authorization**: ``abis.encounter.write``
+
+    :param str personID: The person ID
+    :param str encounterID: The encounter ID
+    :param list(str) galleryID: the gallery ID to which this encounter belongs. A minimum of one gallery must be provided
+    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
+    :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
+    :param list biometricData: the biometric data (images)
+    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
+        when encounter data is requested.
+    :param callback: The address of a service to be called when the result is available.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :param dict options: the processing options. Supported options are ``priority``, ``algorithm``.
+    :return: a status indicating success, error, or pending operation.
+        In case of success, the person ID and the encounter ID are returned.
+        In case of pending operation, the result will be sent later.
+
 .. py:function:: deleteEncounter(personID, encounterID, callback, transactionID, options)
     :noindex:
 
@@ -238,7 +261,7 @@ Services
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``,
-        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``, ``serviceLevel``.
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
@@ -248,7 +271,7 @@ Services
     Identify a person using biometrics data of a person existing in the system and filters on biographic or
     contextual data. This may include multiple operations, including manual operations.
 
-    **Authorization**: ``abis.verify``
+    **Authorization**: ``abis.identify``
 
     :param str galleryID: Search only in this gallery.
     :param dict filter: The input data (filters and biometric data)
@@ -256,7 +279,7 @@ Services
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``,
-        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``, ``serviceLevel``, ``biometricType``.
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
@@ -266,7 +289,7 @@ Services
     Identify a person using biometrics data of an encounter existing in the system and filters on biographic or
     contextual data. This may include multiple operations, including manual operations.
 
-    **Authorization**: ``abis.verify``
+    **Authorization**: ``abis.identify``
 
     :param str galleryID: Search only in this gallery.
     :param dict filter: The input data (filters and biometric data)
@@ -275,7 +298,7 @@ Services
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``,
-        ``maxNbCand``, ``threshold``, ``accuracyLevel``.
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``, ``serviceLevel``, ``biometricType``.
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
@@ -293,7 +316,7 @@ Services
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``,
-        ``threshold``, ``accuracyLevel``.
+        ``threshold``, ``accuracyLevel``, ``serviceLevel``.
     :return: a status indicating success, error, or pending operation.
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per biometric and per encounter.
@@ -310,7 +333,7 @@ Services
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``,
-        ``threshold``, ``accuracyLevel``.
+        ``threshold``, ``accuracyLevel``, ``serviceLevel``.
     :return: a status indicating success, error, or pending operation.
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per the biometric.
@@ -338,6 +361,8 @@ Options
     * - ``accuracyLevel``
       - Specify the accuracy expected of the request. This is to support different use cases, when
         different behavior of the ABIS is expected (response time, accuracy, consolidation/fusion, etc.).
+    * - ``serviceLevel``
+      - Specify the level of services expected, for example the response time.
 
 Data Model
 """"""""""

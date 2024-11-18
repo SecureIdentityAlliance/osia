@@ -8,6 +8,19 @@ info:
     
     Change log:
 
+    - 1.6.0:
+      - Fix ambiguities:
+        - HTTP code 200 and 204 were both specified for updateEncounter. Remove 204
+        - make mandatory requestBody (considered mandatory in qualification test cases)
+      - readAllEncounters: add an optional query parameter to control sorting order
+      - Add timestamps (creation date, last update date) in encounter data model
+      - Accept ALL in readGAlleryContent
+      - Add galleryId in response of identify (needed when making a search on ALL gallery)
+      - Ability to restrict the modality used for matching (identifyFromId, identifyFromEncounterId)
+      - Add an optional parameter to specify a SLA for search services (for example to select a response time target)
+      - For services returning a very long list (readGalleryContent), support as alternative the csv format (more efficient for size, parsing time, etc.)
+      - new service to do a "patch update"
+      - encounterId is no longer readonly in BiometricData (can be set to any value when the encounter is updated)
     - 1.5.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -58,7 +71,7 @@ info:
       - Add service 'readAllEncounters'
     - 1.0.0: Initial version
 
-  version: 1.5.1
+  version: 1.6.0
   title: OSIA ABIS Interface
   license:
     name: SIA
@@ -106,6 +119,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -226,6 +240,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -334,6 +349,13 @@ paths:
           required: false
           schema:
             type: integer
+        - name: sortedBy
+          in: query
+          description: "the attributes used to sort the result, ascending order unless the attribute name is preceded with a hyphen"
+          required: false
+          schema:
+            type: string
+            example: "-createdDate"
       responses:
         '200':
           description: Read successful
@@ -464,6 +486,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -699,6 +722,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -718,8 +742,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskId'
-        '204':
-          description: Update successful
         '400':
           description: Bad request
           content:
@@ -742,6 +764,131 @@ paths:
             post:
               summary: Update one encounter response callback
               operationId: updateEncounterCB
+              parameters:
+                # query parameters
+                - name: transactionId
+                  in: query
+                  required: true
+                  description: The id of the transaction
+                  schema:
+                    type: string
+                - name: taskId
+                  in: query
+                  required: true
+                  description: The id of the task, used to match this response with the request
+                  schema:
+                    type: string
+              requestBody:
+                required: true
+                description: Result of the update
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/ExtendablePersonIds'
+                  application/error+json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              responses:
+                '204':
+                  description: Response is received and accepted.
+                '403':
+                  description: Forbidden access to the service
+                '500':
+                  description: Unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+    patch:
+      tags:
+        - CRUD
+      summary: Update partially one encounter
+      description: Update partially an encounter. Payload content is a partial encounter object compliant with RFC7396.
+      operationId: partialUpdateEncounter
+      security:
+        - BearerAuth: [abis.encounter.write]
+      parameters:
+        - name: personId
+          in: path
+          description: the id of the person
+          required: true
+          schema:
+            type: string
+        - name: encounterId
+          in: path
+          description: the id of the encounter
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+        - name: callback
+          in: query
+          description: the callback address, where the result will be sent when available
+          required: false
+          schema:
+            type: string
+            format: uri
+            example: "http://client.com/callback"
+        - name: priority
+          in: query
+          description: "the request priority (0: lowest priority; 9: highest priority)"
+          required: false
+          schema:
+            type: integer
+        - name: algorithm
+          in: query
+          description: Hint about the algorithm to be used
+          required: false
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Encounter'
+      responses:
+        '200':
+          description: Operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtendablePersonIds'
+        '202':
+          description: |
+            Request received successfully and correct, result will be returned through the callback.
+            An internal task ID is returned.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Update not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        updateResponse:
+          '${request.query.callback}':
+            post:
+              summary: Update partially one encounter response callback
+              operationId: partialUpdateEncounterCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -1282,6 +1429,7 @@ paths:
             format: uri
             example: "http://client.com/callback"
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1675,7 +1823,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1828,6 +1983,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
+        - name: biometricType
+          in: query
+          description: restrict the modalities used for this search
+          required: false
+          schema:
+            $ref: '#/components/schemas/SearchBiometricType'
       requestBody:
         content:
           application/json:
@@ -1976,6 +2143,18 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
+        - name: biometricType
+          in: query
+          description: restrict the modalities used for this search
+          required: false
+          schema:
+            $ref: '#/components/schemas/SearchBiometricType'
       requestBody:
         content:
           application/json:
@@ -2062,7 +2241,7 @@ paths:
     post:
       tags:
         - Search
-      summary: Biometric verification
+      summary: Biometric verification based on existing data
       description: Verification of one set of biometric data and a record in the system
       operationId: verifyFromId
       security:
@@ -2112,7 +2291,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2260,7 +2446,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2484,7 +2677,7 @@ paths:
       parameters:
         - name: galleryId
           in: path
-          description: the id of the gallery.
+          description: the id of the gallery. **The special value 'ALL' is used to get the content of all galleries**
           required: true
           schema:
             type: string
@@ -2531,6 +2724,16 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/PersonIds'
+            text/csv:
+              schema:
+                description: Person IDs returned as a CSV-formatted buffer
+                type: string
+                example: |
+                  PersonId, encounterId
+                  0001, 01
+                  0001, 02
+                  0002, 01
+              
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -2637,6 +2840,16 @@ components:
         encounterType:
           type: string
           description: Type of the encounter
+        createdDate:
+          description: Date & time when the encounter was created
+          type: string
+          format: date-time
+          example: "2024-11-18T14:21:00+01:00"
+        updatedDate:
+          description: Date & time when the encounter was last updated
+          type: string
+          format: date-time
+          example: "2024-11-18T14:21:00+01:00"
         galleries:
           type: array
           description: The list of galleries for this object.
@@ -2684,7 +2897,6 @@ components:
         encounterId:
           type: string
           description: the id of the encounter owner of this biometric
-          readOnly: true
         image:
           type: string
           format: byte
@@ -2829,6 +3041,13 @@ components:
         - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
         - OTHER
         - UNKNOWN
+    SearchBiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - IRIS
+        - SIGNATURE
     BiometricType:
       type: string
       enum:
@@ -2959,6 +3178,13 @@ components:
           example: 3500
         encounterId:
           type: string
+        galleries:
+          type: array
+          description: Optional information about the galleries considered during the search (needed when the search id done against the ALL gallery)
+          items:
+            type: string
+          minItems: 1
+          uniqueItems: true
         biometricType:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
