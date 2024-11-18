@@ -2618,6 +2618,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: transactionId
+          in: query
+          description: id of the transaction the taskId is attached to (used mainly for tracing purpose)
+          required: false
+          schema:
+            type: string     
       responses:
         '200':
           description: |
@@ -2657,7 +2663,7 @@ paths:
       description: |
         Try to retrigger an asynchronous callback when:
         - transaction is asynchronous
-        - response was never received, possibly because max retries was reached
+        - response was never received, possibly because max retries was reached (e.g. network failure)
         - result is still available
       operationId: redeliverTaskResult
       security:
@@ -2665,10 +2671,16 @@ paths:
       parameters:
         - name: taskId
           in: path
-          description: id of the task of an asynchronous call
+          description: id of the task of the asynchronous call to be re-delivered
           required: true
           schema:
             type: string
+        - name: transactionId
+          in: query
+          description: id of the transaction the taskId is attached to (used mainly for tracing purpose)
+          required: false
+          schema:
+            type: string     
       responses:
         '204':
           description: |
@@ -2681,7 +2693,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
         '409':
-          description: Invalid Operation (example: transaction is not Asynchronous, or result not/no more available)
+          description: |
+            Invalid Operation (example: transaction is not Asynchronous, or result not/no more available)
         '403':
           description: Operation not allowed
         '404':
