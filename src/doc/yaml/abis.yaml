@@ -9,9 +9,9 @@ info:
     Change log:
 
     - 1.6.0:
-      - Added methods to manage asychronous responses (callbacks):
-        - New Get Response Status method
-        - New Retrigger Response method
+      - Added methods to manage asynchronous responses (callbacks):
+        - New Get Response Status method (readTaskStatus)
+        - New Retrigger Response method (redeliverTaskResult)
     - 1.5.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -2621,7 +2621,7 @@ paths:
         - name: transactionId
           in: query
           description: id of the transaction the taskId is attached to (used mainly for tracing purpose)
-          required: false
+          required: true
           schema:
             type: string     
       responses:
@@ -2678,7 +2678,7 @@ paths:
         - name: transactionId
           in: query
           description: id of the transaction the taskId is attached to (used mainly for tracing purpose)
-          required: false
+          required: true
           schema:
             type: string     
       responses:
@@ -2692,13 +2692,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        '409':
-          description: |
-            Invalid Operation (example: transaction is not Asynchronous, or result not/no more available)
         '403':
           description: Operation not allowed
         '404':
-          description: Unknown task (never existed or removed e.g. after purge)
+          description: Unknown task (never existed or removed e.g. after successful completion or purge)
         '500':
           description: Unexpected error
           content:
