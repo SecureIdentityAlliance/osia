@@ -1,0 +1,629 @@
+openapi: 3.0.0
+info:
+  description: |
+    The OSIA IDUsage extended authentication
+    Change log:
+    - 1.0.0: Initial version
+  version: 1.0.0
+  title: The OSIA IDUsage extended authentication
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+servers:
+   - url: https://rp.server.com
+paths:
+  /authenticate:
+    post:
+      summary: 'Authenticate a person using one or more authentication factors'
+      operationId: authenticate
+      security:
+        - BearerAuth: [id.authenticate]
+      parameters:
+        - name: signature
+          in: header
+          description: JWS signature of the entire http body of the body header..signature
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              required:
+                - context
+                - consent
+                - authenticationFactors
+              properties:
+                context:
+                  $ref: '#/components/schemas/Context'
+                consent:
+                  $ref: '#/components/schemas/Consent'
+                authenticationFactors:
+                  type: array
+                  description: Authentication factors used for this authentication
+                  items:
+                    $ref: '#/components/schemas/AuthenticationFactor'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: Version of this response
+                  responseDateTime:
+                    type: string
+                    description: ISO 8601
+                  purpose:
+                    type: string
+                    description: Same value as purpose in the request
+                  factorsVerified:
+                    type: array
+                    description: >-
+                      What are all the factors we verified. So in case the
+                      relying party needs a mandatory factor he can check and
+                      ensure if the authentication contained such a factor.
+                    items:
+                      type: string
+                  consentVerified:
+                    type: boolean
+                    default: false
+                    description: Consent verification was performed or not.
+                  authenticationResult:
+                    type: object
+                    required:
+                      - verified
+                      - tokenId
+                    description: Result of the authentication
+                    properties:
+                      verified:
+                        type: boolean
+                        default: false
+                        description: result of the authentication. A simple boolean
+                      tokenId:
+                        type: string
+                        description: >-
+                          Random Token either specific for this authentication
+                          or specific for an individual & Relying party
+                          combination.
+                        minLength: 12
+                        maxLength: 500
+                      kycCredential:
+                        $ref: '#/components/schemas/Credential'
+                      kycUri:
+                        type: string
+                        format: URI
+                        description: Link pointing to the KYC data credential
+                  errors:
+                    type: array
+                    description: >-
+                      Error code array. Messages for the repsective errors has
+                      to be transalated as 
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          description: 'unique error code '
+                        message:
+                          type: string
+                          description: description of the error message
+                        language:
+                          type: string
+                          description: ISO 639-2
+                        action:
+                          type: string
+                          description: >-
+                            action that we want the user to make in order to
+                            correct the error.
+                required:
+                  - version
+                  - purpose
+                  - factorsVerified
+                  - consentVerified
+                  - authenticationResult
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+      additionalProperties: false
+
+    Context:
+      type: object
+      required:
+        - personId
+        - dateTime
+      properties:
+        personId:
+          type: string
+          minLength: 1
+          description: The identity of the person to authenticate
+        dateTime:
+          type: string
+          format: date
+          description: Timestamp in ISO8601
+          minLength: 12
+          maxLength: 30
+        purpose:
+          type: string
+          description: >-
+            Purpose of the authentication request. Not mandatory but
+            provides a way to ensure people know for what they are
+            doing it
+          minLength: 0
+          maxLength: 256
+        issuer:
+          type: string
+          description: >-
+            Issuer of the identity. Its optional. Authentication can be rejected in
+            some scenarios if this is not present
+          minLength: 0
+          maxLength: 250
+        type:
+          type: string
+          description: >-
+            Type of the ID. Its optional and auth can not be
+            rejected if the type is not present.
+          minLength: 0
+          maxLength: 150
+        environment:
+          type: string
+          minLength: 1
+        domainUri:
+          type: string
+          minLength: 1
+          format: uri
+    
+    AuthenticationFactor:
+      title: AuthenticationFactor
+      type: object
+      properties:
+        factor:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Name of the factor
+        data:
+          oneOf:
+          - type: string
+          - $ref: '#/components/schemas/BiographicData'
+          - $ref: '#/components/schemas/BiometricData'
+          - $ref: '#/components/schemas/OtherData'
+          description: Data object as per the factors specification. Encrypted with session key and base64 encoded.
+        hash:
+          type: string
+          description: >-
+            sha256 in hex format in upper case (previous hash +
+            sha256 hash of the current biometric ISO data before
+            encryption)
+          minLength: 1
+          maxLength: 512
+        sessionKey:
+          type: string
+          description: >-
+            Session key used for encrypting bioValue, encrypted with
+            the system public key (dynamically selected based on the URI)
+            and base64 encoded
+          minLength: 1
+        thumbprint:
+          type: string
+          minLength: 1
+          description: >-
+            SHA256 representation of the certificate (HEX encoded)
+            that was used for encryption of session key. All texts
+            to be treated as uppercase without any spaces or hyphens
+        algorithm:
+          type: string
+
+      required:
+        - factor
+        - data
+
+    BiographicExpression:
+      type: object
+      required:
+        - attributeName
+        - operator
+        - value
+      properties:
+        attributeName:
+          type: string
+        operator:
+          type: string
+          enum: ['<', '>', '=', '>=', '<=']
+        value:
+          oneOf:
+          - type: string
+          - type: integer
+          - type: number
+          - type: boolean
+      additionalProperties: false
+
+    OtherData:
+      type: object
+      description: Authentication data for other factors
+      additionalProperties: true
+
+    BiographicData:
+      type: array
+      items:
+        $ref: '#/components/schemas/BiographicExpression'
+
+    BiometricData:
+      type: object
+      required:
+        - biometricType
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
+        image:
+          type: string
+          format: byte
+          description: Base64-encoded image
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          type: string
+          format: date
+          example: "2019-05-21"
+        captureDevice:
+          description: Identification of the device used to capture the biometric
+          oneOf:
+          - type: string
+          - $ref: '#/components/schemas/CaptureDevice'
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
+      additionalProperties: false
+  
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - IRIS
+        - SIGNATURE
+        - UNKNOWN
+        
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
+    CompressionType:
+      type: string
+      enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+
+    CaptureDevice:
+      description: Digital footprint of the capture device
+      type: object
+      properties:
+        serialNumber:
+          type: string
+          minLength: 0
+          maxLength: 36
+        make:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Make of the device
+        model:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Model of the device
+        type:
+          type: string
+          enum:
+            - FNGER
+            - IRIS
+            - FACE
+          description: Type of the device
+        deviceSubType:
+          type: string
+          enum:
+            - SLAP
+            - SINGLE
+            - TOUCHLESS
+            - DOUBLE
+            - FULL_FRONTAL
+          description: Additional details of device type
+        deviceProvider:
+          type: string
+          minLength: 1
+          description: Provider name as per the certifcation
+          maxLength: 256
+        deviceProviderId:
+          type: string
+          minLength: 1
+          description: Unique provider id assigned by the certifier
+          maxLength: 50
+        dateTime:
+          type: string
+          minLength: 1
+          description: 'ISO Timestamp of the device '
+          format: date-time
+      required:
+        - serialNumber
+        - make
+        - model
+        - type
+        - dateTime
+        
+    Consent:
+      title: Consent
+      type: object
+      description: ''
+      properties:
+        type:
+          type: string
+          enum:
+            - LINKED
+            - EMBEDDED
+            - NO_CONSENT
+          description: Consent type. Limited the enum values
+        data:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: embedded data in jwt format
+        schema:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 256
+          description: Schema for the consent
+        signUri:
+          type: string
+          format: uri
+          minLength: 1
+          maxLength: 256
+          description: signature url. no data of the consent
+        linkUri:
+          type: string
+          minLength: 1
+          format: uri
+          description: unique link to the content of the consent
+          maxLength: 256
+      required:
+        - type
+        
+    Credential:
+      title: Credential
+      description: Credential
+      type: object
+      properties:
+        issuer:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: Who has issued this credential.
+        id:
+          type: string
+          minLength: 1
+          maxLength: 256
+          description: ID of the credential
+        issuedTo:
+          type: string
+          minLength: 1
+          description: to whom the id is issued to
+          maxLength: 256
+        issuanceDate:
+          type: string
+          minLength: 1
+          format: date-time
+        protectedAttributes:
+          type: array
+          description: Array of atributes that are available in protected form (encrypted).
+          items:
+            type: string
+        credentialSubject:
+          type: object
+          required:
+            - id
+            - idOf
+          description: Subject information for the credential
+          properties:
+            id:
+              type: string
+              minLength: 10
+              maxLength: 50
+              description: id of subject
+            idOf:
+              type: array
+              description: Array of information about the subject
+              items:
+                type: object
+                properties:
+                  attributeName:
+                    type: string
+                    description: Name of the atribute
+                    minLength: 1
+                    maxLength: 256
+                  value:
+                    type: string
+                    minLength: 0
+                    maxLength: 1024
+                    description: >-
+                      Value for the given atribute. Note: It could be encrypted
+                      if the atribute name is part of the protected array.
+                  language:
+                    type: string
+                    minLength: 2
+                    maxLength: 3
+                    description: >-
+                      language in ISO 639-1 format. USe 639-2 only when the code
+                      is not available in 639-1
+        type:
+          type: array
+          description: Array of strings indicating the type of the credential
+          minItems: 1
+          maxItems: 20
+          items:
+            type: string
+            example: '["VerifiableCredential", "AlumniCredential"]'
+            minLength: 1
+            maxLength: 50
+        consent:
+          $ref: '#/components/schemas/Consent'
+        proof:
+          type: object
+          required:
+            - type
+            - created
+            - proofPurpose
+            - verificationMethod
+            - jws
+          description: Credential proof
+          properties:
+            type:
+              type: string
+              minLength: 1
+              maxLength: 10
+              description: Type of the proof
+              enum:
+                - RsaSignature2018
+                - ED25519
+            created:
+              type: string
+              format: date-time
+              description: What was it created
+            proofPurpose:
+              type: string
+              minLength: 0
+              maxLength: 256
+              description: What is the purpose of this proof
+            verificationMethod:
+              type: string
+              minLength: 1
+              maxLength: 256
+              description: URL to the keys
+            jws:
+              type: string
+              description: JWS of the format header..signature
+              minLength: 0
+              maxLength: 10000
+      required:
+        - issuer
+        - id
+        - issuedTo
+        - issuanceDate
+        - protectedAttributes
+        - credentialSubject
+        - type
+        - consent
+        - proof
