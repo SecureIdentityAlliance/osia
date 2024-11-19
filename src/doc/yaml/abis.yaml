@@ -21,6 +21,7 @@ info:
       - For services returning a very long list (readGalleryContent), support as alternative the csv format (more efficient for size, parsing time, etc.)
       - new service to do a "patch update"
       - encounterId is no longer readonly in BiometricData (can be set to any value when the encounter is updated)
+      - updateEncounterGalleries: add constraints on the new list of galleries: at least one gallery and no duplicate
     - 1.5.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -1437,6 +1438,8 @@ paths:
               description: List of the new galleries for this encounter.
               items:
                 type: string
+              minItems: 1
+              uniqueItems: true
               example: [VIP, CRIMINAL]
       responses:
         '202':
