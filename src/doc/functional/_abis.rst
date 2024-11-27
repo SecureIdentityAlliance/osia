@@ -363,6 +363,8 @@ Options
         different behavior of the ABIS is expected (response time, accuracy, consolidation/fusion, etc.).
     * - ``serviceLevel``
       - Specify the level of services expected, for example the response time.
+    * - ``biometricType``
+      - Specify the modalities that can be used in some biometric searches
 
 Data Model
 """"""""""

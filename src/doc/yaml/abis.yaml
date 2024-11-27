@@ -1994,10 +1994,17 @@ paths:
             type: integer
         - name: biometricType
           in: query
-          description: restrict the modalities used for this search
+          description: specify the modalities that can be used for this search (the other modalities, even if present in both the probe and the database, will not be used)
           required: false
           schema:
-            $ref: '#/components/schemas/SearchBiometricType'
+            type: array
+            items:
+              $ref: '#/components/schemas/SearchBiometricType'
+          style: form
+          explode: true
+          example:
+            - FINGER
+            - IRIS
       requestBody:
         content:
           application/json:
@@ -2154,10 +2161,17 @@ paths:
             type: integer
         - name: biometricType
           in: query
-          description: restrict the modalities used for this search
+          description: specify the modalities that can be used for this search (the other modalities, even if present in both the probe and the database, will not be used)
           required: false
           schema:
-            $ref: '#/components/schemas/SearchBiometricType'
+            type: array
+            items:
+              $ref: '#/components/schemas/SearchBiometricType'
+          style: form
+          explode: true
+          example:
+            - FINGER
+            - IRIS
       requestBody:
         content:
           application/json:
