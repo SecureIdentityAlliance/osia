@@ -147,6 +147,7 @@ The following table is a summary of all scopes defined in OSIA.
     -----------------------------------------------------------------------------------
     Create Encounter                    ``abis.encounter.write``
     Read Encounter                      ``abis.encounter.read``
+    Partial Update Encounter            ``abis.encounter.write``
     Update Encounter                    ``abis.encounter.write``
     Delete Encounter                    ``abis.encounter.write``
     Merge Encounters                    ``abis.encounter.write``

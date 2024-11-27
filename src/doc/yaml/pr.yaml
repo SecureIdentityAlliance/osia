@@ -8,6 +8,8 @@ info:
 
     Change log:
     
+    - 1.4.2:
+      - identityId not read only in BiometricData (can be set to any value when the identity is updated)
     - 1.4.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -38,7 +40,7 @@ info:
       - Change the mandatory flag for the status, based on the type of service
     - 1.0.0: Initial version
 
-  version: 1.4.1
+  version: 1.4.2
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -1219,7 +1221,6 @@ components:
         identityId:
           type: string
           description: the id of the identity owner of this biometric
-          readOnly: true
         image:
           type: string
           format: byte

@@ -8,6 +8,8 @@ info:
     
     Change log:
 
+    - 1.1.2:
+      - encounterId not read only in BiometricData
     - 1.1.1:
       - Add missing values in BiometricSubType
     - 1.1.0:
@@ -20,7 +22,7 @@ info:
       - Mark some fields (ID, etc.) as readOnly
     - 1.0.0: Initial version
 
-  version: 1.1.1
+  version: 1.1.2
   title: The OSIA IDUsage Relying Party Interface
   license:
     name: SIA
@@ -416,7 +418,6 @@ components:
         encounterId:
           type: string
           description: the id of the encounter owner of this biometric
-          readOnly: true
         image:
           type: string
           format: byte
