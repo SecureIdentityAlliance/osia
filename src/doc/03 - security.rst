@@ -268,9 +268,9 @@ The overall process for encrypting and signing the data is:
 
 The process to validate the integrity is:
 
-1. Verify the signatures to ensure the hashes were not altered
+1. Use the public key to decrypt the signature and get the hash
 1. Recalculate the hash(es) from the data and the scope
-3. Compare the recalculated hash(es) and the signed hash(es)
+3. Compare the recalculated hash(es) and the hash(es) retrieved from the signature
 
 
 Privacy by Design

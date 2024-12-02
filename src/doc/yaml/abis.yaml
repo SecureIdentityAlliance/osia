@@ -2624,6 +2624,7 @@ components:
       additionalProperties: false
     Encryption:
       type: object
+      description: if present, indicates that the image and/or the templates are encrypted
       properties:
         type:
           type: string
@@ -2640,6 +2641,9 @@ components:
           type: string
           enum: [JWS, PKCS7]
         scope:
+          description: |
+            list of field names included in the hash calculation, separated with spaces.
+            Can reference fields from subobjects using a notation such as *obj.fieldname*
           type: string
         alg:
           description: Hash algorithm used to calculate hash and/or hashEnc
@@ -2649,7 +2653,7 @@ components:
           description: Hash calculated from the attributes listed in scope
           type: string
         hashEnc:
-          description: Hash calculated from the attributes listed in scope, after encryption
+          description: Hash calculated from the attributes listed in scope, after encryption is done. Not present if no data is encrypted
           type: string
         expiration:
           description: Validity timestamp
@@ -2657,12 +2661,14 @@ components:
           format: date-time
           example: "2034-11-13T13:27:00+01:00"
         signature:
-          description: the signature, in detached mode (i.e. signed data not included). Compact format for JWS and PEM format for PKCS7.
+          description: |
+            the signature, in detached mode (i.e. signed data not included) of the concatenation of hash and hashEnc (if available).
+            Compact format is used for JWS and PEM format for PKCS7.
           type: string
         signatureRef:
           type: string
           format: uri
-          description: URI to the signature data
+          description: URI to the signature data. DER format is accepted for PKCS7 to optimize the storage space.
           example: "https://objectserver.com/signature?id=00003"
       additionalProperties: false
     Encounter:
