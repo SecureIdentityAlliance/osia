@@ -656,9 +656,10 @@ components:
           description: URI to an image
           example: "http://imageserver.com/image?id=00003"
         captureDate:
+          description: Data & time of the data capture, using RFC3339 format
           type: string
           format: date-time
-          example: "2019-05-21T12:00:00Z"
+          example: "2019-05-21T12:00:00+01:00"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
@@ -762,9 +763,10 @@ components:
           type: string
           description: the nature and format of the document. The mime type definitions should be in compliance with RFC 6838.
         captureDate:
+          description: Data & time of the data capture, using RFC3339 format
           type: string
           format: date-time
-          example: "2019-05-21T12:00:00Z"
+          example: "2019-05-21T12:00:00+01:00"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part

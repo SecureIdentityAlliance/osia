@@ -218,6 +218,61 @@ included in this document must be changed to:
 
 See the different YAML files provided in :ref:`chapter-tech-specs`.
 
+Confidentiality and Integrity
+-----------------------------
+
+Since OSIA vXXX, the interfaces support the encryption of sensitive buffers (images of biometrics, PDF of supporting documents)
+and the protection of the integrity of data.
+
+This is done with new data elements in the data model and is complementary to the security
+implemented at the network level with TLS and authorization tokens (designed to protect the services more than the data).
+
+Rationale and Goals
+"""""""""""""""""""
+
+The need is to ensure the confidentiality and integrity of the sensitive data:
+
+- the confidentiality of images and attached buffers for biometrics and supporting documents,
+  to prevent unauthorized entities from accessing a data,
+- the (local) integrity of one single piece of data, for example one single biometric data,
+  to prevent any alteration and to keep track of who or what inserted the data in the system,
+- the (global) integrity of one complete record, including biographic data, biometric data and document data,
+  to prevent inversions or replacements inside the same record.
+
+Solution
+""""""""
+
+OSIA relies on two set of standards:
+
+- JWT-related standards (namely, :rfc:`7515` and :rfc:`7516`) for signature (JWS) and encryption (JWE).
+- PKCS#7 format (based on :rfc:`5652`)
+
+Encryption is made possible with the addition of an ``encryption`` structure containing the parameters
+of the encryption.
+The encrypted data is then replacing the raw data, with no change to OSIA message structure.
+
+Integrity is made possible with the addition of an ``integrity`` structure containing:
+
+- the parameters,
+- the hashes,
+- the signature of the hashes, in detached mode.
+
+The overall process for encrypting and signing the data is:
+
+1. Define the scope of the integrity, i.e. which fields must be protected
+2. Calculate the hashes on the data in clear format
+3. Encrypt the buffers (images, PDF, etc.)
+4. Calculate the hashes using the encrypted data, if included in the scope of the integrity
+5. Calculate the local integrity, i.e. sign the hashes
+6. Calculate the global integrity, i.e. sign the hashes
+
+The process to validate the integrity is:
+
+1. Use the public key to decrypt the signature and get the hash
+1. Recalculate the hash(es) from the data and the scope
+3. Compare the recalculated hash(es) and the hash(es) retrieved from the signature
+
+
 Privacy by Design
 -----------------
 
