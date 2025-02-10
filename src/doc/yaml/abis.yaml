@@ -2607,7 +2607,7 @@ paths:
     get:
       tags:
         - Task
-      summary: Read the execution status of an asynchronous transaction
+      summary: Read the execution status of an asynchronous call
       operationId: readTaskStatus
       security:
         - BearerAuth: [abis.task.read]
@@ -2623,7 +2623,7 @@ paths:
           description: id of the transaction the taskId is attached to (used mainly for tracing purpose)
           required: true
           schema:
-            type: string     
+            type: string
       responses:
         '200':
           description: |
@@ -2662,7 +2662,7 @@ paths:
       summary: Trigger a new attempt to send a result by callback
       description: |
         Try to retrigger an asynchronous callback when:
-        - transaction is asynchronous
+        - call is asynchronous
         - response was never received, possibly because max retries was reached (e.g. network failure)
         - result is still available
       operationId: redeliverTaskResult
@@ -2680,7 +2680,7 @@ paths:
           description: id of the transaction the taskId is attached to (used mainly for tracing purpose)
           required: true
           schema:
-            type: string     
+            type: string
       responses:
         '204':
           description: |
