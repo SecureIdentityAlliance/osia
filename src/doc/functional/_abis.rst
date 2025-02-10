@@ -315,6 +315,30 @@ Services
         A status (boolean) is returned, either synchronously or using the callback. Optionally, details
         about the matching result can be provided like the score per the biometric.
 
+----------
+
+.. py:function:: readTaskStatus(taskID, transactionID)
+    :noindex:
+
+    Read the execution status of an asynchronous service.
+
+    **Authorization**: ``abis.task.read``
+
+    :param str taskID: the ID of the task.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :return: a status indicating the status of the asynchronous task.
+
+.. py:function:: redeliverTaskResult(taskID, transactionID)
+    :noindex:
+
+    Trigger a new attempt to send a result by callback.
+
+    **Authorization**: ``abis.task.read``
+
+    :param str taskID: the ID of the task.
+    :param str transactionID: A free text used to track the system activities related to the same transaction.
+    :return: a status indicating if a new attempt to call the callback will be made.
+
 Options
 """""""
 

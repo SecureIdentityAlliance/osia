@@ -158,10 +158,12 @@ The following table maps the interfaces described in :ref:`chapter-interfaces` a
     Update Encounter Status                      U       U                I
     Update Encounter Galleries                   U       U                I
     Read Template                                U       U                I
-    Read Galleries
+    Read Galleries                               U       U                I
     Read Gallery Content                         U       U                I
     Identify                                     U                        I                      U
     Verify                                       U                        I                      U
+    readTaskStatus                               U                        I                      U
+    redeliverTaskResult                          U                        I                      U
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- ----------------------
     **Credential Services**
     -----------------------------------------------------------------------------------------------------------------
