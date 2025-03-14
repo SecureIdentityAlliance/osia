@@ -9,7 +9,7 @@ info:
     Change log:
 
     - 1.6.0:
-      - Add structures for image encryption and data integrity
+      - Add structures to manage buffer encryption and data integrity
       - Add methods to manage asynchronous responses (callbacks):
         - New Get Response Status method (readTaskStatus)
         - New Retrigger Response method (redeliverTaskResult)
@@ -2730,10 +2730,21 @@ components:
     Encryption:
       type: object
       description: if present, indicates that the image and/or the templates are encrypted
+      required:
+        - type
+        - scope
       properties:
         type:
           type: string
           enum: [JWE, PKCS7]
+        scope:
+          description: |
+            The list of names for the field encrypted, separated with spaces.
+            Only buffers can be encrypted (image, template, PDF, etc.)
+
+            Buffers encrypted are replacing buffers in clear format. They can be emebedded
+            in the JSON or externalized in a storage server and referenced with a URI.
+          type: string
       additionalProperties: false
     Integrity:
       type: object
@@ -2748,17 +2759,29 @@ components:
         scope:
           description: |
             list of field names included in the hash calculation, separated with spaces.
-            Can reference fields from subobjects using a notation such as *obj.fieldname*
+            Can reference fields from subobjects using a notation such as *obj.fieldname* but
+            only fields with value as a primitive type, a list of primitive type, or a list
+            of object with an existing integrity block should be included.
+
+            Fields listed but not defined should be ignored.
+            
+            Fields listed and with a null value should be ignored.
           type: string
         alg:
           description: Hash algorithm used to calculate hash and/or hashEnc
           type: string
           enum:  [SHA256, SHA384, SHA512]
         hash:
-          description: Hash calculated from the attributes listed in scope
+          description: |
+            Hash calculated from the attributes listed in scope. Hash is calculated using the following process:
+
+            - Build an intermediate JSON containing only the field
+            - Canonicalize the JSON using RFC8785
+            - Hash the result
+            - Include in the hash computation any binary data referenced by URI from the JSON, by order of presence in the JSON
           type: string
         hashEnc:
-          description: Hash calculated from the attributes listed in scope, after encryption is done. Not present if no data is encrypted
+          description: similar to hash but using the encrypted value when available
           type: string
         expiration:
           description: Validity timestamp

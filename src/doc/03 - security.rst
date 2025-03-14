@@ -226,8 +226,15 @@ Confidentiality and Integrity
 Since OSIA vXXX, the interfaces support the encryption of sensitive buffers (images of biometrics, PDF of supporting documents)
 and the protection of the integrity of data.
 
-This is done with new data elements in the data model and is complementary to the security
-implemented at the network level with TLS and authorization tokens (designed to protect the services more than the data).
+This is done with new data elements in the data model, designed to protect a subpart of the data.
+It is complementary to other security protections that address the complete set of data:
+
+- At the network level, it is recommended for implementations to use TLS and authorization tokens
+- In addition to TLS, implementations remain free to encrypt or sign the complete payloads
+
+The encryption and signature proposed in this specification can be applied from data capture up to database storage.
+For example biometric images can be signed by the enrollment operator and this signature can be stored in the central
+database for later audit.
 
 Rationale and Goals
 """""""""""""""""""
@@ -251,7 +258,8 @@ OSIA relies on two set of standards:
 
 Encryption is made possible with the addition of an ``encryption`` structure containing the parameters
 of the encryption.
-The encrypted data is then replacing the raw data, with no change to OSIA message structure.
+The encrypted data is then replacing the raw data, with no change to OSIA message structure:
+encrypted buffer can be embedded in the JSON or *externalized* and referenced with a URI.
 
 Integrity is made possible with the addition of an ``integrity`` structure containing:
 
@@ -262,17 +270,96 @@ Integrity is made possible with the addition of an ``integrity`` structure conta
 The overall process for encrypting and signing the data is:
 
 1. Define the scope of the integrity, i.e. which fields must be protected
-2. Calculate the hashes on the data in clear format
+2. Calculate the hashes on the data in clear format (after canonicalization of an intermediate JSON, based on :rfc:`8785`),
+   including any buffer listed in the scope in clear format
 3. Encrypt the buffers (images, PDF, etc.)
-4. Calculate the hashes using the encrypted data, if included in the scope of the integrity
-5. Calculate the local integrity, i.e. sign the hashes
-6. Calculate the global integrity, i.e. sign the hashes
+4. Calculate a separate hash for the encrypted data
+5. Sign the hashes
 
 The process to validate the integrity is:
 
-1. Use the public key to decrypt the signature and get the hash
+1. Use the public key to decrypt the signature and get the hashes
 1. Recalculate the hash(es) from the data and the scope
 3. Compare the recalculated hash(es) and the hash(es) retrieved from the signature
+
+Example
+"""""""
+
+Considering the following JSON with already a local integrity block:
+
+.. code-block:: json
+
+    {
+        "status": "ACTIVE",
+        "encounterId": "0001",
+        "encounterType": "SAMPLE",
+        "galleries": ["SAMPLE"],
+        "clientData": "c3RyaW5n",
+        "contextualData": {
+        },
+        "biographicData": {
+            "lastName": "Smith",
+            "firstName": "Alice",
+            "dateOfBirth": "1987-11-30",
+            "gender": "F",
+            "nationality": "FRA"
+        },
+        "biometricData": [
+            {
+                "biometricType": "FINGER",
+                "biometricSubType": "RIGHT_INDEX",
+                "image": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE",
+                "vendor": "SIA"
+                "integrity": {
+                    "type": "JWS",
+                    "alg": "SHA256",
+                    "scope": "image biometricType biometricSubType",
+                    "hash": "7a0f87b0ebb9236486f32d0f19fb560af06e74ba2a0b1202c167453471113787",
+                    "expiration": "2035-03-14T15:00:59.961563+01:00",
+                    "signature": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImU5YmMwOTdhLWNlNTEtNDAzNi05NTYyLWQyYWRlODgyZGIwZCJ9..M2QHALUvZXw2PWW_BbX2khZd05BplwRgHJOPCPAlBC3ZQVLsCnvhmjMnON_L212V5fKC6lnpaCKIidUTaQqTgqBmptjXngS5nu3igvm1MPyy9t2-sScrDDRGIRZsxo_vBI4XQ1OyskB694m8v5kS99fLWeBIAPoe_Lr1lUPtSy9UL51AnwkOwH5sq9G0o92IAisvQ_aC1-YRR3sGgtOABc6MjsVNJidUl_FiiL58WSCQZTLEDxcvx8ECTD9f1MWenHkgomLJaAKGg5kl0BCVuJTDs1kqWeXeXU8n9fFpheIXGlP0psKB6wRgHQt2cylxqmflqbqObF75jRHC5e3Djg"
+                }
+            }
+        ]
+    }
+
+The global integrity computation for scope ``biometricData  biographicData.firstName biographicData.lastName``
+would first generate an intermediary JSON limited to the fields listed in the scope:
+
+.. code-block:: json
+
+    {
+      "biographicData": {
+        "lastName": "Smith",
+        "firstName": "Alice"
+      },
+      "biometricData": [
+        {
+          "integrity": {
+            "hash": "7a0f87b0ebb9236486f32d0f19fb560af06e74ba2a0b1202c167453471113787"
+          }
+        }
+      ]
+    }
+
+after canonicalization:
+
+.. code-block:: json
+
+    {"biographicData":{"firstName":"Alice","lastName":"Smith"},"biometricData":[{"integrity":{"hash":"7a0f87b0ebb9236486f32d0f19fb560af06e74ba2a0b1202c167453471113787"}}]}
+
+The resulting SHA-256 hash would then be included in the global integrity block:
+
+.. code-block:: json
+    :emphasize-lines: 5
+
+    "integrity": {
+        "type": "JWS",
+        "alg": "SHA256",
+        "scope": "biometricData  biographicData.firstName biographicData.lastName",
+        "hash": "ac902066fb1c8505c2e83085cae301907dca58ae0fb2ae7df07dd9375515e27c",
+        "expiration": "2035-03-14T15:12:31.901499+01:00",
+        "signature": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImU5YmMwOTdhLWNlNTEtNDAzNi05NTYyLWQyYWRlODgyZGIwZCJ9..V3ud29ybT_S5XCdDdxQxWtSj4HI9QGqQQCmKeYO_v52f_RqKyqkUpoRgMD2phTdqt8HhdQgCYocg4GC0UwxADDB6TfdZUbRIAUX8hp4J79hc285krqblDAaZj6Ihee4BNA0_oWkDHV2ia9Ri4k2AbkXULNiIGkDy-qxGGlZiWTMNvvG7GBDfbXduWSg8FXPsFzH-ecExojWe7XvJGOAXfV8BDgbq4yfo6z7uVdVokS94NRYgdHY_GjIOPfuR74qNZImgQCer0be69BJ_Cq_8Tk2JDiIkBQ6SCscb1X3l457MMM7oa9AvzopB5-WqyHcN5Hk3PhW0luWQpnDFm05glw"
+    }
 
 
 Privacy by Design
