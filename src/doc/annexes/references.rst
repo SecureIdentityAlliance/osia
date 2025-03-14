@@ -35,6 +35,8 @@ References
         - Problem Details for HTTP APIs. URL: https://www.rfc-editor.org/rfc/rfc9457.html
       * - [RFC8725]
         - JSON Web Token Best Current Practices. URL: https://www.rfc-editor.org/rfc/rfc8725
+      * - [RFC8785]
+        - JSON Canonicalization Scheme. URL: https://www.rfc-editor.org/rfc/rfc8785
       * - [ISO8601]
         - ISO/TC 154, Date and time - Representations for information interchange, URL: https://www.iso.org/standard/70907.html
       * - [JPEG/ISO10918-1]
