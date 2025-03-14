@@ -158,6 +158,8 @@ The following table is a summary of all scopes defined in OSIA.
     Read Gallery content                ``abis.gallery.read``
     Identify                            ``abis.identify``
     Verify                              ``abis.verify``
+    readTaskStatus                      ``abis.task.read``
+    redeliverTaskResult                 ``abis.task.update``
     ----------------------------------- -----------------------------------------------
     **Credential Services**
     -----------------------------------------------------------------------------------

@@ -101,10 +101,10 @@ under a new licence named the "OSIA License".
     
     * - OSIA Release
       - 6.1.0
-      - 7.0.0
+      - TBD
     * - OSIA Release Date
       - dec-2022
-      - dec-2024
+      - TBD
     * - **Notification**
       - 1.2.0
       - 1.2.0
