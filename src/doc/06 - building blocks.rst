@@ -170,6 +170,10 @@ The following table maps the interfaces described in :ref:`chapter-interfaces` a
     Create Credential Request                                                             I
     Read Credential Request                                                               I
     Update Credential Request                                                             I
+    Update Request Delivery Address                                                       I
+    Update Request Priority                                                               I
+    Hold Credential Request                                                               I
+    Release Credential Request                                                            I
     Cancel Credential Request                                                             I
     Find Credentials                                                                      I
     Read Credential                                                                       I

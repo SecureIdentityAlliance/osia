@@ -216,6 +216,10 @@ The following table describes in detail the interfaces and associated services.
     Create Credential Request          Request issuance of a secure credential
     Read Credential Request            Retrieve the data/status of a credential request
     Update Credential Request          Update the requested issuance of a secure credential
+    Update Request Delivery Address    Update the delivery address of a credential request
+    Update Request Priority            Update the priority of a credential request
+    Hold Credential Request            Put the credential request on hold
+    Release Credential Request         Release the hold on the credential request
     Cancel Credential Request          Cancel the requested issuance of a secure credential
     Find Credentials                   Retrieve a list of credentials that match the passed in search criteria
     Read Credential                    Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)

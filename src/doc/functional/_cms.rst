@@ -47,6 +47,56 @@ Services
         e.g. credential lifetime if overriding default, delivery addresses, etc.
     :return: a status indicating success or error.
 
+.. py:function:: updateCredentialRequestMailingAddress(credentialRequestID, deliveryAddress, transactionID)
+    :noindex:
+
+    Update the delivery address of a credential request.
+
+    **Authorization**: ``cms.request.write``
+
+    :param str credentialRequestID: The ID of the credential request.
+    :param string transactionID: The client generated transactionID.
+    :param dict deliveryAddress: Delivery address attributes, e.g. address1, city, state, postalCode, country, etc.
+    :return: a status indicating success or error.
+
+.. py:function:: updateCredentialRequestPriority(credentialRequestID, priority, transactionID)
+    :noindex:
+
+    Update the priority of a credential request.
+
+    **Authorization**: ``cms.request.write``
+
+    :param str credentialRequestID: The ID of the credential request.
+    :param string transactionID: The client generated transactionID.
+    :param int priority: New priority to be applied to the credential request.
+    :return: a status indicating success or error.
+
+.. py:function:: holdCredentialRequest(credentialRequestID, reason, comment, transactionID)
+    :noindex:
+
+    Place the requested issuance of a secure credential on hold.
+
+    **Authorization**: ``cms.request.write``
+
+    :param str credentialRequestID: The ID of the credential request.
+    :param string reason: The reason for the hold.
+    :param string comment: Comments related to the hold, optional.
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error.
+
+.. py:function:: releaseCredentialRequest(credentialRequestID, reason, comment, transactionID)
+    :noindex:
+
+    Release the hold on the requested issuance of a secure credential.
+
+    **Authorization**: ``cms.request.write``
+
+    :param str credentialRequestID: The ID of the credential request.
+    :param string reason: The reason for releasing the hold.
+    :param string comment: Comments related to the release, optional.
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error.
+
 .. py:function:: cancelCredentialRequest(credentialRequestID, transactionID)
     :noindex:
 

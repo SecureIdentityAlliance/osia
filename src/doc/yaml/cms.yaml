@@ -8,6 +8,11 @@ info:
     
     Change log:
     
+    - 1.2.2:
+      - Add updateCredentialRequestMailingAddress, updateCredentialRequestPriority, holdCredentialRequest, releaseCredentialRequest
+      - Add HOLD to CredentialRequest status enum
+      - Add credentialRequestNumber to CredentialRequest
+      - Add personNumber to CredentialRequest and CredentialData
     - 1.2.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create operations
@@ -190,6 +195,208 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /v1/credentialRequests/{credentialRequestId}/updateDeliveryAddress:
+    put:
+      tags:
+        - Credential Request
+      summary: Update the delivery address of a credential request
+      operationId: updateCredentialRequestMailingAddress
+      security:
+        - BearerAuth: [cms.request.write]
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - deliveryAddress
+              properties:
+                deliveryAddress:
+                  $ref: '#/components/schemas/Address'
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentialRequests/{credentialRequestId}/changePriority:
+    post:
+      tags:
+        - Credential Request
+      summary: Change the priority of a credential request
+      operationId: updateCredentialRequestPriority
+      security:
+        - BearerAuth: [cms.request.write]
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - priority
+              properties:
+                priority:
+                  type: integer
+                  description: "the request priority (0: lowest priority; 9: highest priority)"
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentialRequests/{credentialRequestId}/hold:
+    post:
+      tags:
+        - Credential Request
+      summary: Put the credential request on hold
+      operationId: holdCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - reason
+              properties:
+                reason:
+                  type: string
+                  description: "the reason for the hold"
+                comment:
+                  type: string
+                  description: "additional comments related to the hold"
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/credentialRequests/{credentialRequestId}/release:
+    post:
+      tags:
+        - Credential Request
+      summary: Release the hold on the credential request
+      operationId: releaseCredentialRequest
+      security:
+        - BearerAuth: [cms.request.write]
+      parameters:
+        - name: credentialRequestId
+          in: path
+          description: the id of the credential request
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - reason
+              properties:
+                reason:
+                  type: string
+                  description: "the reason for releasing the hold"
+                comment:
+                  type: string
+                  description: "additional comments related to the release"
+      responses:
+        '201':
+          description: Operation successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Operation not allowed
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /v1/credentialRequests/{credentialRequestId}/cancel:
     post:
       tags:
@@ -926,6 +1133,7 @@ components:
           city: Libourne
           postalCode: "33500"
           country: France
+
     CredentialRequest:
       type: object
       description: A request for a credential
@@ -938,14 +1146,21 @@ components:
           type: string
           description: The unique id of this credential request
           readOnly: true
+        credentialRequestNumber:
+          type: string
+          description: The credential request number for this credential request
+          readOnly: true
         status:
           type: string
-          enum: [PENDING, ISSUED, CANCELLED, FAILED]
+          enum: [PENDING, ISSUED, HOLD, CANCELLED, FAILED]
         requestData:
           $ref: '#/components/schemas/RequestData'
         personId:
           type: string
           description: The id of the person who is the target of the request
+        personNumber:
+          type: string
+          description: The number attached to the person who is the target of the request
         biographicData:
           $ref: '#/components/schemas/BiographicData'
         biometricData:
@@ -989,6 +1204,9 @@ components:
         personId:
           type: string
           description: The unique id of the person that the credential request is for
+        personNumber:
+          type: string
+          description: The number attached to the person who is the target of the request
         credentialProfileId:
           type: string
           description: The unique id of the credential profile
