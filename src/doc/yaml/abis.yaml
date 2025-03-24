@@ -22,6 +22,7 @@ info:
       - new service to do a "patch update"
       - encounterId is no longer readonly in BiometricData (can be set to any value when the encounter is updated)
       - updateEncounterGalleries: add constraints on the new list of galleries: at least one gallery and no duplicate
+      - make galleries mandatory in Encounter structure
     - 1.5.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -2846,6 +2847,7 @@ components:
         - status
         - encounterId
         - encounterType
+        - galleries
         - biometricData
       properties:
         encounterId:
@@ -3197,7 +3199,7 @@ components:
           type: string
         galleries:
           type: array
-          description: Optional information about the galleries considered during the search (needed when the search id done against the ALL gallery)
+          description: Optional information about the galleries considered during the search (needed when the search is done against the ALL gallery)
           items:
             type: string
           minItems: 1
