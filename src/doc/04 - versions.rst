@@ -116,16 +116,16 @@ under a new licence named the "OSIA License".
       - 1.3.0
     * - **Enrollment Services**
       - 1.2.1
-      - 1.2.1
+      - **1.3.0**
     * - **Population Registry Services**
       - 1.4.1
-      - 1.4.1
+      - **1.5.0**
     * - **Biometrics Services**
       - 1.5.1
       - **1.6.0**
     * - **Credential Services**
       - 1.2.1
-      - 1.2.1
+      - **1.3.0**
     * - **Relying Party Services**
       - 1.1.1
-      - 1.1.1
+      - **1.2.0**

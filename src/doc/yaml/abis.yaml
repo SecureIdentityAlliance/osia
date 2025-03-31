@@ -2729,7 +2729,7 @@ components:
       additionalProperties: false
     Encryption:
       type: object
-      description: if present, indicates that the image and/or the templates are encrypted
+      description: if present, indicates that the images, templates or other buffers are encrypted
       required:
         - type
         - scope
@@ -2768,29 +2768,25 @@ components:
             Fields listed and with a null value should be ignored.
           type: string
         alg:
-          description: Hash algorithm used to calculate hash and/or hashEnc
+          description: |
+            Hash algorithm used to calculate hash and/or hashEnc.
+            possible values: SHA256, SHA384, SHA512.
           type: string
-          enum:  [SHA256, SHA384, SHA512]
         hash:
           description: |
             Hash calculated from the attributes listed in scope. Hash is calculated using the following process:
 
-            - Build an intermediate JSON containing only the field
+            - Build an intermediate JSON containing only the fields identified in the scope
             - Canonicalize the JSON using RFC8785
             - Hash the result
-            - Include in the hash computation any binary data referenced by URI from the JSON, by order of presence in the JSON
+            - Include the hash computation of any binary data referenced by URI from the JSON, by order of presence in the JSON
           type: string
         hashEnc:
-          description: similar to hash but using the encrypted value when available
+          description: similar to hash but using the encrypted values when available
           type: string
-        expiration:
-          description: Validity timestamp
-          type: string
-          format: date-time
-          example: "2034-11-13T13:27:00+01:00"
         signature:
           description: |
-            the signature, in detached mode (i.e. signed data not included) of the concatenation of hash and hashEnc (if available).
+            the signature of the concatenation of hash and hashEnc string values (if available).
             Compact format is used for JWS and PEM format for PKCS7.
           type: string
         signatureRef:
@@ -2845,9 +2841,6 @@ components:
     BiographicData:
       type: object
       description: The set of biographic data.
-      properties:
-        integrity:
-          $ref: '#/components/schemas/Integrity'
       additionalProperties: true
       example:
         dateOfBirth: "1985-11-30"
@@ -2939,7 +2932,7 @@ components:
         encryption:
           $ref: '#/components/schemas/Encryption'
         integrity:
-            $ref: '#/components/schemas/Integrity'
+          $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     TemplateFormat:
       type: string

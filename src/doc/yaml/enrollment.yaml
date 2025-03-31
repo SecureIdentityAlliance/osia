@@ -8,6 +8,8 @@ info:
 
     Change log:
     
+    - 1.3.0:
+      - Add structures to manage buffer encryption and data integrity
     - 1.2.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create operations
@@ -34,7 +36,7 @@ info:
       - Add fields on BiometricData: instance, metadata, comment, missing
     - 1.0.0: Initial version
 
-  version: 1.2.1
+  version: 1.3.0
   title: OSIA Enrollment Interface
   license:
     name: SIA
@@ -567,6 +569,74 @@ components:
           description: Error message
           type: string
       additionalProperties: false
+    Encryption:
+      type: object
+      description: if present, indicates that the images, templates or other buffers are encrypted
+      required:
+        - type
+        - scope
+      properties:
+        type:
+          type: string
+          enum: [JWE, PKCS7]
+        scope:
+          description: |
+            The list of names for the field encrypted, separated with spaces.
+            Only buffers can be encrypted (image, template, PDF, etc.)
+
+            Buffers encrypted are replacing buffers in clear format. They can be emebedded
+            in the JSON or externalized in a storage server and referenced with a URI.
+          type: string
+      additionalProperties: false
+    Integrity:
+      type: object
+      required:
+        - type
+        - scope
+        - alg
+      properties:
+        type:
+          type: string
+          enum: [JWS, PKCS7]
+        scope:
+          description: |
+            list of field names included in the hash calculation, separated with spaces.
+            Can reference fields from subobjects using a notation such as *obj.fieldname* but
+            only fields with value as a primitive type, a list of primitive type, or a list
+            of object with an existing integrity block should be included.
+
+            Fields listed but not defined should be ignored.
+            
+            Fields listed and with a null value should be ignored.
+          type: string
+        alg:
+          description: |
+            Hash algorithm used to calculate hash and/or hashEnc.
+            possible values: SHA256, SHA384, SHA512.
+          type: string
+        hash:
+          description: |
+            Hash calculated from the attributes listed in scope. Hash is calculated using the following process:
+
+            - Build an intermediate JSON containing only the fields identified in the scope
+            - Canonicalize the JSON using RFC8785
+            - Hash the result
+            - Include the hash computation of any binary data referenced by URI from the JSON, by order of presence in the JSON
+          type: string
+        hashEnc:
+          description: similar to hash but using the encrypted values when available
+          type: string
+        signature:
+          description: |
+            the signature of the concatenation of hash and hashEnc string values (if available).
+            Compact format is used for JWS and PEM format for PKCS7.
+          type: string
+        signatureRef:
+          type: string
+          format: uri
+          description: URI to the signature data. DER format is accepted for PKCS7 to optimize the storage space.
+          example: "https://objectserver.com/signature?id=00003"
+      additionalProperties: false
     Enrollment:
       type: object
       required:
@@ -599,6 +669,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentData'
+        integrity:
+          $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     RequestData:
       type: object
@@ -713,6 +785,10 @@ components:
           type: string
         vendor:
           type: string
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     TemplateFormat:
       type: string
@@ -770,6 +846,8 @@ components:
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
+        encryption:
+          $ref: '#/components/schemas/Encryption'
       additionalProperties: false
     DocumentData:
       type: object
@@ -790,6 +868,8 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+        integrity:
+          $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     DocumentType:
       type: string

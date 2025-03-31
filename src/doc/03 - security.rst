@@ -265,7 +265,7 @@ Integrity is made possible with the addition of an ``integrity`` structure conta
 
 - the parameters,
 - the hashes,
-- the signature of the hashes, in detached mode.
+- the signature of the hashes, in detached mode if possible to save space
 
 The overall process for encrypting and signing the data is:
 
@@ -273,8 +273,8 @@ The overall process for encrypting and signing the data is:
 2. Calculate the hashes on the data in clear format (after canonicalization of an intermediate JSON, based on :rfc:`8785`),
    including any buffer listed in the scope in clear format
 3. Encrypt the buffers (images, PDF, etc.)
-4. Calculate a separate hash for the encrypted data
-5. Sign the hashes
+4. Calculate a separate hash for the same data but using encrypted data
+5. Sign the concatenation of the two hashes
 
 The process to validate the integrity is:
 
@@ -315,7 +315,6 @@ Considering the following JSON with already a local integrity block:
                     "alg": "SHA256",
                     "scope": "image biometricType biometricSubType",
                     "hash": "7a0f87b0ebb9236486f32d0f19fb560af06e74ba2a0b1202c167453471113787",
-                    "expiration": "2035-03-14T15:00:59.961563+01:00",
                     "signature": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImU5YmMwOTdhLWNlNTEtNDAzNi05NTYyLWQyYWRlODgyZGIwZCJ9..M2QHALUvZXw2PWW_BbX2khZd05BplwRgHJOPCPAlBC3ZQVLsCnvhmjMnON_L212V5fKC6lnpaCKIidUTaQqTgqBmptjXngS5nu3igvm1MPyy9t2-sScrDDRGIRZsxo_vBI4XQ1OyskB694m8v5kS99fLWeBIAPoe_Lr1lUPtSy9UL51AnwkOwH5sq9G0o92IAisvQ_aC1-YRR3sGgtOABc6MjsVNJidUl_FiiL58WSCQZTLEDxcvx8ECTD9f1MWenHkgomLJaAKGg5kl0BCVuJTDs1kqWeXeXU8n9fFpheIXGlP0psKB6wRgHQt2cylxqmflqbqObF75jRHC5e3Djg"
                 }
             }
@@ -357,7 +356,6 @@ The resulting SHA-256 hash would then be included in the global integrity block:
         "alg": "SHA256",
         "scope": "biometricData  biographicData.firstName biographicData.lastName",
         "hash": "ac902066fb1c8505c2e83085cae301907dca58ae0fb2ae7df07dd9375515e27c",
-        "expiration": "2035-03-14T15:12:31.901499+01:00",
         "signature": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImU5YmMwOTdhLWNlNTEtNDAzNi05NTYyLWQyYWRlODgyZGIwZCJ9..V3ud29ybT_S5XCdDdxQxWtSj4HI9QGqQQCmKeYO_v52f_RqKyqkUpoRgMD2phTdqt8HhdQgCYocg4GC0UwxADDB6TfdZUbRIAUX8hp4J79hc285krqblDAaZj6Ihee4BNA0_oWkDHV2ia9Ri4k2AbkXULNiIGkDy-qxGGlZiWTMNvvG7GBDfbXduWSg8FXPsFzH-ecExojWe7XvJGOAXfV8BDgbq4yfo6z7uVdVokS94NRYgdHY_GjIOPfuR74qNZImgQCer0be69BJ_Cq_8Tk2JDiIkBQ6SCscb1X3l457MMM7oa9AvzopB5-WqyHcN5Hk3PhW0luWQpnDFm05glw"
     }
 
