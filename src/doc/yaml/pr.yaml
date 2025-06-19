@@ -1254,8 +1254,7 @@ components:
             type: integer
         data:
           type: string
-          format: byte
-          description: Base64-encoded data of the document
+          description: Encoded data buffer
         dataRef:
           type: string
           format: uri
@@ -1299,8 +1298,7 @@ components:
           readOnly: true
         image:
           type: string
-          format: byte
-          description: Base64-encoded image
+          description: Encoded image buffer
         imageRef:
           type: string
           format: uri
@@ -1345,8 +1343,7 @@ components:
           description: A comment about the biometric data
         template:
           type: string
-          format: byte
-          description: Base64-encoded template
+          description: Encoded template buffer
         templateRef:
           type: string
           format: uri

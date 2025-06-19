@@ -720,8 +720,7 @@ components:
           description: Used to separate two distincts biometric items of the same type and subtype
         image:
           type: string
-          format: byte
-          description: Base64-encoded image
+          description: Encoded image buffer
         imageRef:
           type: string
           format: uri
@@ -766,8 +765,7 @@ components:
           description: A comment about the biometric data
         template:
           type: string
-          format: byte
-          description: Base64-encoded template
+          description: Encoded template buffer
         templateRef:
           type: string
           format: uri
@@ -822,8 +820,7 @@ components:
             type: integer
         data:
           type: string
-          format: byte
-          description: Base64-encoded data of the document
+          description: Encoded data buffer
         dataRef:
           type: string
           format: uri
