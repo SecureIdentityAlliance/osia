@@ -2830,18 +2830,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BiometricData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
         integrity:
           $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     ContextualData:
-      type: object
-      additionalProperties: true
+      description: The set of contextual data.
       example:
         enrollmentDate: "2019-01-11"
     BiographicData:
-      type: object
       description: The set of biographic data.
-      additionalProperties: true
       example:
         dateOfBirth: "1985-11-30"
         gender: M

@@ -669,12 +669,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
         integrity:
           $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     RequestData:
-      type: object
-      additionalProperties: true
       description: The data describing the request associated to the enrollment (i.e. why the enrollment is done). Can be extended.
       example:
         priority: 1
@@ -685,21 +685,16 @@ components:
           postalCode: "33500"
           country: France
     EnrollmentFlags:
-      type: object
-      additionalProperties: true
       description: The enrollment custom flags (i.e. the properties of the enrollment process). Can be extended.
       example:
         timeout: 3600
         other: "other"
     ContextualData:
-      type: object
-      additionalProperties: true
+      description: The set of contextual data.
       example:
         enrollmentDate: "2019-01-11"
     BiographicData:
-      type: object
       description: The set of biographic data.
-      additionalProperties: true
       example:
         firstName: John
         lastName: Doo

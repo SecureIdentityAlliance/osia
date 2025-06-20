@@ -382,8 +382,6 @@ components:
             $ref: '#/components/schemas/CredentialData'
         contactData:
           $ref: '#/components/schemas/ContactData'
-        integrity:
-          $ref: '#/components/schemas/Integrity'
       additionalProperties: false
       
     Encryption:
@@ -469,6 +467,7 @@ components:
     ContactData:
       type: object
       additionalProperties: true
+      description: The set of contact data.
       example:
         email: John.Doo@osia.com
         phone1: "555666777"
