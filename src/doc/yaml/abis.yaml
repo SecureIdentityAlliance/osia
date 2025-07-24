@@ -12,11 +12,9 @@ info:
       - Fix ambiguities:
         - HTTP code 200 and 204 were both specified for updateEncounter. Remove 204
         - make mandatory requestBody (considered mandatory in qualification test cases)
-      - readAllEncounters: add an optional query parameter to control sorting order
       - Add timestamps (creation date, last update date) in encounter data model
       - Accept ALL in readGAlleryContent
       - Add galleryId in response of identify (needed when making a search on ALL gallery)
-      - Ability to restrict the modality used for matching (identifyFromId, identifyFromEncounterId)
       - Add an optional parameter to specify a SLA for search services (for example to select a response time target)
       - For services returning a very long list (readGalleryContent), support as alternative the csv format (more efficient for size, parsing time, etc.)
       - new service to do a "patch update"
@@ -351,13 +349,6 @@ paths:
           required: false
           schema:
             type: integer
-        - name: sortedBy
-          in: query
-          description: "the attributes used to sort the result, ascending order unless the attribute name is preceded with a hyphen"
-          required: false
-          schema:
-            type: string
-            example: "-createdDate"
       responses:
         '200':
           description: Read successful
@@ -1993,19 +1984,6 @@ paths:
           required: false
           schema:
             type: integer
-        - name: biometricType
-          in: query
-          description: specify the modalities that can be used for this search (the other modalities, even if present in both the probe and the database, will not be used)
-          required: false
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/SearchBiometricType'
-          style: form
-          explode: true
-          example:
-            - FINGER
-            - IRIS
       requestBody:
         content:
           application/json:
@@ -3136,9 +3114,16 @@ components:
     Filter:
       type: object
       additionalProperties: true
+      description: |
+        Additional filters used during biometric matching.
+        It can include filters on biographicData or on biometricType
+        (the other modalities, even if present in both the probe and the database, will not be used)
+
       example:
         dateOfBirthMin: "1980-01-01"
         dateOfBirthMax: "2019-12-31"
+        biometricType: ["FINGER", "IRIS"]
+
     Candidate:
       type: object
       description: |
