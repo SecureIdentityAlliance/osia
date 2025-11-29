@@ -252,7 +252,7 @@ The need is to ensure the confidentiality and integrity of the sensitive data:
 Solution
 """"""""
 
-OSIA relies on two set of standards:
+OSIA relies on two sets of standards:
 
 - JWT-related standards (namely, :rfc:`7515` and :rfc:`7516`) for signature (JWS) and encryption (JWE).
 - PKCS#7 format (based on :rfc:`5652`)
@@ -268,20 +268,35 @@ Integrity is made possible with the addition of an ``integrity`` structure conta
 - the hash,
 - an optional signature of the hash, in detached mode if possible to save space
 
-The overall process for encrypting and signing the data is:
+The overall process for signing the data is:
 
-1. Define the scope of the integrity, i.e. which JSON nodes must be protected
-2. Calculate the hashes on the data in clear format (after canonicalization of an intermediate JSON, based on :rfc:`8785`),
-   including any buffer listed in the scope in clear format
-3. Encrypt the sensitive data (images, PDF, etc.)
-4. Calculate a second hash for the same data but with encrypted data
-5. Sign of the hashes
+1. Define the scope of the integrity, i.e. which JSON nodes must be considered in the operation.
+   This scope should follow :rfc:`9535` syntax to properly identify the nodes.
+2. Calculate the hashes on the data in clear format (after canonicalization of an intermediate JSON, based on :rfc:`8785`).
+3. Sign of the hashes
+
+Signature can be applied before or after encryption. This is controlled with an additional flag in the ``integrity`` structure.
 
 The process to validate the integrity is:
 
 1. Use the public key to decrypt the signatures and validate the hashes
 1. Recalculate the hash(es) from the data and the scope
 3. Compare the recalculated hash(es) and the hash(es) retrieved from the signature
+
+.. note::
+
+    In the case of images or other buffers:
+
+    - if the buffer is base64-encoded and directly embedded in the JSON, it is considered as any other
+      fields of type ``string``.
+    - if the buffer is externalized and referenced using a URL, for example in the ``imageRef`` attribute
+      of the ``BiometricData`` structure, then:
+
+      - the node name (``imageRef``, ``dataRef``) in the scope represents the value of the URL, i.e. the value present in the JSON.
+        So the URL can be included in the integrity but also encrypted if needed.
+      - the special pseudo attribute ``get`` can be used to indicate that the externalized buffer
+        has to be retrieved. It will then be base64-encoded and added to resulting JSON with the name
+        ``imageRef_get`` (or ``dataRef_get`` for documents).
 
 Example
 """""""
@@ -348,6 +363,29 @@ limited to the scope ``image biometricType biometricSubType``:
         "biometricSubType": "RIGHT_INDEX",
         "image": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE"
     }
+
+.. note::
+
+    In case the image is externalized, the scope ``imageRef biometricType biometricSubType`` would yield:
+
+    .. code-block:: json
+
+        {
+            "biometricType": "FINGER",
+            "biometricSubType": "RIGHT_INDEX",
+            "imageRef": "https://myserver.com/?id=123"
+        }
+
+    To include the downloaded buffer, the scope ``imageRef imageRef.get biometricType biometricSubType`` would be used to yield:
+
+    .. code-block:: json
+
+        {
+            "biometricType": "FINGER",
+            "biometricSubType": "RIGHT_INDEX",
+            "imageRef": "https://myserver.com/?id=123",
+            "imageRef_get": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE"
+        }
 
 After canonicalization, the JSON used as input for the hash calculation is:
 

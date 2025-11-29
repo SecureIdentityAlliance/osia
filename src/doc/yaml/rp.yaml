@@ -382,6 +382,12 @@ components:
             $ref: '#/components/schemas/CredentialData'
         contactData:
           $ref: '#/components/schemas/ContactData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false
       
     Encryption:

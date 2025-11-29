@@ -1684,18 +1684,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - filter
-                - biometricData
-              properties:
-                filter:
-                  $ref:  '#/components/schemas/Filter'
-                biometricData:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/BiometricData'
-              additionalProperties: false
+              $ref:  '#/components/schemas/IdentifyRequest'
       responses:
         '200':
           description: Request executed. Identification result is returned.
@@ -2121,15 +2110,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - biometricData
-              properties:
-                biometricData:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/BiometricData'
-              additionalProperties: false
+              $ref: '#/components/schemas/VerifyFromIdRequest'
       responses:
         '200':
           description: Verification execution successful
@@ -2269,20 +2250,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - biometricData1
-                - biometricData2
-              properties:
-                biometricData1:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/BiometricData'
-                biometricData2:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/BiometricData'
-              additionalProperties: false
+              $ref: '#/components/schemas/VerifyFromBioRequest'
       responses:
         '200':
           description: Verification execution successful
@@ -3220,4 +3188,63 @@ components:
         others:
           type: object
           additionalProperties: true
+      additionalProperties: false
+
+    IdentifyRequest:
+      type: object
+      required:
+        - filter
+        - biometricData
+      properties:
+        filter:
+          $ref:  '#/components/schemas/Filter'
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
+      additionalProperties: false
+
+    VerifyFromIdRequest:
+      type: object
+      required:
+        - biometricData
+      properties:
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
+      additionalProperties: false
+
+    VerifyFromBioRequest:
+      type: object
+      required:
+        - biometricData1
+        - biometricData2
+      properties:
+        biometricData1:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        biometricData2:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false

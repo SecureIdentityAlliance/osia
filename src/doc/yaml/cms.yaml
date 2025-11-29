@@ -1056,6 +1056,12 @@ components:
             type: string
             description: The unique id of the credential
           readOnly: true
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false
 
     CredentialData:
