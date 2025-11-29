@@ -91,29 +91,6 @@ Services
         In case of success, the person ID and the encounter ID are returned.
         In case of pending operation, the result will be sent later.
 
-.. py:function:: partialUpdateEncounter(personID, encounterID, galleryID, biographicData, contextualData, biometricData, callback, transactionID, options)
-    :noindex:
-
-    Update partially an encounter. Not all attributes are mandatory. The payload
-    is defined as per :rfc:`7396`.
-
-    **Authorization**: ``abis.encounter.write``
-
-    :param str personID: The person ID
-    :param str encounterID: The encounter ID
-    :param list(str) galleryID: the gallery ID to which this encounter belongs. A minimum of one gallery must be provided
-    :param dict biographicData: The biographic data (ex: name, date of birth, gender, etc.)
-    :param dict contextualData: The contextual data (ex: encounter date, location, etc.)
-    :param list biometricData: the biometric data (images)
-    :param bytes clientData: additional data not interpreted by the server but stored as is and returned
-        when encounter data is requested.
-    :param callback: The address of a service to be called when the result is available.
-    :param str transactionID: A free text used to track the system activities related to the same transaction.
-    :param dict options: the processing options. Supported options are ``priority``, ``algorithm``.
-    :return: a status indicating success, error, or pending operation.
-        In case of success, the person ID and the encounter ID are returned.
-        In case of pending operation, the result will be sent later.
-
 .. py:function:: deleteEncounter(personID, encounterID, callback, transactionID, options)
     :noindex:
 
@@ -279,7 +256,7 @@ Services
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``,
-        ``maxNbCand``, ``threshold``, ``accuracyLevel``, ``serviceLevel``, ``biometricType``.
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``, ``serviceLevel``.
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
@@ -298,7 +275,7 @@ Services
     :param callback: The address of a service to be called when the result is available.
     :param str transactionID: A free text used to track the system activities related to the same transaction.
     :param dict options: the processing options. Supported options are ``priority``,
-        ``maxNbCand``, ``threshold``, ``accuracyLevel``, ``serviceLevel``, ``biometricType``.
+        ``maxNbCand``, ``threshold``, ``accuracyLevel``, ``serviceLevel``.
     :return: a status indicating success, error, or pending operation.
         A list of candidates is returned, either synchronously or using the callback.
 
@@ -363,8 +340,6 @@ Options
         different behavior of the ABIS is expected (response time, accuracy, consolidation/fusion, etc.).
     * - ``serviceLevel``
       - Specify the level of services expected, for example the response time.
-    * - ``biometricType``
-      - Specify the modalities that can be used in some biometric searches
 
 Data Model
 """"""""""

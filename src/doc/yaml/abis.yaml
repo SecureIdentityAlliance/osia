@@ -15,7 +15,7 @@ info:
       - Add timestamps (creation date, last update date) in encounter data model
       - Accept ALL in readGAlleryContent
       - Add galleryId in response of identify (needed when making a search on ALL gallery)
-      - Add an optional parameter to specify a SLA for search services (for example to select a response time target)
+      - Add an optional parameter to specify a level of service for search services (for example to select a response time target)
       - For services returning a very long list (readGalleryContent), support as alternative the csv format (more efficient for size, parsing time, etc.)
       - new service to do a "patch update"
       - encounterId is no longer readonly in BiometricData (can be set to any value when the encounter is updated)
@@ -757,131 +757,6 @@ paths:
             post:
               summary: Update one encounter response callback
               operationId: updateEncounterCB
-              parameters:
-                # query parameters
-                - name: transactionId
-                  in: query
-                  required: true
-                  description: The id of the transaction
-                  schema:
-                    type: string
-                - name: taskId
-                  in: query
-                  required: true
-                  description: The id of the task, used to match this response with the request
-                  schema:
-                    type: string
-              requestBody:
-                required: true
-                description: Result of the update
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/ExtendablePersonIds'
-                  application/error+json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-              responses:
-                '204':
-                  description: Response is received and accepted.
-                '403':
-                  description: Forbidden access to the service
-                '500':
-                  description: Unexpected error
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
-    patch:
-      tags:
-        - CRUD
-      summary: Update partially one encounter
-      description: Update partially an encounter. Payload content is a partial encounter object compliant with RFC7396.
-      operationId: partialUpdateEncounter
-      security:
-        - BearerAuth: [abis.encounter.write]
-      parameters:
-        - name: personId
-          in: path
-          description: the id of the person
-          required: true
-          schema:
-            type: string
-        - name: encounterId
-          in: path
-          description: the id of the encounter
-          required: true
-          schema:
-            type: string
-        - name: transactionId
-          in: query
-          description: The id of the transaction
-          required: true
-          schema:
-            type: string
-        - name: callback
-          in: query
-          description: the callback address, where the result will be sent when available
-          required: false
-          schema:
-            type: string
-            format: uri
-            example: "http://client.com/callback"
-        - name: priority
-          in: query
-          description: "the request priority (0: lowest priority; 9: highest priority)"
-          required: false
-          schema:
-            type: integer
-        - name: algorithm
-          in: query
-          description: Hint about the algorithm to be used
-          required: false
-          schema:
-            type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Encounter'
-      responses:
-        '200':
-          description: Operation successful
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ExtendablePersonIds'
-        '202':
-          description: |
-            Request received successfully and correct, result will be returned through the callback.
-            An internal task ID is returned.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TaskId'
-        '400':
-          description: Bad request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-        '403':
-          description: Update not allowed
-        '404':
-          description: Unknown record
-        '500':
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      callbacks:
-        updateResponse:
-          '${request.query.callback}':
-            post:
-              summary: Update partially one encounter response callback
-              operationId: partialUpdateEncounterCB
               parameters:
                 # query parameters
                 - name: transactionId
@@ -1820,7 +1695,7 @@ paths:
             type: string
         - name: serviceLevel
           in: query
-          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
           required: false
           schema:
             type: integer
@@ -1980,7 +1855,7 @@ paths:
             type: string
         - name: serviceLevel
           in: query
-          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
           required: false
           schema:
             type: integer
@@ -2134,7 +2009,7 @@ paths:
             type: string
         - name: serviceLevel
           in: query
-          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
           required: false
           schema:
             type: integer
@@ -2276,7 +2151,7 @@ paths:
             type: string
         - name: serviceLevel
           in: query
-          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
           required: false
           schema:
             type: integer
@@ -2431,7 +2306,7 @@ paths:
             type: string
         - name: serviceLevel
           in: query
-          description: "the selected level of service (SLA) for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
           required: false
           schema:
             type: integer
@@ -2704,12 +2579,13 @@ paths:
           content:
             application/json:
               schema:
+                description: List of Person IDs, formatted as a JSON list. This is the default format if no Accept header is specified
                 type: array
                 items:
                   $ref: '#/components/schemas/PersonIds'
             text/csv:
               schema:
-                description: Person IDs returned as a CSV-formatted buffer
+                description: List of Person IDs, formatted as a CSV list. This format is only used when the Accept header is set to 'text/csv' in the HTTP request
                 type: string
                 example: |
                   PersonId, encounterId
