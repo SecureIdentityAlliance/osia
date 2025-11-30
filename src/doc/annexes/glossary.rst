@@ -57,14 +57,6 @@ Glossary
 
             text/plain; charset=utf-8
             application/json
-            application/vnd.github+json
-            application/vnd.github.v3+json
-            application/vnd.github.v3.raw+json
-            application/vnd.github.v3.text+json
-            application/vnd.github.v3.html+json
-            application/vnd.github.v3.full+json
-            application/vnd.github.v3.diff
-            application/vnd.github.v3.patch
 
     **OSIA**
         Open Standard Identity APIs
@@ -74,5 +66,7 @@ Glossary
         of the resident population of a country.
 
     **UIN**
-        Unique Identity Number.
+        Unique Identity Number
     
+    **PQC**
+        Post Quantum Cryptography

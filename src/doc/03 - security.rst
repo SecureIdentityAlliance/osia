@@ -268,6 +268,10 @@ Integrity is made possible with the addition of an ``integrity`` structure conta
 - the hash,
 - an optional signature of the hash, in detached mode if possible to save space
 
+The algorithms used must at least be compliant with :rfc:`7518`. But it is **highly recommended to apply the latest
+regulations from international organization such as NIST or ANSSI.** They provide up-to-date requirements
+for key size and algorithms, including Post Quantum Cryptography.
+
 The overall process for signing the data is:
 
 1. Define the scope of the integrity, i.e. which JSON nodes must be considered in the operation.
@@ -288,15 +292,18 @@ The process to validate the integrity is:
     In the case of images or other buffers:
 
     - if the buffer is base64-encoded and directly embedded in the JSON, it is considered as any other
-      fields of type ``string``.
-    - if the buffer is externalized and referenced using a URL, for example in the ``imageRef`` attribute
-      of the ``BiometricData`` structure, then:
+      fields of type ``string``. Use:
 
-      - the node name (``imageRef``, ``dataRef``) in the scope represents the value of the URL, i.e. the value present in the JSON.
-        So the URL can be included in the integrity but also encrypted if needed.
-      - the special pseudo attribute ``get`` can be used to indicate that the externalized buffer
-        has to be retrieved. It will then be base64-encoded and added to resulting JSON with the name
-        ``imageRef_get`` (or ``dataRef_get`` for documents).
+      - ``image`` for ``BiometricData``
+      - ``data`` for ``DocumentPart``
+
+    - if the buffer is externalized and referenced using a URL, with ``imageRef`` or ``dataRef`` attribute,
+
+      - the node name of the reference (``imageRef`` or ``dataRef``) when present in the scope points to the value of the URL itself.
+        It means that the URL can be included in the integrity and can be encrypted if needed.
+      - the node name of the buffer (``image`` or ``data``) can be used to continue to represent the base64-encoded buffer itself,
+        even if it is externalized.
+        This is by convention, to preserve the stability over time of the integrity/encryption structures.
 
 Example
 """""""
@@ -376,15 +383,15 @@ limited to the scope ``image biometricType biometricSubType``:
             "imageRef": "https://myserver.com/?id=123"
         }
 
-    To include the downloaded buffer, the scope ``imageRef imageRef.get biometricType biometricSubType`` would be used to yield:
+    To include the downloaded buffer, the scope ``image biometricType biometricSubType`` would be used
+    to retrieve and re-encode the buffer:
 
     .. code-block:: json
 
         {
             "biometricType": "FINGER",
             "biometricSubType": "RIGHT_INDEX",
-            "imageRef": "https://myserver.com/?id=123",
-            "imageRef_get": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE"
+            "image": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE"
         }
 
 After canonicalization, the JSON used as input for the hash calculation is:

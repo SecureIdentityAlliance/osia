@@ -27,16 +27,18 @@ References
         - JSON Web Signature (JWS). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7515
       * - [RFC7516]
         - JSON Web Encryption (JWE). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7516
+      * - [RFC7518]
+        - JSON Web Algorithms (JWA). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7518
       * - [RFC7519]
         - JSON Web Token (JWT). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7519
-      * - [RFC9110]
-        - HTTP Semantics. June 2022. URL: https://www.rfc-editor.org/rfc/rfc9110
-      * - [RFC9457]
-        - Problem Details for HTTP APIs. URL: https://www.rfc-editor.org/rfc/rfc9457.html
       * - [RFC8725]
         - JSON Web Token Best Current Practices. URL: https://www.rfc-editor.org/rfc/rfc8725
       * - [RFC8785]
         - JSON Canonicalization Scheme. URL: https://www.rfc-editor.org/rfc/rfc8785
+      * - [RFC9110]
+        - HTTP Semantics. June 2022. URL: https://www.rfc-editor.org/rfc/rfc9110
+      * - [RFC9457]
+        - Problem Details for HTTP APIs. URL: https://www.rfc-editor.org/rfc/rfc9457.html
       * - [RFC9535]
         - JSONPath: Query Expressions for JSON. URL: https://www.rfc-editor.org/rfc/rfc9535
       * - [ISO8601]
