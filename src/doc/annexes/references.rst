@@ -9,6 +9,8 @@ References
         - Key words for use in RFCs to Indicate Requirement Levels. March 1997. Best Current Practice. URL: https://tools.ietf.org/html/rfc2119
       * - [RFC3230]
         - Instance Digests in HTTP. January 2002. URL: https://www.rfc-editor.org/rfc/rfc3230
+      * - [RFC4180]
+        - Common Format and MIME Type for Comma-Separated Values (CSV) Files. October 2005. URL: https://www.rfc-editor.org/rfc/rfc4180
       * - [RFC6750]
         - The OAuth 2.0 Authorization Framework: Bearer Token Usage. October 2012. URL: https://www.rfc-editor.org/rfc/rfc6750
       * - [RFC6838]

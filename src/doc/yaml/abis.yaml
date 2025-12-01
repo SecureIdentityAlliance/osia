@@ -9,6 +9,17 @@ info:
     Change log:
 
     - 1.6.0:
+      - Fix ambiguities:
+        - HTTP code 200 and 204 were both specified for updateEncounter. Remove 204
+        - make mandatory requestBody (considered mandatory in qualification test cases)
+      - Add timestamps (creation date, last update date) in encounter data model
+      - Accept ALL in readGAlleryContent
+      - Add galleryId in response of identify (needed when making a search on ALL gallery)
+      - Add an optional parameter to specify a level of service for search services (for example to select a response time target)
+      - For services returning a very long list (readGalleryContent), support as alternative the csv format (more efficient for size, parsing time, etc.)
+      - encounterId is no longer readonly in BiometricData (can be set to any value when the encounter is updated)
+      - updateEncounterGalleries: add constraints on the new list of galleries: at least one gallery and no duplicate
+      - make galleries mandatory in Encounter structure
       - Added methods to manage asynchronous responses (callbacks):
         - New Get Response Status method (readTaskStatus)
         - New Retrigger Response method (redeliverTaskResult)
@@ -110,6 +121,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -230,6 +242,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -468,6 +481,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -703,6 +717,7 @@ paths:
           schema:
             type: string
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -722,8 +737,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskId'
-        '204':
-          description: Update successful
         '400':
           description: Bad request
           content:
@@ -1286,6 +1299,7 @@ paths:
             format: uri
             example: "http://client.com/callback"
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1293,6 +1307,8 @@ paths:
               description: List of the new galleries for this encounter.
               items:
                 type: string
+              minItems: 1
+              uniqueItems: true
               example: [VIP, CRIMINAL]
       responses:
         '202':
@@ -1679,7 +1695,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -1832,6 +1855,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -1980,6 +2009,12 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
         content:
           application/json:
@@ -2066,7 +2101,7 @@ paths:
     post:
       tags:
         - Search
-      summary: Biometric verification
+      summary: Biometric verification based on existing data
       description: Verification of one set of biometric data and a record in the system
       operationId: verifyFromId
       security:
@@ -2116,7 +2151,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2264,7 +2306,14 @@ paths:
           required: false
           schema:
             type: string
+        - name: serviceLevel
+          in: query
+          description: "the selected level of service for this request, for example to select a maximum response time (0: lowest level; 9: highest level)"
+          required: false
+          schema:
+            type: integer
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -2488,7 +2537,7 @@ paths:
       parameters:
         - name: galleryId
           in: path
-          description: the id of the gallery.
+          description: the id of the gallery. **The special value 'ALL' is used to get the content of all galleries**
           required: true
           schema:
             type: string
@@ -2532,9 +2581,20 @@ paths:
           content:
             application/json:
               schema:
+                description: List of Person IDs, formatted as a JSON list. This is the default format if no Accept header is specified
                 type: array
                 items:
                   $ref: '#/components/schemas/PersonIds'
+            text/csv:
+              schema:
+                description: List of Person IDs, formatted as a CSV list. This format is only used when the Accept header is set to 'text/csv' in the HTTP request
+                type: string
+                example: |
+                  PersonId, encounterId
+                  0001, 01
+                  0001, 02
+                  0002, 01
+              
         '202':
           description: |
             Request received successfully and correct, result will be returned through the callback.
@@ -2732,6 +2792,7 @@ components:
         - status
         - encounterId
         - encounterType
+        - galleries
         - biometricData
       properties:
         encounterId:
@@ -2743,6 +2804,16 @@ components:
         encounterType:
           type: string
           description: Type of the encounter
+        createdDate:
+          description: Date & time when the encounter was created
+          type: string
+          format: date-time
+          example: "2024-11-18T14:21:00+01:00"
+        updatedDate:
+          description: Date & time when the encounter was last updated
+          type: string
+          format: date-time
+          example: "2024-11-18T14:21:00+01:00"
         galleries:
           type: array
           description: The list of galleries for this object.
@@ -2790,7 +2861,6 @@ components:
         encounterId:
           type: string
           description: the id of the encounter owner of this biometric
-          readOnly: true
         image:
           type: string
           format: byte
@@ -3004,9 +3074,16 @@ components:
     Filter:
       type: object
       additionalProperties: true
+      description: |
+        Additional filters used during biometric matching.
+        It can include filters on biographicData or on biometricType
+        (the other modalities, even if present in both the probe and the database, will not be used)
+
       example:
         dateOfBirthMin: "1980-01-01"
         dateOfBirthMax: "2019-12-31"
+        biometricType: ["FINGER", "IRIS"]
+
     Candidate:
       type: object
       description: |
@@ -3065,6 +3142,13 @@ components:
           example: 3500
         encounterId:
           type: string
+        galleries:
+          type: array
+          description: Optional information about the galleries considered during the search (needed when the search is done against the ALL gallery)
+          items:
+            type: string
+          minItems: 1
+          uniqueItems: true
         biometricType:
           $ref: '#/components/schemas/BiometricType'
         biometricSubType:
