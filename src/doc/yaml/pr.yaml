@@ -8,7 +8,8 @@ info:
 
     Change log:
     
-    - 1.4.2:
+    - 1.5.0:
+      - Add structures to manage data encryption and integrity
       - identityId not read only in BiometricData (can be set to any value when the identity is updated)
     - 1.4.1:
       - Add missing values in BiometricSubType
@@ -40,7 +41,7 @@ info:
       - Change the mandatory flag for the status, based on the type of service
     - 1.0.0: Initial version
 
-  version: 1.4.2
+  version: 1.5.0
   title: OSIA Population Registry Interface
   license:
     name: SIA
@@ -1068,6 +1069,96 @@ components:
           description: Error message
           type: string
       additionalProperties: false
+    Encryption:
+      type: object
+      description: if present, indicates that a part of the data is encrypted using the provided format.
+      required:
+        - type
+        - scope
+      properties:
+        type:
+          type: string
+          enum: [JWE, PKCS7]
+        scope:
+          description: |
+            A whitespace-separated list of JSON paths to nodes containing encrypted data.
+            For each node:
+
+            - If the node is a JSON object, the full content is encrypted and the node transformed to a single buffer.
+              Canonicalization is recommended before encryption but not mandatory.
+            - If the node is an embedded buffer (image, PDF, etc.), the value is replaced with the encrypted data.
+            - If the node is a URL to a buffer, the node remains a URL in clear format but the
+              pointed buffer is encrypted.
+          type: string
+      additionalProperties: false
+    Integrity:
+      description: |
+        Object describing the integrity (hash and signature) of a sub set of data.
+
+        It is possible to calculate multiple integrity blocks corresponding to different
+        use cases: integrity before encryption, integrity limited to a small sub set of data and easy
+        to check, etc.
+      type: object
+      required:
+        - scope
+        - alg
+        - hash
+      properties:
+        id:
+          type: string
+          description: An optional ID used in JSONPath expression to select a single integrity object
+        type:
+          type: string
+          description: |
+            Format of the signature of the hash.
+
+            Cryptographic signature is optional. Use NONE when only the hash is required.
+          enum: [NONE, JWS, PKCS7]
+          default: NONE
+        scope:
+          description: |
+            A whitespace-separated list of JSON paths to nodes containing the data to include in the
+            hash calculation.
+
+            It is used to build a JSON limited to the nodes identified in this scope. Then this
+            JSON is canonicalized and a hash is calculated.
+          type: string
+        alg:
+          description: |
+            Hash algorithm used to calculate the hash.
+            Example of possible values: SHA256, SHA384, SHA512.
+          type: string
+        encrypted:
+          description: if true, indicates that the hash was calculated using encrypted data.
+          type: boolean
+          default: false
+        followRef:
+          description: |
+            if true, indicates that the referenced buffers must be fetched and included in the hash.
+            If false, only the URL is considered for the hash calculation
+          type: boolean
+          default: false
+        hash:
+          description: |
+            Hash calculated from the attributes listed in scope. Hash is calculated using the following process:
+
+            - Build an intermediate JSON containing only the fields identified in the scope
+            - Canonicalize the JSON using RFC8785
+            - Hash the result
+            - If 'followRef' is true, include in the hash computation the binary data referenced
+              by URI included in the scope.
+          type: string
+        signature:
+          description: |
+            the signature of the hash.
+            Compact format is used for JWS and PEM format for PKCS7.
+          type: string
+        signatureRef:
+          type: string
+          format: uri
+          description: URI to the signature data. DER format is accepted for PKCS7 to optimize the storage space.
+          example: "https://objectserver.com/signature?id=00003"
+      additionalProperties: false
     Person:
       description: >-
         Person entity.
@@ -1124,16 +1215,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DocumentData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     ContextualData:
-      type: object
-      additionalProperties: true
+      description: The set of contextual data.
       example:
         enrollmentDate: "2019-01-11"
     BiographicData:
-      type: object
       description: The set of biographic data.
-      additionalProperties: true
       example:
         firstName: John
         lastName: Doo
@@ -1165,6 +1259,10 @@ components:
           minItems: 1
           items:
             $ref: '#/components/schemas/DocumentPart'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     DocumentType:
       type: string
@@ -1182,8 +1280,7 @@ components:
             type: integer
         data:
           type: string
-          format: byte
-          description: Base64-encoded data of the document
+          description: Encoded data buffer
         dataRef:
           type: string
           format: uri
@@ -1199,12 +1296,19 @@ components:
           type: string
           description: the nature and format of the document. The mime type definitions should be in compliance with RFC 6838.
         captureDate:
+          description: Data & time of the data capture, using RFC3339 format
           type: string
           format: date-time
-          example: "2019-05-21T12:00:00Z"
+          example: "2019-05-21T12:00:00+01:00"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the document part
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     BiometricData:
       type: object
@@ -1223,17 +1327,17 @@ components:
           description: the id of the identity owner of this biometric
         image:
           type: string
-          format: byte
-          description: Base64-encoded image
+          description: Encoded image buffer
         imageRef:
           type: string
           format: uri
           description: URI to an image
           example: "http://imageserver.com/image?id=00003"
         captureDate:
+          description: Data & time of the data capture, using RFC3339 format
           type: string
           format: date-time
-          example: "2019-05-21T12:00:00Z"
+          example: "2019-05-21T12:00:00+01:00"
         captureDevice:
           type: string
           description: A string identifying the device used to capture the biometric
@@ -1268,8 +1372,7 @@ components:
           description: A comment about the biometric data
         template:
           type: string
-          format: byte
-          description: Base64-encoded template
+          description: Encoded template buffer
         templateRef:
           type: string
           format: uri
@@ -1287,6 +1390,12 @@ components:
           type: string
         vendor:
           type: string
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
       additionalProperties: false
     TemplateFormat:
       type: string

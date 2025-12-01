@@ -220,6 +220,251 @@ included in this document must be changed to:
 
 See the different YAML files provided in :ref:`chapter-tech-specs`.
 
+Confidentiality and Integrity
+-----------------------------
+
+Since OSIA version 7.0, the interfaces support the encryption of sensitive data
+(images of biometrics, PDF of supporting documents, biographic data)
+and the protection of the integrity of data.
+
+This is done with new data elements in the data model, designed to protect a subpart of the data.
+It is complementary to other security protections that address the complete set of data:
+
+- At the network level, it is recommended for implementations to use TLS and authorization tokens
+- In addition to TLS, implementations remain free to encrypt or sign the complete payloads
+
+The encryption and signature proposed in this specification can be applied from data capture up to database storage.
+For example biometric images can be signed by the enrollment operator and this signature can be stored in the central
+database for later audit.
+
+Rationale and Goals
+"""""""""""""""""""
+
+The need is to ensure the confidentiality and integrity of the sensitive data:
+
+- the confidentiality of images and attached buffers for biometrics and supporting documents,
+  to prevent unauthorized entities from accessing a data,
+- the (local) integrity of one single piece of data, for example one single biometric data,
+  to prevent any alteration and to keep track of who or what inserted the data in the system,
+- the (global) integrity of one complete record, including biographic data, biometric data and document data,
+  to prevent inversions or replacements inside the same record.
+
+Solution
+""""""""
+
+OSIA relies on two sets of standards:
+
+- JWT-related standards (namely, :rfc:`7515` and :rfc:`7516`) for signature (JWS) and encryption (JWE).
+- PKCS#7 format (based on :rfc:`5652`)
+
+Encryption is made possible with the addition of an ``encryption`` structure containing the parameters
+of the encryption.
+The encrypted data is then replacing the raw data, with almost no change to OSIA message structure.
+Encrypted buffer can be embedded in the JSON or *externalized* and referenced with a URI.
+
+Integrity is made possible with the addition of an ``integrity`` structure containing:
+
+- the parameters (algorithm, JSON nodes to consider),
+- the hash,
+- an optional signature of the hash, in detached mode if possible to save space
+
+The algorithms used must at least be compliant with :rfc:`7518`. But it is **highly recommended to apply the latest
+regulations from international organization such as NIST or ANSSI.** They provide up-to-date requirements
+for key size and algorithms, including Post Quantum Cryptography.
+
+The overall process for signing the data is:
+
+1. Define the scope of the integrity, i.e. which JSON nodes must be considered in the operation.
+   This scope should follow :rfc:`9535` syntax to properly identify the nodes.
+2. Calculate the hashes on the data in clear format (after canonicalization of an intermediate JSON, based on :rfc:`8785`).
+3. Sign of the hashes
+
+Signature can be applied before or after encryption. This is controlled with an additional flag in the ``integrity`` structure.
+
+The process to validate the integrity is:
+
+1. Use the public key to decrypt the signatures and validate the hashes
+1. Recalculate the hash(es) from the data and the scope
+3. Compare the recalculated hash(es) and the hash(es) retrieved from the signature
+
+.. note::
+
+    In the case of images or other buffers:
+
+    - if the buffer is base64-encoded and directly embedded in the JSON, it is considered as any other
+      fields of type ``string``. Use:
+
+      - ``image`` for ``BiometricData``
+      - ``data`` for ``DocumentPart``
+
+    - if the buffer is externalized and referenced using a URL, with ``imageRef`` or ``dataRef`` attribute,
+
+      - the node name of the reference (``imageRef`` or ``dataRef``) when present in the scope points to the value of the URL itself.
+        It means that the URL can be included in the integrity and can be encrypted if needed.
+      - the node name of the buffer (``image`` or ``data``) can be used to continue to represent the base64-encoded buffer itself,
+        even if it is externalized.
+        This is by convention, to preserve the stability over time of the integrity/encryption structures.
+
+Example
+"""""""
+
+Considering the following JSON, describing an identity with one biometric and one supporting document:
+
+.. code-block:: json
+
+    {
+        "identityType": "string",
+        "status": "CLAIMED",
+        "galleries": ["SAMPLE"],
+        "clientData": "c3RyaW5n",
+        "contextualData": {
+        },
+        "biographicData": {
+            "lastName": "Smith",
+            "firstName": "Alice",
+            "dateOfBirth": "1987-11-30",
+            "gender": "F",
+            "nationality": "FRA"
+        },
+        "biometricData": [
+            {
+                "biometricType": "FINGER",
+                "biometricSubType": "RIGHT_INDEX",
+                "image": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE",
+                "vendor": "SIA"
+            }
+        ],
+        "documentData": [
+            {
+                "documentType": "FORM",
+                "parts": [
+                    {
+                        "pages": [
+                            1,
+                            2
+                        ],
+                        "data": "c3RyaW5n",
+                        "mimeType": "application/pdf",
+                        "captureDate": "2019-05-21T12:00:00+02:00"
+                    },
+                    {
+                        "pages": [
+                            3
+                        ],
+                        "data": "c3RyaW5n",
+                        "mimeType": "application/pdf",
+                        "captureDate": "2019-05-21T12:00:00+02:00"
+                    }
+                ]
+            }
+        ]
+    }
+
+First integrity computation on the single biometric would generate an intermediate JSON
+limited to the scope ``image biometricType biometricSubType``:
+
+.. code-block:: json
+
+    {
+        "biometricType": "FINGER",
+        "biometricSubType": "RIGHT_INDEX",
+        "image": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE"
+    }
+
+.. note::
+
+    In case the image is externalized, the scope ``imageRef biometricType biometricSubType`` would yield:
+
+    .. code-block:: json
+
+        {
+            "biometricType": "FINGER",
+            "biometricSubType": "RIGHT_INDEX",
+            "imageRef": "https://myserver.com/?id=123"
+        }
+
+    To include the downloaded buffer, the scope ``image biometricType biometricSubType`` would be used
+    to retrieve and re-encode the buffer:
+
+    .. code-block:: json
+
+        {
+            "biometricType": "FINGER",
+            "biometricSubType": "RIGHT_INDEX",
+            "image": "SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE"
+        }
+
+After canonicalization, the JSON used as input for the hash calculation is:
+
+.. code-block:: json
+
+    {"biometricSubType":"RIGHT_INDEX","biometricType":"FINGER","image":"SU1BR0UgQlVGRkVSIEJBU0U2NCBFTkNPREVE"}
+
+Similarly, the scope ``documentType parts[*].pages parts[*].data`` yields:
+
+.. code-block:: json
+
+    {
+        "documentType": "FORM",
+        "parts": [
+            {
+                "pages": [
+                    1,
+                    2
+                ],
+                "data": "c3RyaW5n"
+            },
+            {
+                "pages": [
+                    3
+                ],
+                "data": "c3RyaW5n"
+            }
+        ]
+    }
+
+and after canonicalization:
+
+.. code-block:: json
+
+    {"documentType":"FORM","parts":[{"data":"c3RyaW5n","pages":[1,2]},{"data":"c3RyaW5n","pages":[3]}]}
+
+Once the local integrity blocks are calculated, the global integrity can be evaluated on a scope referencing the hashes of the local integrity blocks
+``biographicData.firstName biographicData.lastName biometricData[*].integrity[?@.id=='1'].hash documentData[*].integrity[?@.id=='1'].hash``:
+
+.. code-block:: json
+
+    {
+        "biographicData": {
+            "lastName": "Smith",
+            "firstName": "Alice"
+        },
+        "biometricData": [
+            {
+                "integrity": [
+                    {
+                        "hash": "7a0f87b0ebb9236486f32d0f19fb560af06e74ba2a0b1202c167453471113787"
+                    }
+                ]
+            }
+        ],
+        "documentData": [
+            {
+                "integrity": [
+                    {
+                        "hash": "af91f5af01fe20f57ad56edf5a9cdf1d4e003f6202fd5c19393a0ed7b543310b"
+                    }
+                ]
+            }
+        ]
+    }
+
+and after canonicalization, the input for the global hash is:
+
+.. code-block:: json
+
+    {"biographicData":{"firstName":"Alice","lastName":"Smith"},"biometricData":[{"integrity":[{"hash":"7a0f87b0ebb9236486f32d0f19fb560af06e74ba2a0b1202c167453471113787"}]}],"documentData":[{"integrity":[{"hash":"af91f5af01fe20f57ad56edf5a9cdf1d4e003f6202fd5c19393a0ed7b543310b"}]}]}
+
 Privacy by Design
 -----------------
 
