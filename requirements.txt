@@ -2,4 +2,4 @@ sphinx==7.4.7
 Pillow
 sphinxcontrib-httpdomain==1.8.1
 sphinxcontrib-plantuml==0.30
-sc-oa==0.7.0.14
+sc-oa==0.7.0.16
