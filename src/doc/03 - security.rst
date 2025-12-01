@@ -169,6 +169,7 @@ The following table is a summary of all scopes defined in OSIA.
     Cancel Credential Request           ``cms.request.write``
     Find Credentials                    ``cms.credential.read``
     Read Credential                     ``cms.credential.read``
+    Update Credential                   ``cms.credential.write``
     Suspend Credential                  ``cms.credential.write``
     Unsuspend Credential                ``cms.credential.write``
     Revoke Credential                   ``cms.credential.write``

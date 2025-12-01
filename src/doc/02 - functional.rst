@@ -219,6 +219,7 @@ The following table describes in detail the interfaces and associated services.
     Cancel Credential Request          Cancel the requested issuance of a secure credential
     Find Credentials                   Retrieve a list of credentials that match the passed in search criteria
     Read Credential                    Retrieve the attributes/status of an issued credential (smart card, mobile, passport, etc.)
+    Update Credential                  Update some of the attributes of an issued credential
     Suspend Credential                 Suspend an issued credential. For electronic credentials this will suspend any PKI certificates that are present
     Unsuspend Credential               Unsuspend an issued credential. For electronic credentials this will unsuspend any PKI certificates that are present
     Revoke Credential                  Revoke an issued credential. For electronic credentials this will revoke any PKI certificates that are present
