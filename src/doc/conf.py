@@ -8,7 +8,7 @@ master_doc = 'index'
 exclude_patterns = []
 pygments_style = 'colorful'
 project = 'OSIA'
-release = '6.2.0-DRAFT'
+release = '7.0-DRAFT'
 author = 'SIA'
 
 numfig = True
@@ -130,6 +130,9 @@ latex_elements = {
 \\usepackage{makeidx}
 \\usepackage[columns=1]{idxlayout}
 
+\\usepackage{draftwatermark}
+\\SetWatermarkScale{0.5}
+
 ''' + r'''
 
 \renewcommand*{\sphinxstyletheadfamily}{\cellcolor{tableheader}\sffamily\color{white}}
@@ -183,6 +186,12 @@ latex_elements = {
 
 'classoptions' : ',english,openany,oneside'
 }
+
+if 'DRAFT' in release:
+    latex_elements['preamble'] += '\\SetWatermarkText{DRAFT}'
+else:
+    latex_elements['preamble'] += '\\SetWatermarkText{}'
+
 
 # Copy images
 import os,shutil,fnmatch
