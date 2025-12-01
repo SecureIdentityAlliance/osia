@@ -10,6 +10,7 @@ info:
     
     - 1.5.0:
       - Add structures to manage data encryption and integrity
+      - identityId not read only in BiometricData (can be set to any value when the identity is updated)
     - 1.4.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -1324,7 +1325,6 @@ components:
         identityId:
           type: string
           description: the id of the identity owner of this biometric
-          readOnly: true
         image:
           type: string
           description: Encoded image buffer

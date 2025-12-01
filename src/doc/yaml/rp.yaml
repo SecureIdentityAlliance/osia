@@ -10,6 +10,7 @@ info:
 
     - 1.2.0:
       - Add structures to manage data encryption and integrity
+      - encounterId not read only in BiometricData
     - 1.1.1:
       - Add missing values in BiometricSubType
     - 1.1.0:
@@ -516,7 +517,6 @@ components:
         encounterId:
           type: string
           description: the id of the encounter owner of this biometric
-          readOnly: true
         image:
           type: string
           description: Encoded image buffer

@@ -11,6 +11,8 @@ References
         - Instance Digests in HTTP. January 2002. URL: https://www.rfc-editor.org/rfc/rfc3230
       * - [RFC3339]
         - Date and Time on the Internet: Timestamps. July 2002. URL: https://www.rfc-editor.org/rfc/rfc3339
+      * - [RFC4180]
+        - Common Format and MIME Type for Comma-Separated Values (CSV) Files. October 2005. URL: https://www.rfc-editor.org/rfc/rfc4180
       * - [RFC5652]
         - Cryptographic Message Syntax (CMS). September 2009. URL: https://www.rfc-editor.org/rfc/rfc5652
       * - [RFC6750]
