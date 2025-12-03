@@ -89,6 +89,20 @@ Services
     :return: a status indicating success or error, in the case of success the
         requested data will be returned.
 
+.. py:function:: updateCredential(credentialID, credentialData, transactionID)
+    :noindex:
+
+    Update some of the attributes of an issued credential. Only a limited set
+    of attributes may be changed, for example expiry date, issuing place, etc.
+
+    **Authorization**: ``cms.credential.write``
+
+    :param str credentialID: The ID of the credential.
+    :param dict credentialData: The new value of the credential data.
+    :param string transactionID: The client generated transactionID.
+    :return: a status indicating success or error, in the case of success the
+        requested data will be returned.
+
 .. py:function:: suspendCredential(credentialID, additionalData, transactionID)
     :noindex:
 
@@ -201,6 +215,13 @@ Data Model
 
       - ID, status, dates, serial number
 
+    * - Credential Profile
+      - This object identifies the type of credential. It is characterized
+        with a set of attributes such as the version, the number of pages, etc.
+
+        Similar to the rulebook published in the context of digital identity, it could be interesting for
+        a system implementing OSIA to publish a description of the credential profiles implemented.
+      - Passport, ID card, Diplomatic passport 
     * - Biometric Data
       - Digital representation of biometric characteristics.
       

@@ -10,6 +10,7 @@ info:
     
     - 1.3.0:
       - Add structures to manage data encryption and integrity
+      - Accept Verifiable Credential as supporting document
     - 1.2.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create operations
@@ -236,6 +237,19 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Enrollment'
+            examples:
+              Example of updating only 2 biographicData elements:
+                value:
+                  biographicData:
+                    gender: null
+                    nationality: FRA
+              Example of updating the list of documents with one VerifiableCredential:
+                value:
+                  documentData:
+                  - documentType: ID_CARD
+                    parts:
+                    - data: "VC DATA"
+                      mimeType: application/vc
       responses:
         '204':
           description: Update successful
@@ -855,7 +869,10 @@ components:
           description: the height of the image in pixels
         mimeType:
           type: string
-          description: the nature and format of the document. The mime type definitions should be in compliance with RFC 6838.
+          description: |
+            the nature and format of the document.
+            The mime type definitions should be in compliance with RFC 6838.
+            Verifiable Credentials can be used if the proper mimeType is used.
         captureDate:
           description: Data & time of the data capture, using RFC3339 format
           type: string

@@ -10,6 +10,8 @@ info:
     
     - 1.3.0:
       - Add structures to manage data encryption and integrity
+      - Add service updateCredential
+      - Add attributes to better define the credentialProfile. For flexibility it can defined either in the request/credential or in the credential profile itself
     - 1.2.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create operations
@@ -331,6 +333,51 @@ paths:
                 $ref: '#/components/schemas/Error'
         '403':
           description: Read not allowed
+        '404':
+          description: Unknown record
+        '500':
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - Credential
+      summary: Update a credential
+      operationId: updateCredential
+      security:
+        - BearerAuth: [cms.credential.write]
+      parameters:
+        - name: credentialId
+          in: path
+          description: the id of the credential
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          in: query
+          description: The id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CredentialData'
+      responses:
+        '204':
+          description: Update successful
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Operation not allowed
         '404':
           description: Unknown record
         '500':
@@ -971,7 +1018,16 @@ components:
           description: "the request priority (0: lowest priority; 9: highest priority)"
         credentialProfileId:
           type: string
-          description: The id of the credential profile to request
+          description: The id of the credential profile requested
+        credentialProfileVersion:
+          type: string
+          description: The version of the credential profile
+        credentialProfileSubtype:
+          type: string
+          description: The subtype of the credential profile, for example diplomatic for a passport
+        numberOfPages:
+          type: integer
+          description: The number of pages, in case the requested credential is a booklet, for example for a passport
         requestType:
           type: string
           description: The type of request, e.g. first issuance, renewal, etc.
@@ -1089,23 +1145,42 @@ components:
         credentialNumber:
           type: string
           description: "The number attached to the credential (ex: passport number)"
+          readOnly: true
         personId:
           type: string
           description: The unique id of the person that the credential request is for
+          readOnly: true
         credentialProfileId:
           type: string
           description: The unique id of the credential profile
+          readOnly: true
+        credentialProfileVersion:
+          type: string
+          description: The version of the credential profile
+          readOnly: true
+        credentialProfileSubtype:
+          type: string
+          description: The subtype of the credential profile, for example diplomatic for a passport
+          readOnly: true
+        numberOfPages:
+          type: integer
+          description: The number of pages, in case the requested credential is a booklet, for example for a passport
+          readOnly: true
         issuedDate:
           type: string
           format: date-time
           description: The date and time that this credential was issued
+          readOnly: true
+          example: "2025-12-25T12:00:00"
         expiryDate:
           type: string
           format: date-time
           description: The date and time that this credential expires
+          example: "2035-12-25T12:00:00"
         serialNumber:
           type: string
           description: the serial number of the credential
+          readOnly: true
         issuingAuthority:
           type: string
           description: "The authority issuing the credential (ex: the Ministry of Interior)"
@@ -1141,6 +1216,15 @@ components:
         defaultLifetime:
           type: integer
           description: The default number of days that this credential will be considered valid for after issuance.
+        credentialProfileVersion:
+          type: string
+          description: The version of the credential profile
+        credentialProfileSubtype:
+          type: string
+          description: The subtype of the credential profile, for example diplomatic for a passport
+        numberOfPages:
+          type: integer
+          description: The number of pages, in case the requested credential is a booklet, for example for a passport
       additionalProperties: false
     Expression:
       type: object

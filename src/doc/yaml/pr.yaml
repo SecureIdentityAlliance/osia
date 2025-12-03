@@ -11,6 +11,7 @@ info:
     - 1.5.0:
       - Add structures to manage data encryption and integrity
       - identityId not read only in BiometricData (can be set to any value when the identity is updated)
+      - Accept Verifiable Credential as supporting document
     - 1.4.1:
       - Add missing values in BiometricSubType
       - Use HTTP code 409 in case of conflict of ID in create/move operations
@@ -663,11 +664,20 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Identity'
-            example:
-              galleries: [G1, G2]
-              biographicData:
-                gender: null
-                nationality: FRA
+            examples:
+              Example of updating only the galleries and 2 biographicData elements:
+                value:
+                  galleries: [G1, G2]
+                  biographicData:
+                    gender: null
+                    nationality: FRA
+              Example of updating the list of documents with one VerifiableCredential:
+                value:
+                  documentData:
+                  - documentType: ID_CARD
+                    parts:
+                    - data: "VC DATA"
+                      mimeType: application/vc
       responses:
         '204':
           description: Update successful
@@ -1294,7 +1304,10 @@ components:
           description: the height of the image in pixels
         mimeType:
           type: string
-          description: the nature and format of the document. The mime type definitions should be in compliance with RFC 6838.
+          description: |
+            the nature and format of the document.
+            The mime type definitions should be in compliance with RFC 6838.
+            Verifiable Credentials can be used if the proper mimeType is used.
         captureDate:
           description: Data & time of the data capture, using RFC3339 format
           type: string
