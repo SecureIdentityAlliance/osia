@@ -1,0 +1,858 @@
+
+# (c) Secure Identity Alliance
+
+openapi: 3.0.0
+info:
+  description: |
+    The OSIA Third Party Services Interface
+    
+    Change log:
+
+    - 1.2.0:
+      - Add structures to manage data encryption and integrity
+      - encounterId not read only in BiometricData
+      - Rename to "Third Party Services" and remove existing tag
+    - 1.1.1:
+      - Add missing values in BiometricSubType
+    - 1.1.0:
+      - Change date to date-time
+      - Add the encounterId to biometricData
+      - Add the impressionType, mimeType, template, templateRef, templateFormat to biometricData
+      - Do not mix fixed properties and additional properties, use a subobject for the additional properties
+      - add credentialNumber, issuingAuthority, issuingPlace to the credential
+      - Add quality, qualityFormat, algorithm, vendor fields to biometricData
+      - Mark some fields (ID, etc.) as readOnly
+    - 1.0.0: Initial version
+
+  version: 1.2.0
+  title: The OSIA Third Party Services Interface
+  license:
+    name: SIA
+    url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
+servers:
+   - url: https://3rdparty.server.com
+
+paths:
+
+  /v1/verify/{identifier}:
+    post:
+      summary: Verify a set of attributes of a person.
+      description: >-
+        Verify an Identity based on an identity identifier (UIN, token…) and a
+        set of Identity Attributes. Verification is strictly matching all
+        provided identity attributes to compute the global Boolean matching
+        result.
+      operationId: verify
+      security:
+        - BearerAuth: [id.verify]
+      parameters:
+        - name: identifier
+          in: path
+          description: person identifier
+          required: true
+          schema:
+            type: string
+          example: "1235567890"
+        - name: identifierType
+          in: query
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
+          required: false
+          schema: 
+            type: string
+          example: "token"
+        - name: verificationProofRequired
+          in: query
+          description: verification proof required on successful verification (default true)
+          required: false
+          schema: 
+            type: boolean
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: >-
+            A set of identity attributes associated to the identity identifier
+            and to be verified by the system
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AttributeSet"
+        required: true
+    
+      responses:
+        200:
+          description: Verification execution successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResult'
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Identifier not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+                
+  /v1/attributes/{attributeSetName}/{identifier}:
+    get:
+      summary: Read a predefined set of a person's attributes. 
+      description: Note security role must map the requested attributeSetName, e.g. id.DEFAULT_SET_01.read
+      operationId: readAttributeSet
+      security:
+        - BearerAuth: [id.ATTRIBUTESETNAME.read]
+      parameters:
+        - name: attributeSetName
+          in: path
+          description: Predefined attribute set name describing what attributes are to be read. e.g. "DEFAULT_SET_01", "SET_BIOM_01", "EIDAS", ...
+          required: true
+          schema:
+            type: string
+            example: "DEFAULT_SET_01"
+        - name: identifier
+          in: path
+          description: person identifier
+          required: true
+          schema:
+            type: string
+            example: "1235567890"
+        - name: identifierType
+          in: query
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
+          required: false
+          schema: 
+            type: string
+          example: "token"     
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+          
+      responses:
+        200:
+          description: Operation successful, AttributeSet will contain fields as predefined by the attributeSetName and when value is available 
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/AttributeSet'
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            
+  /v1/attributes/{identifier}:
+    post:
+      summary: Read a variable set of a person's attributes.
+      description: Returns value of attributes listed in the request parameter 'OutputAttributeSet'
+      operationId: readAttributes
+      security:
+        - BearerAuth: [id.read]
+      parameters:
+        - name: identifier
+          in: path
+          description: person identifier
+          required: true
+          schema:
+            type: string
+            example: "1235567890"
+        - name: identifierType
+          in: query
+          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
+          required: false
+          schema: 
+            type: string
+          example: "token"
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+          
+      requestBody:
+        description: >-
+            A description of expected identity attributes  
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OutputAttributeSet"
+        required: true
+
+      responses:
+        200:
+          description: Operation successful, AttributeSet will contain fields as defined by parameter outputAttributeSet and when value is available 
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/AttributeSet'
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /v1/identify:
+    post:
+      summary:  Identify a set of persons matching provided partial attributes
+      description: >-
+        Identify possibly matching identities against an input set of attributes. Returns an array of predefined datasets as described by outputDataSetName.
+        Note this request may be asynchronous or synchronous.
+      operationId: identify
+      security:
+        - BearerAuth: [id.identify]
+      parameters:
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+      
+      requestBody:
+        description: >-
+            A set of identity attributes to match and an attributeSetName to use as template for returned matching identities.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IdentifyRequest"
+        required: true
+    
+      responses:
+        200:
+          description: Identification request execution successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeSet'
+        202:
+          description: |
+            Request received successfully and correct, result will be available later using the task ID returned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Identifier not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /v1/identify/{taskID}:
+    get:
+      summary: Read the result of a previously sent identify request
+      operationId: readIdentifyResult
+      security:
+        - BearerAuth: [id.identify]
+      parameters:
+        - name: taskID
+          in: path
+          description: taskID to get result for.
+          required: true
+          schema:
+            type: string
+          example : "ABCDEFGHIJKLMNO"
+        - name: transactionId
+          in: query
+          description: The client specified id of the transaction
+          required: true
+          schema:
+            type: string
+
+      responses:
+        200:
+          description: Operation successful, array of AttributeSet is available 
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AttributeSet'
+        204:
+          description: No content, taskID is valid but identify request is still ongoing, retry later 
+        400:
+          description: 'Bad Request, Validation Errors, ...'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        401:
+          description: Unauthorized
+        403:
+          description: Operation not allowed
+        404:
+          description: Not Found
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    AttributeSet:
+      type: object
+      description: a set of attributes used in verify
+      properties:
+        biographicData:
+          $ref: '#/components/schemas/BiographicData'
+        biometricData:
+          type: array
+          items:
+            $ref: '#/components/schemas/BiometricData'
+        credentialData:
+          type: array
+          items:
+            $ref: '#/components/schemas/CredentialData'
+        contactData:
+          $ref: '#/components/schemas/ContactData'
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
+      additionalProperties: false
+      
+    Encryption:
+      type: object
+      description: if present, indicates that a part of the data is encrypted using the provided format.
+      required:
+        - type
+        - scope
+      properties:
+        type:
+          type: string
+          enum: [JWE, PKCS7]
+        scope:
+          description: |
+            A whitespace-separated list of JSON paths to nodes containing encrypted data.
+            For each node:
+
+            - If the node is a JSON object, the full content is encrypted and the node transformed to a single buffer.
+              Canonicalization is recommended before encryption but not mandatory.
+            - If the node is an embedded buffer (image, PDF, etc.), the value is replaced with the encrypted data.
+            - If the node is a URL to a buffer, the node remains a URL in clear format but the
+              pointed buffer is encrypted.
+          type: string
+      additionalProperties: false
+    Integrity:
+      description: |
+        Object describing the integrity (hash and signature) of a sub set of data.
+
+        It is possible to calculate multiple integrity blocks corresponding to different
+        use cases: integrity before encryption, integrity limited to a small sub set of data and easy
+        to check, etc.
+      type: object
+      required:
+        - scope
+        - alg
+        - hash
+      properties:
+        id:
+          type: string
+          description: An optional ID used in JSONPath expression to select a single integrity object
+        type:
+          type: string
+          description: |
+            Format of the signature of the hash.
+
+            Cryptographic signature is optional. Use NONE when only the hash is required.
+          enum: [NONE, JWS, PKCS7]
+          default: NONE
+        scope:
+          description: |
+            A whitespace-separated list of JSON paths to nodes containing the data to include in the
+            hash calculation.
+
+            It is used to build a JSON limited to the nodes identified in this scope. Then this
+            JSON is canonicalized and a hash is calculated.
+          type: string
+        alg:
+          description: |
+            Hash algorithm used to calculate the hash.
+            Example of possible values: SHA256, SHA384, SHA512.
+          type: string
+        encrypted:
+          description: if true, indicates that the hash was calculated using encrypted data.
+          type: boolean
+          default: false
+        followRef:
+          description: |
+            if true, indicates that the referenced buffers must be fetched and included in the hash.
+            If false, only the URL is considered for the hash calculation
+          type: boolean
+          default: false
+        hash:
+          description: |
+            Hash calculated from the attributes listed in scope. Hash is calculated using the following process:
+
+            - Build an intermediate JSON containing only the fields identified in the scope
+            - Canonicalize the JSON using RFC8785
+            - Hash the result
+            - If 'followRef' is true, include in the hash computation the binary data referenced
+              by URI included in the scope.
+          type: string
+        signature:
+          description: |
+            the signature of the hash.
+            Compact format is used for JWS and PEM format for PKCS7.
+          type: string
+        signatureRef:
+          type: string
+          format: uri
+          description: URI to the signature data. DER format is accepted for PKCS7 to optimize the storage space.
+          example: "https://objectserver.com/signature?id=00003"
+      additionalProperties: false
+
+    BiographicData:
+      type: object
+      description: The set of biographic data.
+      additionalProperties: true
+      example:
+        firstName: John
+        lastName: Doo
+        dateOfBirth: "1985-11-30"
+        gender: M
+        nationality: FRA
+    
+    ContactData:
+      type: object
+      additionalProperties: true
+      description: The set of contact data.
+      example:
+        email: John.Doo@osia.com
+        phone1: "555666777"
+        phone2: "555888999"
+        
+    BiometricData:
+      type: object
+      required:
+        - biometricType
+      properties:
+        biometricType:
+          $ref: '#/components/schemas/BiometricType'
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        instance:
+          type: string
+          description: Used to separate two distincts biometric items of the same type and subtype
+        encounterId:
+          type: string
+          description: the id of the encounter owner of this biometric
+        image:
+          type: string
+          description: Encoded image buffer
+        imageRef:
+          type: string
+          format: uri
+          description: URI to an image
+          example: "http://imageserver.com/image?id=00003"
+        captureDate:
+          description: Data & time of the data capture, using RFC3339 format
+          type: string
+          format: date-time
+          example: "2019-05-21T12:00:00+01:00"
+        captureDevice:
+          type: string
+          description: A string identifying the device used to capture the biometric
+        impressionType:
+          $ref: '#/components/schemas/ImpressionType'
+        width:
+          type: integer
+          description: the width of the image
+        height:
+          type: integer
+          description: the height of the image
+        bitdepth:
+          type: integer
+        mimeType:
+          type: string
+          description: the nature and format of the image. The mime type definitions should be in compliance with RFC 6838.
+        resolution:
+          type: integer
+          description: the image resolution (in DPI)
+        compression:
+          $ref: '#/components/schemas/CompressionType'
+        missing:
+          description: Optional properties indicating if a part of the biometric data is missing
+          type: array
+          items:
+            $ref: '#/components/schemas/MissingType'
+        metadata:
+          type: string
+          description: An optional string used to convey information vendor-specific
+        comment:
+          type: string
+          description: A comment about the biometric data
+        template:
+          type: string
+          description: Encoded template buffer
+        templateRef:
+          type: string
+          format: uri
+          description: URI to the template when it is managed in a dedicated data server
+          example: "http://dataserver.com/template?id=00014"
+        templateFormat:
+          $ref: '#/components/schemas/TemplateFormat'
+        quality:
+          type: integer
+          format: int64
+          description: Quality, as a number, of the biometric
+        qualityFormat:
+          $ref: '#/components/schemas/QualityFormat'
+        algorithm:
+          type: string
+        vendor:
+          type: string
+        encryption:
+          $ref: '#/components/schemas/Encryption'
+        integrity:
+          type: array
+          items:
+            $ref: '#/components/schemas/Integrity'
+      additionalProperties: false
+    TemplateFormat:
+      type: string
+      description: |
+        Format of the template.
+        One of ISO_19794_2, ISO_19794_2_NS, ISO_19794_2_CS, ISO_19794_2_2011, ANSI_378_2009 or ANSI_378.
+        Can be extended to include additional proprietary template format
+    QualityFormat:
+      type: string
+      description: |
+        Format of the quality.
+        One of ISO_19794, NFIQ, or NFIQ2.
+        Can be extended to include additional proprietary quality format
+    ImpressionType:
+      type: string
+      enum:
+        - LIVE_SCAN_PLAIN
+        - LIVE_SCAN_ROLLED
+        - NONLIVE_SCAN_PLAIN
+        - NONLIVE_SCAN_ROLLED
+        - LATENT_IMPRESSION
+        - LATENT_TRACING
+        - LATENT_PHOTO
+        - LATENT_LIFT
+        - LIVE_SCAN_SWIPE
+        - LIVE_SCAN_VERTICAL_ROLL
+        - LIVE_SCAN_PALM
+        - NONLIVE_SCAN_PALM
+        - LATENT_PALM_IMPRESSION
+        - LATENT_PALM_TRACING
+        - LATENT_PALM_PHOTO
+        - LATENT_PALM_LIFT
+        - LIVE_SCAN_OPTICAL_CONTACTLESS_PLAIN
+        - OTHER
+        - UNKNOWN
+    BiometricType:
+      type: string
+      enum:
+        - FACE
+        - FINGER
+        - IRIS
+        - SIGNATURE
+        - UNKNOWN
+      example: FINGER
+    BiometricSubType:
+      type: string
+      enum:
+        - UNKNOWN
+        - RIGHT_THUMB
+        - RIGHT_INDEX
+        - RIGHT_MIDDLE
+        - RIGHT_RING
+        - RIGHT_LITTLE
+        - LEFT_THUMB
+        - LEFT_INDEX
+        - LEFT_MIDDLE
+        - LEFT_RING
+        - LEFT_LITTLE
+        - PLAIN_RIGHT_FOUR_FINGERS
+        - PLAIN_LEFT_FOUR_FINGERS
+        - PLAIN_THUMBS
+        
+        - UNKNOWN_PALM
+        - RIGHT_FULL_PALM
+        - RIGHT_WRITERS_PALM
+        - LEFT_FULL_PALM
+        - LEFT_WRITERS_PALM
+        - RIGHT_LOWER_PALM
+        - RIGHT_UPPER_PALM
+        - LEFT_LOWER_PALM
+        - LEFT_UPPER_PALM
+        - RIGHT_OTHER
+        - LEFT_OTHER
+        - RIGHT_INTERDIGITAL
+        - RIGHT_THENAR
+        - RIGHT_HYPOTHENAR
+        - LEFT_INTERDIGITAL
+        - LEFT_THENAR
+        - LEFT_HYPOTHENAR
+        
+        - RIGHT_INDEX_AND_MIDDLE
+        - RIGHT_MIDDLE_AND_RING
+        - RIGHT_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE
+        - LEFT_MIDDLE_AND_RING
+        - LEFT_RING_AND_LITTLE
+        - RIGHT_INDEX_AND_LEFT_INDEX
+        - RIGHT_INDEX_AND_MIDDLE_AND_RING
+        - RIGHT_MIDDLE_AND_RING_AND_LITTLE
+        - LEFT_INDEX_AND_MIDDLE_AND_RING
+        - LEFT_MIDDLE_AND_RING_AND_LITTLE
+        
+        - EYE_UNDEF
+        - EYE_RIGHT
+        - EYE_LEFT
+        - EYE_BOTH
+        
+        - PORTRAIT
+        - LEFT_PROFILE
+        - RIGHT_PROFILE
+      example: RIGHT_INDEX
+
+    CompressionType:
+      type: string
+      enum: [NONE, WSQ, JPEG, JPEG2000, PNG]
+      example: WSQ
+
+    MissingType:
+      type: object
+      properties:
+        biometricSubType:
+          $ref: '#/components/schemas/BiometricSubType'
+        presence:
+          type: string
+          enum: [BANDAGED, AMPUTATED, DAMAGED]
+      additionalProperties: false
+    
+    CredentialData:
+      description: A credential
+      type: object
+      properties:
+        credentialId:
+          type: string
+          description: The unique id for this credential
+          readOnly: true
+        status:
+          type: string
+          description: The status of the credential
+          enum: [NEW, ACTIVE, SUSPENDED, REVOKED, OTHER]
+          readOnly: true
+        statusOther:
+          type: string
+          description: Details about the status when OTHER is used
+          readOnly: true
+        credentialNumber:
+          type: string
+          description: "The number attached to the credential (ex: passport number)"
+        personId:
+          type: string
+          description: The unique id of the person that the credential request is for
+        credentialType:
+            $ref: '#/components/schemas/CredentialType'
+        issuedDate:
+          type: string
+          format: date-time
+          description: The date and time that this credential was issued
+        expiryDate:
+          type: string
+          format: date-time
+          description: The date and time that this credential expires
+        serialNumber:
+          type: string
+          description: the serial number of the credential
+        issuingAuthority:
+          type: string
+          description: "The authority issuing the credential (ex: the Ministry of Interior)"
+        issuingPlace:
+          type: string
+          description: "The place where the credential was issued (ex: Paris)"
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false
+
+    CredentialType:
+      description: Type of the credential. e.g. "PASSPORT", "ID_CARD", ...
+      type: string
+      example: "ID_CARD"
+    
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          description: Error code
+          type: integer
+          format: int32
+        message:
+          description: Error message
+          type: string
+      additionalProperties: false
+    
+    VerifyResult:
+      description : result of a successful verify request
+      type: object
+      required:
+        - verificationCode
+        - verificationMessage
+      properties:
+        verificationCode:
+          type: integer
+          format: int64
+        verificationMessage:
+          type: string
+        verificationProof:
+          type: string
+          
+    IdentifyRequest:
+      type: object
+      description: a set of parameters used in identify
+      required:
+        - attributeSet
+        - outputAttributeSetName
+      properties:
+        attributeSet:
+          $ref: '#/components/schemas/AttributeSet'
+        outputAttributeSetName:
+          description: Attribute set name describing what attributes are to be read. e.g. "DEFAULT_SET_01", "SET_BIOM_01", "EIDAS", ...
+          type: string
+          example: "DEFAULT_SET_01"
+      additionalProperties: false
+
+    OutputAttributeSet:
+      type: object
+      description: A template describing the expected attributes of a readAttributes request
+      properties:
+        outputBiographicData:
+          description : list of BiographicData structure fields to include in the answer
+          type: array
+          items: 
+              type: string
+          example : ["firstName","lastname"]
+        outputBiometricData:
+          type: array
+          description : an array of expected biometric data & fields
+          items:
+            type: object
+            description : biometric type and subtype, list of BiometricData fields to include in the answer
+            properties:
+              biometricType:
+                $ref: '#/components/schemas/BiometricType'
+              biometricSubType:
+                $ref: '#/components/schemas/BiometricSubType'
+              biometricDataFields:
+                type: array
+                example :  ["image","captureDate"]
+                items: 
+                  type: string
+        outputCredentialData:
+          type: array
+          description : an array of expected credential type & fields
+          items:          
+            type: object
+            description : credential type and list of CredentialData structure fields to include in the answer
+            properties:
+              #TODO : check credential type vs cms.yaml!!
+              credentialType:
+                $ref: '#/components/schemas/CredentialType'
+              credentialDataFields:
+                type: array
+                example :  ["serialNumber","validFromDate","validToDate"]
+                items: 
+                  type: string
+        outputContactData:
+          description : list of ContactData structure fields to include in the answer
+          type: array
+          example : ["phone1","email"]
+          items: 
+              type: string
+              
+      additionalProperties: false
+    
+    TaskId:
+      description: |
+        Information about the asynchronous result. Only the taskId is mandatory but
+        the implementation is free to return additional details such as: expected
+        duration, URL to monitor the task, etc.
+      type: object
+      required:
+        - taskId
+      properties:
+        taskId:
+          type: string
+          example: '123e4567-e89b-12d3-a456-426655440000'
+        others:
+          type: object
+          additionalProperties: true
+      additionalProperties: false

@@ -33,8 +33,6 @@ References
         - JSON Web Algorithms (JWA). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7518
       * - [RFC7519]
         - JSON Web Token (JWT). May 2015. RFC. URL: https://tools.ietf.org/html/rfc7519
-      * - [RFC8725]
-        - JSON Web Token Best Current Practices. URL: https://www.rfc-editor.org/rfc/rfc8725
       * - [RFC8785]
         - JSON Canonicalization Scheme. URL: https://www.rfc-editor.org/rfc/rfc8785
       * - [RFC9110]
@@ -61,7 +59,3 @@ References
         - ISO/IEC JTC 1/SC 37, Information technology - Biometric Identity Assurance Services - Part 1: BIAS services, URL: https://www.iso.org/standard/53228.html
       * - [PDF/ISO32000]
         - ISO/TC 171/SC 2, Document management - Portable document format - Part 2: PDF 2.0, URL: https://www.iso.org/standard/75839.html
-      * - [WSQ]
-        - NIST; FBI; Los Alamos Natinal Laboratory.  Wavelet Scalar Quantization algorithm. URL: https://www.fbibiospecs.cjis.gov/
-      * - [OpenAPI 3.0.3]
-        - OpenAPI Specification. February 2020. URL: https://swagger.io/specification/v3/

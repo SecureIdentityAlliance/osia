@@ -64,7 +64,6 @@ rst_prolog = '''
             text-align: center !important;
         }
 
-
     </style>
 
 '''
@@ -189,6 +188,16 @@ latex_elements = {
 
 if 'DRAFT' in release:
     latex_elements['preamble'] += '\\SetWatermarkText{DRAFT}'
+    rst_prolog += '''
+.. raw:: html
+
+    <style>
+        body {
+            background-repeat: repeat-y;
+            background-image:url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='50px' width='400px'> <text x='10' y='20' fill='black' font-size='30' opacity='0.1'>DRAFT    DRAFT    DRAFT</text> </svg>");
+        }
+    </style>
+'''
 else:
     latex_elements['preamble'] += '\\SetWatermarkText{}'
 
@@ -203,3 +212,17 @@ def setup(app):
     for root, dirs, files in os.walk(os.path.join(app.srcdir,'images')):
         for f in fnmatch.filter(files,"*.pdf"):
             shutil.copy(os.path.join(root,f),app.outdir)
+
+
+if 'itu' in tags:
+    rst_prolog += '''
+.. |osia| replace:: ITU-T X.1281
+.. |specification| replace:: recommendation
+.. |chapter| replace:: clause
+    '''
+else:
+    rst_prolog += '''
+.. |osia| replace:: OSIA
+.. |specification| replace:: specification
+.. |chapter| replace:: chapter
+    '''

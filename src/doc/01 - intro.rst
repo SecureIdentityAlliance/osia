@@ -4,23 +4,44 @@
 Introduction
 ============
 
+Identity systems that are built on specific vendor solutions lack interoperability among
+the main system modules. Lack of vendor and technology interoperability causes difficulties
+in replacing a building block of an identity management system from vendor A with an equivalent
+building block from vendor B or when expanding the scope of an existing system by linking to
+new building blocks. The main technology barrier is the lack of standardized interfaces (APIs).
+Building blocks are often unable to communicate with each other due to varying interfaces (APIs)
+and data formats, making it difficult to swap out building blocks or add new ones to the system.
+
+This |specification| describes a set of standardized application program interfaces (APIs) needed
+to connect the multiple building blocks of an identity management solution.
+
 Problem Statement: lack of interoperability in identity systems
 ---------------------------------------------------------------
 
-Target 16.9 of the UN Sustainable Development Goals is to "provide legal identity for all, including birth registration" by the year 2030. But there is a major barrier: the lack of vendor/provider and technology neutrality - commonly known as "vendor lock-in".
+.. only:: not itu
 
-The lack of vendor and technology neutrality and its consequences becomes apparent when a customer needs to replace one building block of the identity management solution with one from another provider, or expand the scope of their solution by linking to new building blocks. Main technology barriers are the following:
+    Target 16.9 of the UN Sustainable Development Goals is to "provide legal identity for all,
+    including birth registration" by the year 2030. But there is a major barrier: the lack of vendor/provider
+    and technology neutrality - commonly known as "vendor lock-in".
 
-1. *Solution architectures are not interoperable by design*. The lack of common definitions as to the overall scope of an identity ecosystem, as well as in the main functionalities of a system’s building blocks (civil registry, biometric identification system, population registry etc.), blurs the lines between building blocks and leads to inconsistencies. This lack of so-called irreducibly modular architectures makes it difficult, if not impossible, to switch to a third-party building block intended to provide the same function and leads to incompatibilities when adding a new building block to an existing ecosystem.
+Lack of vendor and technology neutrality causes difficulties in replacing a building block of an
+identity management system from vendor A with an equivalent building block from vendor B,
+or expand the scope of an existing system by linking to new building blocks.
+The main technology barrier is the lack of standardized interfaces (APIs).
+Building blocks are often unable to communicate with each other due to varying interfaces (APIs)
+and data formats, making it difficult to swap out building blocks or add new ones to the system.
 
-2. *Standardized interfaces (APIs) do not exist*. Building blocks are often unable to communicate with each other due to varying interfaces (APIs) and data formats, making it difficult to swap out building blocks or add new ones to the system.
+This |specification| addresses the vendor lock-in concern by providing a set of standardized interfaces
+needed to connect the multiple building blocks of an identity management system.
 
-For government policy makers tasked with implementing national identification systems, vendor lock-in is now one of their biggest concerns.
+.. note::
 
-.. figure:: images/vendorlockin.*
-    :width: 40%
-
-    The dependency challenge
+    The specified APIs in this |specification| can cover different use cases based on an organization requirement.
+    The implementation of APIs in this |specification| should adhere to relevant security and compliance standards
+    within an organization based on its security policy. Care should be taken to ensure that the APIs are secured
+    with proper access control to ensure the privacy of user identities. The trust of the data
+    as used in this |specification| is a function of the data source which means that authoritative sources
+    such as government sources will be highly reliable.
 
 The OSIA Initiative
 -------------------
@@ -72,7 +93,7 @@ The OSIA initiative offers a wide range of benefits to implementers of national 
       (which is typically where the differentiation among vendors takes place).
 
     * Support the emergence of new local market models featuring local suppliers and SMEs:
-      Like the Open Banking revolution, OSIA exposes high performing standardized interfaces that
+      like the Open Banking revolution, OSIA exposes high performing standardized interfaces that
       enable new use cases and market offers - from the simple to the complex.
 
     * Ensure product(s) compatibility after Mergers & Acquisitions: Market consolidation can often
@@ -113,39 +134,40 @@ The OSIA initiative offers a wide range of benefits to implementers of national 
 Diffusion, Audience, and Access
 -------------------------------
 
-This specification is hosted in `GitHub <https://github.com/SecureIdentityAlliance/osia>`_ and can be
+This |specification| is hosted in `GitHub <https://github.com/SecureIdentityAlliance/osia>`_ and can be
 downloaded from `ReadTheDocs <https://osia.readthedocs.io/en/latest/>`_.
 
-This specification is licensed under `The SIA License <https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE>`_.
+This |specification| is licensed under `The SIA License <https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE>`_.
 
 Any country, technology partner or individual is free to download the functional and technical specifications to implement it in their customized foundational and sectoral ID systems or building blocks. Governments can also reference OSIA as Open Standards in tenders.Any country, technology partner or individual is free to download the functional and technical specifications to implement it in their customized foundational and sectoral ID systems or building blocks. Governments can also reference OSIA as Open Standards in tenders.
 
 For more information on how to reference OSIA please see Section :ref:`osia-versions-ref`.
-
-Document Overview
------------------
-
-This document aims at:
-
-* formalizing definitions, scope and main functionalities of each building block within the identity ecosystem,
-* defining standardized interfaces and data format to connect the multiple ecosystem building blocks to ensure seamless interaction via pre-defined services.
-
-This document is structured as follows:
-
-* Chapter 1 :ref:`chapter-intro`: This chapter introduces the problem statement and the OSIA initiative.
-* Chapter 2 :ref:`chapter-func-view`: This chapter provides an overview of OSIA interfaces and how they can be mapped against the various identity ecosystem building blocks. Finally, the chapter describes a series of use cases where different OSIA interfaces are implemented between multiple identity ecosystem building blocks.
-* Chapter 3 :ref:`chapter-security`: This chapter lists a set of Privacy and Security features embedded in OSIA interfaces specifications.
-* Chapter 4 :ref:`osia-versions-ref`: This chapter describes the way OSIA interfaces can be referenced in documents and tenders.
-* Chapter 5 :ref:`chapter-interfaces`: This chapter describes the specifications of all OSIA interfaces.
-* Chapter 6 :ref:`chapter-bb`: This chapter describes OSIA interfaces that each building block of the identity ecosystem may implement.
-* Chapter 7 :ref:`chapter-tech-specs`: This chapter describes the technical specifications for all OSIA interfaces.
-* Chapter 8 :ref:`chapter-annexes`: This chapter describes the glossary, data format and license that covers OSIA specifications.
 
 Convention and Typographical Rules
 ----------------------------------
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
 "OPTIONAL" in this document are to be interpreted as described in `RFC 2119 <http://www.ietf.org/rfc/rfc2119.txt>`_.
+
+In the body of this |specification|, the words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" are to be interpreted as described in [IETF `RFC 2119 <http://www.ietf.org/rfc/rfc2119.txt>`_].
+
+1. MUST: This word, or the terms "REQUIRED" or "SHALL", mean that the definition is an absolute requirement of the specification.
+2. MUST NOT: This phrase, or the phrase "SHALL NOT", mean that the definition is an absolute prohibition of the specification.
+3. SHOULD: This word, or the adjective "RECOMMENDED", mean that there may exist valid reasons in particular circumstances
+   to ignore a particular item, but the full implications must be understood and carefully weighed before choosing a different course.
+4. SHOULD NOT: This phrase, or the phrase "NOT RECOMMENDED" mean that there may exist valid reasons in particular circumstances
+   when the particular behaviour is acceptable or even useful, but the full implications should be understood, and the case carefully weighed before implementing any behaviour described with this label.
+5. MAY: This word, or the adjective "OPTIONAL", mean that an item is truly optional.
+
+.. only:: itu
+
+    A vendor may choose to include the item because a particular marketplace requires it or because the vendor feels that it enhances
+    the product while another vendor may omit the same item. An implementation which does not include a particular option MUST
+    be prepared to interoperate with another implementation which does include the option, though perhaps with reduced functionality.
+    In the same vein, an implementation which does include a particular option MUST be prepared to interoperate with another
+    implementation which does not include the option (except, of course, for the feature the option provides.)
+
 
 Code samples highlighted in blocks appear like that:
 
@@ -155,19 +177,4 @@ Code samples highlighted in blocks appear like that:
         "key": "value",
         "another_key": 23
     }
-    
-.. note::
-    
-    Indicates supplementary explanations and useful tips.
-
-.. warning::
-
-    Indicates that the specific condition or procedure must be
-    respected.
-    
-
-Revision History
-----------------
-
-See :ref:`osia-versions-ref`.
 

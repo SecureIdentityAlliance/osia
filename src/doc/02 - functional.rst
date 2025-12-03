@@ -54,35 +54,37 @@ The building blocks are defined as follows:
   e.g. login/password and provides authentication services to relying applications within a
   federation or distributed network. Identity providers offer user authentication as a service.
 
-- The *Digital Credential Issuance & Distribution System*.
+- The *Physical Credential Personalization*.
 
-  Digital Credential Issuance & Distribution System is defined as a system in charge of
-  the issuance and delivery of the digital credentials built within the identity databases
-  under the control of the CMS. 
+  Physical Credential Personalization is defined as a system in charge of
+  the personalization and issuance of the physical credentials (ID card, passport, etc.)
+  built within the identity databases under the control of the CMS.
+
+- The *Digital Credential Issuance*.
+
+  Digital Credential Issuance is defined as a system in charge of
+  the issuance of the digital credentials built within the identity databases
+  under the control of the CMS. The digital credential can then be shared with a wallet.
 
 .. note::
 
    Unlike all the rest of the building blocks, the Identity Provider building block is not
    expected to implement OSIA interfaces but rather to consume them.
 
-.. note::
-
-   Digital Credential Issuance & Distribution System building block is out of scope for the
-   current version of OSIA specification v6.1.0.
-
 The building blocks are represented on the following diagram:
 
 .. figure:: images/components.*
-    :width: 100%
+    :width: 90%
 
     Building Blocks identified as part of the identity ecosystem   
 
-For more information on the functionalities for each building block and on the interfaces that each building block is recommended to implement, please refer to chapter 6 – Building blocks.
+For more information on the functionalities for each building block and on the interfaces that
+each building block is recommended to implement, please refer to :ref:`chapter-bb`.
 
 Interfaces
 ----------
 
-This chapter describes the following interfaces:
+This |chapter| describes the following interfaces:
 
 - Notification
 
@@ -125,7 +127,7 @@ This chapter describes the following interfaces:
 
   A set of services to manage credentials, physical and digital.
 
-- ID Usage
+- Third Party Services
 
   A set of services implemented on top of identity systems to favour third parties consumption of identity data.
 
@@ -225,7 +227,7 @@ The following table describes in detail the interfaces and associated services.
     Set Credential Status              Change the credential status
     Find Credential Profiles           Retrieve a list of credential profils that match the passed in search criteria
     --------------------------------- -----------------------------------------------------------------------------------
-    **ID Usage**
+    **Third Party Services**
     ---------------------------------------------------------------------------------------------------------------------
     Verify ID                          Verify Identity based on UIN and set of attributes (biometric data, demographics, credential)
     Identify                           Identify a person based on a set of attributes (biometric data, demographics, credential)

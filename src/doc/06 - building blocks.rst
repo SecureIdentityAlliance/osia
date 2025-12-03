@@ -32,6 +32,13 @@ The Enrollment building block is composed of enrollment client and enrollment se
 
     Enrollment Server overview and description of its high level functionalities
 
+UIN Generator
+"""""""""""""
+
+.. figure:: images/UIN_generator.*
+
+    UIN Generator overview and description of its high level functionalities
+
 Biometric System (ABIS)
 """""""""""""""""""""""
 
@@ -66,13 +73,6 @@ Third Party Services
 .. figure:: images/third_party_services.*
 
     Third Party Service overview and description of its high level functionalities
-
-UIN Generator
-"""""""""""""
-
-.. figure:: images/UIN_generator.*
-
-    UIN Generator overview and description of its high level functionalities
 
 Mapping Building Blocks vs Interfaces
 -------------------------------------
@@ -179,7 +179,7 @@ The following table maps the interfaces described in :ref:`chapter-interfaces` a
     Set Credential Status                                                                 I
     Find Credential Profiles                                                              I
     ---------------------------------  ------- ------- ------- ------- ------- ------- ------- ----------------------
-    **ID Usage**
+    **Third Party Services**
     -----------------------------------------------------------------------------------------------------------------
     Verify ID                                                                                     I
     Identify ID                                                                                   I

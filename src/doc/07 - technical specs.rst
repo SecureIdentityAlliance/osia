@@ -13,4 +13,4 @@ Technical Specifications
     technical/pr
     technical/abis
     technical/cms
-    technical/idusage
+    technical/3rdparty

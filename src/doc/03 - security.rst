@@ -175,7 +175,7 @@ The following table is a summary of all scopes defined in OSIA.
     Set Credential Status               ``cms.credential.write``
     Find Credential Profiles            ``cms.profile.read``
     ----------------------------------- -----------------------------------------------
-    **ID Usage**
+    **Third Party Services**
     -----------------------------------------------------------------------------------
     Verify ID                           ``id.verify``
     Identify                            ``id.identify``
