@@ -292,18 +292,20 @@ The process to validate the integrity is:
     In the case of images or other buffers:
 
     - if the buffer is base64-encoded and directly embedded in the JSON, it is considered as any other
-      fields of type ``string``. Use:
+      fields of type ``string``. Use the attribute name in the scope, for example:
 
-      - ``image`` for ``BiometricData``
-      - ``data`` for ``DocumentPart``
+      - ``image`` for ``BiometricData`` images
+      - ``data`` for ``DocumentPart`` buffer
 
-    - if the buffer is externalized and referenced using a URL, with ``imageRef`` or ``dataRef`` attribute,
+    - if the buffer is externalized and referenced using a URL, for example with an ``imageRef`` attribute for ``BiometricData`` image:
 
-      - the node name of the reference (``imageRef`` or ``dataRef``) when present in the scope points to the value of the URL itself.
+      - the node name of the reference (``imageRef`` in this case) when present in the scope points to the value of the URL itself.
         It means that the URL can be included in the integrity and can be encrypted if needed.
-      - the node name of the buffer (``image`` or ``data``) can be used to continue to represent the base64-encoded buffer itself,
+      - the node name of the buffer (``image`` in this case) can be used to continue to represent the base64-encoded buffer itself,
         even if it is externalized.
         This is by convention, to preserve the stability over time of the integrity/encryption structures.
+
+    This applies to all externalized buffers (``data``/``dataRef``, ``template``/``templateRef`` and ``signature``/``signatureRef``)
 
 Example
 """""""
