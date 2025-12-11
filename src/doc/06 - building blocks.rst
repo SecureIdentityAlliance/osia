@@ -173,6 +173,7 @@ The following table maps the interfaces described in :ref:`chapter-interfaces` a
     Cancel Credential Request                                                             I
     Find Credentials                                                                      I
     Read Credential                                                                       I
+    Update Credential                                                                     I
     Suspend Credential                                                                    I
     Unsuspend Credential                                                                  I
     Revoke Credential                                                                     I
