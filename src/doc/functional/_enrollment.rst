@@ -8,7 +8,7 @@ the following principles:
 - When enrollment is done in one step, the CreateEnrollment can contain all the data and an additional flag (finalize) to indicate all data was collected.
 - During the process, enrollment structure can be updated. Only the data that changed need to be transferred. Data not included is left unchanged on the server. In the following example, the biographic data is not changed.
 - Images can be passed by value or reference. When passed by value, they are base64-encoded.
-- Existing standards are used whenever possible, for instance preferred image format for biometric data is ISO-19794.
+- Existing standards are used whenever possible.
 
 .. admonition:: About documents
 
@@ -198,7 +198,7 @@ Data Model
       
         All images can be passed by value (image buffer is in the request) or by reference (the address of the
         image is in the request).
-        All images are compliant with ISO 19794. ISO 19794 allows multiple encoding and supports additional
+        Biometric images can be compliant with ISO 19794 or ISO 39794, which allow multiple encoding and supports additional
         metadata specific to fingerprint, palmprint, portrait, iris or signature.
 
         A biometric data can be associated to no image or a partial image if it includes information about

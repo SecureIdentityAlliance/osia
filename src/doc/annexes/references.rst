@@ -54,8 +54,12 @@ References
       * - [json/ISO21778]
         - ISO/IEC JTC 1/SC 22, Information technology - The JSON data interchange syntax, URL: https://www.iso.org/standard/71616.html
       * - [NFIQ/ISO29794-4]
-        - ISO/IEC JTC 1/SC 37, Information technology - Biometric sample quality - Part 4: Finger image data, URL: https://www.iso.org/standard/62791.html
+        - ISO/IEC JTC 1/SC 37, Information technology - Biometric sample quality - Part 4: Finger image data, URL: https://www.iso.org/standard/83827.html
       * - [ISO30108-1]
         - ISO/IEC JTC 1/SC 37, Information technology - Biometric Identity Assurance Services - Part 1: BIAS services, URL: https://www.iso.org/standard/53228.html
       * - [PDF/ISO32000]
         - ISO/TC 171/SC 2, Document management - Portable document format - Part 2: PDF 2.0, URL: https://www.iso.org/standard/75839.html
+      * - [ISO/IEC 19794]
+        - ISO/IEC JTC 1/SC 37, Information technology - Biometric data interchange formats, 
+      * - [ISO/IEC 39794]
+        - ISO/IEC JTC 1/SC 37, Information technology - Biometric data interchange formats, 
