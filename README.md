@@ -41,7 +41,7 @@ To build it yourself, prepare your environment:
 pip install Sphinx Pillow sphinxcontrib-httpdomain sphinxcontrib-plantuml sc-oa
 ```
 
-UML diagrams are built with PlantUML and Java 8. They must be installed separately.
+UML diagrams are built with PlantUML and Java. They must be installed separately.
 
 Build:
 
