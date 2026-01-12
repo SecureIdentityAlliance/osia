@@ -1052,7 +1052,7 @@ paths:
                 description: List of Person IDs, formatted as a CSV list. This format is only used when the Accept header is set to 'text/csv' in the HTTP request
                 type: string
                 example: |
-                  PersonId, encounterId
+                  PersonId, identityId
                   0001, 01
                   0001, 02
                   0002, 01
