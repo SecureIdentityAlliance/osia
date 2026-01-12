@@ -40,11 +40,6 @@ Securing OSIA services is implemented with the following principles:
 
 .. note::
 
-    The added use of peer-to-peer payload encryption - e.g. to protect biometric data - is
-    not in the scope of this document.
-
-.. note::
-
     OSIA does not define ACL (Access Control List) to protect the access to a subset of the data.
     This may be added in a future version.
 

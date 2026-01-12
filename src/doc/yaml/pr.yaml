@@ -8,6 +8,11 @@ info:
 
     Change log:
     
+    - 1.5.1 (Sync'ed with abis.yaml):
+      - Add timestamps (creation date, last update date) in identity data model
+      - Accept ``ALL`` in readGAlleryContent
+      - For services returning a very long list (readGalleryContent), support as alternative the csv format
+        (more efficient for size, parsing time, etc.)
     - 1.5.0:
       - Add structures to manage data encryption and integrity
       - identityId not read only in BiometricData (can be set to any value when the identity is updated)
@@ -1005,7 +1010,7 @@ paths:
             type: string
         - name: transactionId
           in: query
-          description: The id of the transaction
+          description: The id of the transaction. **The special value 'ALL' is used to get the content of all galleries**
           required: true
           schema:
             type: string
@@ -1029,6 +1034,7 @@ paths:
           content:
             application/json:
               schema:
+                description: List of Person IDs, formatted as a JSON list. This is the default format if no Accept header is specified
                 type: array
                 items:
                   type: object
@@ -1041,6 +1047,15 @@ paths:
                     identityId:
                       type: string
                   additionalProperties: false
+            text/csv:
+              schema:
+                description: List of Person IDs, formatted as a CSV list. This format is only used when the Accept header is set to 'text/csv' in the HTTP request
+                type: string
+                example: |
+                  PersonId, encounterId
+                  0001, 01
+                  0001, 02
+                  0002, 01
         '400':
           description: Bad request
           content:
@@ -1203,6 +1218,16 @@ components:
         status:
           type: string
           enum: [CLAIMED, VALID, INVALID, REVOKED]
+        createdDate:
+          description: Date & time when the encounter was created
+          type: string
+          format: date-time
+          example: "2024-11-18T14:21:00+01:00"
+        updatedDate:
+          description: Date & time when the encounter was last updated
+          type: string
+          format: date-time
+          example: "2024-11-18T14:21:00+01:00"
         galleries:
           type: array
           description: The list of galleries for this object.

@@ -212,6 +212,8 @@ The following table describes in detail the interfaces and associated services.
     Read Gallery content               Read the content of one gallery, i.e. the IDs of all the records linked to this gallery
     Identify                           Identify a person using biometrics data and filters on biographic or contextual data
     Verify                             Verify an identity using biometrics data
+    read Task Status                   Retrieve the execution status of an asynchronous task
+    redeliver Task Result              Ask for a resending of the result of an synchronous task
     --------------------------------- -----------------------------------------------------------------------------------
     **Credential Services**
     ---------------------------------------------------------------------------------------------------------------------
