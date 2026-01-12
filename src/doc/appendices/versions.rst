@@ -101,7 +101,7 @@ under a new licence named the "OSIA License".
 
 .. list-table:: OSIA Services Versions (New Licence)
     :header-rows: 2
-    :widths: 30 10 10
+    :widths: 30 10 10 10
     
     * - OSIA Release
       - 6.1.0
@@ -129,7 +129,7 @@ under a new licence named the "OSIA License".
       - 1.3.0
     * - **Population Registry Services**
       - 1.4.1
-      - 1.5.0
+      - **1.5.0**
       - **1.5.1**
     * - **Biometrics Services**
       - 1.5.1
