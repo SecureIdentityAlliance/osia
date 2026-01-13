@@ -2,26 +2,24 @@
 :project: OSIA
 :dest: OSIA Community
 :version: 
-:title: OSIA v7.0 Release Notes
+:title: OSIA v7.1 Release Notes
 :date: 12/01/2026
 :company: SIA
 
-OSIA v7.0
+OSIA v7.1
 =========
 
-This is the release note for OSIA 7.0.
+In a Nutshell
+-------------
 
-Overview
---------
-
-Included in this release:
+OSIA v7.1 includes:
 
 - `PR#79 <https://github.com/SecureIdentityAlliance/osia/pull/79>`_: Add support of confidentiality and integrity
 - `PR#98 <https://github.com/SecureIdentityAlliance/osia/pull/98>`_: Update of Credential Management Services based on Specathon output
 - `PR#80 <https://github.com/SecureIdentityAlliance/osia/pull/80>`_: Enhancements to Biometric Services
 - `PR#97 <https://github.com/SecureIdentityAlliance/osia/pull/77>`_: Callback management in abis.yaml
 
-The `OSIA component diagram <https://osia.readthedocs.io/en/v7.0/_images/components.svg>`_ was updated during the Specathon.
+The `OSIA component diagram <https://osia.readthedocs.io/en/v7.1/_images/components.svg>`_ was updated during the Specathon.
 As part of this, the *ID Usage/Relying party* interface was renamed to *Third Party Services* and the
 *Physical Credential Personalization* was added.
 
@@ -31,13 +29,13 @@ Some text and document structure were revised based on our twin standard X.1281.
 
     \clearpage
 
-Details of Changes
-------------------
+Details of Changes in OSIA v7.1
+-------------------------------
 
 New Use Cases
 """""""""""""
 
-- Sensitive data can be signed and encrypted from end to end. This is described in `§3.4 <https://osia.readthedocs.io/en/v7.0/03%20-%20security.html#confidentiality-and-integrity>`_.
+- Sensitive data can be signed and encrypted from end to end. This is described in `§3.4 <https://osia.readthedocs.io/en/v7.1/03%20-%20security.html#confidentiality-and-integrity>`_.
   The solution, based on existing standards (RFC7515, RFC7516, and RFC5652), is applied
   in four interfaces (Enrollment, Population Registry Management, Biometrics, Credentials Services).
   Two structures were added:
@@ -46,14 +44,14 @@ New Use Cases
   - ``integrity``: is a structure identifiying which part of the JSON payload is signed and how. It contains the hash and signature.
 
 - Verifiable credentials are accepted as supporting document. This is added explicitly with examples in
-  `§6.4.1.1 <https://osia.readthedocs.io/en/v7.0/technical/enrollment.html#patch--v1-enrollments-enrollmentId>`_ and
-  `§6.5.1 <https://osia.readthedocs.io/en/v7.0/technical/pr.html#patch--v1-persons-personId-identities-identityId>`_
+  `§6.4.1.1 <https://osia.readthedocs.io/en/v7.1/technical/enrollment.html#patch--v1-enrollments-enrollmentId>`_ and
+  `§6.5.1 <https://osia.readthedocs.io/en/v7.1/technical/pr.html#patch--v1-persons-personId-identities-identityId>`_
 
 New Interfaces
 """"""""""""""
 
 - The *Physical Credential Personalization* interface was introduced in
-  `chapter §2.1 <https://osia.readthedocs.io/en/v7.0/02%20-%20functional.html#building-blocks-standardized-definition-and-scope>`_.
+  `chapter §2.1 <https://osia.readthedocs.io/en/v7.1/02%20-%20functional.html#building-blocks-standardized-definition-and-scope>`_.
   This interface will be defined in a future release.
 
 New Services
@@ -61,26 +59,26 @@ New Services
 
 - In *Biometrics*:
 
-  - `readTaskStatus <https://osia.readthedocs.io/en/v7.0/technical/abis.html#get--v1-tasks-taskId-status>`_ was added to get
+  - `readTaskStatus <https://osia.readthedocs.io/en/v7.1/technical/abis.html#get--v1-tasks-taskId-status>`_ was added to get
     the status of asynchronous tasks.
-  - `redeliverTaskResult <https://osia.readthedocs.io/en/v7.0/technical/abis.html#post--v1-tasks-taskId-redeliver>`_ was added
+  - `redeliverTaskResult <https://osia.readthedocs.io/en/v7.1/technical/abis.html#post--v1-tasks-taskId-redeliver>`_ was added
     to resend the result of an asynchronous task.
 
 - In *Credential Services*:
 
-  - `updateCredential <https://osia.readthedocs.io/en/v7.0/technical/cms.html#put--v1-credentials-credentialId>`_ was added. It can be
+  - `updateCredential <https://osia.readthedocs.io/en/v7.1/technical/cms.html#put--v1-credentials-credentialId>`_ was added. It can be
     used to update some of the attributes of a credential.
 
 New Parameters
 """"""""""""""
 
-- an optional parameter ``serviceLevel`` was added to Biometric searche services. It can be used for example to specify a response time target.
+- an optional parameter ``serviceLevel`` was added to Biometric search services. It can be used for example to specify a response time target.
 - Optional support of ISO39794 was added
 
 Other Changes per Interfaces
 """"""""""""""""""""""""""""
 
-From `abis.yaml <https://osia.readthedocs.io/en/v7.0/abis.yaml>`_:
+From `abis.yaml <https://osia.readthedocs.io/en/v7.1/abis.yaml>`_:
 
 - Fix ambiguities:
 
@@ -95,12 +93,16 @@ From `abis.yaml <https://osia.readthedocs.io/en/v7.0/abis.yaml>`_:
 - updateEncounterGalleries: add constraints on the new list of galleries: at least one gallery and no duplicate
 - make galleries mandatory in Encounter structure
 
-From `cms.yaml <https://osia.readthedocs.io/en/v7.0/cms.yaml>`_:
+.. raw:: latex
+
+    \clearpage
+
+From `cms.yaml <https://osia.readthedocs.io/en/v7.1/cms.yaml>`_:
 
 - Add attributes to better define the credentialProfile (credentialProfileVersion, credentialProfileSubtype, numberOfPages)
   For flexibility it can defined either in the request/credential or in the credential.
 
-From `pr.yaml <https://osia.readthedocs.io/en/v7.0/pr.yaml>`_:
+From `pr.yaml <https://osia.readthedocs.io/en/v7.1/pr.yaml>`_:
 
 - identityId not read only in BiometricData (can be set to any value when the identity is updated)
 - Add timestamps (creation date, last update date) in identity data model
@@ -109,39 +111,39 @@ From `pr.yaml <https://osia.readthedocs.io/en/v7.0/pr.yaml>`_:
   (more efficient for size, parsing time, etc.)
 
 Cosmetic Changes
-""""""""""""""""
+----------------
 
 - Layout of document has been changed to be closer to ITU X-1281
 
-  - The chapter *OSIA Versions & Referencing* (previously §4) has been moved to the `appendix I <https://osia.readthedocs.io/en/v7.0/appendices/versions.html>`_
+  - The chapter *OSIA Versions & Referencing* (previously §4) has been moved to the `appendix I <https://osia.readthedocs.io/en/v7.1/appendices/versions.html>`_
   - Appendixes and annexes were clearly separated, as per ITU standards
-  - Appendix `References <https://osia.readthedocs.io/en/v7.0/annexes/references.html>`_ was added to list of references (RFC, ISO, etc.)
-  - `Bibliography <https://osia.readthedocs.io/en/v7.0/bibliography.html#bibliography>`_ was added
-  - The *Problem Statement* (`§1.1 <https://osia.readthedocs.io/en/v7.0/01%20-%20intro.html#problem-statement-lack-of-interoperability-in-identity-systems>`_)
+  - Appendix `References <https://osia.readthedocs.io/en/v7.1/annexes/references.html>`_ was added to list of references (RFC, ISO, etc.)
+  - `Bibliography <https://osia.readthedocs.io/en/v7.1/bibliography.html#bibliography>`_ was added
+  - The *Problem Statement* (`§1.1 <https://osia.readthedocs.io/en/v7.1/01%20-%20intro.html#problem-statement-lack-of-interoperability-in-identity-systems>`_)
     has been updated from X.1281
   - The *Document overview* (previously §1.5) has been removed
-  - The *Convention and Typographical Rules* (now `§1.5 <https://osia.readthedocs.io/en/v7.0/01%20-%20intro.html#convention-and-typographical-rules>`_)
+  - The *Convention and Typographical Rules* (now `§1.5 <https://osia.readthedocs.io/en/v7.1/01%20-%20intro.html#convention-and-typographical-rules>`_)
     has been updated from X.1281
   - The *Revision History* (previously §1.7) has been removed
 
 - The figure *Building Blocks identified as part of the identity ecosystem*
-  (`figure 2.1 <https://osia.readthedocs.io/en/v7.0/02%20-%20functional.html#building-blocks-standardized-definition-and-scope>`_)
+  (`figure 2.1 <https://osia.readthedocs.io/en/v7.1/02%20-%20functional.html#building-blocks-standardized-definition-and-scope>`_)
   was updated to better visualize the four domains considered by OSIA (Enrollment, Identity Management,
   Credentials Management, and External Services)
 
   - Names *ID Usage*, *ID Usage Services* and *Relying Party API* have been harmonized to *Third Party Services*:
 
-    - The functional description in `§4.8 <https://osia.readthedocs.io/en/v7.0/05%20-%20interfaces.html#third-party-services>`_
+    - The functional description in `§4.8 <https://osia.readthedocs.io/en/v7.1/05%20-%20interfaces.html#third-party-services>`_
       was updated.
-    - The building blocks description in `§5.1.7 <https://osia.readthedocs.io/en/v7.0/06%20-%20building%20blocks.html#third-party-services>`_
+    - The building blocks description in `§5.1.7 <https://osia.readthedocs.io/en/v7.1/06%20-%20building%20blocks.html#third-party-services>`_
       was updated.
-    - The technical description in `§6.8 <https://osia.readthedocs.io/en/v7.0/technical/3rdparty.html>`_
+    - The technical description in `§6.8 <https://osia.readthedocs.io/en/v7.1/technical/3rdparty.html>`_
       was updated, as well as the name of the OpenAPI file describing this interface.
   - Name *Digital Credential Issuance & Distribution System* has been changed to *Digital Credential Issuance*
 
-- The section *Use Cases* (`§2.3 <https://osia.readthedocs.io/en/v7.0/02%20-%20functional.html#use-cases-how-to-use-project>`_)
+- The section *Use Cases* (`§2.3 <https://osia.readthedocs.io/en/v7.1/02%20-%20functional.html#use-cases-how-to-use-project>`_)
   includes some minor text updates and clarifications.
-- In `§5.1 <https://osia.readthedocs.io/en/v7.0/06%20-%20building%20blocks.html#building-blocks-high-level-functionalities>`_,
+- In `§5.1 <https://osia.readthedocs.io/en/v7.1/06%20-%20building%20blocks.html#building-blocks-high-level-functionalities>`_,
   the *UIN Generator* section has been moved up, closer to the *Enrollment* section
 - Fonts and colors were changed for the HTML rendering
 
