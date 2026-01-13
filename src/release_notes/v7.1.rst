@@ -3,7 +3,7 @@
 :dest: OSIA Community
 :version: 
 :title: OSIA v7.1 Release Notes
-:date: 12/01/2026
+:date: 13/01/2026
 :company: SIA
 
 OSIA v7.1
