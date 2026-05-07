@@ -1,0 +1,1558 @@
+# Authentic Source Interface Provider
+# ETSI compliance - With ETSI-Styled Extensions
+# Compliant with: ETSI TS 119 478 V1.1.1, eIDAS Art 45e
+#
+openapi: 3.0.3
+info:
+  title: ETSI TS 119 478 Authentic Source Interface (with ETSI-Styled Extensions)
+  description: |
+    ETSI TS 119 478 V1.1.1 compliant API with ETSI-styled extensions.
+    Implements mandatory interfaces per eIDAS Article 45e (I1, I2, I3, I4).
+
+    ## Interface Overview
+
+    ### Standard ETSI Interfaces (Mandatory per eIDAS Article 45e):
+    - **I1 (Discover)**: /search, /retrieve - Public, no authentication
+    - **I2 (Verify)**: POST /verify - Attribute verification
+    - **I3 (Retrieve)**: POST /retrieve - Attribute retrieval
+    - **I4 (Authorize)**: OAuth 2.0 + FAPI 2.0 with PKCE, MTLS/DPoP
+
+    ### ETSI-Styled Extensions (Not Part of Core ETSI Mandate):
+    - **Identify**: POST /identify - Person identification by attributes
+    - **Attribute Sets**: GET /attribute-sets, GET /attribute-sets/{setId}/attributes
+    - **Contact**: GET /contact/{personId} - Retrieve contact information
+
+    ## Person Identification
+    Person identification is provided via the OAuth 2.0 access token (JWT per RFC 9068)
+    which contains the user PID per REQ-AZSP-6.1.3.1-08. Requests do NOT include
+    person identification data in the body.
+
+    ## Migration from OSIA 3rdparty.yaml
+
+    | OSIA Endpoint | v14.0 Replacement | Notes |
+    |---------------|-------------------|-------|
+    | POST /v1/verify/{id} | POST /verify | Path param via OAuth token |
+    | GET /v1/attributes/{set}/{id} | GET /attribute-sets/{setId}/attributes | ETSI-styled extension |
+    | POST /v1/attributes/{id} | POST /retrieve | URI-based retrieval |
+    | POST /v1/identify | POST /identify | ETSI-styled extension |
+    | GET /v1/identify/{taskID} | GET /identify/{deferredResponseId} | Renamed for consistency |
+    | GET /contact/{personId} | GET /contact/{personId} | ETSI-styled contact retrieval |
+  version: 14.0.0
+  contact:
+    name: ETSI Technical Committee ESI
+  license:
+    name: ETSI
+
+servers:
+  - url: https://asip.example.com
+    description: Authentic Source Interface Provider - ETSI Compliant with Extensions
+
+security:
+  - OAuth2: [verify, retrieve, identify, attributeSets, contact]
+
+paths:
+  # ============================================================================
+  # I1 (Discover) Interface - Public
+  # ============================================================================
+  /internationalDiscovery:
+    get:
+      summary: Find URI of I1 Discover interface for a specific country
+      description: |
+        **Custom Extension**: Return the URI of the I1 Discover Interface for a
+        specific country code and return the status of the discover interfaces
+        and the countries available through this interface.
+      operationId: internationalDiscovery
+      tags:
+        - Discover (I1)
+      security: []
+      parameters:
+        - name: country
+          in: query
+          required: true
+          schema:
+            type: string
+            pattern: '^[A-Z]{2}$'
+          description: ISO 3166-1 alpha-2 country code of the targeted country
+      responses:
+        '200':
+          description: Discovery interface information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternationalDiscoveryResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /search:
+    get:
+      summary: Search for attributes in the semantic repository
+      description: |
+        ETSI I1: Find attributes and their unique identifiers.
+        Publicly accessible - no authentication required.
+      operationId: searchAttributes
+      tags:
+        - Discover (I1)
+      security: []
+      parameters:
+        - name: assetType
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [attribute]
+          description: Source: REQ-DIP-5.2.2-01, REQ-DIP-5.2.2-02
+        - name: creator
+          in: query
+          schema:
+            type: string
+          description: Source: REQ-DIP-5.2.2-03
+        - name: country
+          in: query
+          schema:
+            type: string
+            pattern: '^[A-Z]{2}$'
+          description: ISO 3166-1 alpha-2 country code. Source: REQ-DIP-5.2.2-04
+        - name: text
+          in: query
+          schema:
+            type: string
+          description: Free-text search query. Source: REQ-DIP-5.2.2-05
+        - name: semanticDataSpecification
+          in: query
+          schema:
+            type: string
+            format: uri
+          description: Source: REQ-DIP-5.2.2-06
+        - name: schemaMediaType
+          in: query
+          schema:
+            type: string
+          description: Source: REQ-DIP-5.2.2-07
+      responses:
+        '200':
+          description: Successful search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributesSearchResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /retrieve:
+    get:
+      summary: Find data services for attributes
+      description: |
+        ETSI I1: Retrieve data service endpoints for attribute access.
+        Publicly accessible - no authentication required.
+
+        Note: This API only contains HTTP-based requests so conformsTo isn't
+        present here even if it's mentioned in ETSI as optional.
+      operationId: retrieveDataServices
+      tags:
+        - Discover (I1)
+      security: []
+      parameters:
+        - name: queryType
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [dataServices]
+          description: Source: REQ-DIP-5.3.2-01
+        - name: attributeIdentifier
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uri
+          description: Source: REQ-DIP-5.3.2-01
+        - name: country
+          in: query
+          schema:
+            type: string
+            pattern: '^[A-Z]{2}$'
+          description: Source: REQ-DIP-5.3.2-02
+      responses:
+        '200':
+          description: Successful retrieve
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataServicesResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+    # I3 (Retrieve) Interface - POST
+    post:
+      summary: Retrieve attributes
+      description: |
+        ETSI I3: Retrieve attributes from authentic source using attribute URIs.
+        Person identification is provided via OAuth token (REQ-AZSP-6.1.3.1-08).
+      operationId: retrieveAttributes
+      tags:
+        - Retrieve (I3)
+      security:
+        - OAuth2: [retrieve]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetrieveRequest'
+      responses:
+        '200':
+          description: Retrieval result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveResponse'
+        '202':
+          description: Deferred response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeferredResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /retrieve/{deferredResponseId}:
+    get:
+      summary: Retrieve deferred retrieval result
+      description: |
+        **Custom Extension**: Poll for deferred retrieval results.
+        ETSI does not mandate deferred responses for HTTP interface.
+      operationId: getDeferredRetrieveResult
+      tags:
+        - Retrieve (I3)
+      security:
+        - OAuth2: [retrieve]
+      parameters:
+        - name: deferredResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Result available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveResponse'
+        '202':
+          description: Result pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeferredResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ============================================================================
+  # I2 (Verify) Interface
+  # ============================================================================
+  /verify:
+    post:
+      summary: Verify attributes
+      description: |
+        ETSI I2: Verify attributes against authentic source per Article 45e eIDAS.
+
+        Person identification is provided via OAuth token (REQ-AZSP-6.1.3.1-08).
+
+        ## Verification Modes (REQ-ASIP-6.1.1.1-05)
+
+        1. **Full Attribute Verification** (`attributes` array)
+           - Verifies complete attribute values
+           - Each attribute contains attributeIdentifier (URI) and attributeValue (JSON object)
+
+        2. **Fragment Verification** (`attributeFragments` array)
+           - Privacy-preserving verification using JSONPath expressions
+           - Verifies specific fields without revealing full attribute values
+
+        3. **Combined Verification** (both arrays)
+           - Both arrays can be provided for comprehensive verification
+
+        The request MUST contain either 'attributes' OR 'attributeFragments' (or both).
+      operationId: verifyAttributes
+      tags:
+        - Verify (I2)
+      security:
+        - OAuth2: [verify]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyRequest'
+      responses:
+        '200':
+          description: Verification result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+        '202':
+          description: Deferred response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeferredResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '501':
+          $ref: '#/components/responses/NotImplemented'
+
+  /verify/{deferredResponseId}:
+    get:
+      summary: Retrieve deferred verification result
+      description: |
+        **Custom Extension**: Polling endpoint for deferred verification results.
+        ETSI does not mandate deferred responses for HTTP interface.
+      operationId: getDeferredVerifyResult
+      tags:
+        - Verify (I2)
+      security:
+        - OAuth2: [verify]
+      parameters:
+        - name: deferredResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Result available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+        '202':
+          description: Result pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeferredResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ============================================================================
+  # Attribute Sets Extension
+  # ============================================================================
+  /attribute-sets:
+    get:
+      summary: List predefined attribute sets
+      description: |
+        **OSIA-Styled Extension**: List predefined collections of attributes.
+      operationId: listAttributeSets
+      tags:
+        - Attribute Sets (Extension)
+      security:
+        - OAuth2: [attributeSets]
+      parameters:
+        - name: country
+          in: query
+          schema:
+            type: string
+            pattern: '^[A-Z]{2}$'
+          description: Filter by country code
+        - name: purpose
+          in: query
+          schema:
+            type: string
+            enum: [eidas, identity_verification, age_verification, biometric_enrollment, credential_issuance, other]
+          description: Filter by intended purpose
+      responses:
+        '200':
+          description: List of attribute sets
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeSetsResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /attribute-sets/{setId}/attributes:
+    get:
+      summary: Retrieve attributes from a predefined set for a person
+      description: |
+        **OSIA-Styled Extension**: Retrieve all attributes in a predefined set.
+        Uses the RetrieveResponse schema.
+      operationId: retrieveAttributeSet
+      tags:
+        - Attribute Sets (Extension)
+      security:
+        - OAuth2: [retrieve, attributeSets]
+      parameters:
+        - name: setId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Identifier of the predefined attribute set
+        - name: personIdentifier
+          in: query
+          required: true
+          schema:
+            type: string
+          description: The person's unique identifier
+      responses:
+        '200':
+          description: Attributes retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ============================================================================
+  # Contact Extension
+  # ============================================================================
+  /contact/{personId}:
+    get:
+      summary: Retrieve current contact information for a person
+      description: |
+        **OSIA-Styled Extension**: Retrieve contact information (email, phone, address).
+      operationId: getContactInfo
+      tags:
+        - Contact (Extension)
+      security:
+        - OAuth2: [contact]
+      parameters:
+        - name: personId
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The person's unique identifier (personIdentifier)
+        - name: preferredOnly
+          in: query
+          schema:
+            type: boolean
+            default: false
+          description: If true, return only preferred/default contact methods
+      responses:
+        '200':
+          description: Current contact information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ============================================================================
+  # Identify Extension
+  # ============================================================================
+  /identify:
+    post:
+      summary: Identify persons by partial attributes
+      description: |
+        **OSIA-Styled Extension**: Find persons by partial attribute matching
+        when exact identifiers are unknown. Not mandated by ETSI TS 119 478.
+      operationId: identifyPersons
+      tags:
+        - Identify (Extension)
+      security:
+        - OAuth2: [identify]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentifyRequest'
+      responses:
+        '200':
+          description: Identification results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentifyResponse'
+        '202':
+          description: Deferred response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeferredResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /identify/{deferredResponseId}:
+    get:
+      summary: Retrieve deferred identification result
+      operationId: getDeferredIdentifyResult
+      tags:
+        - Identify (Extension)
+      security:
+        - OAuth2: [identify]
+      parameters:
+        - name: deferredResponseId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Results available
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentifyResponse'
+        '202':
+          description: Result pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeferredResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  # ============================================================================
+  # I4 (Authorize) Interface - OAuth 2.0 / FAPI 2.0
+  # ============================================================================
+  /oauth2/authorize:
+    get:
+      summary: OAuth 2.0 Authorization endpoint
+      description: |
+        FAPI 2.0 compliant authorization. PKCE required (S256).
+        User identification via EUDI-Wallet or ETSI TS 119 461.
+      operationId: authorize
+      tags:
+        - Authorize (I4)
+      parameters:
+        - name: response_type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [code]
+        - name: client_id
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: redirect_uri
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uri
+        - name: scope
+          in: query
+          schema:
+            type: string
+          description: Requested scopes (e.g., verify, retrieve)
+        - name: state
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: code_challenge
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: code_challenge_method
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [S256]
+      responses:
+        '302':
+          description: Redirect with authorization code or error
+
+  /oauth2/token:
+    post:
+      summary: OAuth 2.0 Token endpoint
+      description: |
+        Client auth: MTLS (RFC 8705) or private_key_jwt.
+        Access tokens: JWT per RFC 9068 with user PID.
+      operationId: token
+      tags:
+        - Authorize (I4)
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+      responses:
+        '200':
+          description: Token response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+
+  /oauth2/register:
+    post:
+      summary: Dynamic Client Registration (RFC 7591)
+      operationId: registerClient
+      tags:
+        - Authorize (I4)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClientRegistrationRequest'
+      responses:
+        '201':
+          description: Client registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientRegistrationResponse'
+
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: |
+        OAuth 2.0 + PKCE per RFC 6749/7636, FAPI 2.0 Security Profile.
+        Client auth: MTLS (RFC 8705) or private_key_jwt.
+        Token binding: MTLS or DPoP (RFC 9449).
+      flows:
+        authorizationCode:
+          authorizationUrl: /oauth2/authorize
+          tokenUrl: /oauth2/token
+          scopes:
+            verify: Verify attributes (ETSI I2)
+            retrieve: Retrieve attributes (ETSI I3)
+            identify: Identify persons by attributes (Extension)
+            attributeSets: Access predefined attribute sets (Extension)
+            contact: Access contact information (Extension)
+
+  schemas:
+    # =====================================
+    # Common ETSI Types
+    # =====================================
+    LocalizedText:
+      type: object
+      required: [value, language]
+      properties:
+        value:
+          type: string
+          description: The text content
+        language:
+          type: string
+          pattern: '^[a-z]{2}$'
+          description: Two-letter language code (ISO 639-1)
+
+    Provider:
+      type: object
+      required: [legalName]
+      description: Legal entity per REQ-DIP-5.3.3-03
+      properties:
+        legalName:
+          type: string
+          description: Current legal name of the entity
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProviderIdentifier'
+        establishedByLaw:
+          $ref: '#/components/schemas/EstablishedByLaw'
+        currentAddress:
+          type: string
+          description: Current address of the entity
+
+    ProviderIdentifier:
+      type: object
+      required: [type, identifier]
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI identifying the identifier scheme
+        identifier:
+          type: string
+          description: The identifier value within the scheme
+
+    EstablishedByLaw:
+      type: object
+      properties:
+        legislativeIdentifier:
+          type: string
+          format: uri
+        legalBasis:
+          type: string
+
+    # =====================================
+    # I1 Discover Schemas
+    # =====================================
+    InternationalDiscoveryResponse:
+      type: object
+      required: [uri, status, supportedCountry]
+      description: Response for international discovery endpoint (Custom)
+      properties:
+        uri:
+          type: string
+          format: uri
+          description: Discovery interface URI for the targeted country
+        status:
+          type: string
+          description: Status of the server
+          enum:
+            - Up
+            - Down
+        supportedCountry:
+          type: array
+          items:
+            type: string
+            pattern: '^[A-Z]{2}$'
+          description: List of countries reachable through this URI (ISO 3166-1 alpha-2)
+
+    SchemaDistribution:
+      type: object
+      required: [accessURL, mediaType]
+      properties:
+        accessURL:
+          type: string
+          format: uri
+          description: URL to access the schema definition
+        mediaType:
+          type: string
+          description: Media type of the schema (e.g., application/json)
+
+    AttributeMetadata:
+      type: object
+      required: [attributeIdentifier, schemaDistribution]
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+          description: Unique URI identifier for the attribute
+        title:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalizedText'
+        description:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalizedText'
+        creator:
+          type: string
+        country:
+          type: string
+          pattern: '^[A-Z]{2}$'
+        semanticDataSpecification:
+          type: string
+          format: uri
+        schemaDistribution:
+          type: array
+          items:
+            $ref: '#/components/schemas/SchemaDistribution'
+          minItems: 1
+
+    AttributesSearchResponse:
+      type: object
+      required: [attributes]
+      properties:
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeMetadata'
+
+    DataService:
+      type: object
+      required: [attributeIdentifier, endpointDescription, endpointURI, provider]
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        endpointDescription:
+          type: string
+          format: uri
+          description: URL to the API specification (e.g., OpenAPI document)
+        endpointURI:
+          type: string
+          format: uri
+          description: Base URL of the verification/retrieval service
+        provider:
+          $ref: '#/components/schemas/Provider'
+        country:
+          type: string
+          pattern: '^[A-Z]{2}$'
+
+    DataServicesResponse:
+      type: object
+      required: [dataServices]
+      properties:
+        dataServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataService'
+
+    # =====================================
+    # I2 Verify Schemas
+    # =====================================
+    VerificationAttribute:
+      type: object
+      required: [attributeIdentifier, attributeValue]
+      description: Attribute to verify per REQ-ASIP-6.1.1.1-06
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+          description: URI uniquely identifying the attribute type
+        attributeValue:
+          type: object
+          description: JSON object containing the attribute value to verify
+
+    AttributeFragment:
+      type: object
+      required: [attributeIdentifier, location, value]
+      description: Attribute fragment per REQ-ASIP-6.1.1.1-07
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+          description: URI of the parent attribute this fragment belongs to
+        location:
+          type: string
+          description: JSONPath expression specifying the fragment location
+        value:
+          description: Expected value at the specified JSONPath location
+
+    Mandate:
+      type: object
+      required: [mandateType, mandateReference, delegator, delegate]
+      description: Mandate for delegated attribute access (structure is Custom)
+      properties:
+        mandateType:
+          type: string
+          description: Type of mandate (e.g., LEGAL_REPRESENTATIVE, POWER_OF_ATTORNEY)
+        mandateReference:
+          type: string
+          description: Unique reference to the registered mandate
+        delegator:
+          type: object
+          description: Person granting authority (data subject)
+          properties:
+            personIdentifier:
+              type: string
+            familyName:
+              type: string
+            givenName:
+              type: string
+        delegate:
+          type: object
+          description: Person receiving delegated authority
+          properties:
+            personIdentifier:
+              type: string
+            familyName:
+              type: string
+            givenName:
+              type: string
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        scope:
+          type: array
+          description: Attribute URIs covered by this mandate
+          items:
+            type: string
+            format: uri
+
+    VerifyRequest:
+      type: object
+      description: |
+        Verify Request per REQ-ASIP-6.1.1.1-05: request SHALL contain
+        attributes OR attributeFragments OR both.
+        Person identification via OAuth token (REQ-AZSP-6.1.3.1-08).
+      anyOf:
+        - required: [attributes]
+        - required: [attributeFragments]
+      properties:
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerificationAttribute'
+          minItems: 1
+          description: Complete attributes to verify
+        attributeFragments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeFragment'
+          description: Attribute fragments for privacy-preserving verification
+        mandate:
+          $ref: '#/components/schemas/Mandate'
+          description: Mandate for delegated access
+
+    AttributeVerificationResult:
+      type: object
+      required: [attributeIdentifier, attributeVerificationResult, VerificationResult]
+      description: |
+        Per ETSI TS 119 478 Annex B official OpenAPI schema.
+        Field name is 'attributeVerificationResult'.
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        attributeVerificationResult:
+          type: string
+          format: uri
+          description: Verification outcome URI per REQ-ASIP-6.1.1.2-04
+          enum:
+            - http://uri.etsi.org/19478/VerificationResult/Match
+            - http://uri.etsi.org/19478/VerificationResult/NoMatch
+            - http://uri.etsi.org/19478/VerificationResult/MatchWithVariation
+            - http://uri.etsi.org/19478/VerificationResult/Unknown
+        VerificationResult:
+          type: string
+          description: Describes the value of the result (Custom)
+          enum:
+            - Match
+            - NoMatch
+            - MatchWithVariation
+            - Unknown
+        attributeValue:
+          type: object
+          description: Present for Match (echoed) and MatchWithVariation (AS value)
+
+    FragmentVerificationResult:
+      type: object
+      required: [attributeIdentifier, location, fragmentVerificationResult, VerificationResult]
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        location:
+          type: string
+          description: JSONPath expression (same as in the request)
+        fragmentVerificationResult:
+          type: string
+          format: uri
+          enum:
+            - http://uri.etsi.org/19478/VerificationResult/Match
+            - http://uri.etsi.org/19478/VerificationResult/NoMatch
+            - http://uri.etsi.org/19478/VerificationResult/MatchWithVariation
+            - http://uri.etsi.org/19478/VerificationResult/Unknown
+        VerificationResult:
+          type: string
+          description: Describes the value of the result (Custom)
+          enum:
+            - Match
+            - NoMatch
+            - MatchWithVariation
+            - Unknown
+        fragmentValue:
+          description: Fragment value from AS (present for Match/MatchWithVariation)
+
+    MandateResult:
+      type: object
+      required: [mandateValid, mandateReference]
+      description: Result of mandate validation (structure is Custom)
+      properties:
+        mandateValid:
+          type: boolean
+        mandateReference:
+          type: string
+        validationTime:
+          type: string
+          format: date-time
+        delegatorMatch:
+          type: boolean
+        delegateMatch:
+          type: boolean
+        validationDetails:
+          type: object
+          properties:
+            mandateStatus:
+              type: string
+              enum: [ACTIVE, SUSPENDED, EXPIRED, REVOKED]
+            scopeValid:
+              type: boolean
+
+    VerifyResponse:
+      type: object
+      required: [responseId, provider]
+      description: Verify Response per REQ-ASIP-6.1.1.2
+      properties:
+        responseId:
+          type: string
+          format: uuid
+          description: Unique identifier for this response
+        provider:
+          $ref: '#/components/schemas/Provider'
+          description: Legal entity operating as the ASIP
+        authenticSource:
+          $ref: '#/components/schemas/Provider'
+          description: Authentic source entity, when different from the ASIP
+        attributeVerificationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeVerificationResult'
+          description: Results for each submitted attribute
+        fragmentVerificationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/FragmentVerificationResult'
+          description: Results for each submitted fragment
+        mandateResult:
+          $ref: '#/components/schemas/MandateResult'
+
+    # =====================================
+    # I3 Retrieve Schemas
+    # =====================================
+    RetrieveRequest:
+      type: object
+      required: [attributeIdentifiers]
+      description: |
+        Retrieve Request per REQ-ASIP-6.1.2.1.
+        Person identification via OAuth token (REQ-AZSP-6.1.3.1-08).
+      properties:
+        attributeIdentifiers:
+          type: array
+          items:
+            type: string
+            format: uri
+          minItems: 1
+          description: URIs of attributes to retrieve from the authentic source
+        mandate:
+          $ref: '#/components/schemas/Mandate'
+          description: Mandate for delegated retrieval
+
+    RetrievedAttribute:
+      type: object
+      required: [attributeIdentifier, attributeValue, stringRetrieveResult]
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        attributeValue:
+          type: object
+          description: JSON object containing the attribute value from the AS
+        stringRetrieveResult:
+          type: string
+          description: Per-attribute outcome (Custom)
+          enum:
+            - Success
+            - Failure
+
+    RetrieveResponse:
+      type: object
+      required: [responseId, provider]
+      description: Retrieve Response per REQ-ASIP-6.1.2.2
+      properties:
+        responseId:
+          type: string
+          format: uuid
+          description: Unique identifier for this response
+        provider:
+          $ref: '#/components/schemas/Provider'
+          description: Legal entity operating as the ASIP
+        authenticSource:
+          $ref: '#/components/schemas/Provider'
+          description: Authentic source entity, when different from the ASIP
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievedAttribute'
+          description: Retrieved attributes (present on successful retrieval)
+        mandateResult:
+          $ref: '#/components/schemas/MandateResult'
+
+    # =====================================
+    # Identify Extension Schemas
+    # =====================================
+    IdentifyRequest:
+      type: object
+      required: [searchAttributes]
+      description: OSIA-styled identification request
+      properties:
+        searchAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/VerificationAttribute'
+          minItems: 1
+          description: Attributes to search by (partial matching supported)
+        requestedReturnAttributes:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: URIs of attributes to return for matched persons
+        maxResults:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 10
+          description: Maximum number of results to return
+        exactMatchRequired:
+          type: boolean
+          default: false
+          description: Whether all search attributes must match exactly
+        mandate:
+          $ref: '#/components/schemas/Mandate'
+
+    PersonIdentificationData:
+      type: object
+      required: [familyName, givenName, dateOfBirth, personIdentifier]
+      properties:
+        familyName:
+          type: string
+        givenName:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        personIdentifier:
+          type: string
+        placeOfBirth:
+          type: string
+        currentAddress:
+          type: string
+        gender:
+          type: string
+
+    MatchDetail:
+      type: object
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        matchedValue:
+          type: object
+        matchResult:
+          type: string
+          description: How this specific attribute matched (Custom)
+          enum:
+            - Match
+            - MatchWithVariation
+
+    IdentifiedPerson:
+      type: object
+      required: [person, matchConfidence]
+      properties:
+        person:
+          $ref: '#/components/schemas/PersonIdentificationData'
+        matchConfidence:
+          type: string
+          format: uri
+          enum:
+            - http://uri.etsi.org/19478/MatchConfidence/High
+            - http://uri.etsi.org/19478/MatchConfidence/Medium
+            - http://uri.etsi.org/19478/MatchConfidence/Low
+        returnedAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RetrievedAttribute'
+        contactInformation:
+          $ref: '#/components/schemas/ContactInformation'
+        matchDetails:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchDetail'
+
+    IdentifyResponse:
+      type: object
+      required: [responseId, provider, identifiedPersons]
+      description: OSIA-styled identification response
+      properties:
+        responseId:
+          type: string
+          format: uuid
+        provider:
+          $ref: '#/components/schemas/Provider'
+        authenticSource:
+          $ref: '#/components/schemas/Provider'
+        identifiedPersons:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentifiedPerson'
+        totalMatches:
+          type: integer
+          description: Total matches found (may exceed returned count)
+        mandateResult:
+          $ref: '#/components/schemas/MandateResult'
+
+    # =====================================
+    # Attribute Sets Extension Schemas
+    # =====================================
+    AttributeSet:
+      type: object
+      required: [setId, name, attributeIdentifiers]
+      properties:
+        setId:
+          type: string
+          description: Unique identifier for this attribute set
+        name:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalizedText'
+        description:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalizedText'
+        purpose:
+          type: string
+          enum: [eidas, identity_verification, age_verification, biometric_enrollment, credential_issuance, other]
+        country:
+          type: string
+          pattern: '^[A-Z]{2}$'
+        attributeIdentifiers:
+          type: array
+          items:
+            type: string
+            format: uri
+        metadata:
+          type: object
+          properties:
+            version:
+              type: string
+            validFrom:
+              type: string
+              format: date
+            validUntil:
+              type: string
+              format: date
+
+    AttributeSetsResponse:
+      type: object
+      required: [sets]
+      properties:
+        sets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeSet'
+
+    # =====================================
+    # Contact Extension Schemas
+    # =====================================
+    EmailAddress:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+        isPreferred:
+          type: boolean
+        purpose:
+          type: string
+          enum: [personal, work, other]
+
+    PhoneNumber:
+      type: object
+      required: [number]
+      properties:
+        number:
+          type: string
+        type:
+          type: string
+          enum: [mobile, home, work, fax, other]
+        isPreferred:
+          type: boolean
+        countryCode:
+          type: string
+          description: International dialing code (e.g., "+33")
+
+    PostalAddress:
+      type: object
+      properties:
+        streetAddress:
+          type: array
+          items:
+            type: string
+        locality:
+          type: string
+        region:
+          type: string
+        postalCode:
+          type: string
+        country:
+          type: string
+          pattern: '^[A-Z]{2}$'
+
+    ConsentStatus:
+      type: object
+      properties:
+        canContact:
+          type: boolean
+        consentDate:
+          type: string
+          format: date-time
+        consentType:
+          type: string
+          enum: [explicit, implied, none]
+
+    ContactInformation:
+      type: object
+      required: [personId]
+      properties:
+        personId:
+          type: string
+        emailAddresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailAddress'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumber'
+        postalAddress:
+          $ref: '#/components/schemas/PostalAddress'
+        preferredContactMethod:
+          type: string
+          enum: [email, phone, mail, other]
+        consentStatus:
+          $ref: '#/components/schemas/ConsentStatus'
+
+    AuditTrail:
+      type: object
+      properties:
+        retrievalReason:
+          type: string
+        authorizedBy:
+          type: string
+        authorizationTime:
+          type: string
+          format: date-time
+
+    ContactResponse:
+      type: object
+      required: [responseId, issueDateTime, provider, contactInformation]
+      properties:
+        responseId:
+          type: string
+          format: uuid
+        issueDateTime:
+          type: string
+          format: date-time
+        provider:
+          $ref: '#/components/schemas/Provider'
+        authenticSource:
+          $ref: '#/components/schemas/Provider'
+        contactInformation:
+          $ref: '#/components/schemas/ContactInformation'
+        auditTrail:
+          $ref: '#/components/schemas/AuditTrail'
+
+    # =====================================
+    # Deferred Response
+    # =====================================
+    DeferredResponse:
+      type: object
+      required: [responseId, status, responseAvailableDateTime]
+      properties:
+        responseId:
+          type: string
+          format: uuid
+          description: Identifier for polling the deferred result
+        status:
+          type: string
+          enum: [deferred]
+          description: Fixed value indicating async processing
+        responseAvailableDateTime:
+          type: string
+          format: date-time
+          description: Estimated time when the result will be available
+        estimatedWaitSeconds:
+          type: integer
+          description: Estimated wait time in seconds
+
+    # =====================================
+    # OAuth Schemas - I4 (Authorize) Interface
+    # =====================================
+    TokenRequest:
+      type: object
+      required: [grant_type, code, redirect_uri, code_verifier]
+      properties:
+        grant_type:
+          type: string
+          enum: [authorization_code]
+        code:
+          type: string
+        redirect_uri:
+          type: string
+          format: uri
+        code_verifier:
+          type: string
+        client_id:
+          type: string
+        client_assertion_type:
+          type: string
+        client_assertion:
+          type: string
+
+    TokenResponse:
+      type: object
+      required: [access_token, token_type, expires_in]
+      properties:
+        access_token:
+          type: string
+          description: JWT per RFC 9068 with user PID
+        token_type:
+          type: string
+          enum: [Bearer]
+        expires_in:
+          type: integer
+        refresh_token:
+          type: string
+        scope:
+          type: string
+
+    ClientRegistrationRequest:
+      type: object
+      required: [redirect_uris, software_statement]
+      properties:
+        redirect_uris:
+          type: array
+          items:
+            type: string
+            format: uri
+        software_statement:
+          type: string
+          description: Signed JWT containing client metadata and registry URI
+        scope:
+          type: string
+        token_endpoint_auth_method:
+          type: string
+          enum: [tls_client_auth, private_key_jwt]
+
+    ClientRegistrationResponse:
+      type: object
+      required: [client_id]
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+        redirect_uris:
+          type: array
+          items:
+            type: string
+            format: uri
+        scope:
+          type: string
+
+    # =====================================
+    # Problem (RFC 9457) - ETSI Compliant Error Response
+    # =====================================
+    Problem:
+      type: object
+      required: [type, title, status]
+      description: |
+        RFC 9457 Problem Details object. ETSI TS 119 478 Annex B mandates this
+        schema for error responses with media type 'application/problem+json'.
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI reference identifying the problem type
+          default: about:blank
+        title:
+          type: string
+          description: Short human-readable summary of the problem
+        status:
+          type: integer
+          format: int32
+          description: HTTP status code
+          minimum: 200
+        detail:
+          type: string
+          description: Human-readable explanation specific to this occurrence
+        instance:
+          type: string
+          format: uri-reference
+          description: URI reference identifying the specific occurrence
+
+  responses:
+    # ETSI TS 119 478 Annex B mandates application/problem+json with RFC 9457 Problem schema
+    BadRequest:
+      description: Malformed or invalid request body
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    Unauthorized:
+      description: Authentication or authorization failure
+      # ETSI specifies no body for 401 responses
+
+    Forbidden:
+      description: Insufficient permissions or consent required
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    NotFound:
+      description: Resource, person, or attribute not found
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    NotImplemented:
+      description: Optional feature not implemented (fragments, mandate)
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
