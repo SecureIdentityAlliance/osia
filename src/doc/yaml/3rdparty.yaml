@@ -4,10 +4,11 @@
 openapi: 3.0.0
 info:
   description: |
-    The OSIA Third Party Services Interface
+    The OSIA Authentic Sources Services Interface
     
     Change log:
-
+    - 2.0.0: 
+      - Adapt to eIDAS requirements for Authentic Sources Services (ETSI TS 119 478 compliant)
     - 1.2.1:
       - Remove followRef
     - 1.2.0:
@@ -26,8 +27,8 @@ info:
       - Mark some fields (ID, etc.) as readOnly
     - 1.0.0: Initial version
 
-  version: 1.2.1
-  title: The OSIA Third Party Services Interface
+  version: 2.0.0
+  title: The OSIA Authentic Sources Services Interface
   license:
     name: SIA
     url: "https://raw.githubusercontent.com/SecureIdentityAlliance/osia/master/LICENSE"
@@ -36,38 +37,227 @@ servers:
 
 paths:
 
-  /v1/verify/{identifier}:
-    post:
-      summary: Verify a set of attributes of a person.
+  /v1/semanticRepository/{assetType}:
+    get:
+      summary: allows to search the semantic repository for attribute-related metadata
       description: >-
-        Verify an Identity based on an identity identifier (UIN, token…) and a
-        set of Identity Attributes. Verification is strictly matching all
-        provided identity attributes to compute the global Boolean matching
-        result.
-      operationId: verify
-      security:
-        - BearerAuth: [id.verify]
+        This interface is implemented by a semantic repository which is a catalogue of semantic assets
+        (e.g. attributes, attestation schemes, code lists) enabling the discovery of the unique identifier
+        for a specific attribute and related semantic information and data models.
+      operationId: findAttribute
       parameters:
-        - name: identifier
+        - name: assetType
           in: path
-          description: person identifier
+          description: Asset type to search for; shall be `attribute`
           required: true
           schema:
             type: string
-          example: "1235567890"
-        - name: identifierType
+          example: "attribute"
+        - name: creator
           in: query
-          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
+          description: Filter results by attribute creator name
           required: false
-          schema: 
+          schema:
             type: string
-          example: "token"
-        - name: verificationProofRequired
+          example: "University of Padova"
+        - name: country
           in: query
-          description: verification proof required on successful verification (default true)
+          description: Filter results by country code (ISO 3166-1 alpha-2)
           required: false
-          schema: 
-            type: boolean
+          schema:
+            type: string
+            pattern: "^[A-Z]{2}$"
+          example: "FR"
+        - name: text
+          in: query
+          description: Free-text search across attribute metadata
+          required: false
+          schema:
+            type: string
+        - name: semanticDataSpecification
+          in: query
+          description: URI to filter for a specific semantic data specification
+          required: false
+          schema:
+            type: string
+            format: uri
+        - name: schemaMediaType
+          in: query
+          description: Media type according to IETF RFC 6838 to filter schema distributions
+          required: false
+          schema:
+            type: string
+          example: "application/json"
+
+      responses:
+        200:
+          description: Request processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findAttributeResponse'
+        400:
+          description: Malformed or invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        408:
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        503:
+          description: Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/dataServiceDirectory/{queryType}:
+    get:
+      summary: allows to search the metadata of the authentic source(s) that support data services (verification, retrieval etc.) for the queried attribute(s).
+      description: >-
+        This interface is implemented by a Data Service Directory which is a registry of authentic sources
+        and their data services. 
+      operationId: findAuthenticSource
+      parameters:
+        - name: queryType
+          in: path
+          description: Query type; shall be `dataServices`
+          required: true
+          schema:
+            type: string
+        - name: attributeIdentifier
+          in: query
+          description: Unique URI identifier for the attribute
+          required: true
+          schema:
+            type: string
+            format: uri
+        - name: country
+          in: query
+          description: Filter data services by country code (ISO 3166-1 alpha-2)
+          required: false
+          schema:
+            type: string
+            pattern: "^[A-Z]{2}$"
+      responses:
+        200:
+          description: Request processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findAuthenticSourceResponse'
+        400:
+          description: Malformed or invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Resource, person, or attribute not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        408:
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        503:
+          description: Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v1/DiscoveryDataServiceDirectory:
+    get:
+      summary: allows to search the endpoint of the relevant regional or national Data Service Directory and the semantic repository that the Data Service Directory supports. 
+      description: >-
+        This interface is implemented by a discovery system for Data Service Directories
+      operationId: findDataServiceDirectory
+      parameters:
+        - name: country
+          in: query
+          description: Country code of the targeted country (ISO 3166-1 alpha-2)
+          required: true
+          schema:
+            type: string
+            pattern: "^[A-Z]{2}$"
+          example: "FR"
+      responses:
+        200:
+          description: Request processed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/findDataServiceDirectoryResponse'
+        400:
+          description: Malformed or invalid request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        404:
+          description: Resource, person, or attribute not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        408:
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        503:
+          description: Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /v2/verify:
+    post:
+      summary: Verify attributes against the authentic source without retrieving full data.
+      description: >-
+        Supports full attribute verification, fragment verification (privacy-preserving using JSONPath), or both.
+        In the case of attributes or attributesFragment, the verification provides a result for each attribute. 
+        In the case of attributeSet, the verification is matching all provided identity attributes in the set and computes a global matching result.
+        The required identification data of the user shall be contained in the access token provided by the Authorization Server.
+      operationId: verifyIdentity
+      security:
+        - BearerAuth: [id.verify]
+      parameters:
         - name: transactionId
           in: query
           description: The client specified id of the transaction
@@ -76,173 +266,167 @@ paths:
             type: string
       requestBody:
         description: >-
-            A set of identity attributes associated to the identity identifier
-            and to be verified by the system
+          Attributes, fragments, or attribute sets to verify
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AttributeSet"
+              $ref: "#/components/schemas/VerifyRequest"
         required: true
     
       responses:
         200:
-          description: Verification execution successful
+          description: Request processed successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VerifyResult'
+                $ref: '#/components/schemas/VerifyResponse'
+        202:
+          description: Deferred response; poll for async result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
         400:
-          description: 'Bad Request, Validation Errors, ...'
+          description: Malformed or invalid request body
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         401:
-          description: Unauthorized
+          description: Authentication or authorization failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         403:
-          description: Operation not allowed
+          description: Insufficient permissions or consent required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
-          description: Identifier not Found
+          description: Resource, person, or attribute not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        408:
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-                
-                
-  /v1/attributes/{attributeSetName}/{identifier}:
-    get:
-      summary: Read a predefined set of a person's attributes. 
-      description: Note security role must map the requested attributeSetName, e.g. id.DEFAULT_SET_01.read
-      operationId: readAttributeSet
-      security:
-        - BearerAuth: [id.ATTRIBUTESETNAME.read]
-      parameters:
-        - name: attributeSetName
-          in: path
-          description: Predefined attribute set name describing what attributes are to be read. e.g. "DEFAULT_SET_01", "SET_BIOM_01", "EIDAS", ...
-          required: true
-          schema:
-            type: string
-            example: "DEFAULT_SET_01"
-        - name: identifier
-          in: path
-          description: person identifier
-          required: true
-          schema:
-            type: string
-            example: "1235567890"
-        - name: identifierType
-          in: query
-          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
-          required: false
-          schema: 
-            type: string
-          example: "token"     
-        - name: transactionId
-          in: query
-          description: The client specified id of the transaction
-          required: true
-          schema:
-            type: string
-          
-      responses:
-        200:
-          description: Operation successful, AttributeSet will contain fields as predefined by the attributeSetName and when value is available 
-          content:
-            application/json:
-              schema:
-               $ref: '#/components/schemas/AttributeSet'
-        400:
-          description: 'Bad Request, Validation Errors, ...'
+        501:
+          description: Optional feature not implemented (fragments, mandate)
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-        401:
-          description: Unauthorized
-        403:
-          description: Operation not allowed
-        404:
-          description: Not Found
-        500:
-          description: Internal server error
+        503:
+          description: Service temporarily unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+                
+  
             
-  /v1/attributes/{identifier}:
+  /v2/readAttributes:
     post:
-      summary: Read a variable set of a person's attributes.
-      description: Returns value of attributes listed in the request parameter 'OutputAttributeSet'
+      summary: Retrieve actual attribute values from the authentic source
+      description: Returns value of attributes listed in the request
       operationId: readAttributes
       security:
         - BearerAuth: [id.read]
       parameters:
-        - name: identifier
-          in: path
-          description: person identifier
-          required: true
-          schema:
-            type: string
-            example: "1235567890"
-        - name: identifierType
-          in: query
-          description: Type of identifier (default "uin", "token", "credentialNumber", ...)
-          required: false
-          schema: 
-            type: string
-          example: "token"
         - name: transactionId
           in: query
           description: The client specified id of the transaction
           required: true
           schema:
-            type: string
-          
+            type: string          
       requestBody:
-        description: >-
-            A description of expected identity attributes  
+        description: Attributes or attribute set to retrieve
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/OutputAttributeSet"
+              $ref: '#/components/schemas/ReadAttributesRequest'
         required: true
 
       responses:
         200:
-          description: Operation successful, AttributeSet will contain fields as defined by parameter outputAttributeSet and when value is available 
+          description: Request processed successfully
           content:
             application/json:
               schema:
-               $ref: '#/components/schemas/AttributeSet'
+                $ref: '#/components/schemas/ReadAttributesResponse'
+        202:
+          description: Deferred response; poll for async result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskId'
         400:
-          description: 'Bad Request, Validation Errors, ...'
+          description: Malformed or invalid request body
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         401:
-          description: Unauthorized
+          description: Authentication or authorization failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         403:
-          description: Operation not allowed
+          description: Insufficient permissions or consent required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
-          description: Not Found
+          description: Resource, person, or attribute not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        408:
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        501:
+          description: Optional feature not implemented (fragments, mandate)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        503:
+          description: Service temporarily unavailable
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
   
-  /v1/identify:
+  /v2/identify:
     post:
       summary:  Identify a set of persons matching provided partial attributes
       description: >-
         Identify possibly matching identities against an input set of attributes. Returns an array of predefined datasets as described by outputDataSetName.
-        Note this request may be asynchronous or synchronous.
+        Note this request may be asynchronous or synchronous. This service may be limited to specific government RPs e.g. law enforcement agencies.
       operationId: identify
       security:
         - BearerAuth: [id.identify]
@@ -253,10 +437,9 @@ paths:
           required: true
           schema:
             type: string
-      
       requestBody:
         description: >-
-            A set of identity attributes to match and an attributeSetName to use as template for returned matching identities.
+            A set of identity attributes to match and an outputattributeSet to use as template for returned matching identities.
         content:
           application/json:
             schema:
@@ -265,49 +448,77 @@ paths:
     
       responses:
         200:
-          description: Identification request execution successful
+          description: Request processed successfully
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeSet'
+                $ref: '#/components/schemas/IdentifyResponse'
         202:
-          description: |
-            Request received successfully and correct, result will be available later using the task ID returned
+          description: Deferred response; poll for async result
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/TaskId'
         400:
-          description: 'Bad Request, Validation Errors, ...'
+          description: Malformed or invalid request body
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         401:
-          description: Unauthorized
+          description: Authentication or authorization failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         403:
-          description: Operation not allowed
+          description: Insufficient permissions or consent required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
-          description: Identifier not Found
+          description: Resource, person, or attribute not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        408:
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Internal server error
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+        501:
+          description: Optional feature not implemented (fragments, mandate)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        503:
+          description: Service temporarily unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
                 
-  /v1/identify/{taskID}:
+  /v2/identify/{taskId}:
     get:
       summary: Read the result of a previously sent identify request
       operationId: readIdentifyResult
       security:
         - BearerAuth: [id.identify]
       parameters:
-        - name: taskID
+        - name: taskId
           in: path
-          description: taskID to get result for.
+          description: taskId to get result for.
           required: true
           schema:
             type: string
@@ -321,29 +532,55 @@ paths:
 
       responses:
         200:
-          description: Operation successful, array of AttributeSet is available 
+          description: Request processed successfully
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AttributeSet'
-        204:
-          description: No content, taskID is valid but identify request is still ongoing, retry later 
+                $ref: '#/components/schemas/IdentifyResponse'
         400:
-          description: 'Bad Request, Validation Errors, ...'
+          description: Malformed or invalid request body
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         401:
-          description: Unauthorized
+          description: Authentication or authorization failure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         403:
-          description: Operation not allowed
+          description: Insufficient permissions or consent required
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         404:
-          description: Not Found
+          description: Resource, person, or attribute not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        408:
+          description: Request timeout
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         500:
           description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        501:
+          description: Optional feature not implemented (fragments, mandate)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        503:
+          description: Service temporarily unavailable
           content:
             application/json:
               schema:
@@ -357,10 +594,464 @@ components:
       bearerFormat: JWT
 
   schemas:
+    # Discovery Responses
+    findAttributeResponse:
+      type: object
+      required:
+        - attributes
+      properties:
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeMetadata'
+      additionalProperties: false
+
+    AttributeMetadata:
+      type: object
+      required:
+        - attributeIdentifier
+        - schemaDistribution
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+          description: Unique URI identifier for the attribute
+        title:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalizedText'
+        description:
+          type: array
+          items:
+            $ref: '#/components/schemas/LocalizedText'
+        creator:
+          type: string
+          description: Name of the entity that created the attribute definition
+        country:
+          type: string
+          pattern: "^[A-Z]{2}$"
+          description: Country code of the attribute creator (ISO 3166-1 alpha-2)
+        semanticDataSpecification:
+          type: string
+          format: uri
+          description: URI of the semantic data specification
+        schemaDistribution:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/SchemaDistribution'
+      additionalProperties: false
+
+    SchemaDistribution:
+      type: object
+      required:
+        - accessUri
+        - mediaType
+      properties:
+        accessUri:
+          type: string
+          format: uri
+          description: URL to access the schema definition
+        mediaType:
+          type: string
+          description: Media type of the schema (e.g., application/json)
+      additionalProperties: false
+
+    findAuthenticSourceResponse:
+      type: object
+      required:
+        - dataServices
+      properties:
+        dataServices:
+          type: array
+          items:
+            $ref: '#/components/schemas/DataService'
+      additionalProperties: false
+
+    DataService:
+      type: object
+      required:
+        - attributeIdentifier
+        - endpointDescription
+        - endpointURI
+        - provider
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        endpointDescription:
+          type: string
+          format: uri
+          description: URL to the API specification (e.g., OpenAPI document)
+        endpointURI:
+          type: string
+          format: uri
+          description: Base URL of the verification/retrieval service
+        provider:
+          $ref: '#/components/schemas/Provider'
+        country:
+          type: string
+          pattern: "^[A-Z]{2}$"
+      additionalProperties: false
+
+    findDataServiceDirectoryResponse:
+      type: object
+      required:
+        - DSDuri
+        - SRuri
+        - country
+      properties:
+        DSDuri:
+          type: string
+          format: uri
+          description: Data Service Directory URI
+        SRuri:
+          type: string
+          format: uri
+          description: Semantic Repository URI
+        countries:
+          type: array
+          items:
+            type: string
+            pattern: "^[A-Z]{2}$"
+          description: List of supported countries
+      additionalProperties: false
+
+    # Core Data Types
+    LocalizedText:
+      type: object
+      required:
+        - value
+        - language
+      properties:
+        value:
+          type: string
+        language:
+          type: string
+          pattern: "^[a-z]{2}$"
+          description: Two-letter language code (ISO 639-1)
+      additionalProperties: false
+
+    Provider:
+      type: object
+      required:
+        - legalName
+      properties:
+        legalName:
+          type: string
+          description: Current legal name of the entity
+        identifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProviderIdentifier'
+        establishedByLaw:
+          $ref: '#/components/schemas/EstablishedByLaw'
+        currentAddress:
+          type: string
+      additionalProperties: false
+
+    ProviderIdentifier:
+      type: object
+      required:
+        - type
+        - identifier
+      properties:
+        type:
+          type: string
+          format: uri
+          description: URI identifying the identifier scheme
+        identifier:
+          type: string
+      additionalProperties: false
+
+    EstablishedByLaw:
+      type: object
+      properties:
+        legislativeIdentifier:
+          type: string
+          format: uri
+        legalBasis:
+          type: string
+      additionalProperties: false
+
+    # Verification
+    VerifyRequest:
+      type: object
+      properties:
+        attributes:
+          type: array
+          description: Complete attributes to verify
+          items:
+            $ref: '#/components/schemas/VerificationAttribute'
+        attributeFragments:
+          type: array
+          description: Attribute fragments for privacy-preserving verification using JSONPath
+          items:
+            $ref: '#/components/schemas/AttributeFragment'
+        attributeSet:
+          $ref: '#/components/schemas/AttributeSet'
+        mandate:
+          $ref: '#/components/schemas/Mandate'
+      additionalProperties: false
+
+    VerificationAttribute:
+      type: object
+      required:
+        - attributeIdentifier
+        - attributeValue
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        attributeValue:
+          type: object
+      additionalProperties: false
+
+    AttributeFragment:
+      type: object
+      required:
+        - attributeIdentifier
+        - location
+        - value
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        location:
+          type: string
+          description: JSONPath expression (IETF RFC 9535)
+        value: {}
+      additionalProperties: false
+
+    VerifyResponse:
+      type: object
+      required:
+        - responseId
+        - provider
+      properties:
+        responseId:
+          type: string
+          format: uuid
+        provider:
+          $ref: '#/components/schemas/Provider'
+        authenticSource:
+          $ref: '#/components/schemas/Provider'
+        attributeVerificationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeVerificationResult'
+        attributeFragmentVerificationResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/attributeFragmentVerificationResult'
+        attributeSetResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeSetVerificationResult'
+        mandateResult:
+          $ref: '#/components/schemas/MandateResult'
+      additionalProperties: false
+
+    AttributeVerificationResult:
+      type: object
+      required:
+        - attributeIdentifier
+        - attributeVerificationResult
+        - VerificationResult
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        attributeVerificationResult:
+          type: string
+          format: uri
+          enum:
+            - "http://uri.etsi.org/19478/VerificationResult/Match"
+            - "http://uri.etsi.org/19478/VerificationResult/NoMatch"
+            - "http://uri.etsi.org/19478/VerificationResult/MatchWithVariation"
+            - "http://uri.etsi.org/19478/VerificationResult/Unknown"
+        VerificationResult:
+          type: string
+          enum: [Match, NoMatch, MatchWithVariation, Unknown]
+        attributeValue:
+          type: object
+      additionalProperties: false
+
+    attributeFragmentVerificationResult:
+      type: object
+      required:
+        - attributeIdentifier
+        - location
+        - attributeFragmentVerificationResult
+        - VerificationResult
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        location:
+          type: string
+        attributeFragmentVerificationResult:
+          type: string
+          format: uri
+          enum:
+            - "http://uri.etsi.org/19478/VerificationResult/Match"
+            - "http://uri.etsi.org/19478/VerificationResult/NoMatch"
+            - "http://uri.etsi.org/19478/VerificationResult/MatchWithVariation"
+            - "http://uri.etsi.org/19478/VerificationResult/Unknown"
+        VerificationResult:
+          type: string
+          enum: [Match, NoMatch, MatchWithVariation, Unknown]
+        attributeFragmentValue: {}
+      additionalProperties: false
+
+    AttributeSetVerificationResult:
+      type: object
+      required:
+        - attributeSetIdentifier
+        - VerificationResult
+      properties:
+        attributeSetIdentifier:
+          type: string
+          format: uri
+        location:
+          type: string
+          description: JSONPath expression indicating matched location within the attribute set
+        attributeSetVerificationResult:
+          type: string
+          format: uri
+          enum:
+            - "http://uri.etsi.org/19478/VerificationResult/Match"
+            - "http://uri.etsi.org/19478/VerificationResult/NoMatch"
+            - "http://uri.etsi.org/19478/VerificationResult/MatchWithVariation"
+            - "http://uri.etsi.org/19478/VerificationResult/Unknown"
+        VerificationResult:
+          type: string
+          enum: [Match, NoMatch, MatchWithVariation, Unknown]
+        attributeFragmentValue:
+          description: The actual value that was matched
+      additionalProperties: false
+
+    # Retrieval
+    ReadAttributesRequest:
+      type: object
+      properties:
+        attributes:
+          type: array
+          description: URIs of attributes to retrieve from the authentic source
+          minItems: 1
+          items:
+            type: string
+            format: uri
+        attributeSet:
+          $ref: '#/components/schemas/AttributeSet'
+        mandate:
+          $ref: '#/components/schemas/Mandate'
+      additionalProperties: false
+
+    ReadAttributesResponse:
+      type: object
+      required:
+        - responseId
+        - provider
+      properties:
+        responseId:
+          type: string
+          format: uuid
+        provider:
+          $ref: '#/components/schemas/Provider'
+        authenticSource:
+          $ref: '#/components/schemas/Provider'
+        attributeReadResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadAttribute'
+        attributeSetReadResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeSetReadResult'
+        mandateResult:
+          $ref: '#/components/schemas/MandateResult'
+      additionalProperties: false
+
+    ReadAttribute:
+      type: object
+      required:
+        - attributeIdentifier
+        - attributeValue
+        - stringRetrieveResult
+      properties:
+        attributeIdentifier:
+          type: string
+          format: uri
+        attributeValue:
+          type: object
+        stringRetrieveResult:
+          type: string
+          enum: [Success, Failure]
+      additionalProperties: false
+
+    AttributeSetReadResult:
+      type: object
+      required:
+        - attributeSetIdentifier
+        - attributes
+      properties:
+        attributeSetIdentifier:
+          type: string
+          format: uri
+        attributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReadAttribute'
+      additionalProperties: false
+
+    # Identification
+    IdentifyRequest:
+      type: object
+      description: a set of parameters used in identify
+      required:
+        - attributeSet
+        - outputAttributeSetIdentifier
+      properties:
+        attributeSet:
+          $ref: '#/components/schemas/AttributeSet'
+        outputAttributeSetIdentifier:
+          description: Attribute set uri describing what attributes are to be read. e.g. "DEFAULT_SET_01", "SET_BIOM_01", "EIDAS", ...
+          type: string
+          format: uri
+      additionalProperties: false
+
+    IdentifyResponse:
+      type: object
+      required:
+        - responseId
+        - provider
+        - identifiedPersons
+      properties:
+        responseId:
+          type: string
+          format: uuid
+        provider:
+          $ref: '#/components/schemas/Provider'
+        authenticSource:
+          $ref: '#/components/schemas/Provider'
+        identifiedPersons:
+          type: array
+          items:
+            $ref: '#/components/schemas/AttributeSet'
+        totalMatches:
+          type: integer
+        mandateResult:
+          $ref: '#/components/schemas/MandateResult'
+      additionalProperties: false
+
     AttributeSet:
       type: object
-      description: a set of attributes used in verify
+      description: A set of attributes for verification, retrieval, or identification
       properties:
+        attributeSetIdentifier:
+          type: string
+          format: uri
         biographicData:
           $ref: '#/components/schemas/BiographicData'
         biometricData:
@@ -753,36 +1444,7 @@ components:
           description: Error message
           type: string
       additionalProperties: false
-    
-    VerifyResult:
-      description : result of a successful verify request
-      type: object
-      required:
-        - verificationCode
-        - verificationMessage
-      properties:
-        verificationCode:
-          type: integer
-          format: int64
-        verificationMessage:
-          type: string
-        verificationProof:
-          type: string
-          
-    IdentifyRequest:
-      type: object
-      description: a set of parameters used in identify
-      required:
-        - attributeSet
-        - outputAttributeSetName
-      properties:
-        attributeSet:
-          $ref: '#/components/schemas/AttributeSet'
-        outputAttributeSetName:
-          description: Attribute set name describing what attributes are to be read. e.g. "DEFAULT_SET_01", "SET_BIOM_01", "EIDAS", ...
-          type: string
-          example: "DEFAULT_SET_01"
-      additionalProperties: false
+
 
     OutputAttributeSet:
       type: object
@@ -849,4 +1511,77 @@ components:
         others:
           type: object
           additionalProperties: true
+      additionalProperties: false
+
+          # Mandate
+    Mandate:
+      type: object
+      required:
+        - mandateType
+        - mandateReference
+        - delegator
+        - delegate
+      properties:
+        mandateType:
+          type: string
+          description: Type of mandate (e.g., LEGAL_REPRESENTATIVE, POWER_OF_ATTORNEY)
+        mandateReference:
+          type: string
+          description: Unique reference to the registered mandate
+        delegator:
+          type: object
+          properties:
+            personIdentifier:
+              type: string
+            familyName:
+              type: string
+            givenName:
+              type: string
+        delegate:
+          type: object
+          properties:
+            personIdentifier:
+              type: string
+            familyName:
+              type: string
+            givenName:
+              type: string
+        validFrom:
+          type: string
+          format: date-time
+        validUntil:
+          type: string
+          format: date-time
+        scope:
+          type: array
+          items:
+            type: string
+            format: uri
+      additionalProperties: false
+
+    MandateResult:
+      type: object
+      required:
+        - mandateValid
+        - mandateReference
+      properties:
+        mandateValid:
+          type: boolean
+        mandateReference:
+          type: string
+        validationTime:
+          type: string
+          format: date-time
+        delegatorMatch:
+          type: boolean
+        delegateMatch:
+          type: boolean
+        validationDetails:
+          type: object
+          properties:
+            mandateStatus:
+              type: string
+              enum: [ACTIVE, SUSPENDED, EXPIRED, REVOKED]
+            scopeValid:
+              type: boolean
       additionalProperties: false
