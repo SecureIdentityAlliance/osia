@@ -9,13 +9,23 @@ exclude_patterns = []
 pygments_style = 'colorful'
 project = 'OSIA'
 release = '7.3-DRAFT'
+html_title = f"{project} {release}"
 author = 'SIA'
 
 numfig = True
 
-extensions = ['sphinxcontrib.httpdomain','sphinxcontrib.plantuml','sphinxcontrib.openapi']
-
+extensions = ['sphinxcontrib.httpdomain','sphinxcontrib.plantuml','sphinxcontrib.openapi', 'sphinx_copybutton']
+# PlantUML command. By default the `plantuml` command must be on PATH (this is
+# the case on Read the Docs, where it is installed via apt). For a local build
+# with a jar, set the PLANTUML environment variable instead, e.g. (PowerShell):
+#   $env:PLANTUML = "java -jar C:/path/to/plantuml.jar"
+import os as _os
+plantuml = _os.environ.get("PLANTUML", "plantuml")
 plantuml_output_format = 'svg'
+templates_path = ['_templates']
+html_js_files = [
+    "osia-sidebar.js",
+]
 
 exclude_patterns = ['_*.rst', '*/_*.rst']
 
@@ -71,19 +81,19 @@ rst_prolog = '''
 #
 # HTML Output Configuration
 #
-html_static_path = ['images']
-html_theme = "alabaster"
+html_static_path = ['_static', 'images']
+html_css_files = [
+    #'custom.css',
+    'osia-furo.css',
+]
+html_theme = "furo"
 html_theme_options = {
-    'logo': 'logo.svg',
-    'github_user': 'SecureIdentityAlliance',
-    'github_repo': 'osia',
-    'github_button': True,
-    'show_powered_by': False,
-    'show_relbars': True,
-    'fixed_sidebar': False,
+    "sidebar_hide_name": False,
 }
+html_logo = "images/logo.svg"
 html_show_sourcelink = False
-html_context = {'project':'OSIA', 'version':release, 'copyright':'Secure Identity Alliance, '+str(datetime.date.today().year)}
+copyright = 'Secure Identity Alliance, '+str(datetime.date.today().year)
+html_context = {'project':'OSIA', 'version':release, 'copyright':copyright}
 html_last_updated_fmt = '%b %d, %Y'
 html_extra_path = ['yaml']
 
@@ -187,17 +197,10 @@ latex_elements = {
 }
 
 if 'DRAFT' in release:
+    # The PDF keeps its DRAFT watermark. The HTML background watermark was
+    # dropped with the move to the Furo-based template (it showed through the
+    # page layout); the DRAFT status is carried by the release in the title.
     latex_elements['preamble'] += '\\SetWatermarkText{DRAFT}'
-    rst_prolog += '''
-.. raw:: html
-
-    <style>
-        body {
-            background-repeat: repeat-y;
-            background-image:url("data:image/svg+xml;utf8, <svg xmlns='http://www.w3.org/2000/svg' version='1.1' height='50px' width='400px'> <text x='10' y='20' fill='black' font-size='30' opacity='0.1'>DRAFT    DRAFT    DRAFT</text> </svg>");
-        }
-    </style>
-'''
 else:
     latex_elements['preamble'] += '\\SetWatermarkText{}'
 

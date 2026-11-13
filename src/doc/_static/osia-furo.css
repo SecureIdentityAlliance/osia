@@ -1,0 +1,683 @@
+/* OSIA Furo modernization layer */
+
+:root {
+  --osia-primary: #BE4E90;
+  --osia-primary-dark: #96106A;
+  --osia-primary-soft: #F6E4EE;
+
+  --osia-gradient: linear-gradient(
+    135deg,
+    #BE4E90 0%,
+    #96106A 100%
+  );
+
+  --osia-text: #1F2933;
+  --osia-muted: #5F6B7A;
+  --osia-border: #D9DEE8;
+  --osia-surface: #F8F9FB;
+  --osia-surface-soft: #FCFCFD;
+
+  --color-brand-primary: var(--osia-primary);
+  --color-brand-content: var(--osia-primary-dark);
+  --color-link: var(--osia-primary-dark);
+  --color-link--hover: var(--osia-primary);
+}
+
+html[data-theme="dark"] {
+  --osia-text: #E5E7EB;
+  --osia-muted: #A8B0BC;
+  --osia-border: #3A3F4B;
+  --osia-surface: #20242D;
+  --osia-surface-soft: #171A21;
+  --osia-primary-soft: #2A1724;
+
+  --color-brand-primary: #D88AB8;
+  --color-brand-content: #F0A6D1;
+  --color-link: #F0A6D1;
+  --color-link--hover: #FFD0EA;
+}
+
+/* Typography */
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  color: var(--osia-text);
+}
+
+p,
+li,
+td {
+  line-height: 1.55;
+}
+
+p,
+div.body p,
+ol > li,
+ul > li,
+div.body td {
+  text-align: left !important;
+}
+
+/* Layout inspired by modern spec portals */
+
+.sidebar-drawer,
+.sidebar-container {
+  width: 16rem !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+}
+
+.sidebar-tree {
+  margin-left: 0 !important;
+  padding-left: 0.2rem !important;
+}
+
+.sidebar-tree a {
+  font-size: 0.92rem;
+  line-height: 1.2;
+}
+
+.sidebar-tree li {
+  margin: 0.08rem 0;
+}
+
+.sidebar-tree .caption,
+.sidebar-tree p.caption {
+  color: var(--osia-primary); 
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  margin-top: 1.2rem;
+}
+
+.sidebar-brand-text {
+  color: var(--osia-primary);
+  font-weight: 700;
+}
+
+.sidebar-tree .current > a {
+  color: var(--osia-primary) !important;
+  font-weight: 700;
+}
+
+.toc-drawer {
+  display: none !important;
+  width: 14rem !important;
+  padding-left: 0.75rem !important;
+}
+
+.toc-tree {
+  font-size: 0.88rem;
+}
+
+.toc-title {
+  color: var(--osia-muted);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.content,
+.article-container {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* === Index / cover page only ========================================
+   The master_doc is the only page that contains <p class="rubric"> and
+   <section id="cover-title">. Scoping every rule via :has(> p.rubric)
+   keeps these changes off the other pages. */
+
+/* Center the article column in the available space (between sidebar and
+   right viewport edge), but only when the article hosts the cover. */
+.main:has(article > p.rubric) {
+  justify-content: center !important;
+}
+
+/* Force every layer inside the cover article to be full-width. The article
+   itself becomes a flex column that vertically centers its children inside
+   ~85vh, so the rubric / H1 / subtitles cluster in the middle of the page. */
+article#furo-main-content:has(> p.rubric) {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  min-height: 85vh !important;
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+article#furo-main-content:has(> p.rubric) > section,
+article#furo-main-content:has(> p.rubric) .index-subtitle {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block !important;
+}
+
+article#furo-main-content:has(> p.rubric) > p.rubric,
+article#furo-main-content:has(> p.rubric) > section,
+article#furo-main-content:has(> p.rubric) > section > h1,
+article#furo-main-content:has(> p.rubric) .index-subtitle,
+article#furo-main-content:has(> p.rubric) .index-subtitle p {
+  text-align: center !important;
+}
+
+/* Default pages: article uses full available width */
+article#furo-main-content > section {
+  width: 100%;
+  max-width: none;
+}
+
+/* Headings */
+
+h1 {
+  color: var(--osia-primary) !important;
+  border-bottom: 2px solid var(--osia-primary-soft);
+  padding-bottom: 0.35rem;
+}
+
+h2 {
+  color: var(--osia-primary) !important;
+  margin-top: 2.3rem;
+  border-bottom: 1px solid var(--osia-border);
+  padding-bottom: 0.2rem;
+}
+
+h3 {
+  color: var(--osia-text);
+  margin-top: 1.7rem;
+}
+
+/* Rubric — used as the small/standalone label above the page H1
+   (e.g. "Recommendation" on index.rst). Sized between body and H1. */
+
+/* Rubric — used as the small/standalone label above the page H1
+   (e.g. "Recommendation" on index.rst). Sized between body and H1. */
+
+p.rubric {
+  font-size: 1.9rem;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--osia-text) !important;
+  margin: 3rem 0 0.6rem 0;     /* breathing room above the cover and a little gap before the H1 */
+  padding: 0;
+  border: none;
+}
+
+/* H1 directly after the "Recommendation" rubric (index cover): drop the
+   underline, and give it a bit of room before the subtitle block below. */
+p.rubric + section > h1,
+p.rubric + h1 {
+  border-bottom: none !important;
+  padding-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 1.5rem !important;
+}
+
+/* Index cover subtitles (SERIES X / Cyberspace security / APIs lines) */
+
+.index-subtitle {
+  text-align: center !important;
+}
+
+.index-subtitle p {
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0.6rem 0;
+  text-align: center !important;
+}
+
+/* Cover separator line between (SERIES X + Cyberspace) and (APIs subtitle). */
+.index-subtitle + hr,
+.index-subtitle ~ hr {
+  border: none;
+  border-top: 1px solid var(--osia-border);
+  margin: 1.6rem 0;
+}
+
+/* Links */
+
+a {
+  text-decoration-thickness: 0.07em;
+  text-underline-offset: 0.18em;
+}
+
+/* Tables */
+
+table.docutils,
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2rem 0;
+  font-size: 0.95rem;
+}
+
+table.docutils th,
+table th {
+  background: var(--osia-primary) !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+table.docutils td,
+table.docutils th,
+table td,
+table th {
+  border: 1px solid var(--osia-border);
+  padding: 0.55rem 0.7rem;
+  vertical-align: top;
+}
+
+table.docutils tr:hover td {
+  background: var(--osia-surface);
+}
+
+/* Highlight any table row that contains bold text — light gray background
+   (used in the X-series classification to draw attention to e.g. the
+   "Identity management (IdM) and Authentication" row). */
+table.docutils tr:has(strong) td,
+table tr:has(strong) td {
+  background: #ECEFF3 !important;
+}
+
+html[data-theme="dark"] table.docutils tr:has(strong) td,
+html[data-theme="dark"] table tr:has(strong) td {
+  background: #2A2F38 !important;
+}
+
+.table-wrapper,
+.wy-table-responsive {
+  overflow-x: auto !important;
+}
+
+/* Code */
+
+code,
+code.docutils.literal {
+  background: #EEF1F5 !important;
+  border: 1px solid #DDE3EA;
+  border-radius: 4px;
+  padding: 0.08rem 0.25rem;
+  font-size: 0.9em;
+}
+
+html[data-theme="dark"] code,
+html[data-theme="dark"] code.docutils.literal {
+  background: #242936 !important;
+  border-color: #3A3F4B;
+}
+
+pre {
+  border-radius: 8px;
+  border: 1px solid var(--osia-border);
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+/* OpenAPI / function blocks */
+
+dl.http,
+dl.py,
+dl.function {
+  border-left: 3px solid var(--osia-primary);
+  background: var(--osia-surface-soft);
+  padding: 0.75rem 0.95rem;
+  border-radius: 10px;
+  margin: 1.2rem 0;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.04);
+}
+
+dt.sig,
+dl dt {
+  font-weight: 700;
+}
+
+/* Figures and PlantUML */
+
+figure,
+div.figure {
+  margin: 2rem auto !important;
+  text-align: center;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+figcaption,
+.caption {
+  color: var(--osia-muted);
+  font-size: 0.92rem;
+  text-align: center !important;
+  margin-top: 0.6rem;
+}
+
+/* Admonitions */
+
+.admonition,
+div.note,
+div.warning,
+div.important {
+  border-radius: 10px;
+  border-left: 4px solid var(--osia-primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.admonition-title {
+  font-weight: 700;
+}
+
+/* Legacy cleanup */
+
+div.document,
+div.body,
+div.bodywrapper {
+  max-width: none !important;
+}
+
+img,
+div.figure {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* Sidebar project title (X.1281 under the ITU logo) */
+
+.sidebar-brand-text {
+  font-size: 1.8rem !important;
+  font-weight: 700 !important;
+  color: var(--osia-primary) !important;
+  text-align: center;
+  margin-top: -0.35rem;
+  letter-spacing: 0.02em;
+}
+
+/* Always visible copy button */
+
+button.copybtn {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Slightly nicer appearance */
+button.copybtn {
+  border-radius: 6px;
+  border: 1px solid var(--osia-border);
+  background: var(--osia-surface-soft);
+}
+
+button.copybtn:hover {
+  background: var(--osia-primary-soft);
+}
+
+/* Remove right TOC completely */
+
+/* .toc-drawer {
+  display: none !important;
+} */
+
+/* Local TOC integrated into main sidebar */
+
+.osia-sidebar-localtoc {
+  margin-top: 0;
+  margin-left: 0.75rem;
+  padding-top: 0;
+  border-left: 2px solid var(--osia-primary-soft);
+}
+
+.osia-sidebar-localtoc-tree {
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.osia-sidebar-localtoc-tree ul {
+  list-style: none;
+  padding-left: 0.45rem;
+  margin-left: 0;
+  margin-top: 0;
+}
+
+.osia-sidebar-localtoc-tree li {
+  margin: 0.08rem 0;
+}
+
+.osia-sidebar-localtoc-tree a {
+  color: var(--osia-muted) !important;
+  text-decoration: none;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.osia-sidebar-localtoc-tree a:hover {
+  color: var(--osia-primary) !important;
+  background: var(--osia-primary-soft);
+  border-radius: 6px;
+}
+
+.osia-sidebar-localtoc-tree a.current,
+.osia-sidebar-localtoc-tree li.current > a,
+.osia-sidebar-localtoc-tree .current > a {
+  color: var(--osia-primary) !important;
+  font-weight: 700;
+}
+
+/* When a subsection is selected, reduce emphasis on parent page link */
+.sidebar-drawer a.osia-parent-dimmed,
+.sidebar-container a.osia-parent-dimmed,
+.sidebar-sticky a.osia-parent-dimmed {
+  color: var(--osia-muted) !important;
+  font-weight: 500 !important;
+}
+
+.sidebar-tree .toctree-l1.has-children > a.osia-parent-dimmed {
+  color: var(--osia-muted) !important;
+  font-weight: 500 !important;
+}
+
+
+
+.osia-sidebar-localtoc-tree a.osia-toc-dimmed {
+  color: var(--osia-muted) !important;
+  font-weight: 400 !important;
+}
+
+.osia-sidebar-localtoc-tree a.current {
+  color: var(--osia-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* Hover behavior for Furo submenu items */
+
+/* Unified sidebar hover behavior */
+
+.sidebar-tree a:hover,
+.osia-sidebar-localtoc-tree a:hover {
+  color: var(--osia-primary) !important;
+  background: var(--osia-primary-soft);
+  border-radius: 6px;
+}
+
+/* Sidebar links use OSIA grey by default */
+
+.sidebar-tree a,
+.osia-sidebar-localtoc-tree a {
+  color: var(--osia-muted) !important;
+  text-decoration: none;
+}
+
+.toctree-l1.has-children > a.osia-expanded {
+  color: var(--osia-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* Keep OpenAPI service mini-sidebar visible while scrolling */
+
+aside.sidebar {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+
+  width: 180px;
+  min-width: 180px;
+  flex: 0 0 180px;
+  font-size: 0.9rem;
+}
+
+.toc-drawer,
+.toc-overlay,
+.toc-overlay-icon,
+.toc-header-icon,
+.toc-content-icon {
+  display: none !important;
+}
+
+/* OpenAPI page layout: main text (left) + sticky operations box (right).
+   Only sections that actually contain an ".. sidebar::" box become a 2-column
+   grid; everything else stays single-column and full-width. The right column
+   is a fixed width and the left fills all remaining space (no gap). */
+article#furo-main-content > section:has(> aside.sidebar) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 16em;
+  column-gap: 2rem;
+  width: 100%;
+}
+
+article#furo-main-content > section:has(> aside.sidebar) > :not(aside.sidebar) {
+  grid-column: 1;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;   /* keep wide content from spilling into column 2 */
+}
+
+/* Wide code blocks in the left column scroll inside themselves instead of
+   overflowing sideways into the Operations box column. */
+article#furo-main-content section:has(aside.sidebar) [class*="highlight"] {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+article#furo-main-content > section:has(> aside.sidebar) > aside.sidebar {
+  grid-column: 2;
+
+  width: 16em;
+  min-width: 16em;
+  font-size: 0.9rem;
+  background: var(--osia-surface-soft);
+}
+
+/* OpenAPI service sidebar — OSIA card style */
+
+article#furo-main-content aside.sidebar {
+  background: var(--osia-surface-soft);
+  border: 1px solid var(--osia-border);
+  border-radius: 10px;
+  padding: 0.8rem 0.9rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+article#furo-main-content aside.sidebar .sidebar-title {
+  color: var(--osia-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.6rem;
+}
+
+article#furo-main-content aside.sidebar ul {
+  list-style-type: disc;
+  padding-left: 1rem;
+  margin: 0;
+}
+
+article#furo-main-content aside.sidebar li {
+  margin: 0.15rem 0;
+}
+
+article#furo-main-content aside.sidebar a {
+  color: var(--osia-primary) !important;
+  text-decoration: none;
+  font-size: 0.86rem;
+  line-height: 1.25;
+  padding: 0.22rem 0.35rem;
+  border-radius: 6px;
+  text-decoration: underline;
+}
+
+article#furo-main-content aside.sidebar a:hover {
+  color: var(--osia-primary) !important;
+  background: var(--osia-primary-soft);
+}
+
+/* Remove ugly table styling from sphinx */
+article#furo-main-content aside.sidebar table,
+article#furo-main-content aside.sidebar tbody,
+article#furo-main-content aside.sidebar tr,
+article#furo-main-content aside.sidebar td {
+  border: none !important;
+  background: transparent !important;
+  padding: 0;
+}
+
+
+/* === OSIA brand colours for Furo ====================================
+   Furo declares its colour variables on <body> (and switches dark mode
+   via body[data-theme]), so they must be overridden there as well:
+   values set on :root / html alone are shadowed by Furo's defaults. */
+body {
+  --color-brand-primary: var(--osia-primary);
+  --color-brand-content: var(--osia-primary-dark);
+  --color-brand-visited: var(--osia-primary-dark);
+  --color-link: var(--osia-primary-dark);
+  --color-link--hover: var(--osia-primary);
+  --color-link--visited: var(--osia-primary-dark);
+  --color-link--visited--hover: var(--osia-primary);
+}
+
+body[data-theme="dark"] {
+  --color-brand-primary: #D88AB8;
+  --color-brand-content: #F0A6D1;
+  --color-brand-visited: #F0A6D1;
+  --color-link: #F0A6D1;
+  --color-link--hover: #FFD0EA;
+  --color-link--visited: #F0A6D1;
+  --color-link--visited--hover: #FFD0EA;
+}
+
+@media (prefers-color-scheme: dark) {
+  body:not([data-theme="light"]) {
+    --color-brand-primary: #D88AB8;
+    --color-brand-content: #F0A6D1;
+    --color-brand-visited: #F0A6D1;
+    --color-link: #F0A6D1;
+    --color-link--hover: #FFD0EA;
+    --color-link--visited: #F0A6D1;
+    --color-link--visited--hover: #FFD0EA;
+  }
+}
+
+/* === Large PlantUML diagrams ========================================
+   sphinxcontrib-plantuml embeds SVG diagrams as <object> with fixed pixel
+   sizes. Let the content column shrink below its widest child and scale the
+   diagrams down to fit, keeping their aspect ratio, so that a wide diagram
+   does not push the whole page past the right edge of the window. */
+.main,
+.content,
+.article-container {
+  min-width: 0;
+}
+
+article#furo-main-content object[type="image/svg+xml"] {
+  max-width: 100%;
+  height: auto !important;
+}
